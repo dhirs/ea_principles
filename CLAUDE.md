@@ -119,16 +119,23 @@ rm -rf .next node_modules package-lock.json && npm install
 ```
 
 ## Component Architecture
-- **app/page.tsx**: Mounts `PrinciplesView`
+- **app/page.tsx**: Landing page — renders a centered "Welcome back" heading. Does NOT render principles.
+- **app/principles/page.tsx**: Index list — mounts `PrinciplesList`, which renders one row per principle as `<id>-<title>`, linking to `/principles/<id>`.
+- **app/principles/[id]/page.tsx**: Detail view — client component that reads `id` via `useParams`, looks up the principle in context, renders `PrincipleView`.
 - **app/api/data/route.ts**: S3 fetch wrapped in `unstable_cache` (60s TTL, tag `principles`)
 - **app/api/refresh/route.ts**: POST endpoint that calls `revalidateTag('principles')`
-- **app/layout.tsx**: Root layout — Inter (sans) + JetBrains Mono (mono) from Google Fonts; composes Header + Sidebar + main + Footer
-- **components/layout/**: Header, Sidebar, Footer, RefreshButton
-- **components/principles/**: PrinciplesView (fetch + state), PrincipleView (HeaderBar + tabs)
+- **app/layout.tsx**: Root layout — Inter (sans) + JetBrains Mono (mono) from Google Fonts; wraps Header + Sidebar + main + Footer inside `<PrinciplesProvider>` so every route shares the same fetch + search state.
+- **components/layout/**: Header, Footer, RefreshButton, and the `sidebar/` widget folder.
+- **components/layout/sidebar/**: Widget folder — `Sidebar.tsx` (shell), `SidebarMenu.tsx` (nav links, currently just "All Principles" → `/principles`), `SearchPrinciples.tsx` (search input), `index.ts` (re-exports `Sidebar`). Each widget is its own file; add new ones here and mount in `Sidebar.tsx`.
+- **components/principles/**: `PrinciplesView` (deprecated wrapper — still exists but no longer mounted on `/`), `PrincipleView` (HeaderBar + tabs, full width), `PrinciplesList` (the `<id>-<title>` row list used by `/principles`).
 - **components/principles/sections/**: One renderer per top-level principle node (StatementSection, ProblemSection, SolutionSection, GatesSection, FrameworkMappingsSection, EvidenceSection, KeyValueSection, ChangeHistorySection, HeaderBar, UnknownSection)
+- **lib/principles/PrinciplesContext.tsx**: Client `PrinciplesProvider` + `usePrinciples()` hook. Fetches `/api/data` once on mount and exposes `{ data, error, query, setQuery, filtered }`. `filtered` is a memoized substring match (case-insensitive) against both `statement.title` and `principle_id`. Sidebar widgets and pages all read/write through this hook — do NOT refetch in components.
 - **lib/principles/types.ts**: Loose `Principle = Record<string, unknown>` + `asObject/asArray/asString` defensive helpers
 - **lib/principles/registry.tsx**: Single source of truth for tab order, titles, and renderer mapping. Unknown top-level keys auto-fall-through to `UnknownSection` (labeled JSON viewer). Tab order: Statement → Problem → Solution → Gates → Ownership → Evidence → Framework Mappings → AIGP → History.
 - **components/ui/**: Shadcn/UI components (project-owned — modified in place)
+
+### State pattern (important)
+All cross-route principle state lives in `PrinciplesProvider` (mounted in `app/layout.tsx`). The search input writes `query`; the list page and any future widgets read `filtered`. Don't add per-component `useEffect(fetch...)` calls — extend the provider instead.
 
 ### Resilience pattern (important)
 The JSON schema changes often. Section renderers are defensive: each reads its node with `asObject/asArray/asString`, returns `null` when empty, never crashes. Adding a new top-level key to the JSON shows it immediately as a raw-JSON tab with humanised title; promote to a proper renderer by adding one line to `REGISTRY` in `lib/principles/registry.tsx`.
