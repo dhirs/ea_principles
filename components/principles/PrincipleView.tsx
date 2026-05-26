@@ -10,7 +10,7 @@ export function PrincipleView({ principle }: { principle: Principle }) {
   const sections = useMemo(() => getSectionEntries(principle), [principle])
 
   return (
-    <article className="space-y-6 max-w-5xl">
+    <article className="space-y-6 w-full">
       <HeaderBar principle={principle} />
       {sections.length === 0 ? (
         <p className="text-muted-foreground">This principle has no displayable fields.</p>

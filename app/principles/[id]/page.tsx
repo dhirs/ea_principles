@@ -1,11 +1,15 @@
 "use client"
 
+import { useParams } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
+import { PrincipleView } from "@/components/principles/PrincipleView"
 import { usePrinciples } from "@/lib/principles/PrinciplesContext"
-import { PrincipleView } from "./PrincipleView"
+import { asString } from "@/lib/principles/types"
 
-export function PrinciplesView() {
-  const { data, error, filtered, query } = usePrinciples()
+export default function PrinciplePage() {
+  const params = useParams<{ id: string }>()
+  const id = decodeURIComponent(params.id)
+  const { data, error } = usePrinciples()
 
   if (error) {
     return (
@@ -25,13 +29,17 @@ export function PrinciplesView() {
     )
   }
 
-  if (filtered.length === 0) {
+  const principle = (data.principles ?? []).find(
+    (p) => asString(p.principle_id) === id,
+  )
+
+  if (!principle) {
     return (
       <p className="text-muted-foreground">
-        {query ? `No principles match "${query}".` : "No principles found."}
+        No principle found with id <span className="font-mono">{id}</span>.
       </p>
     )
   }
 
-  return <PrincipleView principle={filtered[0]} />
+  return <PrincipleView principle={principle} />
 }

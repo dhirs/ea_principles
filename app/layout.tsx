@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Footer } from "@/components/layout/footer";
+import { PrinciplesProvider } from "@/lib/principles/PrinciplesContext";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -32,12 +33,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
-        <Header />
-        <div className="flex flex-1 min-h-0">
-          <Sidebar />
-          <main className="flex-1 overflow-auto p-6">{children}</main>
-        </div>
-        <Footer />
+        <PrinciplesProvider>
+          <Header />
+          <div className="flex flex-1 min-h-0">
+            <Sidebar />
+            <main className="flex-1 overflow-auto p-6">{children}</main>
+          </div>
+          <Footer />
+        </PrinciplesProvider>
       </body>
     </html>
   );
