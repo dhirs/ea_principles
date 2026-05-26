@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/header";
+import { Sidebar } from "@/components/layout/sidebar";
+import { Footer } from "@/components/layout/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "S3 JSON Viewer",
-  description: "Display JSON data from AWS S3 with a modern UI",
+  title: "AI Principles",
+  description: "AI Principles dashboard",
 };
 
 export default function RootLayout({
@@ -25,11 +28,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        {children}
+      <body className="min-h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
+        <Header />
+        <div className="flex flex-1 min-h-0">
+          <Sidebar />
+          <main className="flex-1 overflow-auto p-6">{children}</main>
+        </div>
+        <Footer />
       </body>
     </html>
   );

@@ -119,10 +119,29 @@ rm -rf .next node_modules package-lock.json && npm install
 ```
 
 ## Component Architecture
-- **app/page.tsx**: Main page component with data fetching and dynamic rendering
-- **app/api/data/route.ts**: API route for S3 data fetching
-- **app/layout.tsx**: Root layout with metadata and font configuration
-- **components/ui/**: Shadcn/UI components
+- **app/page.tsx**: Mounts `PrinciplesView`
+- **app/api/data/route.ts**: S3 fetch wrapped in `unstable_cache` (60s TTL, tag `principles`)
+- **app/api/refresh/route.ts**: POST endpoint that calls `revalidateTag('principles')`
+- **app/layout.tsx**: Root layout — Inter (sans) + JetBrains Mono (mono) from Google Fonts; composes Header + Sidebar + main + Footer
+- **components/layout/**: Header, Sidebar, Footer, RefreshButton
+- **components/principles/**: PrinciplesView (fetch + state), PrincipleView (HeaderBar + tabs)
+- **components/principles/sections/**: One renderer per top-level principle node (StatementSection, ProblemSection, SolutionSection, GatesSection, FrameworkMappingsSection, EvidenceSection, KeyValueSection, ChangeHistorySection, HeaderBar, UnknownSection)
+- **lib/principles/types.ts**: Loose `Principle = Record<string, unknown>` + `asObject/asArray/asString` defensive helpers
+- **lib/principles/registry.tsx**: Single source of truth for tab order, titles, and renderer mapping. Unknown top-level keys auto-fall-through to `UnknownSection` (labeled JSON viewer). Tab order: Statement → Problem → Solution → Gates → Ownership → Evidence → Framework Mappings → AIGP → History.
+- **components/ui/**: Shadcn/UI components (project-owned — modified in place)
+
+### Resilience pattern (important)
+The JSON schema changes often. Section renderers are defensive: each reads its node with `asObject/asArray/asString`, returns `null` when empty, never crashes. Adding a new top-level key to the JSON shows it immediately as a raw-JSON tab with humanised title; promote to a proper renderer by adding one line to `REGISTRY` in `lib/principles/registry.tsx`.
+
+## Known Quirks
+- **Tailwind v4 + `@layer base`**: putting `font-size` (or other plain CSS properties) inside `@layer base { html { ... } }` silently fails to compile into the served CSS. Use a top-level `html { ... }` rule instead. See `app/globals.css` for the base font-size override.
+- **`AWS_PRINCIPLES_PATH` in `/home/dheeraj/ai_principles_server/.env`** is unused; the API route reads `S3_BUCKET_NAME` and `S3_JSON_KEY` from `s3-json-viewer/.env.local`. Don't waste time editing the outer `.env`.
+- **Node version**: project runs on Node 22 (set as nvm default globally). Do not `nvm use 20` — it's stale guidance from the earlier setup.
+
+## Caching
+- Server-side: `unstable_cache(fetchPrinciplesFromS3, ['principles-json'], { revalidate: 60, tags: ['principles'] })` in `app/api/data/route.ts`.
+- Browser/CDN: `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`.
+- Force-refresh: the **Refresh** button in the header POSTs `/api/refresh` (which calls `revalidateTag`), then `window.location.reload()`.
 
 ## Deployment Notes
 ### Vercel Deployment
