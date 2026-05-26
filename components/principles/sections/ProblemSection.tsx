@@ -1,12 +1,16 @@
-import { asArray, asObject, asString } from "@/lib/principles/types"
+import { ExplainTrigger } from "@/components/principles/ExplainTrigger"
+import { asArray, asObject, asString, type Principle } from "@/lib/principles/types"
 
-export function ProblemSection({ node }: { node: unknown }) {
+export function ProblemSection({ node, principle }: { node: unknown; principle: Principle }) {
   const o = asObject(node)
   const description = asString(o?.description)
   const examples = asArray(o?.examples)?.filter((x): x is string => typeof x === "string") ?? []
   if (!description && examples.length === 0) return null
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <ExplainTrigger principle={principle} />
+      </div>
       {description && (
         <p className="leading-relaxed text-foreground/90 whitespace-pre-wrap">{description}</p>
       )}

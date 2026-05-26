@@ -1,3 +1,5 @@
+import { FocusAreaFilter } from "./FocusAreaFilter"
+import { PillarFilter } from "./PillarFilter"
 import { SearchPrinciples } from "./SearchPrinciples"
 import { SidebarMenu } from "./SidebarMenu"
 
@@ -7,6 +9,8 @@ export function Sidebar() {
       <div className="p-4 space-y-4">
         <SidebarMenu />
         <SearchPrinciples />
+        <PillarFilter />
+        <FocusAreaFilter />
       </div>
     </aside>
   )

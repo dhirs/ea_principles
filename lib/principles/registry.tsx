@@ -6,7 +6,7 @@ import { FrameworkMappingsSection } from "@/components/principles/sections/Frame
 import { EvidenceSection } from "@/components/principles/sections/EvidenceSection"
 import { KeyValueSection } from "@/components/principles/sections/KeyValueSection"
 import { ChangeHistorySection } from "@/components/principles/sections/ChangeHistorySection"
-import { UnknownSection } from "@/components/principles/sections/UnknownSection"
+import { MetaSection } from "@/components/principles/sections/MetaSection"
 
 export type SectionEntry = {
   key: string
@@ -22,15 +22,19 @@ export const HEADER_KEYS = new Set([
   "impact_level",
 ])
 
+// Top-level keys that are intentionally hidden from the UI entirely
+// (consumed by other features, not user-facing as a tab or row).
+export const HIDDEN_KEYS = new Set(["explain_prompt"])
+
 type RegistryEntry = {
   title: string
-  render: (node: unknown) => React.ReactNode
+  render: (node: unknown, principle: Record<string, unknown>) => React.ReactNode
 }
 
 // Ordered registry. Order here == tab order in the UI.
 const REGISTRY: Array<[string, RegistryEntry]> = [
   ["statement",          { title: "Statement",          render: (n) => <StatementSection node={n} /> }],
-  ["problem",            { title: "Problem",            render: (n) => <ProblemSection node={n} /> }],
+  ["problem",            { title: "Problem",            render: (n, p) => <ProblemSection node={n} principle={p} /> }],
   ["solution",           { title: "Solution",           render: (n) => <SolutionSection node={n} /> }],
   ["gates",              { title: "Gates",              render: (n) => <GatesSection node={n} /> }],
   ["ownership",          { title: "Ownership",          render: (n) => <KeyValueSection node={n} /> }],
@@ -50,30 +54,38 @@ function isEmptyNode(v: unknown): boolean {
   return false
 }
 
-function humanizeKey(k: string) {
-  return k.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
-}
-
 export function getSectionEntries(principle: Record<string, unknown>): SectionEntry[] {
   const out: SectionEntry[] = []
+  let historyEntry: SectionEntry | null = null
 
   for (const [key, entry] of REGISTRY) {
     if (!(key in principle)) continue
     const node = principle[key]
     if (isEmptyNode(node)) continue
-    out.push({ key, title: entry.title, content: entry.render(node) })
+    const section = { key, title: entry.title, content: entry.render(node, principle) }
+    if (key === "change_history") {
+      historyEntry = section
+    } else {
+      out.push(section)
+    }
   }
 
+  const metaEntries: Array<[string, unknown]> = []
   for (const key of Object.keys(principle)) {
-    if (HEADER_KEYS.has(key) || REGISTRY_KEYS.has(key)) continue
+    if (HEADER_KEYS.has(key) || HIDDEN_KEYS.has(key) || REGISTRY_KEYS.has(key)) continue
     const node = principle[key]
     if (isEmptyNode(node)) continue
+    metaEntries.push([key, node])
+  }
+  if (metaEntries.length > 0) {
     out.push({
-      key,
-      title: humanizeKey(key),
-      content: <UnknownSection node={node} />,
+      key: "meta",
+      title: "Meta",
+      content: <MetaSection entries={metaEntries} />,
     })
   }
+
+  if (historyEntry) out.push(historyEntry)
 
   return out
 }

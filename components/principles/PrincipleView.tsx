@@ -17,7 +17,7 @@ export function PrincipleView({ principle }: { principle: Principle }) {
       ) : (
         <Tabs defaultValue={sections[0].key}>
           <div className="overflow-x-auto -mx-1 px-1 pb-1">
-            <TabsList className="shadow-md bg-card">
+            <TabsList className="w-full shadow-md bg-card">
               {sections.map((s) => (
                 <TabsTrigger key={s.key} value={s.key}>
                   {s.title}
