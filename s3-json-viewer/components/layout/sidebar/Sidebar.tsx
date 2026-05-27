@@ -1,3 +1,4 @@
+import { BestPracticeFilter } from "./BestPracticeFilter"
 import { FocusAreaFilter } from "./FocusAreaFilter"
 import { PillarFilter } from "./PillarFilter"
 import { SearchPrinciples } from "./SearchPrinciples"
@@ -11,6 +12,7 @@ export function Sidebar() {
         <SearchPrinciples />
         <PillarFilter />
         <FocusAreaFilter />
+        <BestPracticeFilter />
       </div>
     </aside>
   )
