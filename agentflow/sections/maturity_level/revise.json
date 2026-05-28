@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "maturity_level",
+  "purpose": "Revise prompt for a failed maturity_level selection.",
+  "composes_with": "system_prompts/revise.json",
+
+  "system_addendum": "SECTION YOU ARE REVISING: maturity_level\n\nIf value_in_enum failed: pick exactly foundational / scaling / mature.\n\nIf depends_on_deployment failed: principles that require a deployed system to operate against (drift baselines, production telemetry, multi-project portfolio) cannot be foundational. Use scaling for principles that need a deployed system; mature for cross-portfolio principles.\n\nIf parallel_with_siblings failed: align with the sibling pattern. The four siblings cluster at foundational (per-project discipline) except GO1B1-04 (scaling, needs deployment). Reflect this logic for the principle being authored.",
+
+  "user_template": "Revise this maturity_level.\n\n<statement>{{ statement_title }}</statement>\n<problem>{{ problem_description }}</problem>\n<applicability>{{ applicability }}</applicability>\n<siblings_maturity_levels>{{ sibling_maturity_levels }}</siblings_maturity_levels>\n<failing_draft><maturity_level>{{ candidate_maturity_level }}</maturity_level></failing_draft>\n<rubric_scores>\n  <value_in_enum score=\"{{ score_value_in_enum }}\">{{ justification_value_in_enum }}</value_in_enum>\n  <depends_on_deployment score=\"{{ score_depends_on_deployment }}\">{{ justification_depends_on_deployment }}</depends_on_deployment>\n  <parallel_with_siblings score=\"{{ score_parallel_with_siblings }}\">{{ justification_parallel_with_siblings }}</parallel_with_siblings>\n</rubric_scores>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": { "schema": { "maturity_level": "string — one of: foundational / scaling / mature" } }
+}

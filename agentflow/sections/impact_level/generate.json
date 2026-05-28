@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "impact_level",
+  "purpose": "Section-specific generate prompt for assigning impact_level (Critical / High / Medium / Low). Composed at runtime with system_prompts/generate.json.",
+  "composes_with": "system_prompts/generate.json",
+
+  "system_addendum": "SECTION YOU ARE AUTHORING: impact_level\n\nimpact_level captures the blast radius of the failure mode the principle prevents. Drives criticality-tier filtering.\n\nVALUES (from taxonomy.json enums.impact_level)\n\n- **Critical** — failure produces immediate, severe, or irreversible harm: regulator action, large financial loss, customer-data exposure, safety incident. Adopters in regulated industries must have this principle in place day-one.\n- **High** — failure produces material harm visible to customers or executives: customer trust erosion, repeated incident cycles, sustained productivity loss. Catalogue's most common level for foundational principles.\n- **Medium** — failure produces friction or inefficiency observed mainly within the team: longer incident MTTR, slower onboarding, increased technical debt. Important but not existential.\n- **Low** — failure produces local annoyance only: missed best-practice opportunity, mild tech debt, no customer-visible impact.\n\nThe four siblings (GO1B1-01..04) are all 'High' — the eval-discipline failure modes produce customer regressions, finance flags, audit findings, but not immediate safety/regulator events.\n\nDIMENSIONS YOUR DRAFT WILL BE SCORED ON\n\n1. value_in_enum — exactly Critical / High / Medium / Low.\n2. blast_radius_consistent — the chosen level matches the failure mode described in the principle's problem section. A 'Critical' level implies a failure that reaches regulators or customers in irreversible ways; 'Low' implies local team friction.\n3. parallel_with_siblings — within a BP family, principles tend to cluster at one level (foundational disciplines are typically High). Outliers should have a clear reason.\n\nCOMMON FAILURE MODES\n\n- 'Critical' assigned when the failure is High at most. Inflation is the most common error.\n- 'Low' assigned to a principle whose absence would actually produce customer-visible regressions. Under-estimation.",
+
+  "user_template": "Assign the impact_level for this principle.\n\n<principle_id>{{ principle_id }}</principle_id>\n\n<statement>\n  <title>{{ statement_title }}</title>\n</statement>\n\n<problem>\n  <description>{{ problem_description }}</description>\n  <examples>{{ problem_examples }}</examples>\n</problem>\n\n<siblings_impact_levels>\n{{ sibling_impact_levels }}\n</siblings_impact_levels>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": { "impact_level": "string — one of: Critical / High / Medium / Low" },
+    "example_passing_output": { "impact_level": "High" }
+  }
+}

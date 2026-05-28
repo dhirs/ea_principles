@@ -1,0 +1,22 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "statement",
+  "purpose": "Section-specific generate prompt for authoring a principle's statement field (title + description). Composed at runtime with system_prompts/generate.json.",
+  "composes_with": "system_prompts/generate.json",
+
+  "system_addendum": "SECTION YOU ARE AUTHORING: statement\n\nThe statement is the principle's anchor field. Every downstream field (problem, solution, gates, etc.) builds on it. A weak statement contaminates everything that follows.\n\nWHAT MAKES A GOOD STATEMENT\n\nA principle's statement is { title: string, description: string }.\n\nThe title is a single imperative sentence — a directive the reader can obey or violate. It must be prescriptive (uses an imperative verb), derive recognisably from the anchored AWS implementation step's verbatim text, name (or imply) the artefact and the enforcement, match the scope of the AWS step exactly (no more, no less), and read in the same voice as the principle's siblings under the same BP.\n\nThe description amplifies the title with concrete shall/must language. It names the artefact explicitly, names the artefact's location (path, folder, repository), names what is checked, and how. The reader should be able to answer \"what must exist?\" and \"what is checked?\" from the description alone, without reading the gates field. The description is one paragraph, typically 3-5 sentences, written in present tense as enforceable specification.\n\nDIMENSIONS YOUR DRAFT WILL BE SCORED ON\n\nYou will be scored against five dimensions (full rubric in sections/statement/rubric.json):\n\n1. is_prescriptive — title is a directive, not a description.\n2. derives_from_aws_verbatim — load-bearing terms map to the AWS step.\n3. names_artefact_and_enforcement — names both what must exist and what is checked.\n4. scope_match — claims no more and no less than the AWS step covers.\n5. parallel_form_with_siblings — voice and shape match other principles in the catalogue.\n\nAll five must score ≥ 2 to pass. Draft with these in mind from the start.\n\nCOMMON FAILURE MODES TO AVOID\n\n- Noun-phrase title (\"Versioned Ground-Truth Evaluation Harness\") — scores 0 on is_prescriptive. Use an imperative verb.\n- Title that absorbs scope from a sibling step (e.g. describing the monitoring activity when authoring the refresh principle) — scores low on scope_match.\n- Description that names the failure mode rather than the rule (\"Without X, regressions ship\") — the description names what the rule REQUIRES, not what fails without it. The failure framing belongs in problem.description.\n- Vendor-specific tooling in the title or description (\"a Bedrock evaluation pipeline must…\") — scores low on derives_from_aws_verbatim and breaks vendor-neutrality. Vendor specifics belong in framework_mappings notes.\n- Voice mismatch with siblings (much longer, different tense, mismatched specificity) — scores low on parallel_form_with_siblings.",
+
+  "user_template": "You are authoring the statement field for the principle with these properties:\n\n<principle_id>{{ principle_id }}</principle_id>\n<pillar>{{ pillar }}</pillar>\n<focus_area>{{ focus_area }}</focus_area>\n\n<aws_anchor>\n  <pillar>{{ aws_pillar }}</pillar>\n  <question>{{ aws_question }}</question>\n  <best_practice>{{ aws_bp }}</best_practice>\n  <implementation_step>\n    <number>{{ aws_step_number }}</number>\n    <title>{{ aws_step_title }}</title>\n    <verbatim_text>{{ aws_step_verbatim }}</verbatim_text>\n  </implementation_step>\n</aws_anchor>\n\n<siblings_under_same_bp>\n{{ sibling_statements }}\n</siblings_under_same_bp>\n\nDraft the statement (title + description) for this principle. Return the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "title": "string — single imperative sentence",
+      "description": "string — one paragraph, 3-5 sentences"
+    },
+    "example_passing_output": {
+      "title": "Maintain a versioned ground-truth evaluation harness for agent decisions in the workload repository",
+      "description": "Each agent workload must establish a ground-truth evaluation harness, committed to the workload repository, with each entry structured to capture the input payload, the expected decision, and the expected evidence trace. The harness must include diverse representation of production scenarios — personas, use cases, and input variations the workload sees in real use."
+    }
+  }
+}

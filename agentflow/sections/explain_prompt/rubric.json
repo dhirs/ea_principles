@@ -1,0 +1,29 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "explain_prompt",
+  "purpose": "Rubric for scoring a draft explain_prompt. Six dimensions, 0-3 scale, threshold = all ≥ 2.",
+  "composes_with": "system_prompts/rubric.json",
+
+  "system_addendum": "SECTION YOU ARE SCORING: explain_prompt\n\nScore against:\n\n1. failure_shape_identified — system prompt names the correct failure shape (silent_regression / setup_absence / cumulative_drift / one_shot_breach) and uses the matching scaffold.\n   - 3: Shape correctly identified; scaffold matches (e.g. cumulative_drift principles instruct the example to walk through many-locally-rational-decisions).\n   - 2: Shape correct but scaffold slightly off.\n   - 1: Wrong shape used but scaffold could partially fit.\n   - 0: Wrong shape and scaffold; example would contradict itself.\n\n2. identity_line_quotes_principle — system opens 'failure mode that <ID> — <TITLE> — prevents'; ID and title match the principle's current values exactly.\n   - 3: ID and title match exactly.\n   - 2: Match but minor formatting drift.\n   - 1: Title or ID slightly outdated.\n   - 0: Wrong ID or wrong title.\n\n3. applicability_paragraph_present — system has APPLICABILITY paragraph naming mandatory patterns and instructing the italicised caveat for non-mandatory implementation_type.\n   - 3: Paragraph present, names mandatory patterns, has caveat instruction.\n   - 2: Paragraph present but caveat instruction missing.\n   - 1: Paragraph present but doesn't name mandatory patterns.\n   - 0: APPLICABILITY paragraph absent.\n\n4. output_contract_json_only — system instructs JSON-only output of exact shape (use_case_background string + issue_detail string).\n   - 3: Contract explicit; no markdown wrappers permitted; field names and types named.\n   - 2: Contract present but slightly loose.\n   - 1: Contract present but allows markdown.\n   - 0: No output contract.\n\n5. style_rules_present — system embeds the catalogue's style invariants: concrete over abstract, match implementation_type honestly, match industry vocabulary, signpost invented numbers, no invented regulatory specifics, no bullets/headings/markdown, no solution/fix.\n   - 3: All invariants embedded.\n   - 2: Most present; one or two compressed.\n   - 1: Several invariants missing.\n   - 0: No style guidance.\n\n6. discriminating_failure_mode_discipline — system instructs that the example must show a failure THIS principle uniquely catches; not catchable by simpler controls.\n   - 3: Explicit instruction; example would clearly demonstrate the principle's unique value.\n   - 2: Instruction present but compressed.\n   - 1: Implicit only.\n   - 0: Absent; example might accidentally argue the principle is unnecessary.\n\nTHRESHOLD\n\nDraft passes if all six ≥ 2.",
+
+  "user_template": "Score this explain_prompt.\n\n<principle_id>{{ principle_id }}</principle_id>\n<current_version>{{ current_version }}</current_version>\n<statement_title>{{ statement_title }}</statement_title>\n<applicability>{{ applicability }}</applicability>\n<failure_shape_hint>{{ failure_shape_hint }}</failure_shape_hint>\n\n<candidate>\n  <system>{{ candidate_system }}</system>\n  <user_template>{{ candidate_user_template }}</user_template>\n  <compiled_for_principle_version>{{ candidate_compiled_for }}</compiled_for_principle_version>\n  <compiled_at>{{ candidate_compiled_at }}</compiled_at>\n  <compiled_by>{{ candidate_compiled_by }}</compiled_by>\n</candidate>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "failure_shape_identified": { "score": "int 0-3", "justification": "string" },
+      "identity_line_quotes_principle": { "score": "int 0-3", "justification": "string" },
+      "applicability_paragraph_present": { "score": "int 0-3", "justification": "string" },
+      "output_contract_json_only": { "score": "int 0-3", "justification": "string" },
+      "style_rules_present": { "score": "int 0-3", "justification": "string" },
+      "discriminating_failure_mode_discipline": { "score": "int 0-3", "justification": "string" }
+    }
+  },
+
+  "calibration_examples": [
+    { "context": "GO1B1-01 v1.5.2", "shape": "setup_absence (architect-leaves scenario)", "expected_outcome": "PASS" },
+    { "context": "GO1B1-02 v1.3.2", "shape": "silent_regression (minority-class hidden by aggregate)", "expected_outcome": "PASS" },
+    { "context": "GO1B1-03 v2.0.2", "shape": "silent_regression / code-hygiene (inline metric drift)", "expected_outcome": "PASS" },
+    { "context": "GO1B1-04 v1.0.2", "shape": "cumulative_drift / environment-shift", "expected_outcome": "PASS" }
+  ]
+}

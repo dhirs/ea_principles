@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "impact_level",
+  "purpose": "Revise prompt for a failed impact_level selection.",
+  "composes_with": "system_prompts/revise.json",
+
+  "system_addendum": "SECTION YOU ARE REVISING: impact_level\n\nIf value_in_enum failed: pick exactly Critical / High / Medium / Low.\n\nIf blast_radius_consistent failed: re-read problem.examples and pick the level that matches the worst-case consequence described. Regulator/safety/irreversible → Critical. Customer-visible regression / executive escalation → High. Team friction / longer MTTR → Medium. Local annoyance → Low.\n\nIf parallel_with_siblings failed: align with the sibling pattern unless there's a clear reason this principle prevents a worse / lesser failure than its siblings.",
+
+  "user_template": "Revise this impact_level.\n\n<problem><description>{{ problem_description }}</description><examples>{{ problem_examples }}</examples></problem>\n<siblings_impact_levels>{{ sibling_impact_levels }}</siblings_impact_levels>\n<failing_draft><impact_level>{{ candidate_impact_level }}</impact_level></failing_draft>\n<rubric_scores>\n  <value_in_enum score=\"{{ score_value_in_enum }}\">{{ justification_value_in_enum }}</value_in_enum>\n  <blast_radius_consistent score=\"{{ score_blast_radius_consistent }}\">{{ justification_blast_radius_consistent }}</blast_radius_consistent>\n  <parallel_with_siblings score=\"{{ score_parallel_with_siblings }}\">{{ justification_parallel_with_siblings }}</parallel_with_siblings>\n</rubric_scores>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": { "schema": { "impact_level": "string — one of: Critical / High / Medium / Low" } }
+}

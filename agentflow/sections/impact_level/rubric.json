@@ -1,0 +1,23 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "impact_level",
+  "purpose": "Rubric for scoring a draft impact_level. Three dimensions, 0-3 scale, threshold = all ≥ 2.",
+  "composes_with": "system_prompts/rubric.json",
+
+  "system_addendum": "SECTION YOU ARE SCORING: impact_level\n\nScore against:\n\n1. value_in_enum — Critical / High / Medium / Low.\n   - 3: Exact match.\n   - 0: Anything else.\n\n2. blast_radius_consistent — chosen level matches the failure consequences described in problem.\n   - 3: Level mirrors the worst-case consequence in problem.examples (Critical for regulator/safety, High for customer regression, Medium for team friction, Low for local annoyance).\n   - 2: Level slightly off the worst-case but defensible.\n   - 1: Level materially over- or under-estimates the failure.\n   - 0: Level doesn't match the problem at all.\n\n3. parallel_with_siblings — consistent with siblings in the same BP family; outliers justified.\n   - 3: Matches sibling pattern, OR principled outlier (e.g. this principle prevents a worse failure than siblings).\n   - 2: Outlier without explicit reason but defensible.\n   - 1: Outlier that looks like inattention rather than choice.\n   - 0: Inconsistent with sibling pattern with no clear reason.\n\nTHRESHOLD\n\nDraft passes if all three ≥ 2.",
+
+  "user_template": "Score this impact_level.\n\n<problem><description>{{ problem_description }}</description><examples>{{ problem_examples }}</examples></problem>\n<siblings_impact_levels>{{ sibling_impact_levels }}</siblings_impact_levels>\n<candidate><impact_level>{{ candidate_impact_level }}</impact_level></candidate>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "value_in_enum": { "score": "int 0-3", "justification": "string" },
+      "blast_radius_consistent": { "score": "int 0-3", "justification": "string" },
+      "parallel_with_siblings": { "score": "int 0-3", "justification": "string" }
+    }
+  },
+
+  "calibration_examples": [
+    { "context": "GO1B1-01..04", "selected": "High", "expected_outcome": "PASS", "note": "Eval-discipline failures produce customer regressions and audit findings, not immediate regulator/safety events." }
+  ]
+}

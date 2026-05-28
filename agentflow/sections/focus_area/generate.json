@@ -1,0 +1,18 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "focus_area",
+  "purpose": "Section-specific generate prompt for selecting a principle's focus_area from the catalogue's enum (P11-P15, P21-P24, P31-P32, P41-P42, P51-P52). Composed at runtime with system_prompts/generate.json.",
+  "composes_with": "system_prompts/generate.json",
+
+  "system_addendum": "SECTION YOU ARE AUTHORING: focus_area\n\nfocus_area is a classification field. It places the principle in one of 15 focus areas across the 5 pillars, mirroring the AWS Well-Architected GenAI Lens question-area structure.\n\nConvention: focus_area maps directly from the AWS BP's question code. GENOPS01-BP01 → P11 (Model Performance Evaluation). GENOPS02-BPxx → P12 (Operational Health & Monitoring). GENSEC04-BPxx → P24 (Prompt Security). And so on.\n\nFor principles anchored to a single AWS BP, the focus_area is mechanically derivable from the AWS question code — the LLM-authored aspect is verifying the principle's actual content sits within that focus area's scope (a principle anchored to GENOPS01 that's really about access control would mis-classify).\n\nFor principles that span two focus areas, taxonomy.json says to pick one (mutual exclusivity). If a principle truly spans two equally, that's usually a sign the principle is too broad and should be split.\n\nOUTPUT FORMAT\n\nA single string in the form 'P## — Focus Area Name' (e.g. 'P11 — Model Performance Evaluation'). The string must exactly match one of the focus_area_id + name combinations declared in taxonomy.json pillars[].focus_areas[].\n\nDIMENSIONS YOUR DRAFT WILL BE SCORED ON\n\n1. value_in_enum — output exactly matches a declared focus area.\n2. maps_from_aws_question — the focus area corresponds to the AWS question code of the principle's BP.\n3. scope_contains_principle — the principle's content (statement / problem / solution) sits within the focus area's stated scope, not in an adjacent area.\n\nCOMMON FAILURE MODES\n\n- Output is a focus area NAME but uses the wrong code, or vice versa. Score low on value_in_enum.\n- Mechanically mapped from a different AWS question (e.g. GENOPS01-anchored principle placed in P12 because the principle touches monitoring incidentally). Score low on maps_from_aws_question.",
+
+  "user_template": "Select the focus_area for this principle.\n\n<principle_id>{{ principle_id }}</principle_id>\n<pillar>{{ pillar }}</pillar>\n\n<aws_anchor>\n  <question>{{ aws_question }}</question>\n  <best_practice>{{ aws_bp }}</best_practice>\n</aws_anchor>\n\n<statement>\n  <title>{{ statement_title }}</title>\n  <description>{{ statement_description }}</description>\n</statement>\n\n<problem>\n  <description>{{ problem_description }}</description>\n</problem>\n\n<available_focus_areas_for_this_pillar>\n{{ pillar_focus_areas }}\n</available_focus_areas_for_this_pillar>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "focus_area": "string — exact match to one declared focus area, e.g. 'P11 — Model Performance Evaluation'"
+    },
+    "example_passing_output": { "focus_area": "P11 — Model Performance Evaluation" }
+  }
+}

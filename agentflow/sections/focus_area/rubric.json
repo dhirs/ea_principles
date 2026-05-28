@@ -1,0 +1,23 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "focus_area",
+  "purpose": "Rubric for scoring a draft focus_area selection. Three dimensions, 0-3 scale, threshold = all ≥ 2.",
+  "composes_with": "system_prompts/rubric.json",
+
+  "system_addendum": "SECTION YOU ARE SCORING: focus_area\n\nThe focus_area places the principle in one of 15 declared focus areas mirroring the AWS Lens question-area structure. Score against:\n\n1. value_in_enum — output exactly matches a declared focus area (P## — Name format).\n   - 3: Exact match to an entry in taxonomy.json pillars[].focus_areas[].\n   - 2: Match but minor formatting drift (extra spaces, em-dash vs en-dash).\n   - 1: Code or name correct but the other wrong.\n   - 0: Not a recognised focus area.\n\n2. maps_from_aws_question — the selected focus area corresponds to the AWS question code that the principle's BP belongs to (e.g. GENOPS01 BPs → P11, GENOPS02 BPs → P12).\n   - 3: Direct map.\n   - 2: Direct map but the principle's content stretches the focus area's stated scope slightly.\n   - 1: Mapped from an adjacent question code (touched incidentally, not anchored).\n   - 0: Unrelated to the AWS question code.\n\n3. scope_contains_principle — the principle's content (statement / problem / solution) sits within the focus area's stated scope.\n   - 3: Content squarely within the focus area's described scope.\n   - 2: Mostly within scope; one element nudges into a sibling area.\n   - 1: Material content belongs in a sibling focus area.\n   - 0: Wrong area; principle should be elsewhere.\n\nTHRESHOLD\n\nDraft passes if all three ≥ 2.",
+
+  "user_template": "Score this focus_area selection.\n\n<aws_anchor>\n  <question>{{ aws_question }}</question>\n  <best_practice>{{ aws_bp }}</best_practice>\n</aws_anchor>\n\n<statement>\n  <title>{{ statement_title }}</title>\n  <description>{{ statement_description }}</description>\n</statement>\n\n<candidate><focus_area>{{ candidate_focus_area }}</focus_area></candidate>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "value_in_enum": { "score": "int 0-3", "justification": "string" },
+      "maps_from_aws_question": { "score": "int 0-3", "justification": "string" },
+      "scope_contains_principle": { "score": "int 0-3", "justification": "string" }
+    }
+  },
+
+  "calibration_examples": [
+    { "context": "GO1B1-01..04 all", "selected": "P11 — Model Performance Evaluation", "aws_question": "GENOPS01", "expected_outcome": "PASS", "note": "Direct P11 = GENOPS01 mapping." }
+  ]
+}

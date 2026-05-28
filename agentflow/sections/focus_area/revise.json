@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "focus_area",
+  "purpose": "Revise prompt for a failed focus_area selection.",
+  "composes_with": "system_prompts/revise.json",
+
+  "system_addendum": "SECTION YOU ARE REVISING: focus_area\n\nIf value_in_enum failed: re-select from the exact list of declared focus areas in taxonomy.json pillars[].focus_areas[]. Match both code and name verbatim.\n\nIf maps_from_aws_question failed: the AWS question code (GENOPS01, GENSEC04, etc.) maps to one focus area. Use that one.\n\nIf scope_contains_principle failed: the principle's content belongs in a different focus area than was selected. Re-read the principle's statement and problem against the candidate focus area's description in taxonomy.json. Pick the focus area whose scope actually contains the principle.",
+
+  "user_template": "Revise this focus_area selection.\n\n<aws_anchor><question>{{ aws_question }}</question></aws_anchor>\n<statement><title>{{ statement_title }}</title><description>{{ statement_description }}</description></statement>\n<failing_draft><focus_area>{{ candidate_focus_area }}</focus_area></failing_draft>\n<rubric_scores>\n  <value_in_enum score=\"{{ score_value_in_enum }}\">{{ justification_value_in_enum }}</value_in_enum>\n  <maps_from_aws_question score=\"{{ score_maps_from_aws_question }}\">{{ justification_maps_from_aws_question }}</maps_from_aws_question>\n  <scope_contains_principle score=\"{{ score_scope_contains_principle }}\">{{ justification_scope_contains_principle }}</scope_contains_principle>\n</rubric_scores>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": { "focus_area": "string — exact match to declared focus area" }
+  }
+}

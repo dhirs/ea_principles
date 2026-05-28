@@ -1,0 +1,26 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "applicability",
+  "purpose": "Rubric for scoring a draft applicability map. Five dimensions, 0-3 scale, threshold = all ≥ 2.",
+  "composes_with": "system_prompts/rubric.json",
+
+  "system_addendum": "SECTION YOU ARE SCORING: applicability\n\nScore against:\n\n1. keys_valid — keys from { llm, rag, agentic, ml }.\n   - 3: All keys valid.\n   - 0: Any invalid key.\n\n2. values_valid — values from { mandatory, nice_to_have }.\n   - 3: All values valid.\n   - 1: One value is invalid (e.g. 'n/a', 'optional', 'critical').\n   - 0: Multiple invalid values.\n\n3. inclusion_correctness — included patterns are those where the failure mode materially applies; omitted patterns are correctly judged not-applicable.\n   - 3: Inclusion/omission is well-judged across all four patterns.\n   - 2: One pattern's inclusion/omission is borderline but defensible.\n   - 1: One pattern is clearly mis-included or mis-omitted.\n   - 0: Inclusion logic is wrong (e.g. includes ml as mandatory when failure mode doesn't apply to classical ML).\n\n4. criticality_correctness — `mandatory` only where the failure is the dominant production-failure mode for the pattern; `nice_to_have` where rare or industry-covered.\n   - 3: Every criticality assignment passes the dominant-failure-mode test.\n   - 2: One criticality is borderline (could argue mandatory or nice_to_have).\n   - 1: One criticality is materially wrong.\n   - 0: Multiple criticality assignments wrong.\n\n5. parallel_with_siblings — shape consistent with siblings under the same BP; outliers principled.\n   - 3: Matches sibling pattern, or principled outlier.\n   - 2: Outlier without explicit reason but defensible.\n   - 1: Outlier inconsistent with sibling logic.\n   - 0: Clear inconsistency.\n\nTHRESHOLD\n\nDraft passes if all five ≥ 2.",
+
+  "user_template": "Score this applicability map.\n\n<statement><title>{{ statement_title }}</title></statement>\n<problem><description>{{ problem_description }}</description></problem>\n<siblings_applicability>{{ sibling_applicability }}</siblings_applicability>\n<candidate><applicability>{{ candidate_applicability }}</applicability></candidate>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "keys_valid": { "score": "int 0-3", "justification": "string" },
+      "values_valid": { "score": "int 0-3", "justification": "string" },
+      "inclusion_correctness": { "score": "int 0-3", "justification": "string" },
+      "criticality_correctness": { "score": "int 0-3", "justification": "string" },
+      "parallel_with_siblings": { "score": "int 0-3", "justification": "string" }
+    }
+  },
+
+  "calibration_examples": [
+    { "context": "GO1B1-01 / 02 (agentic-only)", "selected": { "agentic": "mandatory" }, "expected_outcome": "PASS", "note": "Harness existence and stratification are agent-specific; sibling RAG/LLM principles deferred to those subject areas." },
+    { "context": "GO1B1-03 / 04 (broader)", "selected": { "agentic": "mandatory", "rag": "mandatory", "llm": "mandatory", "ml": "nice_to_have" }, "expected_outcome": "PASS", "note": "Metric encapsulation and drift monitoring apply wherever there is custom evaluation logic / a deployment baseline; ML typically has library/tooling that already enforces the discipline." }
+  ]
+}

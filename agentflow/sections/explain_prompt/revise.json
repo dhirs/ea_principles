@@ -1,0 +1,21 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "explain_prompt",
+  "purpose": "Revise prompt for a failed explain_prompt draft.",
+  "composes_with": "system_prompts/revise.json",
+
+  "system_addendum": "SECTION YOU ARE REVISING: explain_prompt\n\nIf failure_shape_identified failed: re-classify the principle's failure shape from the four named shapes (silent_regression / setup_absence / cumulative_drift / one_shot_breach). Replace the scaffold to match. Wrong shape is the most expensive error because the example then has to twist around it.\n\nIf identity_line_quotes_principle failed: the system prompt opens 'You are a senior software architect explaining the failure mode that <ID> — <TITLE> — prevents'. Use the current principle ID and the current statement.title verbatim.\n\nIf applicability_paragraph_present failed: add an APPLICABILITY paragraph naming the patterns the principle is mandatory for. Include the instruction: if the runtime's implementation_type is not one of the mandatory patterns, the use_case_background must open with one italicised sentence noting the principle is most acute for the mandatory pattern and the example is illustrative.\n\nIf output_contract_json_only failed: tighten the contract. Specify: single valid JSON object, exact shape { use_case_background: string, issue_detail: string }, word counts (150-250 and 200-350), no prose outside the JSON, no markdown wrappers.\n\nIf style_rules_present failed: embed the full style invariant block: concrete over abstract; match implementation_type honestly (RAG retrieves, Agent reasons over multiple steps and calls tools, LLM Only is single-turn or chained without retrieval or tools, ML is classical with no LLM); match industry vocabulary; signpost invented numbers; no invented regulatory specifics; no bullets/headings/markdown; no solution/fix/recommendations.\n\nIf discriminating_failure_mode_discipline failed: add the instruction that the example must demonstrate a failure THIS principle uniquely catches and that simpler controls (aggregate accuracy, basic monitoring, output-equality checks, sibling principles' gates) would miss.\n\nMETADATA HYGIENE\n\nEvery revision must update compiled_for_principle_version to mirror the current change_history.current_version. compiled_at = today. compiled_by = 'manual_authoring' (or the meta-prompt version).",
+
+  "user_template": "Revise this explain_prompt.\n\n<principle_id>{{ principle_id }}</principle_id>\n<current_version>{{ current_version }}</current_version>\n<statement_title>{{ statement_title }}</statement_title>\n<applicability>{{ applicability }}</applicability>\n<failure_shape_hint>{{ failure_shape_hint }}</failure_shape_hint>\n\n<failing_draft>\n  <system>{{ candidate_system }}</system>\n  <user_template>{{ candidate_user_template }}</user_template>\n</failing_draft>\n\n<rubric_scores>\n  <failure_shape_identified score=\"{{ score_failure_shape_identified }}\">{{ justification_failure_shape_identified }}</failure_shape_identified>\n  <identity_line_quotes_principle score=\"{{ score_identity_line_quotes_principle }}\">{{ justification_identity_line_quotes_principle }}</identity_line_quotes_principle>\n  <applicability_paragraph_present score=\"{{ score_applicability_paragraph_present }}\">{{ justification_applicability_paragraph_present }}</applicability_paragraph_present>\n  <output_contract_json_only score=\"{{ score_output_contract_json_only }}\">{{ justification_output_contract_json_only }}</output_contract_json_only>\n  <style_rules_present score=\"{{ score_style_rules_present }}\">{{ justification_style_rules_present }}</style_rules_present>\n  <discriminating_failure_mode_discipline score=\"{{ score_discriminating_failure_mode_discipline }}\">{{ justification_discriminating_failure_mode_discipline }}</discriminating_failure_mode_discipline>\n</rubric_scores>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "system": "string",
+      "user_template": "string",
+      "compiled_for_principle_version": "string — semver",
+      "compiled_at": "string — YYYY-MM-DD",
+      "compiled_by": "string"
+    }
+  }
+}

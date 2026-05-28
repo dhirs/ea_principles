@@ -3,6 +3,8 @@
 ## Project Overview
 S3 JSON Viewer - A Next.js web application that fetches and displays JSON data from AWS S3 buckets with a modern, responsive UI.
 
+> **App root is `s3-json-viewer/`.** `package.json`, `node_modules`, `.env.local`, and the real `app/` (with `api/`, `layout.tsx`, `principles/`) all live there. Run `npm run dev` / `npm run build` from inside `s3-json-viewer/`, not the repo root. The root-level `app/page.tsx` is a stray leftover and is NOT what the dev server serves.
+
 ## Tech Stack
 - **Framework:** Next.js 16.2.6 with App Router
 - **Node.js:** v20.20.2+ (minimum required, v26.2.0 also tested)

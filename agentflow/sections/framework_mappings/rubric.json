@@ -1,0 +1,27 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "framework_mappings",
+  "purpose": "Rubric for scoring a draft framework_mappings. Six dimensions, 0-3 scale, threshold = all ≥ 2.",
+  "composes_with": "system_prompts/rubric.json",
+
+  "system_addendum": "SECTION YOU ARE SCORING: framework_mappings\n\nScore against:\n\n1. aws_anchor_present — framework_mappings.aws.references[0] exists with the required AWS-specific structural fields (lens, pillar, focus_area, question, best_practice, implementation_step) when mapping_state is verified.\n   - 3: All AWS-specific fields populated for verified state; lens / pillar / question / bp / step all named.\n   - 2: AWS reference present; one structural field slightly compressed.\n   - 1: AWS reference present but missing implementation_step or another required field.\n   - 0: No AWS reference, OR AWS reference exists but with mapping_state: 'na' when an analogue clearly exists.\n\n2. common_fields_complete — every reference (in every framework) has mapping_state + last_checked + note.\n   - 3: All references have all three.\n   - 2: One reference missing note.\n   - 1: Multiple references missing common fields.\n   - 0: References missing mapping_state or last_checked.\n\n3. verbatim_text_matches_source — implementation_step.verbatim_text is the AWS step text exactly, not paraphrased.\n   - 3: Exact verbatim copy.\n   - 2: Verbatim with one minor whitespace / punctuation difference.\n   - 1: Paraphrased — captures the meaning but not the words.\n   - 0: verbatim_text is invented or unrelated to the AWS step.\n\n4. mapping_state_honest — verified only for references checked against source; unverified for provisional; na only when no analogue exists.\n   - 3: Every mapping_state is honest.\n   - 2: One mapping_state is borderline (verified when probably should be unverified).\n   - 1: Multiple mapping_states overstated.\n   - 0: A core mapping marked verified without source check.\n\n5. note_explains_value_add — AWS notes explain what the principle adds beyond AWS. AIGP / other notes explain cross-reference rationale.\n   - 3: Notes are specific and informative; AWS note names what's unspecified by AWS that the principle concretises.\n   - 2: Notes present but generic ('cross-references X').\n   - 1: Notes present but largely empty.\n   - 0: Notes absent.\n\n6. parallel_form_with_siblings — structure and depth consistent with siblings under the same BP.\n   - 3: Form matches siblings.\n   - 2: Minor variance.\n   - 1: Off-form (e.g. siblings have AWS+AIGP, this has only AWS without reason).\n   - 0: Reads as a different template.\n\nTHRESHOLD\n\nDraft passes if all six ≥ 2.",
+
+  "user_template": "Score this framework_mappings.\n\n<statement><title>{{ statement_title }}</title></statement>\n<expected_aws_anchor>\n  <best_practice>{{ aws_bp }}</best_practice>\n  <implementation_step>\n    <number>{{ aws_step_number }}</number>\n    <title>{{ aws_step_title }}</title>\n    <verbatim_text>{{ aws_step_verbatim }}</verbatim_text>\n  </implementation_step>\n</expected_aws_anchor>\n<siblings_framework_mappings>{{ sibling_framework_mappings }}</siblings_framework_mappings>\n<candidate><framework_mappings>{{ candidate_framework_mappings }}</framework_mappings></candidate>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "aws_anchor_present": { "score": "int 0-3", "justification": "string" },
+      "common_fields_complete": { "score": "int 0-3", "justification": "string" },
+      "verbatim_text_matches_source": { "score": "int 0-3", "justification": "string" },
+      "mapping_state_honest": { "score": "int 0-3", "justification": "string" },
+      "note_explains_value_add": { "score": "int 0-3", "justification": "string" },
+      "parallel_form_with_siblings": { "score": "int 0-3", "justification": "string" }
+    }
+  },
+
+  "calibration_examples": [
+    { "context": "GO1B1-01..03", "shape": "aws + aigp (aigp unverified)", "expected_outcome": "PASS", "note": "AWS verified with verbatim_text; AIGP unverified pending competency review. Notes name the AWS-unspecified-but-catalogue-concretised aspects." },
+    { "context": "GO1B1-04", "shape": "aws only (aigp tbd)", "expected_outcome": "PASS", "note": "AIGP not yet authored — acceptable; flagged as open item in change_history rather than fabricated." }
+  ]
+}

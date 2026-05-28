@@ -1,0 +1,51 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "framework_mappings",
+  "purpose": "Section-specific generate prompt for authoring the framework_mappings field (cross-framework anchor object keyed by framework). Composed at runtime with system_prompts/generate.json.",
+  "composes_with": "system_prompts/generate.json",
+
+  "system_addendum": "SECTION YOU ARE AUTHORING: framework_mappings\n\nframework_mappings names which AWS / Azure / GCP / NIST / OWASP / AIGP best practices the principle concretises or cross-references. The structure is an object keyed by framework identifier; each framework key holds a `references` array of one or more reference objects.\n\nPRIMARY ANCHOR vs CROSS-REFERENCE\n\nAWS is the catalogue's primary anchor — every principle MUST concretise an AWS implementation step (or explicitly extend with mapping_state: 'na'). AIGP and other frameworks (Azure, GCP, NIST, ISO 42001, EU AI Act) are cross-references — informational, no enforcement obligation.\n\nANCHORING METHODOLOGY\n\nPrinciples anchor at the AWS implementation-step level by default. The framework_mappings.aws.references[0].implementation_step field carries { number, title, verbatim_text } pointing at the specific step the principle concretises.\n\nCOMMON REFERENCE FIELDS (every reference, every framework)\n\n- mapping_state: one of 'verified' (confirmed against source documentation), 'unverified' (provisional), 'na' (no analogue in this framework).\n- last_checked: YYYY-MM-DD when the reference was last assessed.\n- note: free-text rationale — what our principle adds, why provisional, why no analogue.\n\nFRAMEWORK-SPECIFIC REFERENCE FIELDS (aws)\n\nlens, pillar, focus_area, question, best_practice, implementation_step { number, title, verbatim_text }.\n\nFRAMEWORK-SPECIFIC REFERENCE FIELDS (aigp)\n\ndomain, competency.\n\nDIMENSIONS YOUR DRAFT WILL BE SCORED ON\n\n1. aws_anchor_present — framework_mappings.aws.references[0] exists with all required structural fields populated for verified state.\n2. common_fields_complete — every reference has mapping_state + last_checked + note.\n3. verbatim_text_matches_source — implementation_step.verbatim_text is the AWS step text exactly.\n4. mapping_state_honest — verified used only for references checked against source; unverified for provisional; na only when no analogue exists.\n5. note_explains_value_add — the AWS note explains what our principle adds beyond the AWS step (where it lives, who validates, when it gates, how it's proved). The AIGP note explains the cross-reference rationale.\n6. parallel_form_with_siblings — structure and depth of framework_mappings consistent with siblings under the same BP.\n\nAll six ≥ 2 to pass.\n\nCOMMON FAILURE MODES\n\n- AIGP reference present but AWS missing — primary anchor convention broken.\n- mapping_state: 'verified' on a reference that hasn't been checked against source.\n- implementation_step.verbatim_text paraphrased rather than copied verbatim.\n- note field empty — no explanation of what the principle adds.\n- AWS reference uses a different BP than the principle is actually concretising.",
+
+  "user_template": "Author the framework_mappings for this principle.\n\n<principle_id>{{ principle_id }}</principle_id>\n\n<statement>\n  <title>{{ statement_title }}</title>\n  <description>{{ statement_description }}</description>\n</statement>\n\n<aws_anchor>\n  <lens>{{ aws_lens }}</lens>\n  <pillar>{{ aws_pillar }}</pillar>\n  <focus_area>{{ aws_focus_area }}</focus_area>\n  <question>{{ aws_question }}</question>\n  <best_practice>{{ aws_bp }}</best_practice>\n  <implementation_step>\n    <number>{{ aws_step_number }}</number>\n    <title>{{ aws_step_title }}</title>\n    <verbatim_text>{{ aws_step_verbatim }}</verbatim_text>\n  </implementation_step>\n</aws_anchor>\n\n<siblings_framework_mappings>\n{{ sibling_framework_mappings }}\n</siblings_framework_mappings>\n\n<today_iso_date>{{ today_iso_date }}</today_iso_date>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "framework_mappings": "object keyed by framework — each framework key holds { references: [ { common_fields, framework_specific_fields } ] }"
+    },
+    "example_passing_output": {
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "implementation_step": {
+                "number": 1,
+                "title": "Create a ground truth dataset",
+                "verbatim_text": "Create a ground truth dataset. Verify that you have diverse data representation. Consider various user personas and use cases."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-26",
+              "note": "AWS step 1 calls for the dataset to exist with diverse representation. AWS leaves unspecified: where the dataset lives, who owns it, what shape it takes, and how strata are declared. This principle concretises all four."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.A: Govern Data for AI Systems",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "Provisional mapping based on subject-matter proximity. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "applicability",
+  "purpose": "Section-specific generate prompt for constructing the applicability map (pattern → criticality). Composed at runtime with system_prompts/generate.json.",
+  "composes_with": "system_prompts/generate.json",
+
+  "system_addendum": "SECTION YOU ARE AUTHORING: applicability\n\napplicability is a pattern-criticality map. Keys are AI system patterns: `llm` (any LLM-based system), `rag` (LLM + vector store + retrieval), `agentic` (autonomous agents with tool use, planning, multi-step reasoning), `ml` (traditional ML). Values are criticality: `mandatory` or `nice_to_have`. Patterns where the principle does not materially apply are OMITTED — absence means 'not applicable to this pattern'. `n/a` is not a value.\n\nCRITICALITY CRITERIA (per taxonomy.json conventions.choosing_pattern_criticality)\n\n- `mandatory` — without this principle, the failure mode it prevents is the DOMINANT production-failure pattern for this kind of system.\n- `nice_to_have` — the failure mode is real but rare for this pattern, OR industry norms already enforce something equivalent (e.g. train/test splits for any supervised ML model).\n\nA principle can be mandatory for one pattern and nice_to_have for another. The shape of the failure typically differs by pattern.\n\nOMISSION RULES\n\nIf the principle's failure mode does not materially apply to a pattern — for example a principle about LLM prompt injection has no analogue in a classical ML pipeline — omit that pattern from the map. Do not include it as nice_to_have just to be exhaustive.\n\nDIMENSIONS YOUR DRAFT WILL BE SCORED ON\n\n1. keys_valid — all keys are from { llm, rag, agentic, ml }.\n2. values_valid — all values are from { mandatory, nice_to_have }.\n3. inclusion_correctness — patterns included are those where the principle materially applies; omitted patterns are correctly judged not-applicable.\n4. criticality_correctness — `mandatory` only where the failure is the dominant production-failure mode for the pattern; `nice_to_have` for patterns where the failure is rare or where industry norms cover it.\n5. parallel_with_siblings — applicability shape is consistent with siblings under the same BP (narrow agent-only vs broad agent+RAG+LLM, etc.), unless there's a clear reason this principle scopes differently.\n\nCOMMON FAILURE MODES\n\n- All four patterns listed as `mandatory` for a principle that's really agent-specific. Over-inclusion.\n- `n/a` used as a value. Not allowed — omit the pattern instead.\n- `mandatory` assigned to a pattern where the failure mode is rare (e.g. drift monitoring marked mandatory for `ml` when classical drift-monitoring tooling typically already covers it).",
+
+  "user_template": "Construct the applicability map for this principle.\n\n<principle_id>{{ principle_id }}</principle_id>\n\n<statement>\n  <title>{{ statement_title }}</title>\n  <description>{{ statement_description }}</description>\n</statement>\n\n<problem>\n  <description>{{ problem_description }}</description>\n  <examples>{{ problem_examples }}</examples>\n</problem>\n\n<siblings_applicability>\n{{ sibling_applicability }}\n</siblings_applicability>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "applicability": "object — keys from {llm, rag, agentic, ml}; values from {mandatory, nice_to_have}; omit non-applicable patterns"
+    },
+    "example_passing_output": { "applicability": { "agentic": "mandatory", "rag": "mandatory", "llm": "mandatory", "ml": "nice_to_have" } }
+  }
+}

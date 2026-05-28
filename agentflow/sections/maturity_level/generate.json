@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "maturity_level",
+  "purpose": "Section-specific generate prompt for assigning maturity_level (foundational / scaling / mature). Composed at runtime with system_prompts/generate.json.",
+  "composes_with": "system_prompts/generate.json",
+
+  "system_addendum": "SECTION YOU ARE AUTHORING: maturity_level\n\nmaturity_level captures when an adopting organisation should care about this principle. It is orthogonal to applicability: applicability says 'for THIS pattern, how critical is this principle'; maturity_level says 'at what point in your org's GenAI journey should you adopt it'.\n\nVALUES (from taxonomy.json enums.maturity_level)\n\n- **foundational** — adopt on the first AI project. Skipping creates debt that compounds. Most catalogue principles addressing per-project discipline are foundational.\n- **scaling** — adopt once running multiple AI projects (roughly 2-5), or once multiple teams are involved. Principles that only make sense when there's a deployed system to monitor (e.g. drift monitoring) are scaling.\n- **mature** — adopt once running an AI portfolio (5+ projects, formal ARB, dedicated platform team). Cross-portfolio principles (vendor consolidation, enterprise IAM, ARB audit packs) sit here.\n\nRULE\n\nPick the STRICTEST level that honestly applies. If a principle is foundational for high-risk use cases but only scaling-relevant for low-risk ones, pick foundational. Safer to over-adopt than to under-adopt.\n\nDIMENSIONS YOUR DRAFT WILL BE SCORED ON\n\n1. value_in_enum — exactly foundational / scaling / mature.\n2. depends_on_deployment — if the principle requires a deployed artefact to operate against (a baseline, a production traffic stream), it cannot be foundational; it should be scaling or mature.\n3. parallel_with_siblings — consistent with siblings; outliers justified.\n\nCOMMON FAILURE MODES\n\n- 'foundational' assigned to a principle that needs a deployed baseline (drift monitoring) — drift requires production to drift against, so foundational doesn't fit.\n- 'mature' assigned to a per-project discipline that any single project should follow on day one.",
+
+  "user_template": "Assign the maturity_level for this principle.\n\n<principle_id>{{ principle_id }}</principle_id>\n\n<statement>\n  <title>{{ statement_title }}</title>\n  <description>{{ statement_description }}</description>\n</statement>\n\n<problem>\n  <description>{{ problem_description }}</description>\n</problem>\n\n<applicability>{{ applicability }}</applicability>\n\n<siblings_maturity_levels>{{ sibling_maturity_levels }}</siblings_maturity_levels>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": { "maturity_level": "string — one of: foundational / scaling / mature" },
+    "example_passing_output": { "maturity_level": "foundational" }
+  }
+}

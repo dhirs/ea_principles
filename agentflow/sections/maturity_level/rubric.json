@@ -1,0 +1,24 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "maturity_level",
+  "purpose": "Rubric for scoring a draft maturity_level. Three dimensions, 0-3 scale, threshold = all ≥ 2.",
+  "composes_with": "system_prompts/rubric.json",
+
+  "system_addendum": "SECTION YOU ARE SCORING: maturity_level\n\nScore against:\n\n1. value_in_enum — foundational / scaling / mature.\n   - 3: Exact match.\n   - 0: Anything else.\n\n2. depends_on_deployment — if the principle requires a deployed artefact to operate against, it cannot be foundational.\n   - 3: Maturity level is consistent with deployment dependencies. Drift monitor (needs baseline) → scaling. Per-PR harness (needs only the workload repo) → foundational.\n   - 2: Borderline but defensible.\n   - 1: Material inconsistency — e.g. foundational for a principle that needs production data.\n   - 0: Clearly wrong (foundational assigned to a principle that requires production telemetry, etc.).\n\n3. parallel_with_siblings — consistent with siblings; outliers justified.\n   - 3: Matches sibling pattern, or principled outlier.\n   - 2: Outlier defensible.\n   - 1: Inconsistent without reason.\n   - 0: Clear mismatch.\n\nTHRESHOLD\n\nDraft passes if all three ≥ 2.",
+
+  "user_template": "Score this maturity_level.\n\n<statement>{{ statement_title }}</statement>\n<problem>{{ problem_description }}</problem>\n<applicability>{{ applicability }}</applicability>\n<siblings_maturity_levels>{{ sibling_maturity_levels }}</siblings_maturity_levels>\n<candidate><maturity_level>{{ candidate_maturity_level }}</maturity_level></candidate>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": {
+    "schema": {
+      "value_in_enum": { "score": "int 0-3", "justification": "string" },
+      "depends_on_deployment": { "score": "int 0-3", "justification": "string" },
+      "parallel_with_siblings": { "score": "int 0-3", "justification": "string" }
+    }
+  },
+
+  "calibration_examples": [
+    { "context": "GO1B1-01 / 02 / 03 (per-project, no deployment dep)", "selected": "foundational", "expected_outcome": "PASS" },
+    { "context": "GO1B1-04 (needs deployment baseline)", "selected": "scaling", "expected_outcome": "PASS", "note": "Drift monitor requires a deployed baseline to fire against; foundational doesn't fit." }
+  ]
+}

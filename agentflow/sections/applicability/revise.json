@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-27",
+  "section": "applicability",
+  "purpose": "Revise prompt for a failed applicability map.",
+  "composes_with": "system_prompts/revise.json",
+
+  "system_addendum": "SECTION YOU ARE REVISING: applicability\n\nIf keys_valid failed: only use keys from { llm, rag, agentic, ml }.\n\nIf values_valid failed: only use values from { mandatory, nice_to_have }. Omit patterns that don't apply — do not use 'n/a'.\n\nIf inclusion_correctness failed: re-evaluate each pattern. Include only patterns where the failure mode this principle prevents actually applies. If a pattern is included but the failure doesn't apply (e.g. ml for a prompt-injection principle), remove it. If a pattern is omitted but the failure does apply, add it.\n\nIf criticality_correctness failed: apply the dominant-failure-mode test per pattern. Is the failure the dominant production-failure pattern for this kind of system? If yes → mandatory. If the failure is rare for the pattern, or industry norms already enforce something equivalent → nice_to_have.\n\nIf parallel_with_siblings failed: align with the sibling pattern unless this principle's failure mode scopes genuinely differently than the siblings.",
+
+  "user_template": "Revise this applicability map.\n\n<statement><title>{{ statement_title }}</title></statement>\n<problem><description>{{ problem_description }}</description></problem>\n<siblings_applicability>{{ sibling_applicability }}</siblings_applicability>\n<failing_draft><applicability>{{ candidate_applicability }}</applicability></failing_draft>\n<rubric_scores>\n  <keys_valid score=\"{{ score_keys_valid }}\">{{ justification_keys_valid }}</keys_valid>\n  <values_valid score=\"{{ score_values_valid }}\">{{ justification_values_valid }}</values_valid>\n  <inclusion_correctness score=\"{{ score_inclusion_correctness }}\">{{ justification_inclusion_correctness }}</inclusion_correctness>\n  <criticality_correctness score=\"{{ score_criticality_correctness }}\">{{ justification_criticality_correctness }}</criticality_correctness>\n  <parallel_with_siblings score=\"{{ score_parallel_with_siblings }}\">{{ justification_parallel_with_siblings }}</parallel_with_siblings>\n</rubric_scores>\n\nReturn the JSON object specified in the output contract.",
+
+  "output_contract": { "schema": { "applicability": "object — pattern-criticality map" } }
+}
