@@ -31,6 +31,9 @@ type PrinciplesContextValue = {
   bestPractice: string
   setBestPractice: (b: string) => void
   bestPractices: string[]
+  maturityLevel: string
+  setMaturityLevel: (m: string) => void
+  maturityLevels: string[]
   filtered: Principle[]
 }
 
@@ -43,6 +46,7 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
   const [pillar, setPillar] = useState("")
   const [focusArea, setFocusArea] = useState("")
   const [bestPractice, setBestPractice] = useState("")
+  const [maturityLevel, setMaturityLevel] = useState("")
 
   useEffect(() => {
     fetch("/api/data")
@@ -54,20 +58,23 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       .catch((e) => setError(e instanceof Error ? e.message : String(e)))
   }, [])
 
-  const [pillars, focusAreas, bestPractices] = useMemo(() => {
+  const [pillars, focusAreas, bestPractices, maturityLevels] = useMemo(() => {
     const principles = data?.principles ?? []
     const pillarSet = new Set<string>()
     const focusSet = new Set<string>()
     const bpSet = new Set<string>()
+    const maturitySet = new Set<string>()
     for (const p of principles) {
       const pv = asString(p.pillar)
       if (pv && pv.trim()) pillarSet.add(pv)
       const fv = asString(p.focus_area)
       if (fv && fv.trim()) focusSet.add(fv)
       for (const bp of getAwsBestPractices(p)) bpSet.add(bp)
+      const mv = asString(p.maturity_level)
+      if (mv && mv.trim()) maturitySet.add(mv)
     }
     const sort = (s: Set<string>) => Array.from(s).sort((a, b) => a.localeCompare(b))
-    return [sort(pillarSet), sort(focusSet), sort(bpSet)]
+    return [sort(pillarSet), sort(focusSet), sort(bpSet), sort(maturitySet)]
   }, [data])
 
   const filtered = useMemo(() => {
@@ -77,12 +84,13 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       if (pillar && asString(p.pillar) !== pillar) return false
       if (focusArea && asString(p.focus_area) !== focusArea) return false
       if (bestPractice && !getAwsBestPractices(p).includes(bestPractice)) return false
+      if (maturityLevel && asString(p.maturity_level) !== maturityLevel) return false
       if (!q) return true
       const title = asString(asObject(p.statement)?.title) ?? ""
       const id = asString(p.principle_id) ?? ""
       return title.toLowerCase().includes(q) || id.toLowerCase().includes(q)
     })
-  }, [data, query, pillar, focusArea, bestPractice])
+  }, [data, query, pillar, focusArea, bestPractice, maturityLevel])
 
   const value = useMemo(
     () => ({
@@ -99,9 +107,12 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       bestPractice,
       setBestPractice,
       bestPractices,
+      maturityLevel,
+      setMaturityLevel,
+      maturityLevels,
       filtered,
     }),
-    [data, error, query, pillar, pillars, focusArea, focusAreas, bestPractice, bestPractices, filtered],
+    [data, error, query, pillar, pillars, focusArea, focusAreas, bestPractice, bestPractices, maturityLevel, maturityLevels, filtered],
   )
 
   return <PrinciplesContext.Provider value={value}>{children}</PrinciplesContext.Provider>
