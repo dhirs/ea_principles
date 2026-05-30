@@ -35,7 +35,7 @@ type RegistryEntry = {
 const REGISTRY: Array<[string, RegistryEntry]> = [
   ["statement",          { title: "Statement",          render: (n) => <StatementSection node={n} /> }],
   ["problem",            { title: "Problem",            render: (n, p) => <ProblemSection node={n} principle={p} /> }],
-  ["solution",           { title: "Solution",           render: (n) => <SolutionSection node={n} /> }],
+  ["solution",           { title: "Solution",           render: (n, p) => <SolutionSection node={n} principle={p} /> }],
   ["gates",              { title: "Gates",              render: (n) => <GatesSection node={n} /> }],
   ["ownership",          { title: "Ownership",          render: (n) => <KeyValueSection node={n} /> }],
   ["evidence",           { title: "Evidence",           render: (n) => <EvidenceSection node={n} /> }],

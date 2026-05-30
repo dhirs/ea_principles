@@ -18,6 +18,8 @@ S3 JSON Viewer - A Next.js web application that fetches and displays JSON data f
 - react: Latest
 - react-dom: Latest
 - @aws-sdk/client-s3: 3.x
+- react-markdown: 10.x (renders Reference Implementation READMEs)
+- remark-gfm: 4.x (GFM tables/strikethrough/etc. for react-markdown)
 
 ### UI/Styling
 - tailwindcss: 4.x
@@ -103,6 +105,12 @@ rm -rf .next node_modules package-lock.json && npm install
 - Returns parsed JSON data
 - Handles errors with appropriate status codes
 
+### /api/ri/[id] Route
+- Serves the Reference Implementation README for a principle: reads `<repo-root>/agentflow/ri/<id>/README.md`.
+- These files live at the **repo root**, OUTSIDE the app dir, so they are not static assets. The route resolves them via `path.join(process.cwd(), '..', 'agentflow', 'ri', id, 'README.md')` (`process.cwd()` is `s3-json-viewer/`, so `..` is the repo root).
+- `id` is whitelisted to `^[A-Za-z0-9_-]+$` to block path traversal → returns 400; 404 when the README is missing; 200 with `{ content }` otherwise.
+- Supports `HEAD` (Next auto-derives it from `GET`); the Solution tab uses a HEAD request as a cheap existence check.
+
 ### Expected JSON Structure
 ```json
 {
@@ -124,13 +132,15 @@ rm -rf .next node_modules package-lock.json && npm install
 - **app/page.tsx**: Landing page — renders a centered "Welcome back" heading. Does NOT render principles.
 - **app/principles/page.tsx**: Index list — mounts `PrinciplesList`, which renders one row per principle as `<id>-<title>`, linking to `/principles/<id>`.
 - **app/principles/[id]/page.tsx**: Detail view — client component that reads `id` via `useParams`, looks up the principle in context, renders `PrincipleView`.
+- **app/principles/[id]/reference/page.tsx**: Reference Implementation view — client component that fetches `/api/ri/<id>` and renders the README as formatted markdown (`react-markdown` + `remark-gfm`, styled via `markdownComponents`). Loading skeleton + not-found/error states. Linked from the Solution tab.
 - **app/api/data/route.ts**: S3 fetch wrapped in `unstable_cache` (60s TTL, tag `principles`)
 - **app/api/refresh/route.ts**: POST endpoint that calls `revalidateTag('principles')`
 - **app/layout.tsx**: Root layout — Inter (sans) + JetBrains Mono (mono) from Google Fonts; wraps Header + Sidebar + main + Footer inside `<PrinciplesProvider>` so every route shares the same fetch + search state.
 - **components/layout/**: Header, Footer, RefreshButton, and the `sidebar/` widget folder.
 - **components/layout/sidebar/**: Widget folder — `Sidebar.tsx` (shell), `SidebarMenu.tsx` (nav links, currently just "All Principles" → `/principles`), `SearchPrinciples.tsx` (search input), `index.ts` (re-exports `Sidebar`). Each widget is its own file; add new ones here and mount in `Sidebar.tsx`.
 - **components/principles/**: `PrinciplesView` (deprecated wrapper — still exists but no longer mounted on `/`), `PrincipleView` (HeaderBar + tabs, full width), `PrinciplesList` (the `<id>-<title>` row list used by `/principles`).
-- **components/principles/sections/**: One renderer per top-level principle node (StatementSection, ProblemSection, SolutionSection, GatesSection, FrameworkMappingsSection, EvidenceSection, KeyValueSection, ChangeHistorySection, HeaderBar, UnknownSection)
+- **components/principles/sections/**: One renderer per top-level principle node (StatementSection, ProblemSection, SolutionSection, GatesSection, FrameworkMappingsSection, EvidenceSection, KeyValueSection, ChangeHistorySection, HeaderBar, UnknownSection). `SolutionSection` is a client component: it HEAD-checks `/api/ri/<principle_id>` and renders a "Reference Implementation" link to `/principles/<id>/reference` only when the README exists.
+- **components/principles/markdownComponents.tsx**: Tailwind styling map passed to `react-markdown` (no `@tailwindcss/typography` plugin is installed, so each element — headings, lists, code, tables, etc. — is styled explicitly here). Shared by the reference-implementation page.
 - **lib/principles/PrinciplesContext.tsx**: Client `PrinciplesProvider` + `usePrinciples()` hook. Fetches `/api/data` once on mount and exposes `{ data, error, query, setQuery, filtered }`. `filtered` is a memoized substring match (case-insensitive) against both `statement.title` and `principle_id`. Sidebar widgets and pages all read/write through this hook — do NOT refetch in components.
 - **lib/principles/types.ts**: Loose `Principle = Record<string, unknown>` + `asObject/asArray/asString` defensive helpers
 - **lib/principles/registry.tsx**: Single source of truth for tab order, titles, and renderer mapping. Unknown top-level keys auto-fall-through to `UnknownSection` (labeled JSON viewer). Tab order: Statement → Problem → Solution → Gates → Ownership → Evidence → Framework Mappings → AIGP → History.
