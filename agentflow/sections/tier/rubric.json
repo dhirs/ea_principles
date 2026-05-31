@@ -1,0 +1,94 @@
+{
+  "version": "v1",
+  "last_updated": "2026-05-31",
+  "section": "tier",
+  "purpose": "Section-specific rubric for deciding a principle's ownership.tier — project (enforcement infrastructure built and maintained per project) or enterprise (enforcement infrastructure built and maintained centrally by platform team). Two dimensions: D1 legal_exposure (binary veto), D2 repeatability_cost (0-3 scored). Three outcomes: mandatory_centralise / recommended_centralise / local. Replaces taxonomy.json ownership_spec.enterprise_qualification_rules (the prior 4-rule binary screen) as the canonical method for populating tier.",
+  "composes_with": "system_prompts/rubric.json",
+  "history": "Authored 2026-05-31 after surfacing that the prior 4-rule qualification screen missed the reuse-cost angle. Under the old screen, every principle in the catalogue was project-tier — implicitly endorsing 'every project builds its own eval runner.' The new rubric makes reuse-cost a first-class input. Replaces (does not supplement) the prior rules.",
+
+  "system_addendum": "SECTION YOU ARE SCORING: ownership.tier\n\nDecide whether the principle's ENFORCEMENT INFRASTRUCTURE (the artefacts, libraries, validators, CI templates, dashboards, and operational tooling that make the principle hold mechanically) should be built and maintained centrally by the platform team or locally by each project team.\n\nThis is NOT about validation. Validation (who self-attests vs who reviews at a central gate) is a separate axis carried by ownership.validator and ownership.audit_mode. Both can vary independently of tier.\n\nDIMENSIONS\n\n1. D1 — legal_exposure (binary veto)\n   Does failure of this principle expose the company to regulatory penalty, audit finding, litigation, or compliance breach? Examples: fairness sign-off in regulated decisioning (lending, insurance, healthcare), explainability for adverse-action notices, model-risk-management gating (SR 11-7 and analogues), data-residency or privacy-act constraints.\n   - yes — outcome is mandatory_centralise regardless of D2. Stop scoring; record D2 as informational only.\n   - no — proceed to D2.\n\n2. D2 — repeatability_cost (0-3)\n   If enforcement is left local, how much engineering effort would repeat across the portfolio? Score the effort to build AND maintain (build + ongoing patches + on-call) per project, not just first-build.\n   - 0: bespoke per project; nothing repeats; central abstraction would leak.\n   - 1: minor work repeats per project — a few hours to a couple of days each (e.g. a template, a small validator, a config schema).\n   - 2: significant work repeats — days to a week per project, with ongoing maintenance (e.g. a lint, a tagged-artefact validator, a moderate library).\n   - 3: substantial work repeats — weeks per project AND ongoing maintenance burden (e.g. a runner, a diff tool, a cross-cloud IaC parser, a real-time monitor, a vendor SDK).\n\nDECISION RULE\n\n- D1 == yes → mandatory_centralise → ownership.tier = enterprise.\n- D1 == no AND D2 >= 2 → recommended_centralise → ownership.tier = enterprise.\n- D1 == no AND D2 <= 1 → local → ownership.tier = project.\n\nTIE-BREAKER\n\nWhen D2 lands ambiguously at exactly 1, default to project. Cheaper to centralise later (once reuse evidence accumulates) than to decentralise a poorly-scoped central platform.\n\nWHAT THE OUTCOME DOES NOT FORCE\n\n- It does NOT determine the validator. ownership.validator can remain project_architect on an enterprise-tier principle if evidence is mechanical (CI logs, repo URLs, deployed-resource verifications). Many enterprise-tier principles in practice keep PA self-attestation; the centralisation is about who builds the tooling, not who clicks the URLs.\n- It does NOT mandate ARB review. ownership.audit_mode can stay self_attestation_with_mechanical_evidence on enterprise-tier principles; central_review_at_gate is only required when D1 fires (regulator in scope means evidence inspection is mandated).\n- It does NOT change the principle's content. Statement, problem, solution, gates are unchanged. Only the tier field and downstream platform-team / project-team responsibilities split.",
+
+  "output_contract": {
+    "schema": {
+      "D1_legal_exposure": { "value": "yes | no", "justification": "string — one sentence naming the regulatory exposure or its absence" },
+      "D2_repeatability_cost": { "score": "int 0-3", "justification": "string — one sentence naming what would repeat and at what scale" },
+      "outcome": "mandatory_centralise | recommended_centralise | local",
+      "ownership_tier": "enterprise | project"
+    }
+  },
+
+  "calibration_examples": [
+    {
+      "principle": "GO1B1-01 — Maintain a versioned ground-truth evaluation harness",
+      "D1": "no",
+      "D2": 3,
+      "D2_justification": "Eval runner, diff tool, CI workflow template, manifest schema validator, scenario-file schema validator — substantial platform engineering that would repeat as weeks per project if left local.",
+      "outcome": "recommended_centralise",
+      "tier": "enterprise"
+    },
+    {
+      "principle": "GO1B1-02 — Stratify the harness, gate per stratum",
+      "D1": "no",
+      "D2": 3,
+      "D2_justification": "Strata-manifest validator, per-stratum threshold checker, coverage-matrix lint — central infrastructure each agentic project would otherwise rebuild.",
+      "outcome": "recommended_centralise",
+      "tier": "enterprise"
+    },
+    {
+      "principle": "GO1B1-03 — Implement every metric as a named, encapsulated code unit",
+      "D1": "no",
+      "D2": 2,
+      "D2_justification": "Metric-encapsulation lint, runner-import contract, sibling-unit-test template — moderate platform tooling reused across projects; the metrics themselves remain project-local.",
+      "outcome": "recommended_centralise",
+      "tier": "enterprise"
+    },
+    {
+      "principle": "GO1B1-04 — Monitor production inputs and outputs for drift",
+      "D1": "no (borderline — model-risk-management regulations in regulated industries may push D1 to yes)",
+      "D2": 3,
+      "D2_justification": "Drift-detection infrastructure, baseline-storage schema, alert-routing integration, model-version coupling — substantial central platform.",
+      "outcome": "recommended_centralise",
+      "tier": "enterprise"
+    },
+    {
+      "principle": "GO1B1-05 — Refresh the harness on a declared cadence",
+      "D1": "no",
+      "D2": 1,
+      "D2_justification": "Refresh log schema and a small validator — light tooling; the refresh decisions and content are inherently per-project.",
+      "outcome": "local",
+      "tier": "project"
+    },
+    {
+      "principle": "GC1B1-01 — Maintain a versioned model-selection decision record",
+      "D1": "no",
+      "D2": 1,
+      "D2_justification": "Shareable ADR template + a small fill-in lint; the actual decisions are bespoke to each workload's cost model and constraints.",
+      "outcome": "local",
+      "tier": "project"
+    },
+    {
+      "principle": "GC2B2-01 — Right-size hosting infrastructure and commit utilization alarms as code",
+      "D1": "no",
+      "D2": 3,
+      "D2_justification": "IaC-vs-config consistency lint with multi-cloud parser, deployed-alarm verification against cloud monitoring APIs, baseline-against-actual reconciliation — weeks of platform-team engineering.",
+      "outcome": "recommended_centralise",
+      "tier": "enterprise"
+    },
+    {
+      "principle": "Hypothetical — Centralised LLM SDK and key vault for all model calls",
+      "D1": "no (depending on data-residency context could go yes)",
+      "D2": 3,
+      "D2_justification": "SDK build, key management, vendor abstraction, observability hooks, cost attribution — the canonical platform-tier control.",
+      "outcome": "recommended_centralise",
+      "tier": "enterprise"
+    },
+    {
+      "principle": "Hypothetical — Responsible AI fairness sign-off on adverse-action models",
+      "D1": "yes",
+      "D2": 2,
+      "D2_justification": "D2 informational only. Regulator in scope (ECOA / equivalent) means central validation is mandated; tier is forced to enterprise regardless of D2.",
+      "outcome": "mandatory_centralise",
+      "tier": "enterprise"
+    }
+  ]
+}
