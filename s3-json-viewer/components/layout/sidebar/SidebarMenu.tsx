@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 
 const menuItems = [
   { label: "All Principles", href: "/principles" },
+  { label: "Taxonomy", href: "/taxonomy" },
 ]
 
 export function SidebarMenu() {

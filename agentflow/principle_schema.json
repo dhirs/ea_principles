@@ -1,0 +1,192 @@
+{
+  "meta": {
+    "title": "Per-principle schema — extracted from taxonomy.json",
+    "description": "The schema every principle in principles.json conforms to. Extracted from taxonomy.json on 2026-06-01 so the schema can be consumed standalone without the enums / usage / conventions noise. Source of truth remains taxonomy.json; this file is a derived view.",
+    "extracted_from": "ai_principles_server/agentflow/taxonomy.json",
+    "extracted_at": "2026-06-01",
+    "schema_version": "1.9"
+  },
+
+  "principle_schema": {
+    "intro": "Every principle in principles.json conforms to this schema. This is what makes the catalogue different from cloud-vendor frameworks: each principle names who validates it, when it is checked, and what artefacts the validator inspects. Vendor frameworks stop at the question; this catalogue defines the audit.",
+    "vendor_neutrality_note": "The schema is vendor-neutral. Pillar names match AWS / Azure / GCP WAF terminology because those names are de-facto industry-standard. The catalogue's primary anchor framework is the AWS Well-Architected Generative AI Lens, but the framework_mappings field is structured to hold parallel mappings to Azure, GCP, NIST, OWASP, or any other framework without schema change.",
+
+    "fields": [
+      {
+        "name": "principle_id",
+        "type": "string",
+        "required": true,
+        "format": "<bp_code>-NN",
+        "description": "Stable ID anchored to an AWS BP. Format: `<bp_code>-NN` where `bp_code` is a 5-character compression of the AWS pillar / question / BP triple and `NN` is a two-digit sequential counter — the Nth principle promoted from that BP, in promotion order. IDs within a BP are consecutive with no gaps. See conventions.principle_id_format in taxonomy.json."
+      },
+      {
+        "name": "pillar",
+        "type": "string",
+        "required": true,
+        "format": "P# — Pillar Name",
+        "description": "One of P1–P5. Maps to a GenAI Lens pillar. Pillar names are identical across AWS, Azure, and GCP WAFs."
+      },
+      {
+        "name": "focus_area",
+        "type": "string",
+        "required": true,
+        "format": "P## — Focus Area Name",
+        "description": "Focus area code. Internal taxonomy slot."
+      },
+      {
+        "name": "impact_level",
+        "type": "string",
+        "required": true,
+        "allowed_values_ref": "enums.impact_level",
+        "description": "Critical / High / Medium / Low. Drives criticality-tier applicability."
+      },
+      {
+        "name": "applicability",
+        "type": "object",
+        "required": true,
+        "keys_ref": "enums.applicability",
+        "values_ref": "enums.pattern_criticality",
+        "description": "Object mapping AI system patterns (llm / rag / agentic / ml) to the principle's criticality for each pattern (mandatory / nice_to_have). Omit patterns where the principle does not materially apply — absence means 'not applicable to this pattern'."
+      },
+      {
+        "name": "serving_paradigm",
+        "type": "object",
+        "required": true,
+        "keys_ref": "enums.serving_paradigm",
+        "values_ref": "enums.pattern_criticality",
+        "description": "Object mapping foundation-model serving paradigms (api_on_demand / api_provisioned / self_hosted_managed / self_hosted_unmanaged) to the principle's criticality for each paradigm. Orthogonal to applicability. Omit paradigms where the principle does not materially apply."
+      },
+      {
+        "name": "maturity_level",
+        "type": "string",
+        "required": true,
+        "allowed_values_ref": "enums.maturity_level",
+        "description": "Organisational maturity at which this principle should be adopted: foundational (first AI project), scaling (2–5 projects or multi-team), mature (5+ project portfolio with formal ARB / dedicated platform team). Pick the strictest level that honestly applies."
+      },
+      {
+        "name": "framework_mappings",
+        "type": "object",
+        "required": true,
+        "description": "External-framework anchors keyed by framework (`aws`, `azure`, `gcp`, `aigp`, …); each framework holds a `references` array. See principle_schema.framework_mappings_spec for the full sub-schema."
+      },
+      {
+        "name": "ownership",
+        "type": "object",
+        "required": true,
+        "description": "Who validates the principle and how. See principle_schema.ownership_spec for tiers and the tier rubric reference."
+      },
+      {
+        "name": "statement",
+        "type": "object",
+        "required": true,
+        "structure": "{ title: string, description: string }",
+        "description": "The rule itself, written to be built against, not aspirational."
+      },
+      {
+        "name": "problem",
+        "type": "object",
+        "required": true,
+        "structure": "{ description: string, examples: string[] }",
+        "description": "The failure mode the principle prevents, with concrete examples."
+      },
+      {
+        "name": "solution",
+        "type": "object",
+        "required": true,
+        "structure": "{ approach: string, key_benefits: string[] }",
+        "description": "How to implement, what good looks like."
+      },
+      {
+        "name": "gates",
+        "type": "array",
+        "required": true,
+        "item_structure": "{ point: string, check: string, blocking: boolean }",
+        "description": "When the principle is checked in the lifecycle and what binary check fires at each point. See principle_schema.gates_spec for lifecycle points and the required-status-check constraint."
+      },
+      {
+        "name": "evidence",
+        "type": "object",
+        "required": false,
+        "required_when": "ownership.audit_mode == 'central_review_at_gate'",
+        "structure": "{ artefacts: array, review_mode: string, sign_off: string }",
+        "description": "What the central validator clicks on at a central review gate. Required when audit_mode is central_review_at_gate; may be blank otherwise. See principle_schema.evidence_spec."
+      },
+      {
+        "name": "change_history",
+        "type": "object",
+        "required": true,
+        "structure": "{ current_version: string, changes: array }",
+        "description": "Versioned audit trail of edits to this principle. See principle_schema.change_history_spec."
+      },
+      {
+        "name": "explain_prompt",
+        "type": "object",
+        "required": false,
+        "structure": "{ system: string, user_template: string, compiled_for_principle_version: string, compiled_at: string, compiled_by: string }",
+        "description": "Optional compiled OpenAI-style prompt pair used by the runtime UI's 'Explain' affordance. Absent when the principle has not yet been compiled."
+      }
+    ],
+
+    "framework_mappings_spec": {
+      "intro": "Each principle's relationship to external frameworks is captured in the framework_mappings field. The field is an object keyed by framework identifier; each framework key holds a references array of zero or more reference objects.",
+      "shape_example": "framework_mappings: { aws: { references: [ ... ] }, aigp: { references: [ ... ] } }",
+      "primary_anchor": "AWS is the catalogue's primary anchor: every principle must concretise (or explicitly extend with mapping_state: na) an AWS GenAI Lens BP. Other frameworks (AIGP, NIST, etc.) are cross-references — informational only.",
+      "anchoring_default": "implementation_step — principles concretise specific AWS implementation steps, not whole BPs.",
+      "common_reference_fields": [
+        { "name": "mapping_state", "type": "string", "required": true, "allowed_values": ["verified", "unverified", "na"] },
+        { "name": "last_checked", "type": "string", "required": true, "format": "YYYY-MM-DD" },
+        { "name": "note", "type": "string | null", "description": "Free-text rationale: what our principle adds beyond the framework's guidance." }
+      ],
+      "framework_specific_reference_fields": {
+        "aws": [
+          { "name": "lens", "type": "string | null" },
+          { "name": "pillar", "type": "string | null" },
+          { "name": "focus_area", "type": "string | null" },
+          { "name": "question", "type": "string | null" },
+          { "name": "best_practice", "type": "string | null" },
+          { "name": "implementation_step", "type": "object | null", "structure": "{ number: integer, title: string, verbatim_text: string | null }" }
+        ],
+        "aigp": [
+          { "name": "domain", "type": "string | null" },
+          { "name": "competency", "type": "string | null" }
+        ]
+      }
+    },
+
+    "ownership_spec": {
+      "intro": "Two tiers via `ownership.tier`. Tier reflects CENTRALISATION OF ENFORCEMENT INFRASTRUCTURE, not validation. Tier is independent of `validator` and `audit_mode`.",
+      "tiers": {
+        "project": "Each project team builds its own enforcement tooling. PA self-attests using locally-built tooling.",
+        "enterprise": "The platform team owns the enforcement infrastructure. Project teams consume the platform team's tooling rather than rebuilding."
+      },
+      "tier_rubric_ref": "agentflow/sections/tier/rubric.json — D1 (legal_exposure, binary veto) + D2 (repeatability_cost, 0–3). Outcomes: mandatory_centralise / recommended_centralise → enterprise; local → project.",
+      "ownership_object_fields": [
+        { "name": "tier", "type": "string", "allowed_values": ["project", "enterprise"] },
+        { "name": "validator", "type": "string", "description": "Named validator role (e.g. project_architect, enterprise_security)." },
+        { "name": "audit_mode", "type": "string", "description": "self_attestation_with_mechanical_evidence | central_review_at_gate. Drives whether evidence artefacts are required." },
+        { "name": "arb_role", "type": "string", "description": "What ARB's role is (e.g. dashboard_and_spot_check, primary_reviewer)." }
+      ]
+    },
+
+    "gates_spec": {
+      "intro": "Each gate is a { point, check, blocking } triple. point is the lifecycle moment the check fires. check is a binary statement. blocking indicates whether failure prevents progression.",
+      "lifecycle_points": ["pre_commit", "pre_merge", "pre_deploy", "release", "quarterly_review", "annual_review", "incident_response"],
+      "required_status_check_constraint": "For CI-enforced gates, the check field must explicitly state that the check is configured as a REQUIRED status check on the integration branch — not advisory."
+    },
+
+    "evidence_spec": {
+      "intro": "Evidence enumerates artefacts a central validator clicks on at a central review gate. Required when ownership.audit_mode is 'central_review_at_gate'; may be blank otherwise.",
+      "shape": {
+        "artefact_structure": "{ name, location, check }",
+        "review_modes": ["mechanical_artefact_inspection", "central_review_at_gate", "automated_only"],
+        "sign_off": "binary (pass or fail; no graded scale)"
+      }
+    },
+
+    "change_history_spec": {
+      "intro": "Every principle carries a change_history field tracking its evolution over time. Append-only.",
+      "shape": "{ current_version: string, changes: [{ version, date, author, summary }] }",
+      "version_rules": "MAJOR for rule changes, MINOR for additions, PATCH for clarifications. current_version mirrors the most recent entry in changes."
+    }
+  }
+}
