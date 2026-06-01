@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "title": "Enterprise Reusable Components: When and Why to Centralize",
+    "description": "Enterprise architecture case studies for centralization decisions",
+    "format_version": "1.0"
+  },
+  "components": [
+    {
+      "component_id": "UC_001",
+      "name": "Insurance Policy Document Parsing",
+      "industry": "Insurance",
+      "component_type": "Document Processing",
+      "regulatory_impact": "High",
+      "centralization_decision": "CENTRALIZE",
+      
+      "function": {
+        "primary_purpose": "Extract data from insurance policy documents across multiple business teams",
+        "key_capabilities": [
+          "Parse policy numbers, effective dates, coverage limits",
+          "Extract customer PII with consistent data classification",
+          "Generate audit trails for regulatory compliance",
+          "Standardize data format across consuming systems"
+        ]
+      },
+      
+      "business_case": {
+        "teams_affected": [
+          "Claims Processing Team",
+          "Customer Service Team", 
+          "Compliance Team",
+          "Analytics Team",
+          "Billing Team"
+        ],
+        "centralization_benefits": [
+          "Uniform data classification and security controls",
+          "Centralized audit logging for regulatory examination",
+          "Consistent interpretation of legal and contractual terms",
+          "Single point of compliance verification"
+        ],
+        "cost_of_inconsistency": [
+          "GDPR breaches from inconsistent PII handling",
+          "SOX violations from different financial data processing",
+          "Audit trail fragmentation across teams",
+          "Customer disputes from conflicting data interpretation"
+        ]
+      },
+      
+      "decision_framework": {
+        "centralize_when": [
+          "Processing personally identifiable information (PII)",
+          "Subject to industry-specific regulations (HIPAA, SOX, GDPR)",
+          "Audit trail consistency required for compliance",
+          "Data classification standards must be uniformly applied"
+        ],
+        "decentralize_when": [
+          "Requirements vary dramatically across teams",
+          "Performance needs differ significantly",
+          "Innovation and experimentation are prioritized",
+          "Teams possess specialized domain expertise"
+        ]
+      }
+    },
+    
+    {
+      "component_id": "UC_002",
+      "name": "Enterprise LLM SDK",
+      "industry": "Cross-Industry",
+      "component_type": "AI/ML Governance",
+      "regulatory_impact": "Medium",
+      "centralization_decision": "CENTRALIZE",
+      
+      "function": {
+        "primary_purpose": "Provide standardized LLM access with cost control, security, and compliance governance",
+        "key_capabilities": [
+          "Centralized API key management and rotation",
+          "Budget enforcement per cost center and project",
+          "Data classification validation before LLM calls",
+          "Complete audit trail for regulatory compliance",
+          "Model optimization for cost efficiency"
+        ]
+      },
+      
+      "business_case": {
+        "teams_affected": [
+          "Customer Support (ChatGPT for responses)",
+          "Marketing (Claude for content generation)",
+          "Legal (GPT-4 for document analysis)",
+          "Engineering (Code generation and documentation)",
+          "Data Science (Embeddings and classification)"
+        ],
+        "centralization_benefits": [
+          "Centralized budget enforcement per cost center",
+          "Automatic model optimization (cheaper models for simple tasks)",
+          "Prompt caching and deduplication for cost savings",
+          "Bulk pricing negotiations with LLM providers",
+          "Standardized security and compliance controls"
+        ],
+        "cost_of_inconsistency": [
+          "Uncontrolled AI spend reaching $50K+ per team monthly",
+          "GDPR/HIPAA violations through uncontrolled API usage",
+          "No audit trail for regulatory compliance",
+          "Security vulnerabilities in distributed API key management",
+          "No visibility into AI ROI for executive management"
+        ]
+      },
+      
+      "decision_framework": {
+        "centralize_when": [
+          "Multiple teams using expensive LLM services",
+          "Monthly AI costs exceeding $10K",
+          "Regulatory compliance for data handling required",
+          "Executive visibility into AI spend needed",
+          "10+ development teams using LLM services"
+        ],
+        "decentralize_when": [
+          "Experimental or proof-of-concept projects",
+          "Small team environments (< 5 teams)",
+          "Low-cost use cases (< $1K monthly spend)",
+          "Specialized model requirements not supported centrally",
+          "Need for bleeding-edge features from providers"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,1045 @@
+{
+  "meta": {
+    "title": "Enterprise AI Architecture Principles",
+    "description": "Structured principles for building scalable, reliable, cost-effective, and governable AI systems. Merged baseline (PRIN_001–PRIN_011) plus context engineering additions (PRIN_013–PRIN_017).",
+    "format_version": "1.5",
+    "notes": [
+      "PRIN_012 is intentionally reserved — it is referenced by PRIN_016 ('Aligns with PRIN_012 by making the schema the locus of output governance') but no principle has been authored for that slot yet. Either author it (suggested title: 'Schema as the Authoritative Output Contract') or renumber PRIN_013–PRIN_017 down by one and update the reference inside PRIN_016.",
+      "Schema v1.2: the legacy `enforcement` field has been retired. Each principle now carries `ownership` (who validates), `gates` (when in the lifecycle), and `evidence` (what artefacts the validator inspects). PRIN_007 is the worked exemplar of the new schema; the other 15 principles have `ownership` set but their `gates` and `evidence` blocks are placeholders pending a retrofit pass. See taxonomy.md → Principle Schema.",
+      "Schema v1.3: added `aws_mapping` field to every principle. Captures the AWS Lens / Pillar / Focus Area / Question / Best Practice anchor that the principle concretises. PRIN_007 ↔ GENOPS01-BP01 is verified. Other mappings are either unverified (need side-by-side review against AWS implementation guidance), TODO (not yet identified), or EXTENSION (no direct AWS BP analogue — e.g. Responsible AI principles and context-engineering principles). See taxonomy.md → AWS Mapping and lens_mapping.md for the full BP catalogue.",
+      "Schema v1.4: Evidence block is now optional. Required for enterprise-tier principles (PRIN_002, PRIN_003, PRIN_008, PRIN_009, PRIN_010) where a central validator (ARB / Security / Legal / Finance) physically clicks URLs at a central review gate. Project-tier principles may leave Evidence blank with `artefacts: []` and `review_mode: \"automated_only\"` — for these, the Gates block (CI enforcement, configured as a required status check on the integration branch) IS the proof. The branch-protection meta-config now lives inside each gate's `check` field, not as a separate Evidence artefact. PRIN_007 migrated from a four-artefact Evidence block to blank Evidence in this revision; gate wording extended to carry the required-status-check constraint. See taxonomy.md → Evidence and decisions.md (2026-05-25 entry).",
+      "Schema v1.5: Replaced `aws_mapping` (singular AWS-shaped object) with `framework_mappings` (object keyed by framework — `aws`, `azure`, `gcp`, etc. — each holding a `references` array of zero or more mappings). Each reference carries `mapping_state` (verified | unverified | na), `last_checked` ISO date, and a free-text `note`. The standalone `responsible_ai_lens_crossref` field has been retired; cross-lens placements (PRIN_009, PRIN_010) now appear as a reference with `lens: \"Responsible AI Lens\"` inside `framework_mappings.aws.references`. Added `change_history` field per principle (current_version + chronological changes list with version/date/author/summary). All 16 principles migrated on 2026-05-26; PRIN_007 retains its verified GENOPS01-BP01 mapping. See taxonomy.md → Principle Schema, Framework Mappings, Change History."
+    ]
+  },
+  "principles": [
+    {
+      "principle_id": "PRIN_001",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P14 — Lifecycle Automation",
+      "impact_level": "High",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": null,
+              "pillar": null,
+              "focus_area": null,
+              "question": null,
+              "best_practice": null,
+              "mapping_state": "na",
+              "last_checked": "2026-05-26",
+              "note": "No AWS BP covers framework-specific (LangGraph) node vs utility separation patterns. Closest pillar fit: GENOPS — Operational Excellence."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "LangGraph Node vs Utility Function Separation",
+        "description": "In LangGraph architectures, restrict nodes to LLM reasoning and decision-making only. Implement all deterministic operations (file I/O, parsing, API calls) as utility functions outside the graph."
+      },
+      "problem": {
+        "description": "In LangGraph workflows, wrapping deterministic operations as graph nodes or LLM tools creates state bloat, adds unnecessary complexity, and introduces failure points",
+        "examples": [
+          "S3 loading as a node: data = s3.get_object() in node → bloats state with large_data passed between all nodes",
+          "PDF extraction as LLM tool: Tool(name='extract_pdf') → LLM might skip critical extraction",
+          "Conditional writes as nodes: if confidence > 0.8: write_to_s3() → simple logic becomes full graph node",
+          "File I/O in nodes: with open(file) as f: data = f.read() → deterministic ops mixed with reasoning logic"
+        ]
+      },
+      "solution": {
+        "approach": "Design LangGraph workflows with clear separation: utility functions handle all deterministic operations (data fetching, parsing, I/O), while graph nodes focus exclusively on LLM-powered reasoning and routing decisions",
+        "key_benefits": [
+          "Guaranteed execution of critical operations without LLM interference",
+          "70-90% reduction in token costs by avoiding LLM calls for deterministic tasks",
+          "Simplified debugging with LangGraph nodes only containing business logic",
+          "Faster execution by parallelizing utility functions outside the graph"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain III: Understanding How to Govern AI Development",
+        "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_002",
+      "pillar": "P5 — Cost Optimization",
+      "focus_area": "P51 — Inference Cost Optimization",
+      "impact_level": "High",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENCOST — Cost Optimization",
+              "focus_area": "TODO — verify against current Lens (likely inference cost reduction)",
+              "question": "TODO — verify GENCOST question code and text",
+              "best_practice": "TODO — likely a GENCOST BP on prompt/response caching to reduce inference cost",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": null
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "finance_and_arb",
+        "audit_mode": "central_review_at_gate",
+        "arb_role": "primary_reviewer"
+      },
+      "statement": {
+        "title": "Implement Prompt Caching for Duplicate LLM Requests",
+        "description": "Cache identical or similar prompts to avoid redundant LLM API calls, significantly reducing token consumption and costs in enterprise environments."
+      },
+      "problem": {
+        "description": "In enterprise applications, identical prompts are frequently sent to LLMs without caching",
+        "examples": [
+          "Same document summarization request sent 50 times → 50 API calls",
+          "Identical code review prompts across similar pull requests → duplicated costs",
+          "Repeated template-based content generation → unnecessary token usage",
+          "Standard compliance checks on similar documents → redundant processing"
+        ]
+      },
+      "solution": {
+        "approach": "Implement multi-level prompt caching with exact match and semantic similarity detection",
+        "key_benefits": [
+          "70-90% cost reduction for high-repetition workflows",
+          "Sub-100ms response time for cached prompts",
+          "Improved system resilience during provider outages"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+        "competency": "IV.A: Govern AI Deployment Options and Infrastructure"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_003",
+      "pillar": "P2 — Security",
+      "focus_area": "P21 — Identity & Access for GenAI",
+      "impact_level": "Critical",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENSEC — Security",
+              "focus_area": "Identity and access for foundation models",
+              "question": "GENSEC01 — TODO verify question text",
+              "best_practice": "GENSEC01-BP01 — Grant least privilege access to foundation model endpoints",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "Needs side-by-side review; our principle adds the centralised-SDK enforcement mechanism which AWS does not specify."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "enterprise_security",
+        "audit_mode": "central_review_at_gate",
+        "arb_role": "primary_reviewer"
+      },
+      "statement": {
+        "title": "Centralized LLM Access Through Enterprise SDK",
+        "description": "All LLM interactions must use centralized enterprise SDK for cost control, security, and compliance rather than direct API calls."
+      },
+      "problem": {
+        "description": "Direct LLM API usage by teams leads to ungoverned spend, security risks, and compliance violations",
+        "examples": [
+          "Teams using expensive models (GPT-4) for simple tasks without cost controls",
+          "Sensitive data sent to external providers without classification checks",
+          "No audit trail for regulatory compliance requirements",
+          "API keys scattered across teams creating security vulnerabilities"
+        ]
+      },
+      "solution": {
+        "approach": "Replace all direct LLM API calls with standardized enterprise SDK that enforces governance policies",
+        "key_benefits": [
+          "Centralized cost tracking and budget enforcement per project/team",
+          "Automatic data classification and PII protection",
+          "Complete audit trail for regulatory compliance",
+          "Standardized error handling and security practices"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain I: Understanding the Foundations of AI Governance",
+        "competency": "I.B: Establish an AI Governance Framework"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_004",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P12 — Operational Health & Monitoring",
+      "impact_level": "Critical",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "TODO — uncertain. Subject (self-documenting data architecture for AI agents) sits between Data Architecture section of the Lens and base WAF data-governance guidance",
+              "focus_area": "TODO — verify against Lens Data Architecture section",
+              "question": "TODO",
+              "best_practice": "TODO — needs investigation; PRIN_004 may be partially an EXTENSION if no GenAI Lens BP directly covers agent-readable metadata requirements",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": null
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Self-Documenting Data Architecture for AI Agents",
+        "description": "All enterprise data accessed by AI agents must include metadata, lineage, and business context that enables autonomous understanding without human interpretation."
+      },
+      "problem": {
+        "description": "AI agents fail when encountering undocumented schemas, inconsistent definitions, and legacy system complexity that humans navigate through institutional knowledge",
+        "examples": [
+          "Agent queries customer table but finds 5 different customer definitions across systems",
+          "Historical data lacks context about business rule changes over time",
+          "Legacy system abbreviations and codes have no accessible documentation",
+          "Data relationships exist only in tribal knowledge, not in discoverable metadata"
+        ]
+      },
+      "solution": {
+        "approach": "Implement comprehensive data governance with automated metadata capture, semantic documentation, and agent-readable business context",
+        "key_benefits": [
+          "AI agents can autonomously understand data without human intervention",
+          "Reduced data preparation time from months to weeks",
+          "Consistent data interpretation across all AI applications",
+          "Automated detection of data quality issues and schema drift"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain III: Understanding How to Govern AI Development",
+        "competency": "III.A: Govern Data for AI Systems"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_005",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P14 — Lifecycle Automation",
+      "impact_level": "High",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Lifecycle automation",
+              "question": "GENOPS04 — TODO verify question text",
+              "best_practice": "GENOPS04-BP01 — Automate generative AI application lifecycle with infrastructure as code (IaC)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "Subject overlaps but our principle is about context lifecycle specifically; AWS BP is about app lifecycle via IaC."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Automated Context Lifecycle Management",
+        "description": "AI agent context (prompts, business rules, metric definitions) must have automated versioning, change detection, and impact analysis to prevent context drift degradation."
+      },
+      "problem": {
+        "description": "Business definitions evolve continuously but AI context becomes stale, creating a maintenance burden that scales exponentially with each deployed agent",
+        "examples": [
+          "Sales team redefines 'qualified lead' but 12 AI agents still use old definition",
+          "Compliance rules change but risk assessment agents reference outdated policies",
+          "Product catalog updates but recommendation engines work with stale product data",
+          "Organizational changes invalidate approval workflows embedded in agent logic"
+        ]
+      },
+      "solution": {
+        "approach": "Implement context governance with automated change detection, impact analysis, and coordinated updates across all dependent AI systems",
+        "key_benefits": [
+          "AI agents stay current with business changes without manual intervention",
+          "Reduced risk of decisions based on outdated information",
+          "Centralized control over business logic changes affecting multiple agents",
+          "Audit trail of all context changes for compliance and debugging"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+        "competency": "IV.B: Implement Ongoing Risk Assessments and Monitoring"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_006",
+      "pillar": "P3 — Reliability",
+      "focus_area": "P32 — Enterprise Integration Resilience",
+      "impact_level": "High",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENREL — Reliability",
+              "focus_area": "TODO — verify against Lens (likely an integration / fault tolerance area)",
+              "question": "TODO",
+              "best_practice": "TODO — needs investigation; principle covers circuit breakers, retry, format normalisation for enterprise system integration",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": null
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Enterprise System Integration Patterns for AI Agents",
+        "description": "AI agent integration with enterprise systems must use standardized patterns that handle rate limits, authentication, error conditions, and data format inconsistencies."
+      },
+      "problem": {
+        "description": "Enterprise systems were designed for human users, not AI agents, leading to integration failures under production load conditions not visible during demos",
+        "examples": [
+          "ERP system rate limits cause agent timeouts during high-volume operations",
+          "Legacy authentication systems reject rapid API calls from agents",
+          "Data format variations across systems break agent parsing logic",
+          "Undocumented system behaviors surface only under production traffic patterns"
+        ]
+      },
+      "solution": {
+        "approach": "Implement standardized integration layer with circuit breakers, retry logic, format normalization, and comprehensive error handling",
+        "key_benefits": [
+          "Reliable agent operation despite enterprise system quirks",
+          "Graceful degradation during system outages or performance issues",
+          "Consistent error handling and recovery across all integrations",
+          "Production-ready resilience from initial deployment"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+        "competency": "IV.A: Govern AI Deployment Options and Infrastructure"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_007",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P11 — Model Performance Evaluation",
+      "impact_level": "High",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "mapping_state": "verified",
+              "last_checked": "2026-05-26",
+              "note": "Our principle concretises the harness, gates, and evidence model AWS leaves unspecified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Production-Realistic Agent Testing",
+        "description": "AI agent testing must include production-realistic conditions — edge cases, data variations, and system integration scenarios — and those scenarios must be codified as versioned test artefacts in the workload repository, runnable by any team member with repo access, gated by automated CI."
+      },
+      "problem": {
+        "description": "Agents perform well in controlled demo conditions but fail when encountering the complexity and edge cases present in real enterprise environments. The failure is compounded when production-realistic test scenarios exist only in the original author's head, notebook, or local workstation — making them non-transferable when team members change.",
+        "examples": [
+          "Agent works with clean test data but fails with production data quality issues",
+          "Demo environment has perfect system uptime but production has integration failures",
+          "Test scenarios cover happy paths but miss edge cases that occur daily in production",
+          "Synthetic data lacks the complexity and inconsistencies of real enterprise data",
+          "Original architect knows the production edge cases (clearance items, chargeback overlaps, currency mismatches) but those scenarios live in their head — successor team cannot reproduce or extend them, UAT keeps rejecting"
+        ]
+      },
+      "solution": {
+        "approach": "Implement a versioned, repo-resident test harness covering production-realistic scenarios. Each scenario is a first-class code artefact (input payload, expected decision, expected reasoning trace) committed alongside the agent code. The harness is runnable by any team member with repo access — not bound to a specific person, machine, or CI tool GUI — and is executed automatically on every change as a build-system gate.",
+        "key_benefits": [
+          "Agents proven reliable under real-world conditions before deployment",
+          "Early detection of issues that only surface in production complexity",
+          "Confidence in agent behavior across diverse enterprise scenarios",
+          "Reduced post-deployment surprises and rollbacks",
+          "Production knowledge survives team changes — when the original architect leaves, the scenarios stay with the code, not the person"
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "Two-part check, both parts must pass at PR time, AND both parts must be configured as required status checks on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. (1) EXECUTION: Harness runs against all production-realistic scenarios in tests/production_scenarios/ and all pass; folder must contain >=N scenario files. (2) COVERAGE: If any file under src/agent/ (the agent code) changed in the PR, the PR must also include a change under tests/production_scenarios/ OR include an ADR under docs/adrs/ explaining why no scenario change is needed. Part 1 catches regressions in existing covered cases. Part 2 catches the dominant failure mode — new code paths added without matching scenarios. Failure on either part blocks merge. The Coverage-exception ADR ledger under docs/adrs/ is maintained as the audit trail of the COVERAGE escape hatch and is reviewed by the PA at release self-attestation.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+        "competency": "IV.A: Govern AI Deployment Options and Infrastructure"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_008",
+      "pillar": "P2 — Security",
+      "focus_area": "P21 — Identity & Access for GenAI",
+      "impact_level": "Critical",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENSEC — Security",
+              "focus_area": "Agentic security",
+              "question": "GENSEC05 — TODO verify question text",
+              "best_practice": "GENSEC05-BP01 — Implement least privilege access and permissions boundaries for agentic workflows",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "Needs side-by-side review; our principle covers broader agent security framework, not just permissions."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "enterprise_security",
+        "audit_mode": "central_review_at_gate",
+        "arb_role": "primary_reviewer"
+      },
+      "statement": {
+        "title": "AI Agent Security and Access Control Framework",
+        "description": "All AI agents must operate within enterprise security frameworks with proper authentication, authorization, audit logging, and data access controls from initial deployment."
+      },
+      "problem": {
+        "description": "Demo-stage agents bypass security controls for ease of development, creating ungovernable systems that cannot meet enterprise security requirements",
+        "examples": [
+          "Agents have broad system access without role-based permissions",
+          "No audit trail of agent actions for compliance and security monitoring",
+          "Agent-to-agent communication lacks encryption and authentication",
+          "Data access patterns not aligned with enterprise data classification policies"
+        ]
+      },
+      "solution": {
+        "approach": "Implement enterprise-grade security framework with identity management, least-privilege access, comprehensive logging, and data loss prevention",
+        "key_benefits": [
+          "Agents meet enterprise security standards from day one",
+          "Complete audit trail for regulatory compliance and security monitoring",
+          "Granular control over agent capabilities and data access",
+          "Integration with existing enterprise security infrastructure"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+        "competency": "IV.C: Establish Security, Access Control, and Incident Management"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_009",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P13 — Traceability",
+      "impact_level": "Critical",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Responsible AI Lens",
+              "pillar": "Responsible AI",
+              "focus_area": "Explainability",
+              "question": null,
+              "best_practice": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "AWS would place this principle in the separate Responsible AI Lens (responsible AI dimension: Explainability), not the GenAI Lens. The Responsible AI Lens uses a different question structure than the GenAI Lens; the specific BP code/title needs verification. Classified under our Operational Excellence pillar because that is where the implementation team owns it."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "legal_and_responsible_ai",
+        "audit_mode": "central_review_at_gate",
+        "arb_role": "primary_reviewer"
+      },
+      "statement": {
+        "title": "Evidence-Based Agent Decisioning",
+        "description": "All autonomous agent decisions must be traceable to specific evidence collected through defined investigation actions, preventing black-box reasoning and ensuring explainable AI."
+      },
+      "problem": {
+        "description": "Agents make critical business decisions without traceable evidence chains, creating compliance risks, debugging nightmares, and regulatory exposure",
+        "examples": [
+          "Content classified as 'framework' with no evidence trail of why that classification was chosen",
+          "Customer risk scored as 'high' without documented investigation steps",
+          "Loan application rejected by AI with only confidence score, no evidence",
+          "Medical diagnosis suggested without traceable reasoning chain",
+          "Purchase order auto-approved without documented verification steps"
+        ]
+      },
+      "solution": {
+        "approach": "Implement ReAct (Reasoning + Acting) pattern with mandatory evidence collection, forcing agents to investigate through defined tools before making decisions",
+        "key_benefits": [
+          "Every decision traceable to specific evidence points",
+          "Full audit trail for regulatory compliance (EU AI Act, etc.)",
+          "Ability to replay exact reasoning for any decision",
+          "Reduced hallucination through forced evidence grounding",
+          "Explainable AI that stakeholders can understand and trust"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain II: Understanding How Laws, Standards, and Frameworks Apply to AI",
+        "competency": "II.C: Align with Standards and Risk Frameworks"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial entry in versioned schema. Migrated from v1.4 catalogue schema: aws_mapping replaced by framework_mappings; the standalone responsible_ai_lens_crossref field has been folded into framework_mappings.aws.references[0] as a Responsible AI Lens reference."
+          }
+        ]
+      }
+    },
+    {
+      "principle_id": "PRIN_010",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P13 — Traceability",
+      "impact_level": "High",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Responsible AI Lens",
+              "pillar": "Responsible AI",
+              "focus_area": "Fairness / Veracity",
+              "question": null,
+              "best_practice": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "AWS would place this principle in the separate Responsible AI Lens (responsible AI dimension: Fairness / Veracity), not the GenAI Lens. The Responsible AI Lens uses a different question structure than the GenAI Lens; the specific BP code/title needs verification. Classified under our Operational Excellence pillar because that is where the implementation team owns it."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "legal_and_responsible_ai",
+        "audit_mode": "central_review_at_gate",
+        "arb_role": "primary_reviewer"
+      },
+      "statement": {
+        "title": "Multi-Model Orchestration for Bias Mitigation",
+        "description": "Use different LLMs for generation versus evaluation tasks to prevent self-assessment bias, leverage model-specific strengths, and ensure independent verification of AI-generated outputs."
+      },
+      "problem": {
+        "description": "Single-model architectures suffer from self-assessment bias where models evaluate their own outputs favorably, miss their own errors, and lack independent verification for critical decisions",
+        "examples": [
+          "GPT-4 rates its own generated content as 'excellent' despite factual errors",
+          "Claude judges its own reasoning as sound while missing logical flaws",
+          "Same model used for code generation and review misses its own bugs",
+          "Risk assessment model evaluates its own predictions without external validation",
+          "Content generation and quality check by same model leads to undetected hallucinations"
+        ]
+      },
+      "solution": {
+        "approach": "Implement multi-model architecture with specialized models for different tasks: primary models for generation/investigation, different models for quality judgment, and specialized models for domain-specific validation",
+        "key_benefits": [
+          "Eliminates self-assessment bias through independent evaluation",
+          "Leverages each model's strengths (e.g., GPT-4 for creativity, Claude for analysis)",
+          "Cost optimization by using expensive models only where necessary",
+          "Higher quality outputs through cross-model validation",
+          "Improved error detection through diverse model perspectives"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain I: Understanding the Foundations of AI Governance",
+        "competency": "I.A: Define Core Principles and Accountability"
+      },
+      "responsible_ai_lens_crossref": "AWS would place this principle in the separate Responsible AI Lens (responsible AI dimension: Fairness / Veracity)."
+    },
+    {
+      "principle_id": "PRIN_011",
+      "pillar": "P4 — Performance Efficiency",
+      "focus_area": "P42 — State & Throughput Management",
+      "impact_level": "High",
+      "aws_mapping": {
+        "lens": "AWS Well-Architected Generative AI Lens",
+        "pillar": "GENPERF — Performance Efficiency",
+        "focus_area": "TODO — likely a state / throughput area",
+        "question": "TODO — verify GENPERF question code and text",
+        "best_practice": "TODO — needs investigation; principle covers state lifecycle management in agent workflows (e.g. Step Functions 256KB limit)"
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Ephemeral State Management in AI Workflows",
+        "description": "AI workflows must implement aggressive state cleanup, retaining only essential data between nodes while archiving detailed history to external storage for audit purposes."
+      },
+      "problem": {
+        "description": "AI workflows accumulate massive intermediate state (reasoning history, evidence trails, iteration data) that flows through entire pipelines, causing memory bloat, serialization overhead, and hitting platform limits",
+        "examples": [
+          "ReAct reasoning storing all 3 iterations history adds 20-50KB per document unnecessarily",
+          "Step Functions 256KB limit hit after processing just 5-10 documents with full history",
+          "Lambda memory pressure from loading/processing bloated state on every node",
+          "10x increase in serialization time between nodes due to accumulated metadata",
+          "Network overhead transferring unused historical data between distributed components"
+        ]
+      },
+      "solution": {
+        "approach": "Implement state lifecycle management with aggressive cleanup after node completion, retaining only decision-critical data while archiving detailed history to S3/CloudWatch for audit trails",
+        "key_benefits": [
+          "90% reduction in state size flowing between nodes",
+          "Ability to process 100x more documents without hitting platform limits",
+          "Sub-millisecond state transitions vs 50ms+ with bloated state",
+          "Full audit trail preserved in external storage without runtime impact",
+          "Reduced Lambda cold starts and memory pressure"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+        "competency": "IV.A: Govern AI Deployment Options and Infrastructure"
+      }
+    },
+    {
+      "principle_id": "PRIN_013",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P14 — Lifecycle Automation",
+      "impact_level": "High",
+      "aws_mapping": {
+        "lens": "AWS Well-Architected Generative AI Lens (EXTENSION — no BP-level coverage of context engineering)",
+        "pillar": "Closest fit: GENOPS — Operational Excellence",
+        "focus_area": "N/A — AWS GenAI Lens does not currently address context-scope discipline at the BP level",
+        "question": "N/A",
+        "best_practice": "EXTENSION — context-engineering principles (PRIN_013–PRIN_017) are net-new contributions of our catalogue. Re-check on future Lens revisions."
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Context Layering by Scope",
+        "description": "AI context must be organised in a strict hierarchy by scope — project-wide, domain or capability-wide, section or task-specific, and call-specific — and no file may carry context from a wider scope than its own. Wider-scope context is referenced or composed in, never duplicated."
+      },
+      "problem": {
+        "description": "Without explicit scope layering, the same context (voice rules, domain definitions, audience framing) is duplicated across every prompt file. Maintenance cost grows as N × M with the number of capabilities and sections, and any change requires hunting through dozens of files.",
+        "examples": [
+          "Voice rule 'use British English, avoid hedging' copied into 30 prompt files; updating it requires editing each",
+          "Definition of 'qualified lead' embedded in 12 agent prompts instead of referenced from one shared file",
+          "Workbook-wide framing about packaged vs composable architectures restated inside every section's system prompt",
+          "Audience definition ('Marketing Ops leads, not data engineers') hardcoded across 500 capability prompt sets, creating drift when one set is updated and others are not",
+          "Section-specific rubric leaked upward into a project-wide template, blocking reuse across capabilities"
+        ]
+      },
+      "solution": {
+        "approach": "Establish a fixed scope hierarchy for context files: project-level, domain or capability-level (base), section or task-level (template), and call-level (variables filled at runtime). Each scope owns specific kinds of context; wider scope is composed into narrower scope at build time, never duplicated. Enforce via build-script composition rather than copy-paste.",
+        "key_benefits": [
+          "Single edit to project-wide or domain-wide context propagates to all downstream prompts",
+          "Adding a new capability requires only the capability-level base file plus per-call variables, not new copies of project context",
+          "Reviewers can locate the source of any rule by the scope it affects",
+          "Removes the M×N file growth problem when scaling across capabilities and sections",
+          "Prevents the 'which file is the canonical version' confusion that causes drift"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain III: Understanding How to Govern AI Development",
+        "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)"
+      }
+    },
+    {
+      "principle_id": "PRIN_014",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P14 — Lifecycle Automation",
+      "impact_level": "High",
+      "aws_mapping": {
+        "lens": "AWS Well-Architected Generative AI Lens (EXTENSION — no BP-level coverage of context engineering)",
+        "pillar": "Closest fit: GENOPS — Operational Excellence",
+        "focus_area": "N/A — AWS GenAI Lens does not currently address canonical-source / single-source-of-truth discipline at the BP level",
+        "question": "N/A",
+        "best_practice": "EXTENSION — context-engineering principles (PRIN_013–PRIN_017) are net-new contributions of our catalogue. Re-check on future Lens revisions."
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Single Source of Truth for AI Context",
+        "description": "Every fact, definition, rule, or instruction consumed by an AI system must live in exactly one canonical file. Where the same content appears in multiple files, one is the source and the others are bugs. Applies to terminology definitions, voice rules, output field specifications, and business rules referenced by prompts."
+      },
+      "problem": {
+        "description": "Duplicated content across prompt files, agent configurations, and tool definitions silently diverges over time. Each duplication multiplies the surface area for drift, and there is no signal when one copy is updated and others are not. PRIN_005 addresses drift between AI agents and authoritative business definitions; this principle addresses drift within the AI system's own internal content.",
+        "examples": [
+          "Same output field rule ('must include named tools') written into both the user prompt prose and the JSON schema description, with the two drifting after one is edited",
+          "The string 'use British English' repeated in 30 system prompts; an update to 'British English, no contractions' applied to 28 of 30, with the remaining two generating inconsistent output for months",
+          "Tool list (allowed model providers, allowed connectors) maintained separately in pipeline code and in prompt templates, drifting when one is updated",
+          "Schema field descriptions duplicated between code annotations and prompt instructions, leading to inconsistent enforcement between LLM and validator",
+          "Persona description ('Marketing Ops lead, not data engineer') repeated in five places, allowing one team to edit it for their use case while breaking others"
+        ]
+      },
+      "solution": {
+        "approach": "Establish canonical-source files for each category of content (terminology, voice, output schemas, business rules) and require all other files to reference rather than duplicate. Build-time validation detects duplication. For runtime composition, the canonical file is loaded once and inlined at build, so the LLM sees consistent content without manual copy-paste.",
+        "key_benefits": [
+          "One edit per change, regardless of how many prompts depend on the rule",
+          "Drift detection becomes trivial: any non-canonical copy is a violation, not a judgement call",
+          "Reduces the maintenance load that PRIN_005 (Context Lifecycle Management) must catch downstream",
+          "Reviewers can audit any rule by reading one file, not searching the repo",
+          "Enables coordinated cross-prompt updates by changing the canonical source"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain III: Understanding How to Govern AI Development",
+        "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)"
+      }
+    },
+    {
+      "principle_id": "PRIN_015",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P14 — Lifecycle Automation",
+      "impact_level": "High",
+      "aws_mapping": {
+        "lens": "AWS Well-Architected Generative AI Lens (EXTENSION — no BP-level coverage of context engineering)",
+        "pillar": "Closest fit: GENOPS — Operational Excellence",
+        "focus_area": "N/A — AWS GenAI Lens does not currently address channel discipline (system / user / schema separation) at the BP level",
+        "question": "N/A",
+        "best_practice": "EXTENSION — context-engineering principles (PRIN_013–PRIN_017) are net-new contributions of our catalogue. Re-check on future Lens revisions."
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Channel Discipline for LLM Instructions",
+        "description": "An LLM call has three instruction channels — system message, user message, and output schema. Each channel must carry only the kind of instruction it is designed for: standing role and domain framing in the system message, task and per-call variables in the user message, per-field output specifications in the schema. Cross-channel duplication is a design defect."
+      },
+      "problem": {
+        "description": "Without channel discipline, the same instruction is written into multiple channels, prompts bloat over time, and drift opens between the prompt prose and the enforced schema. The LLM receives redundant guidance and the team loses the ability to know which channel is authoritative.",
+        "examples": [
+          "Per-field rule ('first sentence must be a sharp claim, not a definition') written in both the user prompt and the JSON schema description for the same field",
+          "Standing role ('you are evaluating CDP architectures') restated in the user message on every call rather than placed once in the system message",
+          "Output structure described in user prompt prose ('return JSON with these six fields...') and then independently enforced via schema, allowing the two to drift",
+          "Per-call variables (capability name, customer ID) embedded into the system message rather than passed via the user message, defeating system-message caching and parameterisation",
+          "Voice rules repeated in both the system message and the schema field descriptions, doubling maintenance and inviting inconsistency"
+        ]
+      },
+      "solution": {
+        "approach": "Define and enforce a channel taxonomy for every LLM call: system message carries standing role and domain context only; user message carries the task statement and variable inputs only; output schema carries structural and per-field specifications only. Any instruction that could plausibly live in multiple channels is assigned to one canonical channel by the team's style guide.",
+        "key_benefits": [
+          "Prompt size collapses by removing redundant instruction across channels",
+          "Each channel is independently editable without risk of contradiction",
+          "Enables system-message caching (PRIN_002) by keeping the system message stable and per-call content in the user message",
+          "Schema enforcement is unambiguous — the schema is the contract, not the prose",
+          "Reviewers can audit any kind of instruction by checking one channel, not three"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain III: Understanding How to Govern AI Development",
+        "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)"
+      }
+    },
+    {
+      "principle_id": "PRIN_016",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P14 — Lifecycle Automation",
+      "impact_level": "High",
+      "aws_mapping": {
+        "lens": "AWS Well-Architected Generative AI Lens (EXTENSION — no BP-level coverage of context engineering)",
+        "pillar": "Closest fit: GENOPS — Operational Excellence",
+        "focus_area": "N/A — AWS GenAI Lens does not currently address rule co-location with artefacts at the BP level",
+        "question": "N/A",
+        "best_practice": "EXTENSION — context-engineering principles (PRIN_013–PRIN_017) are net-new contributions of our catalogue. Re-check on future Lens revisions."
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Co-locate Rules with the Artefacts They Govern",
+        "description": "A rule that governs a specific artefact — an output field, a tool, a workflow step — must live alongside that artefact, not in distant prose that requires cross-referencing. Field rules belong in schema field descriptions; tool rules belong in tool definitions; step rules belong at the step. Distant prose rules are an anti-pattern."
+      },
+      "problem": {
+        "description": "When rules sit far from the artefacts they govern, reviewers and downstream LLMs cannot locate the constraints that apply to a given field or tool without searching. The likelihood of orphaned rules (rule still in the prompt prose, but the field it governed has been removed) and inconsistent rules (different prose blocks say different things about the same field) grows with the size of the prompt.",
+        "examples": [
+          "Schema defines field `pass_example`; rules about what `pass_example` must contain ('named tools, observable behaviours, not abstract') live in a separate prose block 200 lines above",
+          "Tool definition for `search_warehouse` exists in code; rule ('agent must call search_warehouse before any decision') lives in a system prompt that is not updated when the tool signature changes",
+          "Workflow includes a `judge` step; the rule that the judge must use a different model than the generator (PRIN_010) lives in architecture documentation, not at the step where it would catch violations",
+          "Schema has 15 fields; per-field rules are listed as a bulleted block at the top of the prompt rather than as field-level descriptions, causing reviewers to scroll between the field definition and its rule",
+          "A field is removed from the schema during refactor but its rule remains in the prompt prose, instructing the LLM to populate a field that no longer exists"
+        ]
+      },
+      "solution": {
+        "approach": "Establish a co-location standard: every per-artefact rule lives in or adjacent to the artefact definition itself. Schema field descriptions become the single source of truth for per-field rules; tool definitions carry their usage rules; workflow step definitions carry their entry and exit conditions. Where the platform supports field-level metadata, use it; where it does not, adopt a structured convention.",
+        "key_benefits": [
+          "Reviewers reading a field definition see all rules that govern it without scrolling or searching",
+          "Removing a field automatically removes its rule, preventing orphan-rule pollution",
+          "Reduces the cognitive cost of changing a field — the rule is right there to update",
+          "Aligns with PRIN_012 by making the schema the locus of output governance",
+          "Eliminates the failure mode where prose-level rules and artefact-level definitions disagree"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain III: Understanding How to Govern AI Development",
+        "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)"
+      }
+    },
+    {
+      "principle_id": "PRIN_017",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P13 — Traceability",
+      "impact_level": "High",
+      "aws_mapping": {
+        "lens": "AWS Well-Architected Generative AI Lens (EXTENSION — no BP-level coverage of deterministic prompt assembly)",
+        "pillar": "Closest fit: GENOPS — Operational Excellence",
+        "focus_area": "N/A — AWS GenAI Lens does not currently address deterministic and inspectable prompt assembly at the BP level",
+        "question": "N/A",
+        "best_practice": "EXTENSION — context-engineering principles (PRIN_013–PRIN_017) are net-new contributions of our catalogue. Re-check on future Lens revisions."
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Deterministic and Inspectable Prompt Assembly",
+        "description": "The process that assembles a final prompt and schema from constituent context files must be deterministic — the same inputs always produce the same prompt — and inspectable, meaning a developer can print the fully-assembled prompt before any LLM call. No clever runtime mutation, no LLM-determined prompt content, no string concatenation buried in business code."
+      },
+      "problem": {
+        "description": "Non-deterministic or non-inspectable prompt assembly makes LLM outputs irreproducible, debugging slow, and audit impossible. When an output is wrong, the team cannot reliably produce the exact prompt that caused it, cannot test fixes against the same prompt, and cannot demonstrate to auditors what the system said to the model on a specific call.",
+        "examples": [
+          "Prompt assembly involves runtime branching based on environment variables, system load, or random sampling — same logical input produces different prompts on different runs",
+          "Final prompt is constructed by string concatenation across three Python files, with no single place to print or log the assembled result",
+          "An LLM is used to generate or rewrite parts of the prompt at runtime, making the input to the main LLM call itself non-reproducible",
+          "When an output is flagged in production, the team cannot reconstruct the exact prompt that was sent six hours ago because the assembly logic depends on cache state",
+          "Audit request asks 'show me the exact instruction the model received for this decision', and the team can only provide the template, not the assembled call"
+        ]
+      },
+      "solution": {
+        "approach": "Implement prompt assembly as a pure function from versioned input files to a final prompt-and-schema artefact. Provide a CLI or build target that prints the assembled prompt for any (capability, section, prompt-type) tuple. Log the assembled prompt — or a cryptographic hash of it — alongside every LLM call so any output can be traced back to its exact input. Forbid LLM-generated prompt content in production pipelines.",
+        "key_benefits": [
+          "Any LLM output can be reproduced from the same inputs at any later time",
+          "Debugging shifts from speculation to inspection — print the prompt and read it",
+          "Auditors can be shown the exact instruction sent to the model for any specific call (supports PRIN_009 evidence-based decisioning)",
+          "Enables A/B testing of prompt changes with confidence that nothing else varied",
+          "Eliminates an entire category of subtle production bugs caused by non-deterministic assembly"
+        ]
+      },
+      "gates": [],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "TODO_to_be_authored",
+        "sign_off": "binary"
+      },
+      "aigp": {
+        "domain": "Domain III: Understanding How to Govern AI Development",
+        "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)"
+      }
+    }
+  ]
+}

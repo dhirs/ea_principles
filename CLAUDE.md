@@ -106,10 +106,14 @@ rm -rf .next node_modules package-lock.json && npm install
 - Handles errors with appropriate status codes
 
 ### /api/ri/[id] Route
-- Serves the Reference Implementation README for a principle: reads `<repo-root>/agentflow/ri/<id>/README.md`.
-- These files live at the **repo root**, OUTSIDE the app dir, so they are not static assets. The route resolves them via `path.join(process.cwd(), '..', 'agentflow', 'ri', id, 'README.md')` (`process.cwd()` is `s3-json-viewer/`, so `..` is the repo root).
+- Serves the Reference Implementation README for a principle: reads `<repo-root>/data/ri/<id>/README.md`.
+- These files live at the **repo root**, OUTSIDE the app dir, so they are not static assets. The route resolves them via `path.join(process.cwd(), '..', 'data', 'ri', id, 'README.md')` (`process.cwd()` is `s3-json-viewer/`, so `..` is the repo root).
 - `id` is whitelisted to `^[A-Za-z0-9_-]+$` to block path traversal → returns 400; 404 when the README is missing; 200 with `{ content }` otherwise.
 - Supports `HEAD` (Next auto-derives it from `GET`); the Solution tab uses a HEAD request as a cheap existence check.
+
+### /api/taxonomy Route
+- Serves the per-principle schema for the Taxonomy page: reads `<repo-root>/data/principle_schema.json` via `path.join(process.cwd(), '..', 'data', 'principle_schema.json')`.
+- Returns the parsed JSON (200) or `{ error, details }` (500) if the file can't be read. The `/taxonomy` page flattens `principle_schema.fields` into `level1.level2` dot-path nodes.
 
 ### Expected JSON Structure
 ```json

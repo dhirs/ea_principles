@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "Governance Questions Surfaced by the Architecture Principles",
+    "description": "Companion file to principles.json. Each entry captures a governance question that arose from authoring or applying an architecture principle — questions about who decides, who approves, who executes, and what the request / review / change-management process looks like. The catalogue's architecture principles (in principles.json) specify WHAT should be done; this file collects governance questions about HOW the human process around those architectures should be structured. Governance is separate from architecture and is collected here for future treatment.",
+    "format_version": "1.0",
+    "created": "2026-05-27",
+    "author": "Dheeraj",
+    "notes": [
+      "Architecture answers: what artefact exists, where, what is checked, who validates it from a technical-ownership perspective (Project Architect / ARB). Governance answers: who raises the request to change it, who reviews, who approves, who edits, who merges, who deploys. The catalogue's principles in principles.json cover architecture; this file collects governance questions surfaced as those principles are authored or applied.",
+      "Entries here are not yet decisions — they are open questions captured at the point of surfacing, to be resolved later either by writing governance principles (separate schema, to be decided) or by recording the agreed process inline on the entry. The distinction is recorded in the 2026-05-27 entry in decisions.md.",
+      "Convention: entry_id format GOV_NNN. Each entry names the principle that surfaced it, the architectural context, the governance question, and (when resolved) the proposed_resolution and agreed_resolution."
+    ]
+  },
+  "entries": [
+    {
+      "entry_id": "GOV_001",
+      "raised_during": "GO1B1-04 solution authoring (2026-05-27, when the principle was still PRIN_004 — renamed later the same day)",
+      "related_principle": "GO1B1-04",
+      "context": "GO1B1-04 specifies that `eval/drift/config.yaml` must exist in the workload repository with declared metrics, per-dimension baselines, cadences, thresholds, and alert routing. The architecture says WHAT must be in the config and that CI gates check completeness. The architecture says nothing about the human process for changing the config in production — specifically the threshold values that determine when alerts fire, which often reflect business risk appetite rather than purely technical judgement.",
+      "governance_question": "When a business owner wants to change an alert threshold in `eval/drift/config.yaml` (for example: 'the fraud-precision alert threshold should drop from 0.92 to 0.88 because our risk appetite has changed'), what is the request → review → approval → edit → deploy process? Who can raise the request? Who reviews it? Who has authority to approve a threshold change? Who actually edits the YAML in the repo? Who merges and deploys? Does the same process apply to all threshold types, or do some (e.g. regulatory-driven thresholds) require additional sign-off?",
+      "status": "open",
+      "proposed_resolution": null,
+      "agreed_resolution": null
+    },
+    {
+      "entry_id": "GOV_002",
+      "raised_during": "Maven lightning deck Part 3 authoring (2026-05-29) — slide 17 worked example",
+      "related_principle": "GO1B1-01",
+      "context": "GO1B1-01 mandates a versioned ground-truth evaluation harness committed to the workload repository under `eval/scenarios/`, with each entry structured as (input payload, expected decision, expected evidence trace). The architecture says WHAT must exist, WHERE it lives, and that CI gates enforce its presence and per-change execution. The architecture says nothing about who is allowed to author or edit the `expected_decision` field on those entries — and the expected_decision IS a policy reading on every entry. Same shape as GOV_001 (the threshold field on GO1B1-04's drift config): the architecture's artefact contains a load-bearing field whose value encodes a business / policy / risk decision, and the architecture is silent on who owns the value.",
+      "governance_question": "Who is allowed to add new scenarios to `eval/scenarios/`? Who can edit the expected_decision label on existing scenarios? Specifically: when a label change re-classifies a class of cases (e.g. flipping the expected_decision from REJECT to AUTO_APPROVE for a class like 'no-receipt over $500, inside window, gift annotation'), who reviews? Is code review by two engineers sufficient, or does the label change require sign-off from legal / risk / business owners distinct from code review? How does the change reach production — is the merge-to-main gate the only sign-off, or does a separate policy-review step exist? Is there a meaningful distinction between PRs that ADD new scenarios (expanding coverage) and PRs that EDIT existing labels (rewriting policy)?",
+      "status": "open",
+      "proposed_resolution": null,
+      "agreed_resolution": null
+    }
+  ]
+}

@@ -3,9 +3,9 @@ import { readFile } from "fs/promises"
 import path from "path"
 
 // principle_schema.json lives at the repo root, outside the Next.js app dir,
-// at: <repo>/agentflow/principle_schema.json
+// at: <repo>/data/principle_schema.json
 // `process.cwd()` is the app root (s3-json-viewer/), so the repo root is one up.
-const SCHEMA_PATH = path.join(process.cwd(), "..", "agentflow", "principle_schema.json")
+const SCHEMA_PATH = path.join(process.cwd(), "..", "data", "principle_schema.json")
 
 export async function GET() {
   try {

@@ -3,9 +3,9 @@ import { readFile } from "fs/promises"
 import path from "path"
 
 // Reference Implementation README files live at the repo root, outside the
-// Next.js app dir, at: <repo>/agentflow/ri/<principle_id>/README.md
+// Next.js app dir, at: <repo>/data/ri/<principle_id>/README.md
 // `process.cwd()` is the app root (s3-json-viewer/), so the repo root is one up.
-const RI_ROOT = path.join(process.cwd(), "..", "agentflow", "ri")
+const RI_ROOT = path.join(process.cwd(), "..", "data", "ri")
 
 // Principle ids look like "GO1B1-01". Restrict to a safe charset so the id
 // can never escape RI_ROOT via path traversal.

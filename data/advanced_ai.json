@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Advanced AI Architecture — Mature-Tier Concerns Deferred from the Catalogue",
+    "description": "Companion file to principles.json. Records architectural concerns that have real value at mature organisations (5+ projects, formal ARB, dedicated platform team) but are not authored as catalogue principles. Three reasons a concern lands here rather than in principles.json: (a) it assumes infrastructure the catalogue does not treat (a centralised gateway, a workload registry, an ARB dashboard); (b) it only materialises once basic catalogue principles are already in place across a portfolio; (c) it is a whole-org or cross-workload concern rather than a per-workload one. Each entry names the concern, the failure mode, the prerequisites that must be in place before the entry's discipline is meaningful, what the discipline requires to build, the value it returns once built, and any cross-references to catalogue principles or legacy entries.",
+    "format_version": "1.0",
+    "created": "2026-05-29",
+    "author": "Dheeraj",
+    "notes": [
+      "This file is NOT a catalogue of authored principles. The catalogue is `principles.json` and uses the schema in `taxonomy.json`. Entries here are pre-principle gap records — material the catalogue acknowledges is real and valuable but has chosen not to ship as enforceable rules because the prerequisites or infrastructure exceed the catalogue's current depth of treatment.",
+      "Convention: entry_id format ADV_NNN. Each entry follows the schema: { entry_id, title, raised_during, concern, failure_mode, why_mature_tier, prerequisites, what_it_requires_to_build, value_when_built, catalogue_cross_reference, status }.",
+      "Status enum: documented_gap (initial state — concern named but no further work); under_review (concern being actively evaluated for promotion to a catalogue principle or for closure); promoted_to_principle (concern has been authored as a catalogue principle — cross-reference points to the principle); closed (concern was evaluated and intentionally not pursued; rationale captured in catalogue_cross_reference).",
+      "Entries can have explicit dependencies on other ADV_NNN entries via the prerequisites field. ADV_002 (continuous re-evaluation) explicitly depends on ADV_001 (centralised gateway) because per-workload cost telemetry — which ADV_001 provides — is the substrate for ADV_002's trigger logic. Dependency chains are part of why these entries are mature-tier: each upstream concern has to be solved before downstream concerns become meaningful."
+    ]
+  },
+  "entries": [
+    {
+      "entry_id": "ADV_001",
+      "title": "Centralised LLM gateway with per-workload cost attribution",
+      "raised_during": "GENCOST01-BP01 step 4 deferral (2026-05-29) — see the corresponding deferral entry in decisions.md. Surfaced when the discussion turned to 'who tracks monthly pipeline cost > $50' at enterprise scale: per-workload cost attribution is impossible without a centralised gateway tagging every LLM call with workload_id / cost_center metadata.",
+      "concern": "At enterprise scale, the company receives one consolidated bill from each foundation-model provider (Anthropic, OpenAI, Amazon Bedrock, Azure OpenAI, Google Vertex AI). Without a centralised gateway logging every call with workload_id / project_id / cost_center metadata, the company cannot attribute the bill to projects. Finance receives an aggregate number and cannot act on it. Procurement cannot negotiate based on per-project usage. ARB cannot enforce per-workload budgets. Catalogue principles that assume per-workload cost visibility (notably the deferred GC1B1-02 continuous re-evaluation) become unenforceable.",
+      "failure_mode": "Cost cannot be attributed to causes. A workload running away on tokens looks the same in the aggregate bill as a workload running efficiently. Investigation requires reconstructing usage from each project team's self-reported telemetry, which is unreliable, slow, and contested. Procurement loses leverage because they cannot identify the 10 highest-cost workloads to negotiate around. When a budget alert fires at the org level, the response is a fire drill across N teams rather than a targeted intervention on a specific workload. The same shape as GC1B1-01's tribal-knowledge failure, scaled to portfolio level: the org cannot answer 'who's spending what on AI' from any artefact it controls.",
+      "why_mature_tier": "At 1-10 projects, provider-native multi-tenancy is sufficient — Anthropic Workspaces, OpenAI Projects, AWS IAM with Bedrock — each project's spend is visible in the provider console without a custom gateway. The need for a custom gateway only emerges at 10-100+ projects when (a) workspace count strains operational rotation and key management, (b) PII redaction at the boundary becomes mandatory and provider-native offerings are insufficient, (c) rate-limit pooling and burst smoothing across workloads matters, (d) custom compliance and audit-log retention requirements exceed provider-native offerings, (e) multi-provider abstraction becomes valuable (failover between providers, cost-driven routing between models). These pressures all scale with workload count; small orgs can defer indefinitely.",
+      "prerequisites": [
+        "Multiple AI workloads in production (5+ minimum, more typically 10-100+) with cost-significant token volume.",
+        "A platform team capable of operating a custom gateway, OR a procurement decision to standardise on a SaaS gateway (LiteLLM, Portkey, Helicone, Vercel AI Gateway).",
+        "Compliance and security requirements that the gateway can enforce (PII redaction at the boundary, audit logs, RBAC, data residency).",
+        "Project teams willing to route through the gateway rather than calling providers directly — governance buy-in is the political prerequisite; without it the gateway gets bypassed and the cost-attribution promise breaks."
+      ],
+      "what_it_requires_to_build": [
+        "Gateway service holding the actual provider API keys, exposing a provider-agnostic API to project teams.",
+        "Per-project credentials (project_id + secret, OAuth tokens, or service-mesh identity) — never give project teams direct provider keys once the gateway is in place.",
+        "Telemetry pipeline logging every call with workload_id, model, input_tokens, output_tokens, cost, latency, status, and any custom dimensions the org wants to roll up (cost_center, team, environment).",
+        "Time-series database for cost rollups (Prometheus, ClickHouse, Snowflake — depending on the platform team's stack).",
+        "Per-project budget enforcement (rate limits, soft warnings at thresholds, hard cutoffs at ceilings).",
+        "Audit-log retention policy (typically 90 days hot, 1-7 years cold for regulated industries).",
+        "Optional layers worth adding once the core is in place: prompt-caching layer, response caching for repeated queries, multi-provider routing for failover, automated PII redaction at the request boundary, prompt-injection defence."
+      ],
+      "value_when_built": [
+        "Solves the bill-attribution problem — finance can query cost by project, cost-center, model, time-window in one place. SQL on the telemetry table answers any cost-attribution question.",
+        "Enables enforcement of every catalogue principle that requires per-workload cost visibility — notably the deferred GC1B1-02 (continuous re-evaluation), but also any future cost-aware principles at the GENCOST pillar.",
+        "Centralises compliance — PII redaction happens once at the boundary rather than being reimplemented per workload.",
+        "Multi-provider abstraction — switching a workload from one provider to another becomes a gateway-config change rather than a code change in each project, which materially de-risks vendor dependency.",
+        "Procurement leverage — negotiate provider contracts based on real per-workload data instead of forecasts.",
+        "Operational visibility — outages on one provider become visible immediately at the gateway, allowing failover decisions to be made centrally."
+      ],
+      "catalogue_cross_reference": "Not authored as a catalogue principle. The legacy `principles_old.json` had a PRIN_003 (Centralized LLM SDK) covering the security side of this same architectural pattern; the cost-attribution side is the same architectural artefact (one centralised gateway) reframed for a different value axis. Future catalogue work may anchor this to a specific AWS Lens BP — GENSEC01-BP01 (least-privilege access to FM endpoints) for the security side, plus a future GENCOST cost-attribution BP for the cost side — and author it then. Until that work happens, this entry is the canonical record of the gap.",
+      "status": "documented_gap"
+    },
+    {
+      "entry_id": "ADV_002",
+      "title": "Continuous re-evaluation of model selection across the portfolio",
+      "raised_during": "GENCOST01-BP01 step 4 deferral (2026-05-29) — see the corresponding deferral entry in decisions.md. This is the substantive discipline AWS step 4 called for; the catalogue chose to defer rather than ship a project-tier principle that understates the enforcement work or an enterprise-tier principle that assumes infrastructure the catalogue does not treat.",
+      "concern": "Once a workload has a documented model-selection ADR (per catalogue principle GC1B1-01), the world keeps changing — new model classes are released, prices shift, capabilities evolve, the workload's traffic mix changes. Without periodic re-evaluation discipline at portfolio scale, ADRs ossify and workloads run on a now-suboptimal model class for months or years. At 100+ workloads, the aggregate cost waste compounds materially.",
+      "failure_mode": "Per the GC1B1-01 problem section, an ADR captures a moment in time. Without re-evaluation, the moment becomes stale. Concrete scenarios at portfolio scale: Sonnet 5 (or equivalent next-tier model) is released, no workload switches because no review fires; provider pricing changes 20%, nobody notices because nobody is watching; Haiku 5 ships with better structured-output quality, every workload using a larger model for structured judgement stays on the older expensive choice. Aggregate cost waste at portfolio scale can be in the millions per year, plus opportunity cost on quality improvements not adopted. Per-workload, the failure is invisible — the workload runs fine. Aggregate is where the cost shows up.",
+      "why_mature_tier": "Re-evaluation at small scale (1-5 workloads) is a calendar reminder plus a sit-down review every quarter — cheap, mechanical, no infrastructure required. At portfolio scale (100+, especially 1000+ workloads), eyeballing each workload is infeasible. The discipline needs (a) gateway-driven trigger detection so cost-exceeded and quality-degraded events fire automatically; (b) a workload registry so cadence-elapsed scans can identify overdue reviews; (c) provider-release-feed subscription so model-class-launch triggers fire across affected workloads in bulk; (d) ticketing routing so review_due tickets reach the named owner (PA) per workload; (e) an ARB dashboard for portfolio-wide visibility into fire rates, SLA compliance, change-vs-stay ratios. None of this exists in the catalogue's tooling scope; all of it is platform-team work.",
+      "prerequisites": [
+        "ADV_001 (centralised gateway) — without per-workload cost telemetry, cost-driven triggers cannot fire mechanically. This is a hard dependency.",
+        "GC1B1-01 (model-selection ADR) authored and adopted across the portfolio — each workload must have a baseline decision record before re-evaluation has something to compare forward from.",
+        "A workload registry containing { workload_id, current_model_per_role, last_review_date, cost_mtd, declared_budget_ceiling, named_owner }. Populated daily from the gateway telemetry plus the per-workload ADRs.",
+        "Subscription to provider release feeds (Anthropic, OpenAI, AWS Bedrock, Google Vertex AI, Azure OpenAI) for model-class-launch triggers.",
+        "Ticketing integration (Jira, Linear, ServiceNow, or platform-native) for routing review_due tickets to PAs with SLA enforcement.",
+        "ARB or platform team to own the dashboard and the aggregate spot-check discipline."
+      ],
+      "what_it_requires_to_build": [
+        "Workload registry as a database table or service, populated daily from gateway telemetry plus per-workload ADR scans.",
+        "Automated trigger rules running against the registry: cost-exceeded queries (`SELECT workload_id WHERE cost_mtd > declared_budget_ceiling`); model-release-feed listener (RSS or webhook from each provider); cadence-elapsed scans (daily, marking workloads with `last_review_date < NOW() - INTERVAL '90 days'`); quality-degradation hooks from per-workload monitoring (GO1B1-04 family).",
+        "Ticket-creation automation: when a workload is marked review_due, create a ticket addressed to the named_owner with a 14-day SLA.",
+        "Per-workload review-config.yaml and review-log.yaml committed in each workload repo (the catalogue's small-scale form). Even at enterprise scale these files live per-workload — the portfolio infrastructure is what surfaces and routes; the workload-level discipline is what records each decision.",
+        "ARB dashboard with views: overdue review count, last-30-days trigger fire counts by trigger type, change-vs-stay ratio across reviews completed, aggregate cost shift from reviews, SLA compliance by workload owner.",
+        "Spot-check workflow — ARB samples ~10% of completed reviews per quarter to verify the discipline is honest (per the catalogue's standard ownership convention)."
+      ],
+      "value_when_built": [
+        "Model selections stay current rather than ossifying — every trigger event produces a deliberate stay-or-switch decision, captured in the per-workload log.",
+        "Cost optimisation compounds as cheaper or better models are released — the trigger system surfaces each opportunity to the right owner with the right SLA.",
+        "Auditable trail per workload for finance, procurement, and compliance — any question about why a workload is on its current model has a log entry to point at.",
+        "Catches quality-degradation regressions that per-PR CI gates miss — the quality-degradation trigger fires on production metrics, not on PR-level changes.",
+        "Portfolio-level visibility for ARB — change-vs-stay ratio is a leading indicator of whether the discipline is healthy or theatre."
+      ],
+      "catalogue_cross_reference": "Decomposed as candidate principle GC1B1-02 during the GENCOST01-BP01 walkthrough on 2026-05-29. Deferred from catalogue scope on the same day on meta-scope grounds — the first documented override of the step_promotion rubric, captured in the corresponding decisions.md entry. Adopters needing the discipline have the GC1B1-02 sketch as a roadmap and this entry as the enterprise-scale operationalisation. If the catalogue's depth of treatment expands to include the gateway+registry+trigger layer in future revisions, this entry would be revisited and potentially promoted to a catalogue principle at enterprise-tier ownership.",
+      "status": "documented_gap"
+    }
+  ]
+}

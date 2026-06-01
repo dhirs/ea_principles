@@ -1,0 +1,912 @@
+{
+  "meta": {
+    "title": "Enterprise AI Architecture Principles (AWS GenAI Lens — Aligned Catalogue)",
+    "description": "Concrete, enforceable principles that concretise AWS Well-Architected Generative AI Lens best practices. Each principle names who validates it, when it is checked, and what artefacts the validator inspects. Catalogue rebuilt from scratch on the v1.5 schema; mappings are fetched from the live AWS Lens, not inherited from the legacy catalogue.",
+    "format_version": "1.9",
+    "schema_reference": "taxonomy.json",
+    "aws_lens_publication_date": "2025-11-19",
+    "catalogue_started": "2026-05-26",
+    "author": "Dheeraj",
+    "notes": [
+      "This catalogue is being built one principle at a time, BP by BP, against the live AWS GenAI Lens. The legacy catalogue lives at `principles_old.json` and is retained for reference but is not authoritative for this rebuild.",
+      "Every principle in this catalogue must concretise (or explicitly extend) an AWS GenAI Lens BP, with the BP confirmed against the source documentation at https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/. The verification date is recorded on each reference's `last_checked` field.",
+      "Principles anchor at the AWS implementation-step level by default, not the BP level. The per-BP due-diligence record (which steps were promoted to principles, which were not, and why) lives in `lens_mapping.md`. See `taxonomy.json` framework_mappings_spec.anchoring_methodology.",
+      "Pillars and focus areas in this catalogue mirror the AWS GenAI Lens vocabulary (Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization). Sustainability — the sixth AWS pillar — is omitted; sustainability concerns are distributed across Cost Optimization, Operational Excellence, and Security.",
+      "Schema is vendor-neutral. `framework_mappings` is keyed by framework (`aws`, `azure`, `gcp`, …); the catalogue currently populates `aws` only. Azure / GCP mappings can be added per principle without schema change.",
+      "Schema v1.6 (2026-05-26) re-introduced two root-level fields on every principle: `applicability` (which AI patterns the principle applies to — llm/rag/agentic/ml) and `maturity_level` (when an adopting organisation should care — foundational/scaling/mature). PRIN_001 and PRIN_002 were retrofitted in the same session.",
+      "Schema v1.7 (2026-05-26, same day as v1.6) reshaped `applicability` from a flat array of patterns to a pattern-criticality map: legacy `['agentic']` becomes `{ 'agentic': 'mandatory' }`. New `enums.pattern_criticality` (mandatory / nice_to_have) carries the criticality per pattern. PRIN_001 and PRIN_002 retrofitted; both kept narrow (agentic-only). See taxonomy.json conventions.choosing_pattern_criticality.",
+      "Schema v1.8 (2026-05-26, same day as v1.6 and v1.7) added an optional `explain_prompt` field on every principle. The field holds a compiled OpenAI-style system + user_template pair used by the runtime UI's Problem-tab 'Explain' affordance to generate illustrative examples for a chosen industry and implementation type. Compiled prompts are principle-specific so the prompt can honour each principle's failure shape (silent regression, setup absence, cumulative drift, one-shot breach) without a single universal prompt distorting the narrative. PRIN_001, PRIN_002, and PRIN_003 compiled in-session. See taxonomy.json conventions.per_principle_explain_prompt_compilation and the schema-v1.8 entry in decisions.md.",
+      "Principle ID rename (2026-05-27): the four principles were renamed from the legacy `PRIN_NNN` format to the new BP-anchored, sequential format `<bp_code>-NN`. PRIN_001 → GO1B1-01, PRIN_002 → GO1B1-02, PRIN_003 → GO1B1-03, PRIN_004 → GO1B1-04. Each principle received a PATCH bump on its change_history. The `bp_code` compresses the AWS pillar / question / BP triple to 5 characters (GO = GenOps, 1 = Q1, B = BP marker, 1 = BP1); the `NN` suffix is a sequential counter — the Nth principle promoted from that BP, in promotion order. IDs within a BP are consecutive (01, 02, 03, …) with no gaps, regardless of which AWS implementation steps were not_promoted. The AWS step a principle concretises is recorded in framework_mappings.aws.references[0].implementation_step.number rather than encoded in the ID suffix. The taxonomy convention is at taxonomy.json conventions.principle_id_format; the rename rationale is in the 2026-05-27 entry in decisions.md. Historical references in append-only journals (decisions.md prose, prior change_history summaries) were intentionally left under the legacy IDs; only live cross-references were updated.",
+      "Schema v1.9 (2026-05-29) added a required root-level `serving_paradigm` field on every principle — a criticality map (same shape as `applicability` v1.7) keyed by foundation-model serving paradigm. Enum values: api_on_demand / api_provisioned / self_hosted_managed / self_hosted_unmanaged. Surfaced during the GENCOST02-BP02 walkthrough where the candidate GC2B2-01 principle (right-size hosting infrastructure) is intrinsically self-hosting-only — applicability could not express the narrowing because it is keyed by AI pattern (llm/rag/agentic/ml), not by hosting model. All six pre-existing principles (GO1B1-01..05 + GC1B1-01) were retrofitted with `{ api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory }` — every existing principle's discipline (eval harness, stratification, metric encapsulation, drift monitor, refresh cadence, model-selection ADR) applies regardless of how the model is served. Each principle received a MINOR change_history bump. See taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md for the rationale."
+    ]
+  },
+  "principles": [
+    {
+      "principle_id": "GO1B1-01",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P11 — Model Performance Evaluation",
+      "impact_level": "High",
+      "applicability": { "agentic": "mandatory" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "implementation_step": {
+                "number": 1,
+                "title": "Create a ground truth dataset",
+                "verbatim_text": "Create a ground truth dataset. Verify that you have diverse data representation. Consider various user personas and use cases."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-26",
+              "note": "AWS step 1 calls for the dataset to exist with diverse representation across user personas and use cases. AWS leaves unspecified: where the dataset lives, who owns it, what shape it takes for an autonomous agent (input + expected decision + expected evidence trace), and how strata are declared and verified. This principle concretises all four."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.A: Govern Data for AI Systems",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "Provisional mapping based on subject-matter proximity — the eval harness is a curated data artefact governing model evaluation, which aligns with III.A's data-governance scope. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Maintain a versioned ground-truth evaluation harness for agent decisions in the workload repository",
+        "description": "Each agent workload must establish a ground-truth evaluation harness, committed to the workload repository, with each entry structured to capture the input payload, the expected decision, and the expected evidence trace. The harness must include diverse representation of production scenarios — personas, use cases, and input variations the workload sees in real use."
+      },
+      "problem": {
+        "description": "Without a version-controlled ground-truth harness that can be re-run on every code or configuration change to the agent, changes ship to production with unknown regression risk. There is no mechanical way to block a bad migration — only post-deployment discovery via customer impact. The harness must be part of the workload repository so every developer can run it, every CI build invokes it, and no architect's local notebook becomes a single point of failure.",
+        "examples": [
+          "Original architect hand-validated production scenarios on their laptop and ran them ad-hoc; the harness was never committed to the repository; when the architect left, no one could re-run it on the next change.",
+          "Harness exists in the repository but only captures inputs, not expected outputs; CI can run the agent against each scenario but has nothing to compare its decisions against.",
+          "Harness captures the expected decision but not the expected evidence trace; an agent that stops consulting a key signal still produces the right output for the wrong reason, and the regression is invisible.",
+          "Harness entries have inconsistent free-form schema; the CI validator silently skips malformed entries, so coverage looks complete but isn't."
+        ]
+      },
+      "solution": {
+        "approach": "Commit the test harness to the workload repository at a known path (convention: `eval/`, with `eval/scenarios/` for labelled test cases and `eval/data/` for supporting input data). Wire the harness into the CI pipeline so it runs on every PR that changes agent code or configuration. Migration to production is blocked when the harness fails.",
+        "key_benefits": [
+          "Foundational dependency for periodic evaluation (GENOPS01-BP01 step 3), drift monitoring (step 6), and harness refresh (step 7) — none of those can run without this principle in place.",
+          "Production knowledge survives team changes; the harness is in the repository, not in any individual's head or local notebook.",
+          "Structured schema (input + expected decision + expected evidence) lets the evaluation pipeline grade both decisions AND reasoning paths — catches the failure mode where the output is right but for the wrong reason.",
+          "Re-labelling work is bounded — entries are first-class repository artefacts with diff tooling for label changes, not opaque blobs."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, both `eval/scenarios/` and `eval/data/` must exist in the repository and be non-empty. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR that touches files under `src/agent/` (agent code or configuration), the test harness in `eval/` must run against the proposed changes and all tests must pass. Configured as a required status check on the integration branch via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge and stalls migration to production.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.6.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENOPS01-BP01 implementation step 1 (Create a ground truth dataset). First principle in the catalogue authored under the step-level anchoring methodology (see taxonomy.json framework_mappings_spec.anchoring_methodology and decisions.md 2026-05-26 entry). Scope: harness existence and entry structure. Deliberately excludes evaluation execution (step 3), drift monitoring (step 6), and harness refresh (step 7) — those are sibling principles to be authored as the GENOPS01-BP01 step-by-step decomposition continues."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Scope-bleed cleanup. Removed strata-related language from statement, solution.approach, key_benefits, and gates — that content belonged to GENOPS01-BP01 step 2 (Apply stratified sampling techniques), not step 1. Removed two examples that described step 2 (stratification gap) and step 7 (dataset-staleness) failure modes. Rewrote problem.description in failure-mode framing anchored to the dev → production migration gate, dropping the defensive 'illustrative examples' caveat — the examples themselves were tightened so the caveat is no longer needed. Renamed 'dataset' to 'harness' throughout for terminology consistency with the failure mode being prevented (a harness re-runs on changes; a dataset alone does not). Rule, ownership, and AIGP mapping unchanged."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. Simplified solution.approach — removed entry-level schema specification (JSON/YAML, three required fields, build-time validator). That was implementation detail the team picks; the principle now mandates the harness's existence + CI wiring and lets the team choose the entry format. Split gates from one to two: (1) pre_merge existence check on `eval/scenarios/` and `eval/data/`, (2) pre_merge tests-pass check on PRs touching `src/agent/`. Adding the tests-pass gate is a deliberate scope expansion — it pulls per-change evaluation under step 1's principle rather than leaving it for a step-3 sibling. The reasoning: a harness that exists but never runs is a fiction. Periodic/scheduled evaluation (e.g., weekly drift checks against the deployed model) remains the scope of the future step-3 sibling principle; what's now in step 1 is the per-change CI gate specifically. Statement, title, ownership, and AIGP mapping unchanged."
+          },
+          {
+            "version": "1.2.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. AIGP cross-reference moved from the retired top-level `aigp` field into framework_mappings.aigp.references[0]. Mapping content unchanged (Domain III.A — Govern Data for AI Systems) but now carries mapping_state: 'unverified', last_checked: '2026-05-26', and a note explaining the provisional nature. This brings AIGP under the same framework_mappings shape as AWS, making the catalogue's external-framework relationships uniform and queryable. AWS remains the primary anchor (every principle must concretise an AWS BP); AIGP and future frameworks are cross-references. The asymmetry is a convention, not encoded in the schema. See taxonomy.json framework_mappings_spec.primary_anchor_vs_cross_reference and decisions.md 2026-05-26 entry."
+          },
+          {
+            "version": "1.3.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added two root-level filtering fields under schema v1.6: applicability: ['agentic'] (the principle is written for agent decisioning systems — 'agent workload' in the statement, structured entries containing decision + evidence trace) and maturity_level: 'foundational' (PRIN_001 establishes the harness that all downstream evaluation principles depend on — skipping it on day 1 creates compounding debt). No change to rule, gates, ownership, or framework mappings. See taxonomy.json conventions.applicability_and_maturity_level and decisions.md 2026-05-26 entry."
+          },
+          {
+            "version": "1.4.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. `applicability` reshaped from array `['agentic']` to pattern-criticality map `{ 'agentic': 'mandatory' }` under schema v1.7. Scope unchanged — the principle is still agent-only, just expressed in the new shape that lets adopters filter by 'mandatory for my pattern' rather than only 'applies to my pattern'. Conscious decision to keep narrow rather than broaden to RAG / LLM / ML: each pattern's entry shape (input + expected decision + expected evidence trace is agent-shaped; RAG would be query + retrieved docs + expected answer + expected citations) and dominant failure modes differ enough that a single broad principle would hedge. Sibling principles for other patterns will be authored when those subject areas are walked through. See taxonomy.json conventions.choosing_pattern_criticality and the v1.7 entry in decisions.md."
+          },
+          {
+            "version": "1.5.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added compiled `explain_prompt` field under schema v1.8 — a system + user_template pair the runtime UI's Problem-tab Explain affordance uses to generate an illustrative use-case + issue-detail example for a chosen industry and implementation type. The prompt is calibrated to PRIN_001's setup_absence failure shape: the team had a working agent validated informally; a triggering event (refactor, architect departure, customer regression, audit) forces the absence into view; the cost is a forced choice between shipping blind, rebuilding the suite from memory, or stalling the workload. No content change to the principle's rule, gates, ownership, or framework mappings. compiled_for_principle_version: 1.5.0; compiled_at: 2026-05-26; compiled_by: manual_authoring. See taxonomy.json conventions.per_principle_explain_prompt_compilation and the v1.8 entry in decisions.md."
+          },
+          {
+            "version": "1.5.1",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. Retitled statement.title from noun-phrase form (\"Versioned Ground-Truth Evaluation Harness for Agent Decisions\") to imperative form (\"Maintain a versioned ground-truth evaluation harness for agent decisions in the workload repository\") under the V1 statement rubric at agentflow/rubrics/statement.md introduced earlier today. No content change — same artefact, same gates, same enforcement; the original title scored 0 on is_prescriptive (pure noun phrase) and the retitle scores 3. explain_prompt.system was also updated to quote the new title (identity line); compiled_for_principle_version bumped to mirror. See the 2026-05-27 retitle-pass entry in decisions.md."
+          },
+          {
+            "version": "1.5.2",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. principle_id renamed from PRIN_001 to GO1B1-01 under the new BP-anchored, sequential ID convention (taxonomy.json conventions.principle_id_format). GO1B1 = GenOps Q1 BP1 (GENOPS01-BP01); suffix 01 = first principle promoted from this BP. The AWS implementation step this principle concretises (step 1 — Create a ground truth dataset) is recorded in framework_mappings.aws.references[0].implementation_step.number, not in the principle_id suffix. No content change — same artefact, same gates, same enforcement. explain_prompt.system identity line updated to quote the new ID; compiled_for_principle_version bumped to mirror. See the 2026-05-27 rename entry in decisions.md."
+          },
+          {
+            "version": "1.6.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the ground-truth harness existence discipline applies regardless of how the foundation model is served (the harness lives in the workload repository whether the model is called via OpenAI/Anthropic API, hosted on Bedrock Provisioned Throughput, deployed on SageMaker AI endpoints, or run on a self-hosted EKS/Slurm cluster). serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GO1B1-01 — Maintain a versioned ground-truth evaluation harness for agent decisions in the workload repository — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery agent workload must maintain a ground-truth evaluation harness, committed to the workload repository, where each entry captures the input payload, the expected decision, and the expected evidence trace. The harness must include diverse representation of production scenarios — personas, use cases, input variations. It must be runnable by anyone on the team and wired to CI so it runs on every change to agent code or configuration.\n\nTHE FAILURE SHAPE\n\nThis is a setup-absence failure that becomes visible the moment the workload needs to evolve. The team has an agent in production that appears to be working. Validation was done by the original architect locally — in a notebook, ad-hoc, or in a script that 'works on my machine' but was never committed to the repository. The team is confident because the agent has been running. The absence is invisible until a triggering event forces it into view: a change ships that the team cannot reliably validate; the original architect leaves and nobody can re-run the validation; a regression hits production and nobody can reproduce it; an audit or handover asks for the evaluation suite and there isn't one. At that moment the team discovers that production knowledge lived in one head, on one laptop, or in a notebook that has since drifted. The consequence is a forced choice: ship the change blind, rebuild the suite from memory, or stall the workload while the discipline is retrofitted.\n\nThe principle's value is forcing the harness to be a first-class repository artefact from day one — committed, runnable by anyone, wired to CI. Without it, every change ships with unknown regression risk and validation discipline cannot survive personnel change.\n\nAPPLICABILITY\n\nGO1B1-01 is mandatory for agent (autonomous, tool-using, multi-step) workloads. If the chosen Implementation type is not 'Agent', open use_case_background with one italicised sentence noting the principle is most acute for autonomous agents and that the example below is illustrative of how the same setup-absence failure would manifest in the chosen pattern.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GO1B1-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe a workload that is in production and that the team believes is operating correctly. Be specific about the industry and the implementation type. Name the team, the workload, the integrating systems (with plausible invented names), and the role the workload plays. Crucially: name how the team thinks they have validated the workload — the informal mechanism (the original architect runs three scenarios in a notebook before each release; the lead developer maintains a local script that exercises the main decision branches; the team keeps a Slack thread of test cases pasted into a dev console pre-release). The reader should picture a confident team unaware that the discipline does not survive contact with change. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe the moment the absent harness becomes visible. Walk through the scenario chronologically: name the triggering event (a refactor that needs validation; the original architect moves to another team; a customer-reported regression that needs reproduction; an audit, handover, or onboarding ask for the suite); then describe what the team tries to do and where it falls apart. Name roles (the duty engineer on call; the new senior joining to inherit the workload). Make the consequence concrete — production exposure, time spent rebuilding the suite from memory, a regression that ships because nobody could reliably re-validate, or a stall while the harness is retrofitted. The failure must demonstrate something a harness committed to the repository with CI wiring would have caught or prevented — not a generic 'the model performed badly' regression.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, decisions. 'The claims-triage agent' not 'the AI system'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or prompt-chained without retrieval or tools; ML is a classical supervised/unsupervised model with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly two weeks', 'about a dozen scenarios').\n- Do not invent regulatory specifics. Generic framing only ('the firm's internal compliance review', 'the regulator's quarterly model-risk audit').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.5.2",
+        "compiled_at": "2026-05-26",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "principle_id": "GO1B1-02",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P11 — Model Performance Evaluation",
+      "impact_level": "High",
+      "applicability": { "agentic": "mandatory" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "implementation_step": {
+                "number": 2,
+                "title": "Apply stratified sampling techniques",
+                "verbatim_text": "Apply stratified sampling techniques. Categorize ground truth data into relevant groups. Randomly sample from each group to achieve balanced representation."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-26",
+              "note": "AWS step 2 calls for the evaluation dataset to be split into relevant categories (the named example is user personas) with sampling balanced across them. AWS leaves unspecified: where the strata are declared, how they are enforced, what minimum size each stratum must have, how per-stratum metrics are reported and gated, and what counts as an architecturally meaningful stratum for an autonomous agent (decision branches, tool-call paths, edge-case policy carve-outs). This principle concretises all five and ties stratification to per-stratum CI gating rather than aggregate pass/fail."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.A: Govern Data for AI Systems",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "Provisional mapping based on subject-matter proximity — strata declaration and per-stratum minima are data-governance disciplines on the evaluation dataset, aligning with III.A's data-governance scope. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Stratify the ground-truth harness and gate evaluation per stratum, not on the aggregate",
+        "description": "The ground-truth evaluation harness established under GO1B1-01 must declare its strata as a versioned artefact in the workload repository, with a minimum example count per stratum and a per-stratum metric threshold. The harness must emit per-stratum metrics on every run, and the CI gate must fail when any stratum is missing the minimum example count or fails its per-stratum threshold — not only when an aggregate pass-rate falls below a global threshold."
+      },
+      "problem": {
+        "description": "Without stratified composition and per-stratum gating, an aggregate pass-rate can sit at green while a small but business-critical subset of agent behaviour silently regresses. The failure surfaces in production, not in CI, because the eval set was never deliberately constructed to test the minority class with statistical weight. Strata for an agentic workload are domain-specific (decision branches, tool-call paths, persona segments, policy carve-outs) and cannot be inferred mechanically — they must be declared. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "Returns triage agent passes 95% of an evaluation set of 100 scenarios; the set was assembled from a random sample of production traffic, so 90 of the 100 are AUTO_APPROVE and only 1 is REJECT — REJECT accuracy is statistically unmeasurable and a policy regression ships unnoticed.",
+          "Agent has three decision branches (AUTO_APPROVE / HUMAN_REVIEW / REJECT) but harness entries carry no stratum field; the team cannot answer 'how did REJECT accuracy change in this PR' even though aggregate accuracy is reported.",
+          "Strata manifest exists but declares only one stratum, 'all_returns', defeating the discipline; the CI check passes because the manifest is non-empty.",
+          "Strata are populated but the harness only emits an aggregate metric; per-stratum regression is invisible until a customer complains.",
+          "New decision branch added to the agent in a PR; no scenarios added to cover it; strata manifest not updated; aggregate accuracy unchanged because the new branch is rarely hit in eval; the branch ships untested."
+        ]
+      },
+      "solution": {
+        "approach": "Declare strata in a versioned manifest at a known repository path (convention: `eval/strata.yaml`), each stratum naming its identifier, its rationale, its minimum example count, and its per-stratum metric threshold. Every entry in `eval/scenarios/` carries a `stratum` field pointing at one declared stratum. The evaluation harness emits per-stratum metrics on every run and exits non-zero when any stratum is below its minimum count or fails its per-stratum threshold. The strata manifest is reviewed by the Project Architect at every release as part of self-attestation; the PA confirms the strata still reflect the agent's decision branches, tool paths, and policy carve-outs.",
+        "key_benefits": [
+          "Per-stratum gating catches the minority-class regression that aggregate metrics hide — the dominant production failure mode for agent decisioning systems with skewed traffic.",
+          "Strata are first-class versioned artefacts, so any change to them is reviewed in a PR; the strata grow with the agent rather than living in the architect's head.",
+          "Coupling strata to decision branches and tool paths makes the eval set's architectural coverage queryable: a reader can answer 'is every decision branch tested' from the manifest.",
+          "Builds on GO1B1-01 without replacing it: GO1B1-01 establishes that the harness exists with structured entries; GO1B1-02 constrains how the harness is composed and how its output is gated."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, `eval/strata.yaml` must exist and declare at least one stratum; every entry in `eval/scenarios/` must carry a `stratum` field referencing a declared stratum; every declared stratum must have at least its declared minimum example count present in `eval/scenarios/`; the harness run must emit per-stratum metrics and every stratum must meet its declared per-stratum threshold. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR that touches files under `src/agent/` and adds or alters a decision branch, tool integration, or policy carve-out, the PR must also modify `eval/strata.yaml` OR include a linked ADR under `docs/adrs/` justifying why no strata change is needed. Configured as a required status check on the integration branch via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.4.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENOPS01-BP01 implementation step 2 (Apply stratified sampling techniques). Second principle in the catalogue under the step-level anchoring methodology. Scope: strata declaration, per-stratum minima, per-stratum metric reporting, per-stratum gating, and the COVERAGE check coupling agent decision-branch / tool-path / policy-carve-out changes to strata-manifest changes. Builds on PRIN_001 — PRIN_001 establishes harness existence with structured entries; PRIN_002 constrains how the harness is composed and how its output is gated. Project-tier; PA self-attests strata-choice quality at release; mechanical compliance enforced by CI gates as required status checks on the integration branch. AIGP cross-reference set to Domain III.A (Govern Data for AI Systems) with mapping_state: 'unverified' pending side-by-side competency review."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added two root-level filtering fields under schema v1.6: applicability: ['agentic'] (the principle's strata vocabulary — decision branches, tool-call paths, persona segments, policy carve-outs — is agent-specific) and maturity_level: 'foundational' (stratification matters from day one on any agentic workload with skewed decision distributions; without it, aggregate pass-rates hide minority-class regressions and the failure mode is exactly what this principle exists to prevent). No change to rule, gates, ownership, or framework mappings. See taxonomy.json conventions.applicability_and_maturity_level and decisions.md 2026-05-26 entry."
+          },
+          {
+            "version": "1.2.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. `applicability` reshaped from array `['agentic']` to pattern-criticality map `{ 'agentic': 'mandatory' }` under schema v1.7. Scope unchanged. The strata vocabulary (decision branches, tool-call paths, persona segments, policy carve-outs) is agent-specific; per-stratum gating against the dominant minority-class-regression failure mode is what 'mandatory' means here. A sibling RAG principle would carry different strata (retrieval hit / partial-hit / miss / wrong-doc / by document type) — deferred. See taxonomy.json conventions.choosing_pattern_criticality and the v1.7 entry in decisions.md."
+          },
+          {
+            "version": "1.3.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added compiled `explain_prompt` field under schema v1.8 — a system + user_template pair the runtime UI's Problem-tab Explain affordance uses to generate an illustrative use-case + issue-detail example for a chosen industry and implementation type. The prompt is calibrated to PRIN_002's silent_regression failure shape: a working harness (PRIN_001 satisfied) with skewed scenario distribution; a change ships that subtly regresses a minority class; aggregate accuracy does not flinch because the minority is too small to move it; the regression is eventually surfaced by something other than CI — a customer complaint about a specific class, a quarterly segmented review, an audit sample. No content change to the principle's rule, gates, ownership, or framework mappings. compiled_for_principle_version: 1.3.0; compiled_at: 2026-05-26; compiled_by: manual_authoring. See taxonomy.json conventions.per_principle_explain_prompt_compilation and the v1.8 entry in decisions.md."
+          },
+          {
+            "version": "1.3.1",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. Retitled statement.title from noun-phrase form (\"Stratified Ground-Truth Composition and Per-Stratum Evaluation Gating\") to imperative form (\"Stratify the ground-truth harness and gate evaluation per stratum, not on the aggregate\") under the V1 statement rubric at agentflow/rubrics/statement.md. No content change — same artefact, same gates, same enforcement; the original title scored 0 on is_prescriptive (pure noun phrase) and the retitle scores 3. explain_prompt.system identity line was updated to quote the new title; compiled_for_principle_version bumped to mirror. See the 2026-05-27 retitle-pass entry in decisions.md."
+          },
+          {
+            "version": "1.3.2",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. principle_id renamed from PRIN_002 to GO1B1-02 under the new BP-anchored, sequential ID convention (taxonomy.json conventions.principle_id_format). GO1B1 = GenOps Q1 BP1 (GENOPS01-BP01); suffix 02 = second principle promoted from this BP. The AWS implementation step this principle concretises (step 2 — Apply stratified sampling techniques) is recorded in framework_mappings.aws.references[0].implementation_step.number, not in the principle_id suffix. No content change — same artefact, same gates, same enforcement. explain_prompt.system identity line updated to quote the new ID; compiled_for_principle_version bumped to mirror. See the 2026-05-27 rename entry in decisions.md."
+          },
+          {
+            "version": "1.4.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the stratification + per-stratum gating discipline applies regardless of how the foundation model is served; strata reflect agent decision-branches / tool-paths / persona segments / policy carve-outs which are architectural properties of the workload, not properties of its serving paradigm. serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GO1B1-02 — Stratify the ground-truth harness and gate evaluation per stratum, not on the aggregate — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nThe principle requires the agent's evaluation harness to declare its strata as a versioned artefact in the workload repository, with a minimum example count per stratum and a per-stratum metric threshold. The harness must emit per-stratum metrics on every run, and CI must fail when any stratum is below its minimum count or fails its per-stratum threshold — not only when an aggregate pass-rate falls below a global threshold. Strata for an agent are typically decision branches, tool-call paths, persona segments, and policy carve-outs.\n\nTHE FAILURE SHAPE\n\nThis is a silent-regression failure that hides behind a healthy aggregate. The team has a working evaluation harness (PRIN_001 is satisfied). Scenarios run on every PR; the aggregate pass-rate is reported and sits comfortably in the green. The eval set was assembled at some point in the past from a random sample of production traffic, so it inherits production's skew — the dominant decision class is heavily represented, the minority classes are not. A change ships that subtly regresses one of the minority classes. The aggregate barely moves because the minority class is too small to shift it. The regression sits in production, invisible to CI, until some other mechanism surfaces it: a customer complaint about a specific kind of case, a quarterly business review that segments outcomes by category, an audit sample, a compliance check on a small but consequential class.\n\nThe principle's value is forcing per-stratum visibility and per-stratum gating, so a regression in any deliberately-named slice of the agent's behaviour cannot pass CI on the strength of a healthy aggregate. The strata are named by the team because they cannot be inferred mechanically — decision branches, tool-call paths, policy carve-outs, and persona segments are domain-specific.\n\nAPPLICABILITY\n\nGO1B1-02 is mandatory for agent workloads. If the chosen Implementation type is not 'Agent', open use_case_background with one italicised sentence noting the principle is most acute for autonomous agents (where the strata vocabulary — decision branches, tool-call paths, policy carve-outs — is sharpest) and that the example below is illustrative of how the same minority-class-regression failure would manifest in the chosen pattern.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GO1B1-02's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe a workload in production with a known and stable mix of outputs across multiple categories — a dominant majority class and one or more business-critical minorities. Be specific about the industry and implementation type. Name the team, the workload, the integrating systems (with plausible invented names). Crucially: name the decision categories the workload produces (for a returns triage agent: AUTO_APPROVE / HUMAN_REVIEW / REJECT) and their rough mix (AUTO_APPROVE dominates daily volume; REJECT is rare but every wrong REJECT becomes a customer dispute). Make clear that the team has an evaluation harness and monitors aggregate accuracy on every PR. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe a regression in the minority class that the aggregate metric does not flinch on. Walk through the scenario chronologically: a change ships (a prompt revision, a tool addition, a model upgrade, a fine-tune retrain); the harness runs in CI and aggregate accuracy is unchanged or even slightly up; the change merges. The regression sits silently in production until something other than CI surfaces it — a customer complaint about a specific class of decision, a quarterly business review that segments outcomes by category, an audit sample. Name roles (the duty AP clerk; the head of category ops; the duty analyst handling escalations). Make the consequence concrete — disputes, refunded customers, compliance escalations, manual remediation effort. The failure must demonstrate something per-stratum gating would have caught at PR time and aggregate gating would not — not a generic 'the model got worse' regression.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, decisions. 'The returns triage agent' not 'the AI system'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or prompt-chained without retrieval or tools; ML is a classical supervised/unsupervised model with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly 4% of daily volume', 'about a fortnight before the pattern surfaced').\n- Do not invent regulatory specifics. Generic framing only ('the firm's internal compliance review', 'the regulator's quarterly model-risk audit').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.3.2",
+        "compiled_at": "2026-05-26",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "principle_id": "GO1B1-03",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P11 — Model Performance Evaluation",
+      "impact_level": "High",
+      "applicability": { "agentic": "mandatory", "rag": "mandatory", "llm": "mandatory", "ml": "nice_to_have" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "implementation_step": {
+                "number": 4,
+                "title": "Define custom metrics",
+                "verbatim_text": "Define custom metrics. Use the fmeval library to create custom metric classes. Encapsulate logic for calculating specific evaluation criteria."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-26",
+              "note": "AWS step 4 calls for custom metric classes that encapsulate evaluation criteria, expressed via the fmeval library. The fmeval reference is vendor-specific; the architectural content sits one layer up — metric definitions are encapsulated code units (a named class or function in its own file with a stable interface), not inline expressions in eval scripts or notebooks. AWS leaves unspecified: where metric code lives in the repository, what interface metrics must expose, whether the eval runner may contain inline scoring logic, and how metric changes are reviewed. This principle concretises all four — a fixed directory convention (`eval/metrics/`), a stable interface convention, a no-inline-logic constraint on the runner, and metric changes as first-class reviewable diffs in their own files."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-26",
+              "note": "Provisional mapping based on subject-matter proximity — defining custom evaluation metrics is a model-lifecycle design-and-build governance activity, distinct from the data-governance scope of III.A that GO1B1-01 and GO1B1-02 anchor to. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Implement every evaluation metric as a named, encapsulated code unit",
+        "description": "Each evaluation metric used by the workload's harness must be implemented as a named, encapsulated unit of code — a class or function with a stable interface — in a known directory of the workload repository (convention: `eval/metrics/`). The evaluation runner imports metrics from this directory and contains no inline scoring logic. Each metric is independently unit-testable."
+      },
+      "problem": {
+        "description": "Without encapsulation, evaluation metrics live as inline expressions in eval scripts or notebooks, scattered across files, or duplicated across projects. The same metric ends up with slightly different definitions in different places. Metric changes happen invisibly because they are buried in eval-runner diffs and cannot be reviewed cleanly. Metrics cannot be unit-tested on their own because they are not callable units. Reuse across projects becomes copy-paste, and the copies subsequently diverge. The team eventually cannot trust its own eval numbers — two runs of the 'same metric' produce different scores, an onboarding hire cannot tell what `tone_score` actually measures, and a senior reviewer cannot approve a metric change because the diff is hidden inside a 400-line runner-file refactor. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "Two developers tweak the same `tone_correctness` metric in parallel PRs, each editing their own inline copy in the eval runner; both PRs pass review because the diffs look small; the two versions silently diverge in how they treat borderline phrases, and downstream metric values are no longer comparable across the codebase.",
+          "A 400-line `evaluate.py` mixes scoring logic and orchestration; a refactor PR's diff is dominated by orchestration changes and quietly rewrites a metric definition in passing; the metric change ships unreviewed because nobody in the PR review noticed the three-line semantic shift inside a wall of refactoring.",
+          "A new joiner inherits the eval pipeline and asks 'what does `decision_correctness` actually check?'; the lead data scientist cannot answer without re-reading fifty lines of `evaluate.py`; onboarding stalls for the better part of a week while the new joiner reconstructs the implicit metric semantics from Git history.",
+          "A metric defined inline in `evaluate.py` is copy-pasted into a sister project's notebook; a bugfix to one copy never reaches the other; six months later the two projects' eval numbers diverge and nobody can identify which definition is canonical.",
+          "Eval results stop replicating between the local dev environment and CI because the inline metric implementations have drifted across branches and worktrees; the team can no longer attribute score changes to model changes versus eval-code changes."
+        ]
+      },
+      "solution": {
+        "approach": "Create a directory `eval/metrics/` under the workload repository. Each metric is its own file, exporting a named class (or function) with a stable interface — for example a Python class with an `evaluate(output, expected) -> float` method, or the team's equivalent convention in their chosen language. Each metric file has a sibling test (under `eval/metrics/tests/` or co-located) covering at least the basic positive and negative cases. The evaluation runner imports metric instances from `eval/metrics/` and iterates over them; the runner module contains no scoring logic of its own — only orchestration, input loading, output collection, and reporting. New metrics, edits to existing metrics, and metric removals are reviewed as ordinary code changes with diffs visible in their own files.",
+        "key_benefits": [
+          "Metric changes appear as discrete diffs in their own files; a reviewer can focus on the semantics of a single metric in isolation rather than fishing it out of a large runner-file diff.",
+          "Metrics are unit-testable; a semantic regression in a metric is caught by that metric's own tests before it can affect any eval run.",
+          "Metrics are reusable across projects and across eval runs without copy-paste; a fix to a metric definition propagates everywhere via normal import semantics.",
+          "Onboarding becomes tractable: a new joiner reads the metric files to understand what is being measured rather than reconstructing meaning from runner code.",
+          "The eval runner becomes short, dumb, and stable; runner changes are unambiguously infrastructure changes, not metric-semantics changes hiding behind orchestration."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, `eval/metrics/` must exist and contain at least one named, encapsulated metric — a class or function with a stable interface (e.g. an `evaluate(output, expected)` method, or the team's equivalent in their chosen language). Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR that touches files under `eval/`, no metric definitions may appear outside `eval/metrics/` — the evaluation runner imports metrics, never defines them inline. Mechanically: a lint that fails if a class matching the team's `*Metric` naming convention (or an equivalent metric-shaped function signature) is defined in any file outside `eval/metrics/`. Configured as a required status check on the integration branch via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "2.1.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENOPS01-BP01 implementation step 4 (Define custom metrics). Third principle in the catalogue under the step-level anchoring methodology; first principle authored natively to the v1.7 schema (PRIN_001 and PRIN_002 were retrofitted). Scope: metrics declared as code at `eval/metrics/`, metric names resolvable from `eval/scenarios/` and `eval/strata.yaml`, per-metric harness output, per-metric per-stratum gating, and a coverage gate tying agent-surface changes (new tools, output-shape changes, policy carve-outs) to metric changes or ADRs. AWS's fmeval-specific sub-bullets are stripped — the architectural content (metric definitions are encapsulated, named, version-controlled code) sits one layer up and is vendor-neutral. Builds on PRIN_001 (harness existence) and PRIN_002 (strata + per-stratum gating); PRIN_003 closes the hole where a team could comply with both by declaring a single boolean metric whose semantics are unstated. The strata.yaml shape evolves from a single `threshold` per stratum to a `thresholds: { metric_name: value }` map; PRIN_002's wording (`per-stratum metric threshold`) is read as generic-enough to accommodate this refinement without a PRIN_002 content change — flagged as an open item in case the user wants PRIN_002 bumped to v1.3.0 to make the per-metric shape explicit. Project-tier; PA self-attests metric-set meaningfulness at release; mechanical compliance enforced by CI gates as required status checks on the integration branch. applicability: { 'agentic': 'mandatory' } — kept narrow consistent with PRIN_001 and PRIN_002; sibling principles for RAG / LLM / ML deferred until those subject areas are walked through. maturity_level: 'foundational' — the failure mode lands on day one of any non-trivial agent workload. AIGP cross-reference set to Domain III.B (Govern the AI Model Lifecycle (Design & Build)) with mapping_state: 'unverified' pending side-by-side competency review; distinct from PRIN_001 and PRIN_002's III.A anchoring because metric definition is a model-lifecycle design activity rather than data governance."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added compiled `explain_prompt` field under schema v1.8 — a system + user_template pair the runtime UI's Problem-tab Explain affordance uses to generate an illustrative use-case + issue-detail example for a chosen industry and implementation type. The prompt is calibrated to PRIN_003's silent_regression failure shape, specifically the right-answer-for-wrong-reason variant: the team had a working agent with a complete named verification chain; a triggering event silently breaks one link in the chain; the headline output stays plausibly correct because most cases don't depend on the broken link or because another step compensates; the break is eventually surfaced through audit, trace inspection, or a sophisticated minority complaint. The prompt includes an explicit instruction that the example must establish the working chain before describing its regression — a guardrail introduced after an earlier hand-traced generation produced a contradictory example by describing a wrong-answer accuracy regression but framing it as right-answer-wrong-reason. No content change to the principle's rule, gates, ownership, or framework mappings. compiled_for_principle_version: 1.1.0; compiled_at: 2026-05-26; compiled_by: manual_authoring. See taxonomy.json conventions.per_principle_explain_prompt_compilation and the v1.8 entry in decisions.md."
+          },
+          {
+            "version": "1.2.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MINOR. Tightened the `explain_prompt.system` content with a new WORKLOAD FIT CHECK section between APPLICABILITY and YOUR TASK. Trigger: a field-test on Fashion + Agent (StyleNest's ChicAdvisor) produced an example for a fashion-recommender workload that did not actually fit PRIN_003's failure mode — the principle catches 'right answer reached through broken machinery,' which only makes sense when there is a verifiable right answer to defend against (a rate card, a regulatory boundary, a policy ruleset). Recommender/generator/advisor workloads have no such anchor; the principle does not really apply to them, but the prior prompt allowed the LLM to stretch and produce a forced example anyway. The new section instructs the LLM to classify the workload as decisioner vs recommender before drafting and, when the workload is a recommender, to open use_case_background with an italicised paragraph noting PRIN_003 does not really apply, then re-frame the workload in its most decisioner-shaped form (fashion brand-compliance verifier rather than style recommender; regulatory copy-check rather than copy generator; refund-eligibility verifier rather than response drafter) and produce the example against that re-framed workload. The deeper editorial question — whether PRIN_003's statement should narrow from 'agent decisions' to 'agent decisioning workloads with a verifiable correctness anchor' — is flagged as an open item, not actioned in this version. compiled_for_principle_version bumped from 1.1.0 to 1.2.0 to mirror this change_history bump; compiled_at and compiled_by unchanged."
+          },
+          {
+            "version": "2.0.0",
+            "date": "2026-05-26",
+            "author": "Dheeraj",
+            "summary": "MAJOR rewrite against what AWS step 4 actually says (`Define custom metrics. Use the fmeval library to create custom metric classes. Encapsulate logic for calculating specific evaluation criteria.`). The v1.x line had built an elaborate 'silent regression of a verification chain' / 'right answer for wrong reason' / 'soft synthesis' failure-mode theory around the step. Field tests on Retail + Agent (InvoiceWizard), Airline + Agent (FareRateService), Fashion + Agent (ChicAdvisor), and Insurance + Agent (ClaimCheck / SecureLife medical records) repeatedly failed to support that theory — the generations were either self-contradictory, dependent on visibly bad system design, or did not demonstrate a failure that simpler controls would miss. The author surfaced the diagnosis directly: the step itself is a plain software-engineering hygiene rule about putting evaluation metrics in named, encapsulated code (a class or function with a stable interface) in their own directory, rather than as inline expressions in eval scripts or notebooks. v2.0.0 rewrites the principle against that honest reading. Statement now: 'Encapsulated Evaluation Metrics in the Workload Repository.' Problem now: inline metric definitions drift across PRs, are buried in runner-file diffs and so cannot be reviewed cleanly, are not callable units and so cannot be unit-tested, and end up copy-pasted across projects where they subsequently diverge. Solution now: `eval/metrics/` directory with one metric per file, a stable interface convention, sibling tests, and an eval runner that contains no scoring logic. Gates now: (1) `eval/metrics/` exists with at least one named, encapsulated metric (required status check); (2) no metric definitions live outside `eval/metrics/` — lint catches metric-shaped classes/functions defined elsewhere (required status check). Both gates are project-tier and CI-enforced. Applicability broadens from agentic-only to agent + RAG + LLM mandatory, ML nice_to_have — the metrics-as-code discipline applies wherever a team writes custom evaluation logic; for classical ML, standard library metrics (sklearn.metrics, etc.) typically already carry the discipline. Maturity remains foundational. AIGP cross-reference remains III.B (Govern the AI Model Lifecycle (Design & Build)) — encapsulating evaluation metrics is a build-phase design discipline. compiled_for_principle_version bumped to 2.0.0 with the explain_prompt totally rewritten to a cumulative-drift / code-hygiene failure shape (inline definitions drifting over months across PRs and notebooks; metric semantics changes shipping unreviewed inside runner refactors; team losing trust in its own eval numbers; onboarding becoming archaeology). The previous v1.x failure-mode theory is now documented as scope-creep that the catalogue is honest about, not pretended away. See the v2.0.0 entry in decisions.md."
+          },
+          {
+            "version": "2.0.1",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. Retitled statement.title from noun-phrase form (\"Encapsulated Evaluation Metrics in the Workload Repository\") to imperative form (\"Implement every evaluation metric as a named, encapsulated code unit\") under the V1 statement rubric at agentflow/rubrics/statement.md. The eval/metrics/ path reference was deliberately omitted from the title to avoid over-specifying convention at the title level — path stays in description and gates. No content change to the principle's rule, gates, ownership, or framework mappings. The original title scored 0 on is_prescriptive (pure noun phrase) and the retitle scores 3. explain_prompt.system identity line was updated to quote the new title; compiled_for_principle_version bumped to mirror. See the 2026-05-27 retitle-pass entry in decisions.md."
+          },
+          {
+            "version": "2.0.2",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. principle_id renamed from PRIN_003 to GO1B1-03 under the new BP-anchored, sequential ID convention (taxonomy.json conventions.principle_id_format). GO1B1 = GenOps Q1 BP1 (GENOPS01-BP01); suffix 03 = third principle promoted from this BP (PRIN_001 → GO1B1-01, PRIN_002 → GO1B1-02, this principle → GO1B1-03). The AWS implementation step this principle concretises (step 4 — Define custom metrics) is recorded in framework_mappings.aws.references[0].implementation_step.number, not in the principle_id suffix. No content change — same artefact, same gates, same enforcement. explain_prompt.system identity line updated to quote the new ID; compiled_for_principle_version bumped to mirror. See the 2026-05-27 rename entry in decisions.md."
+          },
+          {
+            "version": "2.1.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the evaluation-metric encapsulation discipline (metrics as named, encapsulated code units under `eval/metrics/`) applies regardless of how the foundation model is served; the discipline is software-engineering hygiene on the eval code, not a property of the model's hosting layer. serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GO1B1-03 — Implement every evaluation metric as a named, encapsulated code unit — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery evaluation metric used by the workload's harness must be implemented as a named, encapsulated unit of code — a class or function with a stable interface — in a known directory of the workload repository (convention: `eval/metrics/`). The evaluation runner imports metrics from this directory and contains no inline scoring logic. Each metric is independently unit-testable. This is software-engineering hygiene for evaluation: metrics are first-class code objects, not inline expressions in eval scripts or notebooks.\n\nTHE FAILURE SHAPE\n\nThis is a code-hygiene failure that compounds over time. The team is running evaluations — that part works. But the metric calculations live inline in eval scripts, scattered across notebooks, or duplicated across files. As the eval suite grows, the inline definitions silently drift: one PR tweaks a metric's threshold, another PR copy-pastes the metric into a new context and edits it slightly, a third PR refactors the eval runner and quietly rewrites a metric definition in passing. Nobody catches these because the changes do not appear as discrete diffs to a named metric — they are hidden inside large eval-runner files.\n\nOver months the costs accumulate. Two runs of the 'same metric' produce different scores. The team cannot reproduce last quarter's eval results. A new joiner cannot tell what `tone_score` actually checks without an archaeology session through Git history. A metric used in two projects has long since diverged between them. Unit tests for metric logic do not exist because the metrics are not isolated units that can be tested. Eventually the team stops trusting its own eval numbers, and an audit or onboarding event forces a reckoning — a substantial rebuild of the eval setup follows.\n\nThe principle's value is the boring software-engineering hygiene that turns metrics into first-class code objects: named, encapsulated, importable, testable, reviewable. Nothing fancy — just write your metrics properly, from the start.\n\nAPPLICABILITY\n\nGO1B1-03 is mandatory for agent, RAG, and LLM-Only workloads — anywhere the team writes custom evaluation logic. It is nice-to-have for classical ML workloads, where standard library metrics (sklearn.metrics et al.) typically already carry the encapsulation discipline. If the chosen Implementation type is ML, open use_case_background with one italicised sentence noting that PRIN_003 is nice-to-have rather than mandatory for ML workloads because library-provided metrics usually already encapsulate the discipline; the example below is illustrative of how the failure would manifest if the team had custom ML metrics not covered by the library.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GO1B1-03's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe a team in production that is running evaluation on their AI workload. Be specific about the industry and implementation type. Name the team, the workload, the integrating systems (with plausible invented names). Crucially: describe how the team currently handles their evaluation metrics — name the inline pattern. Examples: 'the eval script is a 400-line evaluate.py with three big functions, each doing different scoring inline'; 'metric calculations live in a Jupyter notebook the lead data scientist maintains; the team copy-pastes cells into a CI script before each release'; 'each developer has their own fork of metrics.py with slightly different inline scoring expressions'. Make clear the team IS evaluating (this is not a no-eval failure) — they just do not treat metrics as first-class code. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe how the inline-metric pattern leads to a concrete failure that encapsulation would have prevented. Pick one or two of these patterns: two developers tweak the same metric in parallel PRs and ship subtly different versions because neither saw the other's change; a metric definition is rewritten in passing during an eval-runner refactor and ships unreviewed because the diff was dominated by orchestration changes; a new joiner asks 'what does tone_score actually check?' and nobody can answer without re-reading fifty lines of runner code; eval results stop replicating between local dev and CI because inline implementations have drifted; a metric copy-pasted into a sister project diverges silently from its original. Walk through chronologically. Name roles (the lead data scientist; the new ML platform hire; the on-call engineer). Make the consequence concrete — distrust of the eval pipeline, a back-test of eval results, weeks of cleanup work to extract metrics into proper modules, an audit finding about reproducibility. The failure must be a maintainability / reviewability / testability failure of the eval setup itself, not a runtime model failure, not a regression of the workload's outputs.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name files, scripts, line counts, roles. 'The 400-line evaluate.py' not 'the eval pipeline'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or prompt-chained without retrieval or tools; ML is a classical supervised/unsupervised model with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly 400 lines', 'about a fortnight of cleanup').\n- Do not invent regulatory specifics. Generic framing only.\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only — the discipline that should have been in place but was not.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "2.0.2",
+        "compiled_at": "2026-05-26",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "principle_id": "GO1B1-04",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P11 — Model Performance Evaluation",
+      "impact_level": "High",
+      "applicability": { "agentic": "mandatory", "rag": "mandatory", "llm": "mandatory", "ml": "nice_to_have" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "maturity_level": "scaling",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "implementation_step": {
+                "number": 6,
+                "title": "Monitor for performance drifts",
+                "verbatim_text": "Monitor for performance drifts. Identify potential degradation in model performance. Address data drift where actual usage diverges from the initial ground truth."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-27",
+              "note": "AWS step 6 names two distinct drift dimensions — model performance degradation (output drift) and actual-usage divergence from the initial ground truth (input drift). AWS leaves unspecified: where the monitor's configuration lives, how cadence is declared, what baseline shape is required, how alerts are routed, and what happens when the model is updated (potential baseline staleness). This principle concretises all five — `eval/drift/config.yaml` as the config artefact, per-section per-dimension cadence and thresholds, per-dimension baselines anchored to the deployment, alert_routing in-config, and a baseline-update coupling gate (Gate 2)."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Monitor production inputs and model outputs for drift against the deployment baseline",
+        "description": "Each deployed workload must operate a scheduled drift monitor. The monitor compares (a) current model evaluation metrics against the baseline established at deployment, and (b) the distribution of production inputs against the input distribution of the ground-truth harness. Its cadence and thresholds are declared in `eval/drift/config.yaml`; the monitor emits an alert when either dimension crosses a threshold."
+      },
+      "problem": {
+        "description": "Without a scheduled drift monitor comparing production outputs and inputs against the deployment baseline, an AI workload's performance can degrade silently over weeks or months. Per-PR CI gates (GO1B1-01 / GO1B1-02 / GO1B1-03) catch regressions a specific PR introduces, but they cannot catch drift that emerges from shifting production traffic patterns or from compounding small effects in deployed model behaviour. The failure typically surfaces only via something external — a quarterly review, a customer escalation, an audit — by which point the model has been silently underperforming for weeks. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A claims-triage agent's REJECT-rate baseline at deployment was 8%; six months in, the rate has drifted to 14% because production claim mix shifted (more high-value edge cases); no PR-time gate fires because no PR changed the agent; the drift surfaces only in the quarterly business review.",
+          "A returns-triage agent was harnessed against Q1 patterns; by Q4 seasonal shift has moved input distribution significantly; AUTO_APPROVE accuracy slipped from 94% to 88%; GO1B1-01 / GO1B1-02 gates still pass per-PR because the harness itself hasn't changed.",
+          "A fraud-scoring model's precision was 0.92 at baseline; over 8 months, fraud patterns evolved and precision slipped to 0.81; no single week showed a sharp drop (each ~0.005 lower than prior), but cumulative drift is significant; the team only notices when the SOC reports a missed-fraud spike.",
+          "An LLM support agent's RAG answer-grounding score was 0.88 at deployment; vendor upgraded the underlying model mid-month and grounding dropped to 0.74; no team PR was opened so no CI gate fired; customers start complaining about irrelevant citations."
+        ]
+      },
+      "solution": {
+        "approach": "Create a config file at `eval/drift/config.yaml` in the workload repository, declaring: (1) the per-dimension metrics to monitor (rubric-dimension scores for catalogue authoring; accuracy / precision / recall for an ML model; retrieval-hit-rate or answer-grounding for RAG; whatever the workload exposes); (2) per-dimension baseline values anchored to the workload's deployment (the model version and harness version the baseline is from); (3) per-dimension cadence (daily, weekly, per-event); (4) per-dimension alert thresholds (window-to-window drop; optionally a cumulative-from-baseline drop); (5) alert routing (channel and recipients). Build or adopt a scheduled monitor runtime that runs the declared metrics on cadence and logs per-dimension scores to a known location (`eval/drift/runs/`). Build or adopt an alerter runtime that watches those logs and dispatches alerts per the declared routing when thresholds are crossed. When the deployed model is updated (model version, prompt version, agent configuration that materially affects outputs), update the baseline reference in `eval/drift/config.yaml` OR commit an ADR under `docs/adrs/` justifying why the existing baseline still holds. The config file (the metrics list, baselines, cadences, thresholds, routing) is what Gate 1 inspects; the monitor and alerter runtimes are workload-level engineering choices this principle does not gate directly.",
+        "key_benefits": [
+          "Catches the cumulative-drift failure mode that per-PR CI gates cannot — slow degradation in production outputs (or input distribution shifting away from harness coverage) that never crosses a per-PR threshold but compounds into significant regression over weeks or months. The first failure shape GO1B1-01 / GO1B1-02 / GO1B1-03 do not address.",
+          "Builds on GO1B1-01 / GO1B1-02 / GO1B1-03 without overlap. GO1B1-01 establishes the harness; GO1B1-02 stratifies it; GO1B1-03 encapsulates the metrics. GO1B1-04 runs those metrics on a cadence post-deployment against the baseline the harness produced. Each principle handles a distinct gate point; together they close the loop from authoring through production.",
+          "Baseline-update coupling (Gate 2) prevents the drift monitor itself from going silently stale. When the deployed model changes, the baseline reference must be refreshed or explicitly justified — no quiet drift from comparing today's model against last year's baseline.",
+          "Config-as-code for the monitor itself. Cadence, thresholds, baselines, routing all live in a versioned artefact reviewed in PRs and inspectable at audit, not in a vendor dashboard's UI or someone's head.",
+          "Workload-agnostic. The architectural rule (declare metrics + baseline + cadence + thresholds + routing; couple baseline updates to model changes) applies whether the workload is agent, RAG, LLM, or ML — only the specific metrics differ. The principle stays narrow; implementation flexes."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, `eval/drift/config.yaml` must exist and declare: cadence (per-section or per-dimension); per-dimension thresholds (output metric thresholds + input distribution divergence thresholds); baseline reference (which model version and harness version the baseline is anchored to); alert routing (where alerts are sent). Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR that updates the deployed model (changes `model_version`, `prompt_version`, or any agent configuration that materially affects model outputs), `eval/drift/config.yaml` must update its baseline reference OR include a linked ADR under `docs/adrs/` justifying why the existing baseline is still valid. Configured as a required status check on the integration branch via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.1.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "Initial PARTIAL authoring against AWS GENOPS01-BP01 implementation step 6 (Monitor for performance drifts). Fourth principle in the catalogue under the step-level anchoring methodology; first principle authored under the V1 statement rubric at agentflow/rubrics/statement.md — title 'Monitor production inputs and model outputs for drift against the deployment baseline' scores all-dimensions-≥-2 against the rubric. statement, problem, gates, ownership, applicability, maturity_level, framework_mappings.aws, evidence committed. solution is DRAFT — solution.approach carries the 5-component decomposition agreed in conversation (declared metrics list with cadence; per-dimension baselines; scheduled monitor runtime; alert configuration; alerter runtime); solution.key_benefits is unfilled pending the next iteration. explain_prompt deferred — to be compiled once solution is final. AIGP cross-reference TBD. Maturity: scaling — the principle needs a deployed baseline to fire against and cannot operate on day one. Applicability: agent + RAG + LLM mandatory, ML nice_to_have — drift monitoring applies wherever there is a baseline to drift against; for classical ML, library tooling typically already carries the discipline (still open for revision). Two pre_merge gates, both required status checks on the integration branch: (1) existence + completeness of `eval/drift/config.yaml`; (2) baseline-update coupling on model-changing PRs. Project-tier; evidence blank — the CI gates are the proof. See decisions.md 2026-05-27 entries for the rubric-framework introduction, the retitle pass, and the step 5 non-promotion sibling context."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. Completes v1.0.0's pending work — no rule change, no scope change, no schema change. solution.approach locked: rewritten from the DRAFT 5-component framing into sibling-prose form naming `eval/drift/config.yaml` in the workload repository as the declarative config artefact, the monitor and alerter runtimes as workload-level engineering not gated by this principle, and the baseline-update coupling (Gate 2) tied to ADRs. solution.key_benefits filled with five items: (1) catches the cumulative-drift failure mode per-PR CI gates cannot; (2) builds on PRIN_001/002/003 without overlap, closing the post-deployment loop; (3) baseline-update coupling prevents the monitor itself from going stale; (4) config-as-code for the monitor — versioned, PR-reviewed, audit-inspectable; (5) workload-agnostic — same rule applies whether agent / RAG / LLM / ML, only the specific metrics differ. explain_prompt compiled against PRIN_004's cumulative_drift failure shape, environment-shift sub-shape: working baseline at deployment; environment evolves around the static system (production input mix shifts, foundation model providers update underlying parameters, RAG indexes drift, data sources evolve); no PR is opened because nothing in the team's control changed, so per-PR CI gates never fire; drift accumulates sub-threshold per window and surfaces only via an external trigger (quarterly business review, customer escalation, audit, regulator query) weeks or months later. compiled_for_principle_version: 1.0.1; compiled_at: 2026-05-27; compiled_by: manual_authoring. No content change to statement, problem, gates, ownership, applicability, maturity_level, framework_mappings, or evidence. See taxonomy.json conventions.per_principle_explain_prompt_compilation and usage.when_compiling_an_explain_prompt for the compilation method."
+          },
+          {
+            "version": "1.0.2",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "PATCH. principle_id renamed from PRIN_004 to GO1B1-04 under the new BP-anchored, sequential ID convention (taxonomy.json conventions.principle_id_format). GO1B1 = GenOps Q1 BP1 (GENOPS01-BP01); suffix 04 = fourth principle promoted from this BP (PRIN_001 → GO1B1-01, PRIN_002 → GO1B1-02, PRIN_003 → GO1B1-03, this principle → GO1B1-04). The AWS implementation step this principle concretises (step 6 — Monitor for performance drifts) is recorded in framework_mappings.aws.references[0].implementation_step.number, not in the principle_id suffix. No content change — same artefact, same gates, same enforcement. explain_prompt.system identity line updated to quote the new ID; compiled_for_principle_version bumped to mirror. See the 2026-05-27 rename entry in decisions.md."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the drift-monitoring discipline (`eval/drift/config.yaml` + per-dimension thresholds + baseline-update coupling) applies regardless of how the foundation model is served; drift can emerge against the baseline whether the model is API-served (vendor minor releases, prompt-shift effects) or self-hosted (data shift, traffic shift). serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GO1B1-04 — Monitor production inputs and model outputs for drift against the deployment baseline — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nThe principle requires each deployed AI workload to operate a scheduled drift monitor. The monitor compares (a) current model evaluation metrics against the baseline established at deployment, and (b) the distribution of production inputs against the input distribution of the ground-truth harness. The monitor's metrics, baselines, cadences, thresholds, and alert routing live in a discoverable artefact (this catalogue's reference implementation: `eval/drift/config.yaml` in the workload repository). When the deployed model is updated, the baseline reference must be refreshed or explicitly justified via an ADR, so the monitor never compares today's model against a stale anchor.\n\nTHE FAILURE SHAPE\n\nThis is a cumulative-drift failure that compounds slowly post-deployment, in the environment-shift sub-shape: a static system surrounded by an evolving world. The team has a workload in production with all three sibling disciplines in place — harness committed (GO1B1-01), stratified (GO1B1-02), with encapsulated metrics (GO1B1-03). Per-PR CI gates pass on every change, because no individual PR introduces a regression. The team is not careless; they are doing everything the first three principles ask. But over weeks or months, something drifts that is not in the team's control. Production input mix shifts as customer behaviour evolves. A foundation-model provider updates the underlying model parameters in a 'minor' release. A RAG index gets refreshed and the new corpus has different shape. An upstream data source's distribution changes. None of these trigger a PR in the team's repository, so per-PR gates never fire.\n\nThe drift in any single comparison window is small — sub-threshold, individually unremarkable. But it accumulates. By the time the failure surfaces, the workload has been silently underperforming for weeks or months, possibly through several quarters. The trigger is always external: a quarterly business review that segments outcomes by category and notices the shift; a customer escalation about a class of cases that has been quietly mis-handled; an internal audit that compares production decisions against the deployment-time baseline and finds them materially different; a regulator asking why the production approval rate looks different from what was filed at deployment. The cost is regulatory exposure, customer impact, manual remediation, and the loss of trust that comes from 'we did not know.'\n\nThe principle's value is forcing the team to declare, at deployment time, a scheduled comparison against the baseline with per-dimension thresholds and explicit alert routing. The drift becomes visible at the point it crosses the threshold, not at the point an external party finally notices.\n\nAPPLICABILITY\n\nGO1B1-04 is mandatory for agent, RAG, and LLM-Only workloads (anywhere outputs or input distributions can drift over time after deployment). Nice-to-have for classical ML workloads, where established drift-monitoring tooling typically already exists. If the chosen Implementation type is ML, open use_case_background with one italicised sentence noting that GO1B1-04 is nice-to-have rather than mandatory for ML workloads because classical drift-monitoring tooling usually already covers the same ground; the example below is illustrative of how the failure would manifest if the team's ML workload were not covered by such tooling.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GO1B1-04's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe a workload in production at the time the baseline was established. Be specific about the industry and implementation type. Name the team, the workload, the integrating systems (with plausible invented names). Crucially: establish the baseline. What were the model's metrics at deployment? What did the input distribution look like? What did 'good' look like? Make clear the team validated the workload before launch and has not made significant changes to it since — the workload is static and was working. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe how the workload drifts silently over a sustained period — weeks or months. Walk through chronologically: name the thing that drifts (production input mix, a foundation-model provider's minor release, RAG corpus refresh, upstream data source distribution change, customer behaviour evolution) and emphasise that this is OUTSIDE the team's control — no PR is opened. Make clear how small each per-window change is, and why per-PR CI gates do not catch it. Then describe the external trigger that surfaces the cumulative drift — quarterly business review, customer escalation, internal audit, regulator query — and how far past the baseline the workload had drifted by then. Name roles (head of category ops, audit team, duty compliance officer). Make the consequence concrete — regulatory exposure, customer disputes, remediation effort, time spent reconstructing what changed when. The failure must demonstrate something a scheduled drift monitor with per-dimension thresholds would have caught at the point of drift, not at the point of external discovery. NOT a generic 'the model got worse over time' regression — the specific shape is sub-threshold-per-window cumulative drift in a static system surrounded by an evolving environment.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, decisions. 'The claims-triage agent' not 'the AI system'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or chained without retrieval or tools; ML is classical with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly 4% drift over six months', 'about three quarters before the pattern surfaced').\n- Do not invent regulatory specifics. Generic framing only ('the firm's internal compliance review', 'the regulator's quarterly model-risk audit').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.2",
+        "compiled_at": "2026-05-27",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "principle_id": "GO1B1-05",
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P11 — Model Performance Evaluation",
+      "impact_level": "High",
+      "applicability": { "agentic": "mandatory" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "implementation_step": {
+                "number": 7,
+                "title": "Regularly update the ground truth dataset",
+                "verbatim_text": "Regularly update the ground truth dataset. Reflect changes in workload inputs and usage patterns. Maintain the relevance of evaluation data."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-27",
+              "note": "AWS step 7 calls for the dataset to be updated regularly to reflect changes in inputs and usage patterns. AWS leaves unspecified: where the refresh cadence is declared, how triggers from sibling discipline (drift alerts) couple into refresh, what the audit trail of refreshes looks like, and what gates fire when the baseline goes stale. This principle concretises all four — `eval/refresh/config.yaml` as the cadence artefact, `eval/refresh/log.yaml` as the audit trail, and two pre_merge CI gates coupling cadence enforcement and drift-alert response."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.A: Govern Data for AI Systems",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-27",
+              "note": "Provisional mapping based on subject-matter proximity — refresh discipline of the ground-truth harness is a data-governance activity, aligning with III.A's scope. Same anchor as GO1B1-01 and GO1B1-02. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Refresh the ground-truth harness on a declared cadence to reflect changes in production inputs and usage patterns",
+        "description": "The ground-truth evaluation harness established under GO1B1-01 must be refreshed on a declared cadence so it continues to represent the inputs and usage patterns the workload sees in production. Each refresh adds, updates, or retires scenarios. The cadence and any trigger conditions (calendar-based, drift-triggered, or both) are declared in a versioned artefact in the workload repository — the discipline is auditable, not ad-hoc."
+      },
+      "problem": {
+        "description": "Without periodic refresh of the ground-truth harness, the harness drifts from current production reality. The original harness was captured against the inputs and usage patterns the workload saw at deployment; as production shifts — customer behaviour evolves, upstream data changes, edge cases appear — the harness still passes, but it now tests against a workload state that no longer exists. CI shows green; production still breaks. GO1B1-04's drift monitor may fire, but without a refresh discipline, every new PR continues to be gated against a stale baseline that misses the failure modes current production actually produces. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "Returns-triage agent's harness was captured against Q1 return reasons; by Q4, seasonal shift (holiday returns, winter clothing complaints, post-Christmas exchanges) makes up 40% of production volume — none of which is in the harness; CI still passes against Q1 patterns while production decisions on Q4 returns increasingly miss.",
+          "Retailer launches a new product category six months after the harness was committed; no scenarios for the new domain are added; CI passes every PR while the new category's returns hit HUMAN_REVIEW at three times the original baseline rate because the agent has no expected-decision anchor for it.",
+          "Customer vocabulary drifts (new slang, emoji-heavy reasons, regional dialect spread); harness scenarios use older phrasing; agent's interpretation accuracy slips on current inputs but the harness still scores high because the same older-phrased scenarios pass; team notices only when the escalation queue grows.",
+          "GO1B1-04's drift monitor alerts every quarter that production inputs have diverged from baseline; team logs the alert but no PR adds new scenarios; six months later the monitor is still firing against the same stale baseline; CI eval still green; production decisions increasingly out of sync."
+        ]
+      },
+      "solution": {
+        "approach": "Declare the refresh cadence and trigger conditions in a versioned artefact at a known path (convention: `eval/refresh/config.yaml`). The config names the calendar cadence (e.g. quarterly), any triggers from sibling principles (e.g. GO1B1-04 drift alert), and the named owner of each refresh cycle. Each refresh produces a PR that adds, updates, or retires scenarios in `eval/scenarios/` (the harness from GO1B1-01) and records the refresh metadata (date, trigger, scenario diff summary) in `eval/refresh/log.yaml`. A pre-merge CI gate checks two things: the refresh config exists, and the last refresh recorded in the log was within the declared cadence (or has a linked ADR under `docs/adrs/` explaining the gap). A second gate fires on PRs touching `src/agent/` after a GO1B1-04 drift-monitor alert — those PRs must include a refresh entry or an ADR justifying why the alert does not warrant refresh. The Project Architect confirms each refresh cycle's scope at release as part of self-attestation.",
+        "key_benefits": [
+          "Catches the stale-harness failure that per-PR CI gates and drift monitors cannot — drift detection without refresh discipline produces a permanently firing alert against a never-updated baseline; refresh closes the loop.",
+          "Couples to sibling principles: GO1B1-01 mandates the harness exists, GO1B1-02 stratifies it, GO1B1-03 encapsulates its metrics, GO1B1-04 detects when production drifts; GO1B1-05 refreshes the baseline so the loop converges rather than firing forever.",
+          "Refresh metadata in `eval/refresh/log.yaml` makes the cadence auditable — a reader can answer 'when was the harness last refreshed, what changed, and why' without archaeology through commit history.",
+          "Config-as-code for the refresh policy itself. Cadence, triggers, and named ownership all live in a versioned artefact reviewed in PRs and inspectable at audit, not in a wiki page or team memory.",
+          "Workload-agnostic at the discipline level — declare cadence, log refresh events, gate against stale baselines applies whether the workload is agent, RAG, LLM, or ML; only the artefact being refreshed differs."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, `eval/refresh/config.yaml` must exist and declare: calendar cadence; trigger conditions from sibling principles (e.g. GO1B1-04 drift alerts); named owner per refresh cycle. The most recent refresh recorded in `eval/refresh/log.yaml` must be within the declared cadence, OR a linked ADR under `docs/adrs/` must justify the gap. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR touching files under `src/agent/` after a GO1B1-04 drift-monitor alert fired since the last commit on the integration branch, the PR must include a refresh entry in `eval/refresh/log.yaml` (with corresponding scenario diffs in `eval/scenarios/`) OR a linked ADR under `docs/adrs/` justifying why the alert does not warrant refresh. Configured as a required status check on the integration branch via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.1.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-27",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENOPS01-BP01 implementation step 7 (Regularly update the ground truth dataset). Fifth principle in the catalogue under the step-level anchoring methodology; first principle authored end-to-end under the new agentflow sections/ + system_prompts/ structure (statement, problem, solution, gates, focus_area, impact_level, applicability, maturity_level, framework_mappings, explain_prompt — all ten LLM-authored sections passed V1 rubrics in conversation before commit). Six new section rubrics were authored alongside this principle to enable end-to-end authoring: sections/focus_area/, sections/impact_level/, sections/applicability/, sections/maturity_level/, sections/framework_mappings/, sections/explain_prompt/ — each with the generate/rubric/revise triad. Statement: 'Refresh the ground-truth harness on a declared cadence to reflect changes in production inputs and usage patterns.' Scope: closes the GENOPS01-BP01 loop — GO1B1-01 establishes the harness, GO1B1-02 stratifies it, GO1B1-03 encapsulates its metrics, GO1B1-04 detects drift, GO1B1-05 refreshes the baseline so drift detection has somewhere to land. Two pre_merge CI gates, both required status checks on the integration branch: (1) refresh config exists + last refresh within declared cadence (or ADR), (2) drift-alert coupling — PRs touching src/agent/ after a GO1B1-04 alert must include a refresh entry or ADR. Project-tier; evidence blank — CI gates are the proof. applicability: { 'agentic': 'mandatory' } — kept narrow to match GO1B1-01's paired-narrow scope (the harness entry shape is agent-specific). maturity_level: 'foundational' — cadence declaration is day-1, even though the log is empty until the first refresh; skipping creates compounding debt. explain_prompt compiled against the cumulative_drift / environment-shift sub-shape (same family as GO1B1-04 but with the harness as the static side rather than the model). AIGP cross-reference set to Domain III.A (Govern Data for AI Systems) with mapping_state: 'unverified' — same anchor as GO1B1-01 / GO1B1-02. See decisions.md 2026-05-27 entries for the rubric structure migration and this principle's authoring."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the harness-refresh cadence discipline (`eval/refresh/config.yaml` + refresh log + drift-alert coupling) applies regardless of how the foundation model is served; production input drift surfaces from customer behaviour evolution and upstream data shift independent of the serving paradigm. serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GO1B1-05 — Refresh the ground-truth harness on a declared cadence to reflect changes in production inputs and usage patterns — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nThe ground-truth evaluation harness established under GO1B1-01 must be refreshed on a cadence declared in a versioned artefact in the workload repository (this catalogue's reference implementation: `eval/refresh/config.yaml`). Each refresh adds, updates, or retires scenarios so the harness continues to represent the inputs and usage patterns the workload sees in production. CI gates enforce both: the cadence config exists and the last refresh was within the declared interval; and any PR touching agent code after a drift-monitor alert (GO1B1-04) must include a refresh entry or a linked ADR justifying why the alert does not warrant refresh.\n\nTHE FAILURE SHAPE\n\nThis is a cumulative-drift failure in the environment-shift sub-shape: a static evaluation harness surrounded by an evolving production world. The team has a workload in production with all four sibling disciplines in place — harness committed (GO1B1-01), stratified (GO1B1-02), with encapsulated metrics (GO1B1-03), and a drift monitor firing (GO1B1-04). Per-PR CI gates pass. But the team never refreshes the harness against current production patterns. Customer behaviour evolves, new product categories appear, upstream data shifts, vocabulary drifts. The harness still scores high on every PR — because it tests against patterns from deployment day, not against patterns from production today. The drift monitor fires every quarter alerting that production has diverged from baseline; nobody adds new scenarios in response; the monitor continues to fire against a baseline that's never updated.\n\nBy the time the failure surfaces, the harness has been silently irrelevant for months. CI green; production decisions increasingly out of sync. The trigger is always external: a customer-success quarterly review noticing decisions on the new product category are wrong; an audit finding the eval set hasn't been refreshed in 18 months; a senior joiner reviewing the harness and finding scenarios referencing product types the company retired long ago.\n\nThe principle's value is forcing the team to declare, at deployment time, a refresh cadence with audit-inspectable refresh logs and explicit drift-alert coupling. Drift detection alone doesn't fix the harness — refresh closes the loop.\n\nAPPLICABILITY\n\nGO1B1-05 is mandatory for agent (autonomous, tool-using, multi-step) workloads — paired with GO1B1-01, which is also agentic-only because the harness entry shape (input + expected decision + expected evidence trace) is agent-specific. If the chosen Implementation type is not 'Agent', open use_case_background with one italicised sentence noting the principle is most acute for autonomous agents and that the example below is illustrative of how the same harness-staleness failure would manifest in the chosen pattern (once sibling harness principles are authored for that pattern).\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GO1B1-05's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe a workload in production with all four sibling disciplines in place: harness committed, stratified, metrics encapsulated, drift monitor running. Name the team, the workload, the integrating systems (with plausible invented names). Establish the baseline at deployment — what the harness covered, what production looked like. Make clear the team is competent and doing everything the first four principles ask. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe how the harness drifts silently from current production reality. Walk through chronologically: name what changes in production (customer behaviour shifts, new product categories, vocabulary drift, upstream data evolution) and how each change is invisible to the harness because the harness still tests against the deployment-time set. Mention the drift monitor firing without anyone refreshing the harness in response. Describe the external trigger that finally surfaces it — quarterly business review, customer-success escalation, audit, senior joiner reviewing the eval set. Make the consequence concrete: weeks or months of stale decisions, manual remediation, time spent reconstructing what production looks like now vs what the harness assumes. The failure must demonstrate something a refresh cadence with audit log would have caught at the point of drift, not a generic 'the model got worse over time'.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, decisions. 'The returns triage agent' not 'the AI system'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or chained without retrieval or tools; ML is classical with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly 40% of Q4 volume', 'about three quarters before the pattern surfaced').\n- Do not invent regulatory specifics. Generic framing only.\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-05-27",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "principle_id": "GC1B1-01",
+      "pillar": "P5 — Cost Optimization",
+      "focus_area": "P41 — Model Selection & Right-sizing",
+      "impact_level": "Medium",
+      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENCOST — Cost Optimization",
+              "focus_area": "Model selection and cost optimization",
+              "question": "GENCOST01 — How do you select the appropriate model to optimize costs?",
+              "best_practice": "GENCOST01-BP01 — Right-size model selection to optimize inference costs",
+              "implementation_step": {
+                "number": 3,
+                "title": "Select the most cost-efficient model based on the prioritized cost dimensions (like hosting paradigm, model size, or token cost)",
+                "verbatim_text": "Select the most cost-efficient model based on the prioritized cost dimensions (like hosting paradigm, model size, or token cost)."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-29",
+              "note": "AWS step 3 calls for the model selection to be made cost-aware against the prioritized cost dimensions (hosting paradigm, model size, token cost). AWS leaves unspecified: where the decision record lives, what shape it takes, what content elements it must capture, and how it is enforced as a versioned artefact in CI. This principle concretises all four. It also absorbs the substance of GENCOST01-BP01 steps 1 (Identify minimum performance requirements) and 2 (Determine models meeting the bar) as content elements WITHIN the decision record — those AWS steps are not_promoted as standalone principles in this catalogue (see lens_mapping.md GENCOST01-BP01 ledger)."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-29",
+              "note": "Provisional mapping based on subject-matter proximity — model-selection decision records are a design-and-build governance artefact, aligning with III.B's scope (same domain GO1B1-03 maps to). Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "project",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Maintain a versioned model-selection decision record in the workload repository declaring requirements, candidate models, chosen model, and cost-aware rationale",
+        "description": "Each foundation-model selection — initial choice or replacement — must be captured as a versioned decision record (ADR or equivalent) under the workload repository, naming the minimum performance requirements the model must meet, the candidate models evaluated against those requirements, the chosen model, and the cost-aware rationale tying the choice to the prioritized cost dimensions (hosting paradigm, model size, token cost)."
+      },
+      "problem": {
+        "description": "Without a versioned model-selection decision record in the workload repository, the choice of foundation model lives in tribal knowledge — the senior engineer who set the workload up, a Slack thread, a notebook that was never committed. The failure surfaces not at selection time (the workload runs fine) but at the first exposure event that demands defence of the choice: finance flagging the bill, the original architect leaving, a cheaper model arriving, an audit asking for justification. At that point, the team cannot reconstruct what minimum bar was set, what alternatives were evaluated, or what cost-vs-quality trade-off was accepted — every comparison becomes a green-field decision instead of a revisitable one. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A team picks a frontier model for an insurance underwriting agent because the original architect prefers it; six months later finance flags the workload at roughly $80K/month and asks if a smaller model would suffice; nobody can produce the original minimum performance bar against which the choice was made, so the comparison is run from scratch.",
+          "A team uses a frontier model for a customer-service workflow that turns out to need only sentiment classification — a $0.30-per-call workload a 7B model could handle for fractions of a cent. The decision happened in a Slack thread three quarters ago and the cost ratio was never reconciled until volume scaled.",
+          "An external auditor asks the team to justify the model choice for a regulated decisioning workload; the original architect has moved teams; the new owner can produce no requirements spec, no evaluated alternatives, no decision rationale; the audit logs \"model selection not documented\" as a remediation item.",
+          "A new model class is released and the platform team needs to evaluate cost-vs-quality migration across ten workloads; for none of them can they find the original selection rationale, so every migration becomes a green-field decision rather than an update to a known prior choice.",
+          "A workload is on a self-hosted 70B model at ~$250/day uptime; a managed alternative would be ~$80/day at current token volume; the team cannot find who originally decided self-hosting was right or what assumptions (volume, latency, privacy) drove the call, so they cannot evaluate whether those assumptions still hold."
+        ]
+      },
+      "solution": {
+        "approach": "Maintain a versioned model-selection decision record at a known repository path (convention: `model-selection/decision.md` or equivalent ADR location under the workload repository). The record names: (1) the minimum performance requirements the model must meet (the criteria considered, absorbing the substance of AWS step 1); (2) the candidate models evaluated against those requirements (the shortlist, absorbing AWS step 2); (3) the chosen model; (4) the cost-aware rationale tying the choice to the prioritized cost dimensions (hosting paradigm, model size, token cost). Wire two pre-merge CI gates against the record: an existence + content-completeness gate, and a coupling gate that requires any PR adding or changing a model reference to update the decision record.",
+        "key_benefits": [
+          "Foundational dependency for periodic re-evaluation (GC1B1-02) — the re-evaluation principle cannot fire usefully against a workload whose original selection rationale is missing; the decision record is the baseline that re-evaluation compares forward from.",
+          "Production knowledge survives team changes; the decision lives in the workload repository, not in any individual's head, Slack thread, or local notebook.",
+          "Cost-aware rationale tied to the three prioritized cost dimensions makes the choice defensible to finance and procurement at any review moment — the bill is no longer surprising because the cost basis is documented from day one.",
+          "The decision record absorbs the substance of AWS steps 1 (requirements) and 2 (candidates evaluated) as content elements within a single artefact, eliminating the proliferation of separate requirements specs and shortlist documents that would otherwise drift apart."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, the workload repository must contain a versioned model-selection decision record (convention: `model-selection/decision.md` or equivalent), with all four required content elements present: minimum performance requirements considered, candidate models evaluated, chosen model, and cost-aware rationale referencing the prioritized cost dimensions (hosting paradigm, model size, token cost). Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR that adds, changes, or removes a foundation-model reference under `src/` (model identifier, vendor, hosting paradigm), the PR must also modify `model-selection/decision.md` OR include a linked ADR under `docs/adrs/` justifying why no decision-record update is required. Configured as a required status check on the integration branch via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.1.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENCOST01-BP01 implementation step 3 (Select the most cost-efficient model based on the prioritized cost dimensions). First principle in the catalogue's GENCOST pillar. Scope: a versioned model-selection decision record with four content elements (requirements, candidates, chosen model, cost-aware rationale) plus two pre-merge CI gates (existence + content-completeness; PR-coupling on model changes). Absorbs the substance of AWS steps 1 (Identify minimum performance requirements) and 2 (Determine models meeting the bar) as content elements within the decision record — those AWS steps are recorded as not_promoted in lens_mapping.md per the step_promotion rubric calls (see decisions.md 2026-05-29 entry for the decomposition rationale). AIGP cross-reference set to Domain III.B (Govern the AI Model Lifecycle — Design & Build) with mapping_state: unverified pending side-by-side competency review. impact_level: Medium (matching AWS BP rating; principled outlier from the GO1B1 family's High because cost-optimization failures are recoverable through re-selection rather than producing customer regressions). maturity_level: foundational. applicability: { llm/rag/agentic: mandatory; ml: nice_to_have } matching GO1B1-03's broad shape (classical ML model selection has its own well-established discipline)."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the model-selection decision record discipline applies regardless of how the chosen model is served; the ADR captures the choice itself (which model + which serving paradigm), so it must exist whether the workload uses pure-API on-demand, committed API capacity, managed self-hosting, or raw self-hosting. (Indeed, the serving-paradigm choice IS one of the prioritized cost dimensions the ADR's cost-aware rationale names.) serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GC1B1-01 — Maintain a versioned model-selection decision record in the workload repository declaring requirements, candidate models, chosen model, and cost-aware rationale — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery foundation-model selection (initial choice or replacement) must be captured as a versioned decision record in the workload repository, naming the minimum performance requirements the model must meet, the candidate models evaluated against those requirements, the chosen model, and the cost-aware rationale tying the choice to the prioritized cost dimensions (hosting paradigm, model size, token cost). The record is enforced as a versioned artefact in CI: any PR that adds or changes a model reference must update it.\n\nTHE FAILURE SHAPE\n\nThis is a setup-absence failure that becomes visible at the first exposure event that demands defence of the model choice. The team has a workload in production using a foundation model the original architect picked. The choice was made informally — a Slack thread, a notebook, a hallway conversation — and never committed as a structured decision record. The workload runs; the choice is not actively wrong. The absence is invisible until a triggering event forces it into view: finance flags the workload's bill and asks if a smaller model would suffice; a cheaper model class is released and procurement wants a cost-vs-quality comparison; an auditor (internal compliance, external regulator, or platform-team review) asks the team to justify the choice; the original architect leaves and the new owner inherits a model whose selection rationale lives in nobody's head. At that moment the team cannot reconstruct what minimum bar was set, what alternatives were evaluated, or what trade-off was accepted. Every comparison becomes a green-field decision rather than a revisitable one. The consequence is a forced choice: stall the workload while the missing record is reconstructed from memory, defend the choice with rationale invented after the fact, or migrate without proper comparison and inherit the cost-of-being-wrong at production scale.\n\nThe principle's value is forcing the selection to be a first-class versioned artefact from day one — committed, with the four content elements, wired to CI so any model change touches it. Without it, the cost basis of every model decision lives in tribal knowledge and breaks the moment that knowledge moves on.\n\nAPPLICABILITY\n\nGC1B1-01 is mandatory for LLM, RAG, and agentic workloads where the model is a foundation-model-as-a-service decision with real cost stakes. It is nice_to_have for classical ML workloads where model selection follows well-established statistical discipline. If the chosen Implementation type is not one of the mandatory three (or if it is ML), open use_case_background with one italicised sentence noting the principle is most acute for foundation-model selection at production cost scale, and that the example below is illustrative of how the same setup-absence failure would manifest in the chosen pattern.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GC1B1-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe a workload that is in production with a chosen foundation model. Be specific about the industry, the implementation type, the team, the workload's role, and the integrating systems (with plausible invented names). Name the model that was chosen (use a plausible model class — frontier vs mid-tier vs small-tier — without fabricating specific commercial model names where avoidable). Crucially: name how the choice was made — the informal mechanism (a Slack thread, a notebook the original architect ran on their laptop, a hallway agreement at workload kick-off). The reader should picture a confident team unaware that the selection record does not survive contact with change. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe the moment the missing selection record becomes a problem. Walk through chronologically: name the triggering event (finance escalation on the bill; the original architect leaving; a cheaper model class released; a procurement review; an internal compliance audit; a quarterly model-risk review). Then describe what the team tries to do and where it falls apart — they cannot produce the original requirements bar, cannot list the alternatives that were considered, cannot defend the cost-vs-quality trade-off that justified the chosen paradigm (managed vs self-hosted; larger vs smaller model). Make the consequence concrete: a forced green-field comparison that stalls a release; a migration that ships without proper cost comparison; a compliance finding that opens a remediation backlog; finance pulling budget while the selection rationale is reconstructed. The failure must demonstrate something a committed, four-element decision record with CI coupling would have caught or prevented — not a generic 'the model performed badly' regression.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, decisions. 'The claims-triage workload' not 'the AI system'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or prompt-chained without retrieval or tools; ML is classical with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly $80K/month', 'about a fortnight before the comparison closed').\n- Do not invent regulatory specifics. Generic framing only ('the firm's internal compliance review', 'the platform team's quarterly cost review').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-05-29",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "principle_id": "GC2B2-01",
+      "pillar": "P5 — Cost Optimization",
+      "focus_area": "P51 — Inference Cost Optimization",
+      "impact_level": "Medium",
+      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
+      "serving_paradigm": { "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory", "api_provisioned": "nice_to_have" },
+      "maturity_level": "mature",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENCOST — Cost Optimization",
+              "focus_area": "Generative AI pricing model",
+              "question": "GENCOST02 — How do you select a cost-effective pricing model (for example, provisioned, on-demand, hosted, or batch)?",
+              "best_practice": "GENCOST02-BP02 — Optimize resource consumption to minimize hosting costs",
+              "implementation_step": {
+                "number": 4,
+                "title": "Optimize the hosting infrastructure in accordance with the workload's demands, and select the most cost optimized infrastructure that meets performance requirements",
+                "verbatim_text": "Optimize the hosting infrastructure in accordance with the workload's demands, and select the most cost optimized infrastructure that meets performance requirements."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-05-29",
+              "note": "AWS step 4 calls for the hosting infrastructure to be right-sized to the workload's demand profile with the most cost-optimized configuration that meets performance requirements. AWS leaves unspecified: where the right-sizing baseline lives, where utilization alarms are declared, how the declared baseline is enforced against actual deployed infrastructure (the most common bypass), and how reserved-capacity / scheduling / quantization decisions are made auditable. This principle concretises all four — `infra/right-sizing/config.yaml` as the baseline artefact, `infra/monitoring/utilization-alarms.yaml` as the alarms artefact, two pre-merge CI gates (existence + content; code-vs-record consistency lint comparing IaC against the YAML and verifying deployed alarms), and runtime alarm enforcement post-deploy. The principle absorbs the substance of GENCOST02-BP02 steps 1 (demand identification — content WITHIN the YAML's utilization_targets), 2 (deploy on acceptable infrastructure — pre-condition), and 3 (establish demand profile — observation work product absorbed by the right-sizing config's baseline). AWS's implementation guidance is heavily vendor-menu (SageMaker AI HyperPod, EKS, Slurm, EC2 Reserved Instances, Inference Recommender, quantization techniques) but the step wording itself is a generic mandate; vendor specifics belong here in framework_mappings notes rather than in the principle's solution.approach."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-05-29",
+              "note": "Provisional mapping based on subject-matter proximity — hosting-infrastructure right-sizing is a build-and-design discipline against the deployed workload, aligning with III.B's lifecycle scope. Same anchor as GC1B1-01 and GO1B1-03. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Right-size hosting infrastructure to the workload's demand profile and commit utilization alarms as code",
+        "description": "Each workload that self-hosts a foundation model for inference (or runs on committed managed capacity such as Bedrock Provisioned Throughput) must declare a versioned right-sizing baseline and a versioned set of utilization alarms in the workload repository, both as code. The baseline names the target utilization band per resource (GPU / CPU / memory), the instance ceiling, the scheduling and idle policy, the reserved-capacity coverage target as a function of workload age, and the model identifier and quantization precision. The alarms fire when production utilization, scheduling discipline, reserved-capacity coverage, or quantization-review cadence drift from the declared baseline. The actual deployed infrastructure must match the declared baseline — divergence requires an explicit ADR, not silent drift."
+      },
+      "problem": {
+        "description": "Without utilization alarms committed as code and a right-sizing baseline tied to the workload's observed demand profile, oversized hosting infrastructure runs invisibly — the workload performs correctly, just expensively. No per-PR CI gate catches this because nothing in the PR is wrong; the wrong choice was made at first deploy or has drifted since. The only signal is the monthly bill, which arrives 30 days late, lands with finance not engineering, and triggers an audit that takes weeks to land an optimization PR. Meanwhile the workload continues paying the premium. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "Self-hosted Llama runs on `ml.g5.12xlarge` sized for projected peak; actual production peaks at 18% GPU utilization; no alarm declared in `infra/monitoring/`; engineering only notices when finance flags the workload during quarterly cost review six months in.",
+          "Inference endpoint runs 24/7 on a workload whose traffic is bounded to UK business hours; no scheduled-scaling or shutdown policy committed; the workload spends 70% of compute time idle, with no signal raised because the workload itself is healthy.",
+          "Workload runs 18 months past first deploy with no Reserved Instance or Savings Plan coverage; on-demand premium accumulates; no alarm fires against `RI coverage < workload-age threshold`.",
+          "Self-hosted model deployed at FP16 on a model class that supports INT8 quantization with negligible quality impact; quantization is never applied because no alarm declares the eligibility check.",
+          "Reserved-capacity purchase sized to projected demand 18 months ago; actual usage has stayed at 40% of reserved; no alarm declares a coverage-vs-usage check; the reserved overspend is invisible because RIs look like a cost optimization on the surface."
+        ]
+      },
+      "solution": {
+        "approach": "Commit a hosting-infrastructure right-sizing config at a known path in the workload repository (convention: `infra/right-sizing/config.yaml`), declaring: (1) the right-sizing baseline — target utilization band per resource (GPU / CPU / memory), instance ceiling, scheduling windows where the workload may shut down, and reserved-capacity coverage target as a function of workload age; (2) utilization alarms as code (convention: `infra/monitoring/utilization-alarms.yaml`), each alarm naming the resource, the metric, the threshold, the evaluation window, and the alert routing. Wire two pre-merge CI gates: one enforces existence + content-completeness on both files; the other is a code-vs-record consistency lint that parses the workload's IaC (Terraform, CloudFormation, k8s manifests, docker-compose — whichever the workload uses) and compares declared GPU instance count, GPU type, model identifier, and quantization precision against the YAML's corresponding fields, AND verifies that every alarm declared in the YAML is actually deployed via the same IaC as an active monitoring resource. The PR fails if any mismatch is present without an accompanying ADR. The alarms themselves do the runtime enforcement once deployed — they fire when actual production utilization drifts outside the declared band, when reserved-capacity coverage expires, or when scheduled shutdown windows are violated.",
+        "key_benefits": [
+          "Catches the silent-waste failure mode that monthly bills surface 30 days late and aggregate cost reports cannot attribute — alarms fire at the workload level the moment utilization drifts outside the declared band, not at billing close.",
+          "Builds on GC1B1-01 without overlap: GC1B1-01 records the paradigm/model choice gated on `src/` changes; GC2B2-01 enforces within-paradigm right-sizing gated on `infra/` changes. Different file scope, different lifecycle moment, complementary coverage.",
+          "Code-vs-record consistency lint (Gate 2) closes the bypass loophole that pure documentation-discipline principles cannot — declared baseline is binding against deployed infrastructure, not honour-system, so the YAML cannot quietly drift from reality.",
+          "Workload-age-anchored reserved-capacity coverage check forces the RI / Savings Plan decision rather than leaving it as an indefinite open item; long-running workloads with no commitment surface as alarm-eligible.",
+          "Workload-agnostic across in-scope serving paradigms — declare baseline, declare alarms, gate on infra-config drift — applies whether self-hosted on managed inference endpoints, self-hosted on unmanaged clusters, or on committed-capacity managed APIs (where the commitment IS a right-sizing decision); only the specific resources and thresholds differ."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, `infra/right-sizing/config.yaml` and `infra/monitoring/utilization-alarms.yaml` must both exist and be content-complete. The right-sizing config must declare: `resources.gpu` (type, count, ceiling), `utilization_targets` (compute and memory bands per session state), `scheduling` (active_windows, idle_policy with auto_suspend_after_idle and full_shutdown_after_idle, weekly_max_active_hours), and `model` (identifier, precision, precision_review_due). The alarms config must declare at minimum a gpu_compute_oversized alarm, an idle_shutdown_violated alarm, and a quantization_review_overdue alarm. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR, a lint must parse the workload's infrastructure-as-code (Terraform, CloudFormation, k8s manifests, docker-compose, or equivalent) and verify two things: (a) the declared hosting infrastructure matches `infra/right-sizing/config.yaml` — actual GPU instance count must be ≤ `resources.gpu.ceiling`; actual GPU type must equal `resources.gpu.type`; actual served model identifier must equal `model.identifier`; actual quantization precision must equal `model.precision`; (b) every alarm declared in `infra/monitoring/utilization-alarms.yaml` must be deployed via the same IaC as an active monitoring resource (CloudWatch alarm, Prometheus rule, or equivalent depending on the workload's monitoring stack). The lint fails the PR if any mismatch is present without an accompanying ADR under `docs/adrs/` justifying the temporary divergence. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.0.1",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENCOST02-BP02 implementation step 4 (Optimize the hosting infrastructure in accordance with the workload's demands, and select the most cost optimized infrastructure that meets performance requirements). Seventh principle in the catalogue; second in the GENCOST pillar; first to use the new schema v1.9 `serving_paradigm` field with a narrowed scope (omitting api_on_demand since pure-API workloads have no infrastructure to right-size). Decomposition: GENCOST02-BP01 closed 0 promoted (all four steps absorbed by GC1B1-01 which already covers hosting-paradigm choice in its model-selection ADR); GENCOST02-BP02 decomposition under the step_promotion rubric: steps 1/2/3 not_promoted (decision-process advice / pre-condition / observation work products); step 4 promoted as this principle. Statement: 'Right-size hosting infrastructure to the workload's demand profile and commit utilization alarms as code' — derives from AWS step 4's operative verbs (Optimize, select) rather than the documentation-shaped 'maintain a decision record' interpretation initially considered. Two pre_merge CI gates, both required status checks on the integration branch: (1) existence + content-completeness on right-sizing config + utilization alarms YAMLs; (2) code-vs-record consistency lint comparing IaC against the YAML baselines AND verifying deployed alarm presence — closes the documentation-discipline bypass that GC1B1-01 acknowledged but deliberately left open. impact_level Medium (matches AWS BP rating; cost failures recoverable via re-optimization, parallel with GC1B1-01's principled outlier from the GO1B1 family's High). applicability { llm/rag/agentic: mandatory, ml: nice_to_have } matching GC1B1-01's broad shape. serving_paradigm { self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory, api_provisioned: nice_to_have } — api_on_demand omitted (no infrastructure to right-size); api_provisioned nice_to_have because commitment sizing IS a right-sizing decision but provider handles underlying instance optimization. maturity_level scaling — three reasons: (1) Gate 2's code-vs-record consistency lint is real platform-team engineering (IaC parser, cross-reference logic, cloud-API verification of deployed alarms), not first-project capability; (2) the principle only applies to self-hosted or committed-managed workloads per serving_paradigm, and self-hosting is rarely a first AI project choice — teams typically start on API on-demand and migrate to self-hosted only at scaling tier when cost or data-residency pressures arrive; (3) runtime alarm enforcement needs a deployed instance to fire against, same logic that put GO1B1-04 (drift monitor) at scaling. The day-1-declarability of the YAMLs is necessary but not sufficient — maturity_level captures when enforcement is meaningful. AIGP cross-reference set to Domain III.B (Govern the AI Model Lifecycle — Design & Build) with mapping_state: unverified pending side-by-side competency review. See decisions.md 2026-05-29 entries for the schema v1.9 serving_paradigm addition and the GENCOST02 walkthrough."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-05-29",
+            "author": "Dheeraj",
+            "summary": "PATCH. maturity_level corrected scaling → mature (hardcoded override). Reasoning: Gate 2's code-vs-record consistency lint plus deployed-alarm verification against cloud APIs is genuine portfolio-tier engineering — IaC parser, cross-workload monitoring stack assumption, platform-team capability — not the per-workload capability scaling-tier orgs typically have. Per the field convention 'pick the strictest level that honestly applies; safer to over-adopt than under-adopt,' mature is the honest call. Surfaced during a conversation about the scaling-vs-mature gap in the current maturity_level rubric (3 dimensions, none structurally encoding workload-scoped vs portfolio-scoped). No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, framework_mappings, evidence, or explain_prompt. The generator prompt at agentflow/sections/maturity_level/generate.json is being updated in the same session to add an explicit workload-vs-portfolio decision tree so future authoring catches this distinction at draft time."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GC2B2-01 — Right-size hosting infrastructure to the workload's demand profile and commit utilization alarms as code — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery workload that self-hosts a foundation model for inference (or runs on committed managed capacity such as Bedrock Provisioned Throughput) must declare a versioned right-sizing baseline and a versioned set of utilization alarms in the workload repository, both as code. The baseline names the target utilization band per resource (GPU / CPU / memory), instance ceiling, scheduling and idle policy, reserved-capacity coverage target as a function of workload age, and the model identifier and quantization precision. The alarms fire when production utilization, scheduling discipline, reserved-capacity coverage, or quantization-review cadence drift from the declared baseline. CI gates enforce: (a) both YAMLs exist and are content-complete; (b) the actual deployed infrastructure-as-code matches the YAML — declared GPU count / type / model / precision must equal what IaC deploys, and every declared alarm must be deployed as an active monitoring resource.\n\nTHE FAILURE SHAPE\n\nThis is a setup-absence failure that becomes visible at the first exposure event that demands defence of the hosting cost. The team has a workload running in production on self-hosted infrastructure. The original architect picked an instance size when first deploying — informed by projected peak load, rough back-of-envelope estimates, or simply 'this is what the spike chart said we'd need.' The workload runs fine. The instance is oversized for the actual production load; the workload runs 24/7 even though traffic only hits business hours; no Reserved Instance was ever purchased because the team meant to evaluate it later; the model was deployed at FP16 even though the model class supports INT8 with negligible quality loss. None of these are visible from inside the workload — the workload is healthy. The bill is the only signal, and the bill is 30 days late, lands with finance not engineering, and gets absorbed as 'AI infrastructure cost.'\n\nThe absence becomes visible at a triggering event: a quarterly cost review surfaces the workload as a top-N spend item; an internal audit asks why the workload runs on the instance class it does; the original architect leaves and the new owner inherits an instance whose sizing rationale lives in nobody's head; a procurement review asks if Reserved Instances would help and nobody can produce the utilization data to make the call; a release notes scan flags that INT8 quantization is widely supported now and the team has not evaluated it. At that moment the team cannot reconstruct what utilization band was assumed, what scheduling policy was supposed to be in place, what reserved-capacity coverage was intended. Every optimization becomes a green-field investigation rather than an alarm-driven micro-decision. The consequence is months of accumulated overspend that compounds with each quarter the discipline does not exist.\n\nThe principle's value is forcing the right-sizing baseline AND its enforcement to be first-class versioned artefacts from day one — committed, with explicit utilization bands and scheduling policies and reserved-capacity targets, AND with a CI gate that verifies actual deployed IaC matches the declaration. Without both, the discipline is honour-system: the YAML can exist while the deployed infrastructure quietly drifts past it.\n\nAPPLICABILITY\n\nGC2B2-01 is mandatory for workloads self-hosted on managed infrastructure (SageMaker AI endpoints, Vertex AI endpoints, Azure ML managed endpoints) or on unmanaged infrastructure (EC2 + vLLM, EKS / Slurm / HyperPod clusters, on-prem GPUs), and nice_to_have for workloads on committed managed-API capacity (Bedrock Provisioned Throughput, Azure OpenAI PTUs) where the commitment-sizing decision IS a right-sizing decision but the provider handles the underlying instance optimization. The principle does not apply at all to pure-API on-demand workloads (OpenAI, Anthropic, Bedrock on-demand) — there is no hosting infrastructure to right-size; cost optimisation in that paradigm is at the prompt layer (GENCOST03). If the chosen Implementation type's typical serving paradigm is api_on_demand, open use_case_background with one italicised sentence noting GC2B2-01 does not apply to pure-API workloads and that the example below is illustrative of how the same setup-absence failure would manifest if the team self-hosted instead.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GC2B2-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe a workload self-hosted (or on committed managed capacity) in production. Be specific about the industry, the implementation type, the team, the workload's role, and the integrating systems (with plausible invented names). Name the foundation model in use (use a plausible open-weight model class — Llama / Mistral / Qwen — or a committed-managed equivalent) and the hosting choice (an instance size for self-hosted, a committed-throughput unit for managed). Crucially: name how the instance/commitment was sized — the informal mechanism (the original architect's back-of-envelope, the projected peak load from launch planning, a copy of another workload's sizing). The reader should picture a confident team unaware that the sizing rationale and the enforcement around it do not survive contact with production reality. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe the moment the missing right-sizing baseline and alarms become a problem. Walk through chronologically: name the triggering event (quarterly cost review surfacing the workload as a top-N spend; internal audit asking why the chosen instance class; the original architect leaving; procurement review asking about Reserved Instances; release notes flagging new quantization variants). Then describe what the team tries to do and where it falls apart — they cannot produce the utilization band that was assumed, cannot show what scheduling policy was supposed to be in place, cannot defend the reserved-capacity coverage decision, cannot tell whether the workload is over-sized or under-utilised because no alarm tells them. Make the consequence concrete: months of accumulated overspend; finance pulling budget; a green-field re-investigation that stalls a release; a Reserved Instance purchase made on guesswork rather than data. The failure must demonstrate something a committed right-sizing baseline + utilization alarms + IaC-consistency lint would have caught at the moment of drift — not a generic 'the bill was too high' regression.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, decisions. 'The claims-triage workload' not 'the AI system'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or prompt-chained without retrieval or tools; ML is classical with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly $25K/month overspend', 'about a quarter before the pattern surfaced').\n- Do not invent regulatory specifics. Generic framing only ('the firm's quarterly cost review', 'the platform team's infrastructure audit').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.1",
+        "compiled_at": "2026-05-29",
+        "compiled_by": "manual_authoring"
+      }
+    }
+  ]
+}

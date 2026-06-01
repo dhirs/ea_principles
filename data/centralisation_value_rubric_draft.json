@@ -1,0 +1,132 @@
+{
+  "rubric_id": "centralisation_value",
+  "rubric_version": "0.1.0-draft",
+  "intent": "Hand-applied at authoring time to decide whether a control belongs to the platform team (enterprise-tier in taxonomy.json) or the project team (project-tier). Complements ownership_spec.enterprise_qualification_rules: those rules are binary triggers; this rubric scores cost vs benefit when the binary trigger is ambiguous or when finer reasoning is needed at scale (e.g. 500-principle prioritisation).",
+  "when_to_use": "Apply when authoring a new principle or deciding where a new control should live (platform-built shared library / service vs project-local implementation). Skip if any one of taxonomy.json ownership_spec.enterprise_qualification_rules trivially fires — those are dispositive; this rubric is for the grey zone.",
+  "scoring_scale": {
+    "0": "Absent / negligible",
+    "1": "Present but minor",
+    "2": "Significant",
+    "3": "Dominant — the decision essentially turns on this dimension"
+  },
+  "dimensions": {
+    "benefit": [
+      {
+        "id": "B1_reuse_breadth",
+        "question": "How many distinct projects in the portfolio need this control today or in the foreseeable roadmap?",
+        "scoring": {
+          "0": "1 project (bespoke).",
+          "1": "2–5 projects.",
+          "2": "6–20 projects.",
+          "3": "20+ projects, or every workload of a given pattern."
+        }
+      },
+      {
+        "id": "B2_specialist_skill_required",
+        "question": "Does building or operating this control need skills the average project team does not have (cryptography, formal eval methodology, regulator-facing reporting, model-risk quantification)?",
+        "scoring": {
+          "0": "Any senior engineer can implement it.",
+          "1": "Most teams can; one or two will struggle.",
+          "2": "Specialist help needed in most projects.",
+          "3": "Scarce expertise; project-local attempts will be wrong or non-compliant."
+        }
+      },
+      {
+        "id": "B3_portfolio_visibility_value",
+        "question": "Is uniform implementation itself the point — does a central view across projects unlock value that per-project views cannot (audit dashboards, cross-project drift detection, regulator-facing reporting, vendor-spend rollup)?",
+        "scoring": {
+          "0": "No portfolio-level value; per-project view is sufficient.",
+          "1": "Occasional cross-project comparison would be nice.",
+          "2": "Material governance or efficiency value from uniformity.",
+          "3": "The whole reason this control exists is portfolio-level (e.g. ARB dashboard, regulator filing)."
+        }
+      }
+    ],
+    "cost": [
+      {
+        "id": "C1_platform_build_and_maintain_cost",
+        "question": "What is the steady-state engineering load on the platform team to deliver and keep this alive (build + on-call + version migrations)?",
+        "scoring": {
+          "0": "One-off, then dormant.",
+          "1": "Quarterly patches.",
+          "2": "Sustained part-time owner.",
+          "3": "Requires a dedicated team-of-N permanently."
+        }
+      },
+      {
+        "id": "C2_coordination_drag",
+        "question": "How much would consuming projects wait on the platform team for changes they need — what is the bottleneck risk?",
+        "scoring": {
+          "0": "Projects never need to ask for changes; library is stable and complete.",
+          "1": "Occasional change requests, low-latency turnaround acceptable.",
+          "2": "Projects regularly blocked waiting on platform-team release cycles.",
+          "3": "Tight coupling; projects cannot progress when platform team is slow."
+        }
+      },
+      {
+        "id": "C3_context_fit_loss",
+        "question": "How much per-project flexibility is lost by standardising? Do projects have legitimate, non-trivial reasons to diverge that the standard would suppress?",
+        "scoring": {
+          "0": "Projects' needs are essentially identical.",
+          "1": "Minor variations easily handled by parameters.",
+          "2": "Significant per-project variation; the standard will feel like a poor fit for some.",
+          "3": "Projects' needs diverge fundamentally; forcing a standard is harmful."
+        }
+      }
+    ]
+  },
+  "decision_rule": {
+    "computation": "benefit_sum = B1 + B2 + B3; cost_sum = C1 + C2 + C3; delta = benefit_sum - cost_sum.",
+    "outcome": {
+      "centralise_when": "delta >= 2 — the principle is enterprise-tier and the underlying control is platform-team-owned.",
+      "project_local_when": "delta <= 0 — the principle is project-tier; each project implements locally with mechanical CI evidence.",
+      "grey_zone": "delta == 1 — defaults to project-tier. Tie-breaker rationale: it is cheaper to centralise later (once reuse evidence accumulates) than to decentralise a poorly-scoped central platform."
+    },
+    "veto": "If any one of taxonomy.json ownership_spec.enterprise_qualification_rules fires (multi-project blast radius, regulator in scope, specialist function owns the control, sign-off authority gap), the principle is enterprise-tier regardless of delta. The rubric is a tiebreaker, not an override."
+  },
+  "calibration_examples": [
+    {
+      "case": "Shared eval-runner library (`eval-core` — CLI, adapter interface, result schema, dashboard ingestion)",
+      "scores": {"B1": 3, "B2": 2, "B3": 3, "C1": 2, "C2": 1, "C3": 1},
+      "delta": 4,
+      "outcome": "centralise",
+      "rationale": "Every AI project needs an eval runner; uniformity is the whole point for portfolio-level governance; build cost is non-trivial but bounded."
+    },
+    {
+      "case": "Per-project eval scenarios (the actual `expected_decision` and `expected_evidence_trace` labels)",
+      "scores": {"B1": 0, "B2": 0, "B3": 0, "C1": 0, "C2": 0, "C3": 3},
+      "delta": -3,
+      "outcome": "project_local",
+      "rationale": "Every project's scenarios are unique to its domain; centralising would impose nonsense."
+    },
+    {
+      "case": "Per-project eval adapter (translates harness contract → Step Function / Lambda / in-process call)",
+      "scores": {"B1": 1, "B2": 1, "B3": 0, "C1": 1, "C2": 1, "C3": 2},
+      "delta": -2,
+      "outcome": "project_local",
+      "rationale": "Adapter shape varies fundamentally with each project's runtime; central abstraction would leak."
+    },
+    {
+      "case": "Central governance dashboard ingesting eval results from all projects",
+      "scores": {"B1": 3, "B2": 1, "B3": 3, "C1": 2, "C2": 2, "C3": 0},
+      "delta": 3,
+      "outcome": "centralise",
+      "rationale": "The whole point is the portfolio view; no project would build a cross-project dashboard for itself."
+    },
+    {
+      "case": "Brand-voice scoring model used inside creative-validation node",
+      "scores": {"B1": 2, "B2": 2, "B3": 1, "C1": 1, "C2": 1, "C3": 2},
+      "delta": 1,
+      "outcome": "project_local (grey-zone default)",
+      "rationale": "Borderline. Reuse exists but each project's brand voice differs enough that a shared scorer would need heavy per-project calibration. Revisit once 3+ projects have built their own and a common pattern emerges."
+    }
+  ],
+  "outputs_to_record": [
+    "Six dimension scores",
+    "benefit_sum, cost_sum, delta",
+    "Outcome (centralise / project_local / grey_zone)",
+    "Free-text rationale (≤ 3 sentences)",
+    "Authoring date and author"
+  ],
+  "review_cadence": "Re-score when (a) reuse_breadth materially changes (e.g. portfolio grows past a scoring boundary), (b) the platform team's capacity changes, (c) any enterprise_qualification_rule begins to fire, or (d) on the catalogue's annual review."
+}
