@@ -29,10 +29,15 @@ def load_env(*, langsmith_project: str = "agentflow") -> None:
                 continue
             key, _, val = line.partition("=")
             key = key.strip()
+            # Skip LANGCHAIN_PROJECT from .env — this pipeline owns its project
+            # name (set below). A real shell export still wins via setdefault.
+            if key == "LANGCHAIN_PROJECT":
+                continue
             # don't clobber anything already exported in the shell
             os.environ.setdefault(key, val.strip())
 
-    # LangSmith: keep this pipeline's traces in their own project.
+    # LangSmith: keep this pipeline's traces in their own project (agentflow),
+    # unless the shell explicitly set LANGCHAIN_PROJECT.
     if os.environ.get("LANGCHAIN_TRACING_V2", "").lower() == "true":
         os.environ.setdefault("LANGCHAIN_PROJECT", langsmith_project)
     _LOADED = True

@@ -13,18 +13,19 @@ PRINCIPLES_JSON = DATA_DIR / "principles.json"
 # Pipeline order of the LLM-authored sections (deterministic nodes run after).
 # Mirrors data/pipeline.md. NOTE: serving_paradigm has no prompt files yet, so it
 # is intentionally absent until data/sections/serving_paradigm/ exists.
+# TEMP: pipeline completes after `statement` only. Re-add the rest to author full principles.
 SECTION_ORDER = [
     "statement",
-    "problem",
-    "solution",
-    "gates",
-    "applicability",
-    "impact_level",
-    "maturity_level",
-    "focus_area",
-    "framework_mappings",
-    "tier",
-    "explain_prompt",
+    # "problem",
+    # "solution",
+    # "gates",
+    # "applicability",
+    # "impact_level",
+    # "maturity_level",
+    # "focus_area",
+    # "framework_mappings",
+    # "tier",
+    # "explain_prompt",
 ]
 
 # Bounded revise loop.
@@ -40,7 +41,8 @@ GENERATE_MODEL = "gpt-5"
 REVISE_MODEL = "gpt-5"
 RUBRIC_MODEL = "gpt-5"
 
-MAX_TOKENS = 4096
+# gpt-5 reasoning tokens count against this, so keep it generous to avoid truncation.
+MAX_TOKENS = 16000
 
 
 def max_retries_for(section: str) -> int:

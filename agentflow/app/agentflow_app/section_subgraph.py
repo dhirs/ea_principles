@@ -41,7 +41,12 @@ def build_section_subgraph(section: str, llm: LLMClient):
         system = composer.compose_system_prompt(section, "generate")
         ph = composer.build_placeholders(state["inputs"])
         user = composer.fill_user_template(section, "generate", ph)
-        raw = llm.complete(config.GENERATE_MODEL, system, user, config.MAX_TOKENS)
+        pid = state["inputs"].get("principle_id", "?")
+        raw = llm.complete(
+            config.GENERATE_MODEL, system, user, config.MAX_TOKENS,
+            contract=_output_contract(section, "generate"), schema_name=f"{section}_generate",
+            run_name=f"{section}:generate", trace_metadata={"section": section, "op": "generate", "principle_id": pid},
+        )
         try:
             draft = parse_and_validate(raw, _output_contract(section, "generate"))
             return {"draft": draft, "well_formed_fail": False}
@@ -59,7 +64,12 @@ def build_section_subgraph(section: str, llm: LLMClient):
         system = composer.compose_system_prompt(section, "rubric")
         ph = composer.build_placeholders(state["inputs"], draft=state["draft"])
         user = composer.fill_user_template(section, "rubric", ph)
-        raw = llm.complete(config.RUBRIC_MODEL, system, user, config.MAX_TOKENS)
+        pid = state["inputs"].get("principle_id", "?")
+        raw = llm.complete(
+            config.RUBRIC_MODEL, system, user, config.MAX_TOKENS,
+            contract=_output_contract(section, "rubric"), schema_name=f"{section}_rubric",
+            run_name=f"{section}:rubric", trace_metadata={"section": section, "op": "rubric", "principle_id": pid},
+        )
         try:
             scores = parse_json(raw)
         except ContractError:
@@ -77,7 +87,12 @@ def build_section_subgraph(section: str, llm: LLMClient):
             state["inputs"], draft=state["draft"], rubric_scores=state["rubric_scores"]
         )
         user = composer.fill_user_template(section, "revise", ph)
-        raw = llm.complete(config.REVISE_MODEL, system, user, config.MAX_TOKENS)
+        pid = state["inputs"].get("principle_id", "?")
+        raw = llm.complete(
+            config.REVISE_MODEL, system, user, config.MAX_TOKENS,
+            contract=_output_contract(section, "revise"), schema_name=f"{section}_revise",
+            run_name=f"{section}:revise", trace_metadata={"section": section, "op": "revise", "principle_id": pid},
+        )
         retry = state.get("retry_count", 0) + 1
         try:
             draft = parse_and_validate(raw, _output_contract(section, "revise"))

@@ -1,0 +1,13 @@
+{
+  "principle_id": "GENOPS03-BP02-03",
+  "bp_code": "GENOPS03-BP02",
+  "bp_title": "Enable tracing for agents and RAG workflows",
+  "pillar": "Operational Excellence",
+  "focus_area": "Traceability",
+  "question": "How do you maintain traceability for your models, prompts, and assets?",
+  "bp_implementation_guidance": "Instrument generative AI workloads so that every agent invocation and RAG retrieval is traceable end-to-end: capture spans for model calls, tool/agent steps, and retrieval queries, correlate them with a shared trace/request ID, and persist them to an observability backend so any decision can be reconstructed after the fact.",
+  "step_number": 2,
+  "step_title": "Instrument agents and RAG workflows with end-to-end distributed tracing",
+  "step_verbatim": "Enable tracing across agent orchestration and RAG pipelines so that each model call, tool invocation, and retrieval step emits a correlated span under a single trace ID, allowing the full reasoning and retrieval path behind any output to be reconstructed.",
+  "sibling_sections": {}
+}

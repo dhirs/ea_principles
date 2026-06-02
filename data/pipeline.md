@@ -175,7 +175,67 @@ When a new section's authoring node comes online:
 
 ---
 
+## Implementation status — as built (`agentflow/app/`, 2026-06-02)
+
+The runtime now exists as Python under `agentflow/app/agentflow_app/`. The as-built
+architecture diverges from the sketch above in several ways — this section is
+authoritative for the code; the sections above describe the original design intent.
+
+**Provider / model.** OpenAI **gpt-5** for all ops (generate / rubric / revise),
+not the mixed Anthropic tiers in the sketch. The client (`llm_client.py`) routes by
+model-name prefix (`gpt*` → OpenAI, `claude*` → Anthropic), so either provider works.
+
+**Structured Outputs, not post-hoc validation.** Each section's
+`output_contract.schema` (a loose hint-dict) is converted to a strict JSON Schema
+(`schema_convert.py`) and passed to OpenAI's **Responses API** via
+`text.format = {type: json_schema, strict: true}`. The model is *forced* to return
+the exact keys — this replaced an earlier bug where the model invented field names
+(`why_promote` instead of `rationale`) and the validator silently rejected good
+output. `validator.py` is now a cheap backstop, not the gate.
+
+**Flat graph, no nested sub-graphs.** Each section contributes three nodes directly
+to ONE `StateGraph`: `<section>_generate → <section>_rubric → <section>_revise` with
+a bounded revise loop (conditional edge `after_rubric`). There is NO separate
+compiled sub-graph per section (an earlier design wrapped each section in its own
+sub-graph, which double-nested the LangSmith trace). The whole principle is one flat
+graph compiled once.
+
+**No finalize / deterministic nodes (currently).** `SECTION_ORDER` is trimmed to
+`["statement"]` while iterating; the `finalize` node and the deterministic fill
+(`ownership_fill` / `evidence` / `change_history`) described above are NOT wired into
+the live graph — sections chain straight to `END` and completion status is derived
+afterwards. `deterministic_nodes.py` exists but is unused by `pipeline.py`.
+
+**Hard-fail is non-blocking.** When a section exhausts `MAX_RETRIES` it is marked
+`section_status[section] = hard_failed` and the run CONTINUES to the next section
+(it does not halt the whole pipeline). Final `status` = `awaiting_human` if any
+section hard-failed, else `completed`.
+
+**step_promotion** runs as a plain bounded Python loop (`step_promotion.py`), not via
+the graph, reusing the same prompt-composition / validate / rubric primitives.
+
+**Checkpointing — Supabase over REST.** The standard `PostgresSaver` can't be used:
+the project's Supabase direct DB host is IPv6-only and unreachable from the dev box.
+So `supabase_checkpointer.py` is a custom `BaseCheckpointSaver` that persists
+checkpoints through the Supabase **REST API** (tables `lg_checkpoints` / `lg_writes`,
+created via `app/schema.sql`). `thread_id = principle_id`.
+- **Gotcha:** re-invoking the same `principle_id` *resumes* its saved checkpoint
+  (loads the row, overwrites only the channels passed in the fresh input, continues
+  from the saved position). To author cleanly you currently bump the `principle_id`
+  or clear that thread's rows. A proper fix (per-run thread_id, or clear-on-fresh)
+  is pending.
+
+**Entry point + tracing.** `api.author_principle(anchor, *, llm, checkpointer,
+write_real)` is the single entry (CLI and any external caller use it), decorated with
+LangSmith `@traceable` so a whole run is one trace tree. Tracing goes to the
+**`agentflow`** LangSmith project; each LLM call is named `<section>:<op>` via
+`langsmith_extra`. Catalogue writes default to scratch `data/principles_authored.json`
+(`--write-real` for `data/principles.json`).
+
+---
+
 ## Change log
 
 - **2026-05-27** — File created. Initial sketch captured from conversation following the rubric structure migration. Statement and problem sections have prompt files; no LangGraph code yet.
 - **2026-06-01** — Updated to reflect schema v1.9 and the 2026-05-31 tier/evidence changes: (a) `serving_paradigm` added as the 11th LLM-authored section and inserted into the pipeline ordering next to `applicability` (orthogonal filter axes); (b) `tier_subgraph` separated out as a scored node — D1 + D2 rubric at `agentflow/sections/tier/rubric.json` replaces the prior deterministic-tier-rule framing; (c) `ownership_fill_node` introduced to deterministically fill `validator / audit_mode / arb_role` from the tier outcome; (d) `evidence_node` trigger changed from "deterministic from tier" to "deterministic from `ownership.audit_mode == 'central_review_at_gate'`"; (e) new upstream-context section names `step_promotion` as the BP-walking node that decides whether a per-principle pipeline fires at all; (f) optional `reference_implementation_url` field flagged as queued (taxonomy.json schema bump pending — decisions.md 2026-05-30 entry).
+- **2026-06-02** — Pipeline built as code under `agentflow/app/`. See "Implementation status — as built" above for the deltas from this sketch: OpenAI gpt-5 + Responses API Structured Outputs, a single flat graph (no per-section sub-graphs), non-blocking hard-fails, no finalize/deterministic nodes wired yet, step_promotion as a plain loop, and a custom Supabase-REST checkpointer (direct DB is IPv6-only). LangSmith project `agentflow`, per-call run names `<section>:<op>`.

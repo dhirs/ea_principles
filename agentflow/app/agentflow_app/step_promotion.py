@@ -84,7 +84,11 @@ def _contract(op: str) -> dict:
 def _call(llm: LLMClient, op: str, model: str, ph: dict) -> str:
     system = composer.compose_system_prompt(SECTION, op)
     user = composer.fill_user_template(SECTION, op, ph)
-    return llm.complete(model, system, user, config.MAX_TOKENS)
+    return llm.complete(
+        model, system, user, config.MAX_TOKENS,
+        contract=_contract(op), schema_name=f"{SECTION}_{op}",
+        run_name=f"{SECTION}:{op}", trace_metadata={"section": SECTION, "op": op},
+    )
 
 
 def promote_step(step: Step, llm: LLMClient) -> StepDecision:

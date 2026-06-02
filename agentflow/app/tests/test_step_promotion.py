@@ -52,7 +52,7 @@ class FakeLLM:
     def _next(self, q):
         return q.pop(0) if len(q) > 1 else q[0]
 
-    def complete(self, model, system, user, max_tokens=4096):
+    def complete(self, model, system, user, max_tokens=4096, **kwargs):
         is_rubric = "you are scoring" in system.lower()
         return self._next(self.rubrics) if is_rubric else self._next(self.drafts)
 
