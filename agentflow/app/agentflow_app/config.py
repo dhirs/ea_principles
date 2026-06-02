@@ -35,10 +35,10 @@ PER_SECTION_MAX_RETRIES: dict[str, int] = {}  # e.g. {"gates": 4}
 RUBRIC_MIN_SCORE = 2
 
 # Model selection per op. Routed to a provider by name prefix in llm_client
-# (claude* -> Anthropic, gpt* -> OpenAI), so either provider works.
-GENERATE_MODEL = "claude-sonnet-4-5"
-REVISE_MODEL = "claude-sonnet-4-5"
-RUBRIC_MODEL = "claude-haiku-4-5-20251001"
+# (gpt* -> OpenAI, claude* -> Anthropic). Defaults to OpenAI (live OPENAI_API_KEY).
+GENERATE_MODEL = "gpt-5"
+REVISE_MODEL = "gpt-5"
+RUBRIC_MODEL = "gpt-5"
 
 MAX_TOKENS = 4096
 

@@ -84,12 +84,17 @@ class LLMClient:
         return "".join(block.text for block in resp.content if block.type == "text")
 
     def _complete_openai(self, model, system, user, max_tokens) -> str:
-        resp = self._openai_client().chat.completions.create(
-            model=model,
-            max_tokens=max_tokens,
-            messages=[
+        kwargs = {
+            "model": model,
+            "messages": [
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
-        )
+        }
+        # gpt-5 / o-series use max_completion_tokens; older models use max_tokens.
+        if model.startswith("gpt-5") or model.startswith("o"):
+            kwargs["max_completion_tokens"] = max_tokens
+        else:
+            kwargs["max_tokens"] = max_tokens
+        resp = self._openai_client().chat.completions.create(**kwargs)
         return resp.choices[0].message.content or ""
