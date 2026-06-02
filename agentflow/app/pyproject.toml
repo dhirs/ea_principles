@@ -1,0 +1,30 @@
+[project]
+name = "agentflow-app"
+version = "0.1.0"
+description = "LangGraph pipeline that authors AI Architecture Principles into the catalogue."
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.2",
+    "anthropic>=0.40",
+    "openai>=1.0",
+    "pydantic>=2",
+    "supabase>=2.0",
+    "typer>=0.12",
+    "langsmith>=0.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+agentflow = "agentflow_app.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["agentflow_app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
