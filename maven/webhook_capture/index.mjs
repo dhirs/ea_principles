@@ -95,8 +95,10 @@ export const handler = async (event) => {
       lastname,
       maven_event: payload?.event,
       maven_course: payload?.course,
+      maven_interest: payload?.course, // interest mirrors the course
       maven_cohort: payload?.cohort,
       maven_amt: amt,
+      maven_contact_type: "student", // always "student" for this integration
       maven_activity_log,
     }).filter(([, v]) => v !== undefined && v !== null)
   );

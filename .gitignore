@@ -49,3 +49,7 @@ next-env.d.ts
 # agentflow scratch outputs
 data/principles_authored.json
 data/lens_mapping_authored.md
+
+# Maven/HubSpot contact data (PII) — keep out of git
+*.csv
+hubspot/import_data_platform_signups.mjs
