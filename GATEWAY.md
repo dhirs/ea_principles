@@ -61,7 +61,21 @@ are rejected with `401`. Treat the full URL as a secret — anyone with it can w
   | `payment.amount_total` | `maven_amt` | custom |
   | `course` (mirrored) | `maven_interest` | custom — set equal to the course |
   | (constant) | `maven_contact_type` | custom — always `student` |
+  | (constant) | `lifecyclestage` | standard — custom stage `Maven_Course` (`3786734329`) |
   | (composed) | `maven_activity_log` | custom, multi-line text — full history |
+
+### Companies
+
+- The Lambda does **not** create companies. HubSpot's **auto-create-and-associate-companies**
+  setting (keyed off the contact's email domain; free-email domains are skipped) creates and
+  links the company for corporate-email sign-ups.
+- The contact is stamped `lifecyclestage = Maven_Course`; HubSpot **lifecycle-stage sync**
+  (Settings → Objects → Contacts → Lifecycle Stage) propagates that stage to the associated
+  company. Sync never moves a record *backward*, so it only applies to new/earlier-stage records.
+- Live companies carry only a domain-derived name — Apollo metadata (employee count, real org
+  name, industry) is a separate enrichment step, not available in the Maven payload.
+- `industry` is intentionally not written: the standard HubSpot `industry` property is a fixed
+  dropdown that rejects arbitrary Apollo strings.
 
 - `maven_activity_log` accumulates one line per event (newest first), e.g.:
 
@@ -104,6 +118,8 @@ are rejected with `401`. Treat the full URL as a secret — anyone with it can w
 | `hubspot/list_contacts.mjs` | List all contacts (read-only) |
 | `hubspot/delete_all_contacts.mjs` | Archive ALL contacts (destructive) |
 | `hubspot/import_maven_signups.mjs` | Bulk-import sign-ups from a CSV (upsert by email, row-by-row retry); sets `maven_interest=ai_enterprise_architecture`, `maven_contact_type=student` |
+| `hubspot/import_companies.mjs` | Create Company records from an Apollo-enriched CSV (name/employees) and associate to contacts; skips free-email rows |
+| `hubspot/fix_duplicate_companies.mjs` | One-off repair: dedupe companies by domain (keep oldest), update survivor metadata, re-associate |
 
 > **PII:** the sign-up source lists (e.g. `sd.csv`) and `hubspot/import_data_platform_signups.mjs`
 > (which embeds real emails) contain personal data and are **gitignored** — kept out of the repo.

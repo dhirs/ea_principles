@@ -5,6 +5,9 @@
 const HUBSPOT_TOKEN = process.env.HUBSPOT_TOKEN;
 // Shared secret: Maven must include ?token=<WEBHOOK_SECRET> in the webhook URL.
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+// Custom lifecycle stage "Maven_Course" (internal value). Set on the contact so
+// HubSpot's lifecycle-stage sync propagates it to the auto-created company.
+const MAVEN_COURSE_STAGE = "3786734329";
 
 // Split "First Middle Last" -> { firstname, lastname }
 function splitName(name) {
@@ -99,6 +102,7 @@ export const handler = async (event) => {
       maven_cohort: payload?.cohort,
       maven_amt: amt,
       maven_contact_type: "student", // always "student" for this integration
+      lifecyclestage: MAVEN_COURSE_STAGE, // company inherits this via lifecycle sync
       maven_activity_log,
     }).filter(([, v]) => v !== undefined && v !== null)
   );
