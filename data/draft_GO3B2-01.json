@@ -1,0 +1,122 @@
+{
+  "principle_id": "GO3B2-01",
+  "pillar": "P1 — Operational Excellence",
+  "focus_area": "P13 — Traceability",
+  "impact_level": "High",
+  "applicability": {
+    "llm": "mandatory",
+    "rag": "mandatory",
+    "agentic": "mandatory",
+    "ml": "recommended"
+  },
+  "serving_paradigm": {
+    "api_on_demand": "mandatory",
+    "api_provisioned": "mandatory",
+    "self_hosted_managed": "mandatory",
+    "self_hosted_unmanaged": "mandatory"
+  },
+  "maturity_level": "scaling",
+  "framework_mappings": {
+    "aws": {
+      "references": [
+        {
+          "lens": "Generative AI Lens",
+          "pillar": "GENOPS — Operational Excellence",
+          "focus_area": "Observability in workloads",
+          "question": "GENOPS03 — How do you maintain traceability for your models, prompts, and assets?",
+          "best_practice": "GENOPS03-BP02 — Enable tracing for agents and RAG workflows",
+          "implementation_step": {
+            "number": 1,
+            "title": "Collect and aggregate trace data",
+            "verbatim_text": "Implement a system to collect trace data from agents involved in your parallel processing workflow. After running an Amazon Bedrock Agent, view the trace in real-time as your agent performs orchestration. When making an InvokeAgent request to the Amazon Bedrock runtime endpoint, set the enableTrace field to TRUE. This will include a trace field in the InvokeAgent response for each chunk in the stream. Store this data in a centralized location, such as Amazon S3 or Amazon CloudWatch Logs, for quick access and analysis."
+          },
+          "mapping_state": "verified",
+          "last_checked": "2026-06-02",
+          "note": "AWS step 1 calls for centralised collection and aggregation of agent trace data but expresses the mandate in vendor-specific terms (Bedrock InvokeAgent enableTrace flag, S3 or CloudWatch Logs as the persistence target). This principle absorbs the architectural mandate — every model call, tool invocation, and retrieval query emits a correlated span under a shared trace ID, persisted to a centrally-managed observability backend — and adds three concretisations AWS leaves unspecified: (1) the canonical event schema and header/payload split that makes traces from different teams comparable, (2) the central SDK and adapter pattern that makes the backend swap-able rather than locked to one AWS service, and (3) the merge-gate enforcement that prevents direct backend calls. AWS step 2 (Secure trace data — PII access control) and the implicit cost-attribution use case are also absorbed; step 1 is the closest AWS-verbatim anchor for the emission mandate."
+        }
+      ]
+    },
+    "aigp": {
+      "references": [
+        {
+          "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+          "competency": "IV.B: Implement Ongoing Risk Assessments and Monitoring",
+          "mapping_state": "unverified",
+          "last_checked": "2026-06-02",
+          "note": "Primary mapping. Centralised trace emission with mandatory header fields (project_id, workload_pattern, model_id, compliance_tier) is the technical substrate that makes ongoing monitoring possible at portfolio scale — without it, IV.B's expected risk-assessment cadence cannot be operated because evidence is fragmented across team-specific backends. Needs a side-by-side review against the AIGP IV.B competency definition to promote to verified."
+        },
+        {
+          "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+          "competency": "IV.C: Establish Security, Access Control, and Incident Management",
+          "mapping_state": "unverified",
+          "last_checked": "2026-06-02",
+          "note": "Secondary mapping. The central PII pre-scrub, the approved-backends allow-list (gate 1), and trace-correlation across team boundaries directly serve IV.C's access-control and incident-management scope — incidents that cross team boundaries become reconstructable from a single trace_id instead of timestamp-guessed across fragmented logs. Needs review against AIGP IV.C to verify."
+        }
+      ]
+    }
+  },
+  "ownership": {
+    "tier": "enterprise",
+    "tier_rubric_outcome": "recommended_centralise",
+    "tier_rubric_scores": {
+      "D1_legal_exposure": "no (borderline — PII redaction and EU data-residency hedges would push D1 to yes for regulated workloads)",
+      "D2_repeatability_cost": 3
+    },
+    "tier_rubric_justification": "D1 — the principle is not itself a regulator-mandated control like SR 11-7 or ECOA, though its failure modes (PII bleed into traces, broken audit trail on agent reasoning, EU traces emitted to US backend) carry real compliance exposure. Same shape as the catalogue's hypothetical 'Centralised LLM SDK and key vault' tier calibration example. D2 — SDK in 3–4 languages, canonical event schema with versioning, adapters for Langsmith / Datadog / Langfuse / CloudWatch that each evolve, price table maintenance as providers re-price, PII pre-scrub library, project registry lookup for cost_center / compliance_tier, async non-blocking pipeline. Weeks of platform engineering per project if left local, plus continuous maintenance.",
+    "validator": "project_architect",
+    "audit_mode": "self_attestation_with_mechanical_evidence",
+    "validator_justification": "Evidence is mechanical (CI logs proving the merge-gate scan ran, repo URL showing SDK import path, pinned SDK version visible in the workload's package manifest). No central review needed per call. D1 did not fire, so no mandated central gate."
+  },
+  "statement": {
+    "title": "Centralised Observability SDK for AI Workloads",
+    "description": "All AI workload observability emission — every model call, tool invocation, and retrieval query — must be routed through the enterprise observability SDK. Each call carries a central-owned header (project_id, workload_pattern, target_backend, plus central enrichment) and a project-owned payload. Direct calls from workload code to any observability backend are prohibited; backends are reached only via the SDK's adapter layer."
+  },
+  "problem": {
+    "description": "Generative AI workloads emit observability data — traces, metrics, logs — that the enterprise needs for cost attribution, incident reconstruction, audit evidence, and cross-team correlation. When each project team picks its own backend, writes its own emit code, and self-defines field names, the resulting fragmentation makes portfolio-level questions unanswerable. Cost attribution requires reconciling four price schemes by hand. PII leakage becomes per-team risk rather than a single chokepoint. Incidents that cross team boundaries are reconstructed by timestamp guessing instead of trace IDs. Schema drift between projects silently kills any chance of a cross-project dashboard. The failure modes only surface at multi-project scale, and by then the retrofit cost is large.",
+    "examples": [
+      "Fragmented backends with no shared billing — Project A ships to Datadog, Project B to Langfuse, Project C self-hosts ClickHouse. Finance gets three invoices in three currencies with no per-project breakdown; allocating GenAI observability spend to teams takes a 2-week manual exercise each quarter.",
+      "PII leaks into logs because every team rolls its own redactor — a RAG project logs raw retrieved chunks to CloudWatch; one chunk contained an unredacted SSN from a support ticket. Discovered three months later in a SOC2 audit. No central redactor existed to catch it before emit.",
+      "Recurring cost queries that never converge — Finance asks 'what did GenAI cost us last month?'. Answering requires emailing six teams, reconciling four token-pricing schemes (prompt caching, batch, on-demand, fine-tuned), and accepting ±30% confidence. The number changes 15% each time it's recomputed because nobody owns the canonical answer.",
+      "Trace IDs do not propagate across team boundaries — a customer reports an agent gave wrong info; the agent called a retrieval service owned by a different team; the two systems use different correlation IDs. Reconstruction relies on timestamp guessing. The incident takes 4 hours instead of 15 minutes.",
+      "Schema drift makes cross-project dashboards impossible — Project A logs `tokens_in`, Project B logs `prompt_tokens`, Project C logs `input_token_count`. Building a portfolio cost dashboard needs bespoke ETL per project; no team owns it; it never gets built."
+    ]
+  },
+  "solution": {
+    "approach": "All AI workload observability emission flows through a single enterprise SDK. The event is split into a header (central-owned, schema-controlled) and a payload (project-owned, free-form). Project teams call `sdk.emit(project_id, workload_pattern, target_backend, payload)`. The SDK validates the call, enriches the header (cost_center, compliance_tier, sdk_version, dollar_cost computed from a central price table, trace correlation IDs, PII pre-scrub), maps the canonical event to the requested backend's schema (Langsmith runs, Datadog LLM Observability spans, etc.), and emits asynchronously. Direct calls to any observability backend from workload code are prohibited. An escape-hatch `custom_payload` field accepts opaque blobs the team owns end-to-end, so workload-specific shapes do not queue behind central schema changes.",
+    "key_benefits": [
+      "Cross-team trace correlation works — one `trace_id` survives a request that crosses three teams' workloads, so multi-team incidents become reconstructable instead of timestamp-guessed.",
+      "Cost attribution is canonical — finance answers 'what did GenAI cost us?' from one price table applied uniformly, with per-project breakdown produced automatically rather than reconciled quarterly.",
+      "PII leakage gets caught at one chokepoint — the central pre-scrub runs before any backend emit, regardless of team or backend choice.",
+      "Backend swaps become a single SDK release — adding Langfuse or migrating off Datadog does not require N parallel team migrations.",
+      "Schema drift is eliminated — `prompt_tokens` means the same thing in every project's traces, so portfolio-level dashboards are buildable."
+    ]
+  },
+  "gates": [
+    {
+      "point": "pre_merge",
+      "check": "Lint scans the workload codebase for direct calls to observability backends (Datadog `ddtrace` / `datadog.api`, `langsmith.Client`, `langfuse.Langfuse`, AWS `boto3.client('logs')`, raw HTTPS POSTs to observability ingest endpoints) and fails the PR if any are found outside the central SDK's adapter layer. The allow-list of permitted import paths is read from `observability/allowed_imports.yaml`, maintained by the platform team and pinned with the SDK version. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate.",
+      "blocking": true
+    },
+    {
+      "point": "pre_merge",
+      "check": "Lint inspects every call to `observability_sdk.emit()` and verifies the required header parameters are supplied with non-empty values: `project_id` (matches the project registry), `workload_pattern` ∈ {`rag`, `llm`, `agent`}, `target_backend` ∈ the SDK's supported-backends enum. Fails on any call missing a required parameter, supplying an unrecognised `workload_pattern`, or naming a `target_backend` not on the supported list. The mandatory-fields contract is read from the SDK package's pinned schema version. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate.",
+      "blocking": true
+    },
+    {
+      "point": "pre_merge",
+      "check": "Lint verifies the workload pins the central observability SDK at a version ≥ the current floor declared in `observability/sdk_floor.txt`, maintained by the platform team and bumped at each schema deprecation cutover. Fails if the pinned version is below the floor, preventing deprecated schema versions from reaching production. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate.",
+      "blocking": true
+    }
+  ],
+  "change_history": [
+    {
+      "version": "1.0.0",
+      "date": "2026-06-02",
+      "author": "Dheeraj",
+      "summary": "Initial draft authored from GENOPS03-BP02 step 2 promotion. Five-example problem section grounded in retailer-shape failures (fragmented backends without shared billing, PII leak in CloudWatch, recurring cost-attribution misses, broken cross-team trace correlation, schema drift across projects). Solution carries the header/payload split with central adapter pattern and an escape-hatch custom_payload field. Three pre_merge gates (direct-backend-call ban, mandatory header fields, SDK version floor). Framework mappings anchor against AWS verbatim step 1 (verified) and AIGP IV.B primary / IV.C secondary (unverified). maturity_level scaling — the first principle scored under maturity_level rubric v2's new adoption_trigger_portfolio_size dimension (rubric calibration example #3). ownership.tier enterprise via D1=no / D2=3 → recommended_centralise; same shape as GC2B2-01 and the catalogue's centralised-SDK precedent. explain_prompt deferred. RI README at data/ri/GO3B2-01/README.md pending."
+    }
+  ],
+  "explain_prompt": {
+    "compiled_by": "deferred"
+  }
+}

@@ -8,7 +8,281 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-05-31 (latest) — New tier rubric replaces the prior 4-rule qualification screen; `ownership.tier` semantics redefined to centralisation-of-enforcement (not validation); five existing principles reclassified project → enterprise under the new rubric
+## 2026-06-04 (latest) — Authored GC3B1-01 (Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it); resumed the paused GENCOST03-BP01 budget principle now that its GO3B1-01 substrate ships; first principle under GENCOST03; created focus area P52 — Cost-aware Prompting
+
+### Context
+
+GENCOST03-BP01 (Optimize prompt token length) was the budget principle paused on 2026-06-03 pending its substrate. With GO3B1-01 (template registry + `runtime_token_budget.input` field) now in place, the principle became authorable: the budget gate finally has an addressable `template_id` and a declared ceiling to bite on. Session opened by establishing what GO3B1-01 actually does with `runtime_token_budget` — answer: it hard-enforces the **output** budget (passed as `max_tokens` on the API call), gates only the **existence/shape** of the input budget (the field must be non-empty), and merely **measures and emits** an actual-vs-declared signal for the input side. The input ceiling is declared-but-toothless. That gap is exactly what GC3B1-01 fills.
+
+A design discussion settled the measurement question (input footprint depends on runtime variable fills, so "what do we gate against" is a real choice). Three options were laid out: **A** declared-worst-case / manifest-derivable (scaffolding tokens + Σ variable `typical_max`, gated against `runtime_token_budget.input`); **B** measured from GO1B1 eval-harness fixtures; **C** runtime alarm on GO3B1-01's per-call signal. The user chose **A as the mandated spine, with B and C documented as additive alternative reference implementations** so adopters have options — the gates and RI are built on Option A only.
+
+### Decisions
+
+1. **Authored GC3B1-01 — Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it.** Appended to `data/principles.json` after GC2B2-01 (GC ordering GC1B1 < GC2B2 < GC3B1). 11 principles in the catalogue now. Anchored on AWS GENCOST03-BP01 implementation **step 2** ("Engineer the prompt to reduce the token count"), absorbing step 1 ("Identify a verbose prompt") — a template breaching its ceiling IS the identified verbose prompt, surfaced mechanically.
+
+2. **Distinctness from GO3B1-01 is the load-bearing call.** GO3B1-01 mandates the budget field *exists*; GC3B1-01 makes the number a *binding ceiling enforced against computed footprint*. Different failure mode (silent token creep on the bill vs no addressable template at all), different focus area (P52 Cost-aware Prompting vs P13 Traceability), disjoint enforcement (footprint-vs-budget lint + budget-inflation governance lint vs registry-consistency / no-inline-call / version-floor lints). step_promotion rubric scored **3/3/3/3**.
+
+3. **Option A as spine; B and C as additive alternatives in solution.approach and the RI.** Option A is fully pre-merge enforceable and manifest-derivable (no fixtures, no deployed baseline), reuses GO3B1-01's tokenizer integration and the per-variable `typical_max` ceilings already in the manifest, and matches AWS step 2's scope exactly. B (measured-from-fixtures) and C (runtime alarm) are documented as optional, explicitly not part of the mandated artefact set so gate coverage_completeness scopes to Option A. RI at `data/ri/GC3B1-01/README.md` built on Option A with B/C in a final "alternative implementations" section.
+
+4. **Two pre_merge gates.** (1) Footprint-vs-budget: lint computes `scaffolding_tokens (model tokenizer, placeholders excluded) + Σ variable.typical_max` and fails when > `runtime_token_budget.input`, or when the budget is absent/zero. (2) Budget-inflation governance: any PR raising `runtime_token_budget.input` or a variable `typical_max` above its merge-base value must carry a recorded cost rationale (manifest `change_history` entry or linked ADR), closing the silent-widen-to-dodge loophole. Both required status checks on the integration branch. gates rubric 3/3/3/3/3/3.
+
+5. **New focus area P52 — Cost-aware Prompting created**, mirroring AWS GENCOST03's verified focus-area title. Distinct from P51 — Inference Cost Optimization (GENCOST02 / GC2B2-01) and P41 — Model Selection & Right-sizing (GENCOST01 / GC1B1-01), per the focus_area rubric's one-area-per-AWS-question mapping. (Noted but not resolved: GC1B1-01's P41 code is a legacy numbering oddity under the P5 pillar; left as-is.)
+
+6. **`serving_paradigm` all four mandatory** — unlike GC2B2-01 (self-hosting only). AWS GENCOST03-BP01 verbatim states prompt length drives cost in both managed per-token billing AND self-hosted/provisioned compute time, so the failure mode exists on every paradigm.
+
+7. **`maturity_level: scaling`** — pays off at project #2 on GO3B1-01's registry substrate (itself scaling); a principle cannot pay off before its scaling-tier substrate is adopted, and the tokenizer-lint build is not first-project capability. depends_on_deployment = no (Option A is manifest-derivable), which is why scaling not mature. maturity rubric 3/3/3/3.
+
+8. **`ownership.tier: enterprise`** via tier rubric D1=no (cost discipline, no legal exposure) / D2=2 (footprint lint + budget-governance lint with ongoing tokenizer maintenance, reused across projects; thinner than GO3B1-01's D2=3 because it extends GO3B1-01's tooling rather than building new) → recommended_centralise. validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check parallel to GO3B1-01 / GC2B2-01.
+
+9. **impact_level Medium** (AWS BP risk Medium; cost failures recoverable via trimming, parallel with GC1B1-01 / GC2B2-01). **applicability { llm/rag/agentic: mandatory, ml: nice_to_have }** matching the cost siblings. **AIGP III.B unverified** parallel to GC1B1-01 / GC2B2-01.
+
+10. **explain_prompt compiled with `cumulative_drift` shape** — many locally-rational token additions across PRs and templates compounding into a portfolio cost regression no single review catches. Distinguished from GO3B1-01's `setup_absence` shape: here the registry and budget field DO exist; the failure is drift past a ceiling that was never enforced.
+
+11. **Tracking files updated.** `lens_mapping.md` GENCOST03 section filled (BP01 ledger; BP02 left UNMAPPED as a natural future sibling — the output-side analogue gating `runtime_token_budget.output`). `lens_mapping_authored.md` prepended with 4 entries (step 2 promotion + steps 1/3/4 not_promote records). `agentflow/app/anchor.json` marked completed.
+
+### Open items
+
+- **JSON parse not run in-session.** The sandbox could not reach the workspace (UNC mount rejected by the shell), so `principles.json` was hand-edited without a parse check. Run `python3 -c "import json; json.load(open('data/principles.json'))"` from a terminal before pushing.
+- **GENCOST03 question-stem wording** in GC3B1-01's `framework_mappings.aws.references[0].question` is approximated from the verified focus-area title pending a question-page verification pass; the BP title and step-2 `verbatim_text` are verified against the live AWS Lens page (fetched 2026-06-04).
+
+---
+
+## 2026-06-03 — Authored GO3B1-01 (Route every model call through a registered, versioned prompt template via the central SDK); first principle authored under GENOPS03-BP01; substrate for the paused GENCOST03-BP01 budget principle
+
+### Context
+
+GENCOST03-BP01 (Optimize prompt token length) was loaded into the walkthrough at the start of this session. Discussion surfaced the dependency: the budget principle needs `template_id` as the addressable key for budget enforcement, but without a prior principle mandating prompt registration there is no `template_id`. Walking back from the budget principle pointed at GENOPS03-BP01 (Implement prompt template management) as the substrate that must exist first. The walk pivoted: BP01 of GENOPS03 first, then come back to GENCOST03-BP01 once GO3B1-01 ships.
+
+GENOPS03-BP01 was decomposed into its six implementation steps. Step 1 ("Set up Amazon Bedrock Prompt Management" — strip vendor → registered, versioned templates with variables) was the clear promote candidate, with step 4 ("Integrate prompts into applications — use Bedrock SDK") absorbed because the SDK call-signature contract is mechanically inseparable from the template registry. Steps 2/3/5/6 were non-promoted on absorbed-by-sibling / process-advice / mechanical-consequence grounds.
+
+### Decisions
+
+1. **Authored GO3B1-01 — Route every model call through a registered, versioned prompt template via the central SDK.** Merged into `data/principles.json` between GO1B1-05 and GO3B2-01 (correct pillar / BP-code ordering: GO1B1-* before GO3B1-* before GO3B2-*). Statement is imperative-form ("Route every model call..."), parallel to the catalogue's imperative pattern (GO1B1-01..05, GO3B2-02, GC1B1-01, GC2B2-01). 10 principles in the catalogue now (8 → 9 with GO3B2-02 yesterday; 9 → 10 with GO3B1-01 today).
+
+2. **Step 4 absorbed into step 1's principle** rather than scored as a standalone not_promote with redundancy reason. Justification: the SDK call-signature contract (`(template_id, variables)`, refusing inline strings) is mechanically inseparable from the template registry — the gate from step 1 (every template_id in src/ resolves to a registry entry) only bites if step 4's call signature is enforced; without step 4, inline strings bypass the registry and the gate becomes voluntary. Same absorption shape as GO3B2-01 absorbing AWS step 2's emit-time PII pre-scrub into step 1.
+
+3. **Step_promotion rubric scored 3/3/3/3** (`data/sections/step_promotion/rubric.json`). D1 has_enforceable_artefact: 3 (path-shaped `prompts/<template_id>.{md,j2}` + `prompts/manifest.yaml` + SDK call-signature contract; three pre_merge gates with content-shape checks). D2 architecturally_distinct: 3 (sibling GO3B2-01 named precisely with disjoint artefacts — GO3B2-01 owns observability emission contract, GO3B1-01 owns LLM call-signature contract; different failure modes, different gates). D3 in_bp_scope: 3 (BP question text literally names "prompts" — *"How do you maintain traceability for your models, prompts, and assets?"*; template-management is the BP's whole point). D4 not_vendor_menu: 3 (Amazon Bedrock Prompt Management + Bedrock SDK + Bedrock Flows stripped from steps 1, 3, 4, 6; generic mandate "every prompt is a registered, versioned template accessed via SDK contract" survives).
+
+4. **Storage-neutral solution with two modes.** The principle mandates the registration contract (SDK refuses inline strings; templates are addressable by id; declared metadata required) but stays neutral on storage backend. **Mode A (file-based + manifest):** bodies at `prompts/<template_id>.{md,j2}`, metadata rows in `prompts/manifest.yaml`, git as version backend, CI lints walk files. **Mode B (hosted TMS):** bodies and metadata in a hosted prompt management service (Bedrock PM / Langfuse / PromptLayer / Humanloop / MLflow Prompt Registry — deferred to `framework_mappings` notes to avoid vendor-menu in the solution section), SDK fetches at build or runtime, CI lints query the service API for the same consistency checks. Mode choice is a workload-tier implementation decision; the principle's gate shapes parameterise over both modes. First catalogue principle with explicit storage-mode neutrality.
+
+5. **Three pre_merge gates parallel to GO3B2-01/02.** (1) Lint walks `src/` for `sdk.generate(template_id=...)` calls; every template_id must resolve to a registry entry (Mode A: manifest row + body file; Mode B: TMS API record), and every registry row must declare non-empty required metadata (`id`, `version`, `body`, `variables`, `model`, `runtime_token_budget.input`, `runtime_token_budget.output`, `owner`, `status` ∈ {draft, active, deprecated, archived}). (2) AST-grep lint scans `src/` for direct provider-SDK invocations (`anthropic.Anthropic().messages.create`, `openai.OpenAI().responses.create`, Bedrock + Azure equivalents) outside the central LLM SDK package; allow-list at `prompts/prohibited_calls.yaml`. (3) Lint verifies workload pins central LLM SDK at version ≥ floor declared at `prompts/sdk_floor.txt`. All three configured as required status checks on the integration branch via branch protection.
+
+6. **`maturity_level: scaling`** scored 3 on `adoption_trigger_portfolio_size` (v2 rubric). Justification: pays off at project #2 when the first downstream gate (token budgets, safety classification, prompt-drift monitoring) needs an addressable `template_id` to key on, OR when a second team's prompts must be discoverable across team boundaries. Thin enforcement (3 CI lints + SDK call-signature contract + manifest schema for Mode A or TMS adapter for Mode B) is shippable by a 1–3 engineer platform team without ARB. Foundational considered (substrate principle, retrofit pain severe) but rejected on parallel-with-substrate-sibling-GO3B2-01 grounds: at project #1 with one team and 5 prompts, in-module discipline is sufficient.
+
+7. **`ownership.tier: enterprise`** via the tier rubric. D1=no borderline (prompts in regulated industries may embed policy / disclosure content, but dominant content is task framing; same hedge as GO3B2-01 used for PII / data-residency). D2=3 (central LLM SDK across multiple languages + tokenizer integration per provider + 3 CI lints + manifest schema + validator + optional TMS adapter set + observability hooks for budget overrun signals — weeks of platform engineering that would repeat per project if local). Outcome: `recommended_centralise` → enterprise. `validator: project_architect`, `audit_mode: self_attestation_with_mechanical_evidence`, `arb_role: dashboard_and_spot_check` — parallel to GO3B2-01/02 since D1 didn't fire.
+
+8. **`impact_level: High`** parallel to GO3B2-01/02 and matching AWS's HIGH risk rating for GENOPS03-BP01. Worst-case problem examples (regulator archaeology, downstream gate collapse, manual rollback reconstruction) are High-shape consequences, not Critical safety events.
+
+9. **`focus_area: P13 — Traceability`** (GENOPS03 → P13 direct map per focus_area rubric). Same focus area as siblings GO3B2-01/02.
+
+10. **Framework mappings: AWS step 1 verbatim verified; AIGP IV.A primary / IV.B secondary unverified.** AWS note names four catalogue-specific concretisations AWS leaves unspecified: SDK call-signature contract; manifest metadata schema; storage-mode neutrality; no-inline-call AST lint. AIGP IV.A (Establish Governance Policies, Processes, and Standards) is the primary mapping because the registered template registry + SDK call-signature contract IS the governance standard for prompt content at the technical layer; IV.B (Monitoring) is the secondary mapping because the registry's addressable template_id is the substrate prompt-layer monitoring keys on.
+
+11. **`explain_prompt` compiled with `setup_absence` failure shape** parallel to GO3B2-01 — registry was never built, prompts live inline, absence becomes visible at a triggering event (finance asks for portfolio-wide prompt-cost attribution, a model upgrade requires a prompt rewrite and rollback fails, a token-budget gate is mandated and cannot bite because there are no template_ids, a regulator asks for the exact prompt in production as of a specific date). Distinguished from GO3B2-02's `audit_time_discovery` shape (drift in existing controls) — for GO3B1-01 the controls were never in place from day 1.
+
+12. **RI README written at `data/ri/GO3B1-01/README.md`** following the GO3B2-01 / GO3B2-02 template. The interface_contract specifies the SDK `generate()` signature, the manifest row schema for Mode A, the TMS config schema for Mode B, the prohibited-imports snippet, semver / version-floor / TMS approval SLA details. Acceptance criteria branched per mode (Mode A: manifest + body file existence; Mode B: tms_config + central allow-list reference).
+
+13. **`lens_mapping.md` row 104 flipped** from "Possibly PRIN_014 or PRIN_017 — verify side-by-side" to GO3B1-01 reference + BP01 closure with steps 2/3/5/6 not_promoted reasons documented.
+
+14. **`lens_mapping_authored.md` prepended** with 5 new top entries: step 1 promotion (GO3B1-01) plus four step-level not_promote scoring records (steps 2/3/5/6).
+
+15. **`agentflow/app/anchor.json` marked completed** with `promoted_to_principle: "GO3B1-01"`.
+
+### Why this is the right call
+
+The substrate-first sequencing is the load-bearing decision. Walking GENCOST03-BP01 first (the original starting point) would have produced a budget principle whose gate (`prompts/budgets.yaml` keyed on `template_id`) cannot bite on workloads that have no `template_id` — i.e. the principle would have been unenforceable on every workload using inline-string prompts, which is most current workloads. The right ordering is: register the templates first (GO3B1-01); then layer budget enforcement on top (future GENCOST03-BP01). The user surfaced this dependency early; pivoting cost ~half a session and saved authoring a principle that would have collapsed on first application.
+
+The two-mode storage neutrality (Mode A file-based + manifest vs Mode B hosted TMS) is the first time the catalogue has handled a "workload chooses one of two acceptable implementations" pattern in the solution section. Sibling principles (GO3B2-01/02, GC2B2-01) all prescribed a specific implementation. The mode-neutrality here reflects the real enterprise landscape — Stripe / Shopify build internal gateways (Mode A pattern); enterprises buy commercial TMS platforms (Mode B) like Bedrock Prompt Management, Langfuse, PromptLayer, Humanloop, MLflow Prompt Registry. Forcing one mode would have been catalogue-mandate exceeding AWS scope. The CI lint suite parameterises cleanly per mode (Mode A: walk files; Mode B: query TMS API), so the gate shape stays uniform.
+
+The agentflow application is the cleanest reference implementation in the catalogue — agentflow's existing prompt architecture (`data/sections/<section>/<op>.json` files loaded via `prompt_loader.py`, composed via `composer.py`, dispatched via `llm_client.py`) is roughly half-compliant with GO3B1-01 already: the templates exist as addressable files, the composition is centralised, the SDK exists. The gaps are the SDK contract (currently accepts raw strings via `.complete(model, system, user)`), the absent manifest file, and the absent CI lints. The principle would close those gaps with maybe 200 lines of platform-team work.
+
+### Files changed today (this entry)
+
+- `data/principles.json` — GO3B1-01 inserted between GO1B1-05 and GO3B2-01 (line 689 onward). 10 principles in the catalogue now.
+- `data/ri/GO3B1-01/README.md` — new file. RI matching the GO3B2-01 template, branched for Mode A vs Mode B.
+- `data/lens_mapping.md` — row 104 flipped to GO3B1-01 reference + BP01 closure.
+- `data/lens_mapping_authored.md` — five new top entries (step 1 promotion + steps 2/3/5/6 not_promote scoring records).
+- `agentflow/app/anchor.json` — repointed to completed status with `promoted_to_principle: "GO3B1-01"`.
+- `data/decisions.md` — this entry. `(latest)` marker moved off the prior 2026-06-02 GO3B2-02 entry.
+
+NOT changed:
+- `data/principles_authored.json` — downstream of `principles.json`, reconciles on next pass.
+- `data/sections/gates/rubric.json` — open item: lifecycle_point_valid descriptor is stale per the 2026-05-31 tier-rubric redefinition (enterprise-tier siblings GO3B2-01/02 also gate at pre_merge); rubric should be updated in a separate rubric-revision session.
+- `data/sections/serving_paradigm/rubric.json` — open item: rubric file does not exist; serving_paradigm scoring on GO3B1-01 was done informally; rubric should be authored to bring the section under the same rubric-applied discipline as the others.
+
+### Open items added by this entry
+
+- **Validate `data/principles.json` parses cleanly.** Shell sandbox is rejecting the UNC workspace path so the standard `python3 -c "import json; json.load(open('data/principles.json'))"` could not run from this session — same blocker as the 2026-06-02 GO3B2-02 session. Edit was structural-match against the existing GO1B1-05 / GO3B2-01 boundary, but worth a parse check from the user's terminal before pushing.
+- **`data/sections/serving_paradigm/rubric.json` is missing** — surfaced during this session's section-by-section rubric scoring. GO3B1-01's serving_paradigm was scored informally (schema validity + parallel with siblings); the next principle authoring should author this rubric first.
+- **`data/sections/gates/rubric.json` dimension 1 (`lifecycle_point_valid`) is stale** — predates the 2026-05-31 tier-rubric redefinition. Currently descriptor says enterprise-tier should gate at release/quarterly_review/annual_review, but every enterprise-tier sibling (GO3B2-01, GO3B2-02, GO3B1-01) gates at pre_merge because tier semantics are now centralisation-of-infrastructure not where-the-check-fires. Update the rubric or document the divergence as the operative pattern.
+- **AIGP IV.A and IV.B mappings on GO3B1-01 are `unverified`.** Same status as every other AIGP mapping in the catalogue today.
+- **Resume GENCOST03-BP01 (paused).** Now that GO3B1-01 is in place, the budget principle has `template_id` as its addressable key. The natural next BP walk is GENCOST03-BP01 — the principle that started this session's conversation. Joint authoring against BP01 + BP02 (input + output token budgets in one `prompts/budgets.yaml` file) remains the recommended structural call.
+- **Retro-fix GO3B2-01's statement title to imperative form** (carried forward from yesterday's entry — still the catalogue's only noun-phrase outlier).
+
+### Where this session paused
+
+GO3B1-01 authored, merged, RI written, lens_mapping flipped, lens_mapping_authored top entries added, anchor marked complete, decisions.md entry logged. GENOPS03-BP01 closed. Principle count in catalogue: 9 → 10. The agentflow staging slot is ready for the next BP — natural candidate is GENCOST03-BP01 (the paused starting point of this session), which now has substrate support from GO3B1-01.
+
+---
+
+## 2026-06-02 — Authored GO3B2-02 (Govern read access and retention on AI observability traces through a centrally-owned policy); sibling to GO3B2-01 under P13 Traceability; closes GENOPS03-BP02
+
+### Context
+
+GENOPS03-BP02 step 1 was authored as GO3B2-01 yesterday (entry below). Today's session resumed against step 2 ("Secure trace data. Implement appropriate access controls to verify that only authorized personnel can view trace data. Be mindful of any sensitive information that might be included in traces and handle it according to your organization's security policies"). Step 2 contains two architecturally distinct slices: emission-time PII pre-scrub (already absorbed by GO3B2-01's central redactor + pii_scrub_applied header flag) and post-emission governance (read-side access control + retention keyed on compliance_tier + read-side audit logs). The open call was pillar placement for the remaining slice — sibling principle under P13 (Option A) or cross-pillar deferral to a future GENSEC P22 Data Protection / P21 IAM walk (Option B).
+
+### Decisions
+
+1. **Option A chosen — Authored GO3B2-02 as sibling to GO3B2-01 under P13 Traceability.** Decisive argument: compliance_tier is the seam field that flows from emit (set by GO3B2-01's central SDK) to read (the keying field used here by the central access policy and retention policy). A regulator walking the audit trail "show me who accessed PII-bearing trace X over the last 90 days and prove the trace was deleted within the retention window" needs to traverse emit→storage→access→deletion without crossing a pillar boundary. Splitting the GO3B2 pair across pillars would fragment that walk. Secondary signal: AWS itself nests step 2 inside GENOPS03-BP02 rather than within a GENSEC focus area — the AWS-source placement matches Option A. Option B was the right call to consider explicitly (the substance overlaps with generic data-protection / IAM patterns that GENSEC will surface), but the audit-trail argument wins on the sibling case.
+
+2. **Promotion decision scored 3/3/3/3 against `data/sections/step_promotion/rubric.json`.** D1 has_enforceable_artefact: 3 (specific path-shaped central artefacts — `observability/access_policy.yaml`, `observability/retention_policy.yaml`, `observability/iam_managed_by_central.yaml`, `observability/policy_floor.txt`; project side declares `compliance_tier` in the existing `observability/config.yaml` from GO3B2-01; gates inspect content not existence). D2 architecturally_distinct: 3 (sibling to GO3B2-01 with disjoint artefacts — GO3B2-01 owns write path: SDK, header enrichment, emit-time PII scrub; GO3B2-02 owns read path: access policy, retention policy, IaC bypass lint, read-audit pipeline). D3 in_bp_scope: 3 (AWS placement honoured; trace data IS what this BP produces, so post-emission governance of those traces is BP-native). D4 not_vendor_menu: 3 (AWS verbatim is pure mandate language with no vendor service callouts to strip).
+
+3. **Merged into `data/principles.json` between GO3B2-01 and GC1B1-01** (line 794 onward). 9 principles in the catalogue now. Statement is imperative-form ("Govern read access and retention...") — honours the statement rubric's parallel_form_with_siblings against the imperative pattern of GO1B1-01..05, GC2B2-01. GO3B2-01's noun-phrase title remains the catalogue's only outlier; not retro-fixed in this session. Five-example problem section drawn from retailer-shape failures: contractor offboarding miss across separate backend grants, retention drift across vendor defaults causing a GDPR DSAR finding, cross-team incident reconstruction blocked at backend boundary, read-side audit absent as a SOC2 deficiency, compliance_tier honoured at emit but ignored at storage.
+
+4. **Three pre_merge gates.** (1) `observability/config.yaml` declares `compliance_tier ∈ {regulated, sensitive, standard}` AND the value matches the workload's tier in the central project registry. (2) Workload IaC scan blocks any project-local IAM grant on observability backend resources outside the central allow-list (`observability/iam_managed_by_central.yaml`). (3) Workload pins the central observability policy package at version ≥ floor (`observability/policy_floor.txt`). Parallel structure to GO3B2-01's three gates; the sibling pair uses the same gate-shape vocabulary (allow-list ban / required content / version floor).
+
+5. **`maturity_level: scaling`** — scored 3 on `adoption_trigger_portfolio_size` per v2 rubric. Justification: pays off at project #2-3 when fragmented per-team access controls and retention drift first appear at multi-backend scale; the thin enforcement (3 lints + central policy YAMLs + lifecycle-rule IaC for 3-4 backends) is shippable by a 1-3 engineer security/platform team without ARB. Parallel to GO3B2-01's scaling call.
+
+6. **`ownership.tier: enterprise`** via D1=no (borderline, same hedge as GO3B2-01: read-side governance on already-PII-scrubbed traces is one step removed from raw-PII exposure that GO3B2-01's emit-time scrub addresses) / D2=3 (access policy schema + retention policy with backend lifecycle rule generation for 4 backends + IaC bypass lint + read-audit pipeline + central security review workflow). `audit_mode: self_attestation_with_mechanical_evidence` and `arb_role: dashboard_and_spot_check` kept parallel to the broader catalogue's 9 principles. The tier rubric's normative claim "D1 fires → central_review_at_gate" was considered for the precedent-setting case but D1 honestly does not fire here — the regulator-inspected artefact is the central policy file itself (which the central security team owns), not each project's per-PR adherence (which is mechanically gated by CI).
+
+7. **AIGP IV.C primary / IV.B secondary (unverified).** Inverse of GO3B2-01 (IV.B primary / IV.C secondary). The GO3B2 pair now covers IV.B (monitoring) and IV.C (access control + incident management) from both directions — the centralisation in GO3B2-01 gives IV.B its monitoring substrate; the access governance in GO3B2-02 gives IV.C its enforcement.
+
+8. **RI README written at `data/ri/GO3B2-02/README.md`** following the GO1B1-01 / GO3B2-01 template. Interface contract specifies the `observability/config.yaml` extension (one new field — `compliance_tier`), the central `access_policy.yaml` schema with worked principals (role:sre-oncall, group:platform-observability, group:fraud-team-leads, user:alice@example.com), the `retention_policy.yaml` schema with backend overrides, the IAM-managed allow-list, lint output examples, and three SLAs (backend access addition: 1-week; compliance_tier reclassification: 1-week; incident-response role activation: minutes via security team on-call).
+
+9. **`lens_mapping.md` row 105 updated** to append GO3B2-02 alongside GO3B2-01 and to declare BP02 closed. Steps 3–12 of BP02 were triaged 2026-06-01 — all either consumption advice (not_promote), vendor-menu (not_promote), or cross-pillar (defer to GENPERF / GENSEC / GENOPS02 walks); no further authoring needed under BP02.
+
+10. **`agentflow/app/anchor.json` marked completed** with `promoted_to_principle: "GO3B2-02"`. GO3B2-02 closes the staging slot; the next BP walk should overwrite this file with its anchor.
+
+### Why this is the right call
+
+The audit-trail argument is the load-bearing claim. The GO3B2 pair now reads as one cohesive regulator-facing answer: GO3B2-01 says "every emit goes through the SDK that classifies and pre-scrubs"; GO3B2-02 says "every read of what's stored is governed by a central policy keyed on that same classification, and retention follows it automatically." A SOC2 / GDPR / HIPAA auditor walking the trail has two principles to inspect, both under P13, both keyed on `compliance_tier`, both owned by overlapping platform/security teams. Splitting into GENSEC would have required cross-referencing across pillar boundaries, and the regulator-facing failure mode of GO3B2-02 (broken access posture on trace data) is specifically about traces — which is a P13 concern, not a generic IAM concern.
+
+The sibling-pair pattern was already implicit in the SKILL.md's "paired principles" guidance ("A mature catalogue often has paired principles — one operability, one governance — covering the same capability from different angles"). GO3B2-01 (operability — centralisation) + GO3B2-02 (governance — access + retention) is the first explicit pair in the rebuild catalogue under that pattern. The AIGP cross-direction mapping (IV.B primary on -01 + IV.C primary on -02) makes the pair visible from the AIGP-keyed view too.
+
+Imperative-form statement on GO3B2-02 ("Govern read access and retention...") deliberately diverges from GO3B2-01's noun-phrase title ("Centralised Observability SDK for AI Workloads") to honour the statement rubric's parallel_form_with_siblings against the catalogue's broader imperative pattern. GO3B2-01 is now the catalogue's only noun-phrase outlier. Not retro-fixed in this session — that's a low-priority cleanup that does not affect the BP02 close.
+
+### Files changed today (this entry)
+
+- `data/principles.json` — GO3B2-02 inserted between GO3B2-01 and GC1B1-01 (lines 794 onward). 9 principles in the catalogue now.
+- `data/ri/GO3B2-02/README.md` — new file. RI matching the GO1B1-01 / GO3B2-01 template, extended with access_policy + retention_policy + iam_managed_by_central schemas and three SLAs.
+- `data/lens_mapping.md` — row 105 updated to append GO3B2-02 alongside GO3B2-01 and declare BP02 closed (steps 3–12 not_promoted via 2026-06-01 triage).
+- `data/lens_mapping_authored.md` — top entry added: GENOPS03-BP02 step 2 → GO3B2-02 promotion with rubric scoring summary.
+- `agentflow/app/anchor.json` — repointed to completed status with promoted_to_principle: GO3B2-02.
+- `data/decisions.md` — this entry. `(latest)` marker moved off the prior 2026-06-02 GO3B2-01 entry.
+
+NOT changed:
+- `data/principles_authored.json` — downstream of `principles.json`, reconciles on next pass.
+- GO3B2-01's noun-phrase title — retro-fix to imperative deferred (low-priority cosmetic).
+
+### Open items added by this entry
+
+- **Validate `data/principles.json` parses cleanly.** Shell sandbox is rejecting the UNC workspace path so the `python3 -c "import json; json.load(open('data/principles.json'))"` parse check could not run from this session. Edit was structural-match against the GO3B2-01 / GC1B1-01 boundary, but worth a parse check from the user's terminal before pushing.
+- **AIGP IV.C and IV.B mappings on GO3B2-02 are `unverified`.** Same status as every other AIGP mapping in the catalogue today.
+- **`explain_prompt` compiled on GO3B2-02 with `audit_time_discovery` failure shape** — accumulated access-control and retention drift surfacing at a discrete audit / DSAR / incident-reconstruction moment. Distinguished from GO3B2-01's `setup_absence` shape (SDK was never built) — for GO3B2-02 the read-side controls exist per-team but drift silently across team boundaries. (Initial pass deferred this in error; corrected after the user flagged the omission.)
+- **Retro-fix GO3B2-01's statement title to imperative form.** Catalogue's only noun-phrase outlier under the statement rubric. Low priority; would require a PATCH bump.
+- **Retro-score the 8 prior principles' maturity_level against v2 rubric's `adoption_trigger_portfolio_size` dimension.** Still open from yesterday; not blocked by GO3B2-02.
+
+### Where this session paused
+
+GO3B2-02 authored, merged, RI written, lens_mapping flipped, lens_mapping_authored top entry added, anchor marked complete. GENOPS03-BP02 closed (step 1 → GO3B2-01, step 2 → GO3B2-02, steps 3–12 not_promoted via prior triage). Principle count in catalogue: 8 → 9. The agentflow staging slot is ready for the next BP — candidates from lens_mapping.md include GENOPS03-BP01 (still flagged as "Possibly PRIN_014 or PRIN_017 — verify side-by-side") or stepping into GENOPS04 (lifecycle automation).
+
+---
+
+## 2026-06-02 — Authored GO3B2-01 (Centralised Observability SDK for AI Workloads); first principle under focus area P13 Traceability; first authored with the maturity_level rubric v2 in force
+
+### Context
+
+GENOPS03-BP02 (Enable tracing for agents and RAG workflows) was loaded into the agentflow anchor on 2026-06-02. lens_mapping.md row 105 flagged the BP as either mapping to PRIN_004 (Self-Documenting Data) or warranting an extension principle. Side-by-side review against PRIN_004 ruled out absorption: PRIN_004 is about data lineage / self-description of inputs and outputs, not about centralising the emission path. The architectural mandate behind BP02 is broader — a central SDK that owns the emission contract, header enrichment, backend adapters, PII pre-scrub, and cost attribution. That mandate is structurally the same shape as the catalogue's "Centralised LLM SDK and key vault" hypothetical in the tier rubric calibration corpus, but for observability instead of model access.
+
+The principle was authored interactively in conversation rather than through the agentflow pipeline (the LangGraph composer at `app/` does not yet exist). Each section was hand-applied against its rubric where one existed.
+
+### Decisions
+
+1. **Authored GO3B2-01 — Centralised Observability SDK for AI Workloads.** Merged into `data/principles.json` between GO1B1-05 and GC1B1-01 (correct pillar order: GO* before GC*). Statement is a single noun-phrase title plus a three-sentence policy description mandating the SDK as the only emission path. Five-example problem section drawn from retailer-shape failures (fragmented backends without shared billing, PII bleed into CloudWatch from per-team redactors, recurring cost-attribution misses, broken cross-team trace correlation, schema drift across projects). Solution carries the header / payload split with a central adapter pattern and an escape-hatch `custom_payload` field opaque to central enrichment. Three pre_merge gates: direct-backend-call ban, mandatory header fields, SDK version floor.
+
+2. **Framework mapping anchored against AWS BP02 verbatim step 1** (Collect and aggregate trace data) as the closest published-step match for the emission mandate; mapping_state: verified after web-fetch of the AWS docs page on 2026-06-02. AWS step 2 (Secure trace data) is absorbed into the principle via the central PII pre-scrub and access-controlled backend allow-list but not anchored separately. AIGP primary IV.B (Implement Ongoing Risk Assessments and Monitoring), secondary IV.C (Establish Security, Access Control, and Incident Management) — both unverified pending AIGP source review.
+
+3. **`maturity_level: scaling`** — first principle scored under the maturity_level rubric v2 (see preceding entry). Adoption_trigger_portfolio_size = 3 with the justification "pays off at project #2–3 when fragmented backends, schema drift, and missing cost attribution first appear; thin enforcement shippable by 1–3 engineer platform team." Rejected `mature` after explicit deliberation — labelling a scaling-shaped principle mature reads as permission to defer past the point where retrofit cost dwarfs build cost.
+
+4. **`ownership.tier: enterprise`** via the tier rubric (D1=no with PII / data-residency hedge, D2=3 for SDK across multiple languages + adapters + price table + PII scrub). Same shape as the rubric's "Centralised LLM SDK and key vault" calibration example. `validator: project_architect`, `audit_mode: self_attestation_with_mechanical_evidence`, `arb_role: dashboard_and_spot_check` — D1 did not fire, so no mandated central review gate.
+
+5. **RI README written at `data/ri/GO3B2-01/README.md`** following the GO1B1-01 template (principle_id → tier_outcome → central_team Builds/Operates/Owns paths → project_team Configures/Populates/Consumes via → interface_contract → acceptance_criteria). The interface_contract specifies the SDK emit signature, the canonical event header (split into local-supplied mandatory fields and central-enriched fields), the payload contract with pattern-specific extensions, the allow-list snippet, and a **1-week backend-approval SLA** for new backends the team requests.
+
+6. **`lens_mapping.md` row 105 flipped** from "Possibly **PRIN_004** (Self-Documenting Data) or extension — verify" to "**GO3B2-01** (Centralised Observability SDK for AI Workloads) — authored 2026-06-02 from step 1 anchor; PRIN_004 ruled out (self-documenting data is a different concern)".
+
+7. **`agentflow/app/anchor.json` marked completed** with `promoted_to_principle: "GO3B2-01"` and converted to a brief staging-slot record for the next BP walk.
+
+### Why this is the right call
+
+The mandate's anchor point matters. Anchoring against AWS step 1 (Collect and aggregate trace data) rather than the catalogue's own step 2 framing keeps the framework_mapping verifiable against the actual AWS source. The catalogue's anchor.json contained a re-architected step 2 that does not exist in AWS's published numbering; using it as the framework_mapping anchor would have broken the verification path.
+
+The mature-vs-scaling debate during authoring produced the maturity_level rubric v2 fix in the same session (see preceding entry). The fix paid for itself immediately: GO3B2-01's `scaling` call now has an explicit `adoption_trigger_portfolio_size = 3` justification anchored to the rubric, rather than author intuition. The rubric calibration corpus also picked up its first non-eval-harness mature example (the hypothetical cross-portfolio prompt-drift governance review) and its first FAIL anchor on the scaling-vs-mature boundary.
+
+The header / payload split with a `custom_payload` escape-hatch directly addresses the four-mitigation finding from the cons analysis during authoring: it preserves the central canonical schema's value (cost attribution, PII pre-scrub, trace correlation) while letting projects ship workload-specific shapes without queuing behind central schema changes. Without that field, the principle would have inherited the LCD problem that kills most centralisation efforts.
+
+### Files changed today (this entry)
+
+- `data/principles.json` — GO3B2-01 inserted between GO1B1-05 and GC1B1-01 (lines 688 onward). 8 principles in the catalogue now.
+- `data/ri/GO3B2-01/README.md` — new file. RI matching the GO1B1-01 template.
+- `data/lens_mapping.md` — row 105 flipped.
+- `agentflow/app/anchor.json` — repointed to completed status with promoted_to_principle reference.
+- `data/decisions.md` — this entry. `(latest)` marker moved off the earlier 2026-06-02 maturity_level rubric entry.
+
+NOT changed:
+- `data/principles_authored.json` — the workshop-three-artefacts authored version is downstream of `principles.json` and will reconcile on the next pass.
+- `data/lens_mapping_authored.md` — already carries the step-2 promoted_to_principle entries from the in-flight authoring runs; no flip needed.
+
+### Open items added by this entry
+
+- **Validate `data/principles.json` parses cleanly.** The session's shell sandbox is rejecting the workspace path (UNC paths error), so the standard `python3 -c "import json; json.load(open('data/principles.json'))"` could not run. The edit was structural-match against the existing GO1B1-05 / GC1B1-01 boundary, but worth a quick parse check from the user's terminal before pushing.
+- **AIGP IV.B and IV.C mappings on GO3B2-01 are `unverified`.** Side-by-side review against the AIGP competency definitions needed to promote to `verified`. Same as every other AIGP mapping in the catalogue today; consistent gap, not a GO3B2-01-specific issue.
+- **`explain_prompt` deferred on GO3B2-01.** Compiled prompt pair can be authored once the principle has lived in the catalogue for a beat. The `principles.json` entry omits the field (allowed by schema since it's optional).
+- **Retro-score the 7 existing principles' maturity_level against the v2 rubric's new `adoption_trigger_portfolio_size` dimension.** Carried forward from the preceding entry; not blocked by GO3B2-01.
+
+### Where this session paused
+
+GO3B2-01 authored, merged, RI written, lens mapping flipped, anchor marked complete. Principle count in catalogue: 7 → 8. The agentflow staging slot (`agentflow/app/anchor.json`) is ready for the next BP — natural candidates are GENOPS03-BP01 (prompt template management, still flagged as "Possibly PRIN_014 or PRIN_017 — verify side-by-side" in lens_mapping row 104) or stepping forward into GENOPS04 (lifecycle automation).
+
+---
+
+## 2026-06-02 — `maturity_level` rubric v2: added `adoption_trigger_portfolio_size` dimension to distinguish scaling from mature
+
+### Context
+
+While authoring the centralised observability SDK principle for GENOPS03-BP02, the maturity_level call collapsed: scaling and mature both defensible. The v1 rubric (`data/sections/maturity_level/rubric.json`) had three dimensions — `value_in_enum`, `depends_on_deployment`, `parallel_with_siblings` — none of which actually distinguished scaling from mature. v1 also had no calibration example for `mature` at all; the only anchored examples (GO1B1-01..03 foundational, GO1B1-04 scaling) left the upper boundary unconstrained.
+
+The hidden risk: labelling a scaling-shaped principle as `mature` reads to delivery orgs as permission to defer adoption — which is exactly when the retrofit cost gets locked in (same failure shape as the pre-tier-rubric era's default-to-project, which silently endorsed every team building its own tooling).
+
+### Decisions
+
+1. **Added fourth dimension `adoption_trigger_portfolio_size`** (0-3). Scores against the SKILL.md intent definitions: foundational = project #1 (skipping compounds debt); scaling = 2–5 projects or multiple teams; mature = 5+ projects with formal ARB and dedicated platform team. The justification field MUST name the portfolio threshold ("pays off at project #2 because the SDK header amortises across teams") rather than gesturing at maturity abstractly. Threshold remains "all four ≥ 2."
+
+2. **Added a "DISTINGUISHING SCALING vs MATURE" guidance block** to the `system_addendum`. The practical cut: shippable by a 1–3 engineer platform team with no formal ARB AND pays off at project #2–3 → scaling. Requires a funded platform team PLUS formal governance gate AND pays off only at 5+ projects → mature.
+
+3. **Added four calibration examples** in v2: the centralised observability SDK as PASS=scaling (walking the new dimension), a hypothetical cross-portfolio prompt-drift governance review as PASS=mature (anchoring the previously-empty mature boundary), and two FAIL examples — labelling the observability SDK as mature, and labelling a per-PR lint as scaling — bracketing the mature/scaling line in both directions.
+
+4. **Version bumped v1 → v2; `last_updated` set to 2026-06-02.** The rubric's `history` field records the evolution.
+
+### Why this is the right call
+
+v1's three dimensions all measured surface properties — enum value, deployment dependency, sibling consistency — none of which capture the actual semantic of the foundational/scaling/mature spectrum: portfolio scale at which the principle pays off net-positive. v1 was structurally incapable of catching a scaling-vs-mature misjudgment because no dimension scored it. v2 lifts the missing axis into an explicit rubric input. Same fix shape as the 2026-05-31 tier rubric (D1+D2): when a decision's true driver is implicit, the rubric silently endorses whatever the author guesses. Make the driver a dimension.
+
+### Files changed today (this entry)
+
+- `data/sections/maturity_level/rubric.json` — v1 → v2. New dimension, new guidance block, four added calibration examples (one PASS=scaling, one PASS=mature, two FAIL examples).
+- `data/decisions.md` — this entry. `(latest)` marker moved off the prior 2026-05-31 tier-rubric entry.
+
+### Open items added by this entry
+
+- **Retro-score the 7 existing principles against the new dimension.** GO1B1-01..05, GC1B1-01, GC2B2-01 — confirm their current `maturity_level` values still pass under v2. Likely all pass; flag in case any need revision.
+- **Note for future principle authoring:** the centralised observability SDK principle (in flight, GO3B2-01 working ID) carries the first explicit v2-scored `maturity_level` — `scaling`, scored 3 on `adoption_trigger_portfolio_size` with the justification recorded in the rubric's third calibration example.
+
+### Where this session paused
+
+Rubric updated. Centralised observability SDK principle for GENOPS03-BP02 is mid-draft — statement, problem, solution agreed; `maturity_level: scaling` and `ownership.tier: enterprise` scored; `gates` section drafted next.
+
+---
+
+## 2026-05-31 — New tier rubric replaces the prior 4-rule qualification screen; `ownership.tier` semantics redefined to centralisation-of-enforcement (not validation); five existing principles reclassified project → enterprise under the new rubric
 
 ### Context
 

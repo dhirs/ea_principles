@@ -1,13 +1,14 @@
 {
-  "principle_id": "GENOPS03-BP02-03",
-  "bp_code": "GENOPS03-BP02",
-  "bp_title": "Enable tracing for agents and RAG workflows",
-  "pillar": "Operational Excellence",
-  "focus_area": "Traceability",
-  "question": "How do you maintain traceability for your models, prompts, and assets?",
-  "bp_implementation_guidance": "Instrument generative AI workloads so that every agent invocation and RAG retrieval is traceable end-to-end: capture spans for model calls, tool/agent steps, and retrieval queries, correlate them with a shared trace/request ID, and persist them to an observability backend so any decision can be reconstructed after the fact.",
+  "status": "completed",
+  "completed_on": "2026-06-04",
+  "promoted_to_principle": "GC3B1-01",
+  "bp_code": "GENCOST03-BP01",
+  "bp_title": "Optimize prompt token length",
+  "pillar": "Cost Optimization",
+  "focus_area": "Cost-aware prompting (GENCOST03)",
+  "aws_risk_level": "Medium",
   "step_number": 2,
-  "step_title": "Instrument agents and RAG workflows with end-to-end distributed tracing",
-  "step_verbatim": "Enable tracing across agent orchestration and RAG pipelines so that each model call, tool invocation, and retrieval step emits a correlated span under a single trace ID, allowing the full reasoning and retrieval path behind any output to be reconstructed.",
-  "sibling_sections": {}
+  "step_title": "Engineer the prompt to reduce the token count",
+  "absorbed_steps": [1],
+  "note": "Step 2 promoted and authored as GC3B1-01 — Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it. Resumed from the paused budget-principle slot now that substrate GO3B1-01 (template registry + runtime_token_budget.input field) shipped 2026-06-03. Concretises step 2's coaching into an enforceable contract: declared per-template input ceiling + pre-merge footprint-vs-budget lint (Option A: scaffolding tokens via the model tokenizer + sum of variable typical_max, gated against runtime_token_budget.input) + budget-inflation governance lint. Options B (measured-from-eval-harness-fixtures) and C (runtime alarm on GO3B1-01's per-call actual-vs-declared signal) documented as additive alternatives in solution.approach and the RI at user direction; gates and RI built on Option A only. step_promotion rubric 3/3/3/3. Distinct from GO3B1-01 (which mandates the budget field EXISTS) by making the number a binding ceiling — different failure mode (silent token creep vs no addressable template), different focus area (P52 Cost-aware Prompting vs P13 Traceability). ownership.tier enterprise via D1=no / D2=2 → recommended_centralise. serving_paradigm all four mandatory (AWS verbatim: prompt length drives cost in both managed per-token billing and self-hosted compute time). maturity_level scaling (pays off project #2 on GO3B1-01 substrate). impact_level Medium (AWS BP risk Medium). New focus area P52 — Cost-aware Prompting created. Step 1 absorbed; steps 3 (vendor/technique) and 4 (technique menu + process advice) not_promoted. BP01 closed; GENCOST03-BP02 (Control model response length) remains UNMAPPED. Open items: (1) JSON parse not run in-session (sandbox could not reach the UNC workspace mount) — verify from a terminal before pushing; (2) exact GENCOST03 question-stem wording approximated pending a question-page check. This file is the next-BP staging slot — replace with the next anchor when starting the next walk."
 }

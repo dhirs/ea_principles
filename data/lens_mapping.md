@@ -101,8 +101,8 @@ UNMAPPED — pending walkthrough. No implementation steps decomposed yet.
 
 | Best Practice | Title | Our principle |
 |---|---|---|
-| GENOPS03-BP01 [VERIFIED] | Implement prompt template management | Possibly **PRIN_014** (Single Source of Truth for AI Context) or **PRIN_017** (Deterministic Prompt Assembly) — verify side-by-side |
-| GENOPS03-BP02 [VERIFIED] | Enable tracing for agents and RAG workflows | Possibly **PRIN_004** (Self-Documenting Data) or extension — verify |
+| GENOPS03-BP01 [VERIFIED] | Implement prompt template management | **GO3B1-01** (Route every model call through a registered, versioned prompt template via the central SDK) — authored 2026-06-03 from step 1 anchor (absorbing step 4 because SDK call-signature contract is inseparable from the registry). Legacy mappings PRIN_014 (Single Source of Truth for AI Context) and PRIN_017 (Deterministic Prompt Assembly) ruled out as distinct context-engineering extension concerns sitting outside GENOPS03-BP01's prompt-template-management scope. Steps 2/3 not_promoted (absorbed by GO1B1-01..05 eval-harness family — baseline performance evaluation and A/B variant testing). Steps 5/6 not_promoted (step 5 periodic review = process advice without commitable artefact, shape as GENCOST01-BP01 step 4 deferral; step 6 cross-team collaboration = mechanical consequence of step 1's central registry, style guidelines = coaching not gate). BP01 closed. |
+| GENOPS03-BP02 [VERIFIED] | Enable tracing for agents and RAG workflows | **GO3B2-01** (Centralised Observability SDK for AI Workloads) — authored 2026-06-02 from step 1 anchor; PRIN_004 ruled out. **GO3B2-02** (Govern read access and retention on AI observability traces through a centrally-owned policy) — authored 2026-06-02 from step 2 anchor; sibling under P13. Steps 3–12 not_promoted (triaged 2026-06-01 — consumption advice / vendor menu / cross-pillar to GENPERF, GENSEC, GENOPS02). BP02 closed. |
 
 ### GENOPS04 — Automate lifecycle management [VERIFIED]
 
@@ -269,7 +269,21 @@ Net for GENCOST02 focus area: **1 promoted (GC2B2-01); 7 absorbed across both BP
 
 ### GENCOST03 — Cost-aware prompting [VERIFIED focus area title]
 
-> *Question text TODO. Covers controlling prompt lengths, response sizes, and token usage to minimise inference costs.*
+> *Covers controlling prompt lengths, response sizes, and token usage to minimise inference costs. Maps to catalogue focus area **P52 — Cost-aware Prompting** (created 2026-06-04, distinct from P51 Inference Cost Optimization). The exact GENCOST03 question-stem wording is still pending a question-page verification pass; BP and step text below are verified against the live AWS Lens page (fetched 2026-06-04).*
+
+| Best Practice | Title | Our principle |
+|---|---|---|
+| GENCOST03-BP01 [VERIFIED] | Optimize prompt token length | **GC3B1-01** — Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it (anchors step 2; absorbs step 1) |
+| GENCOST03-BP02 [VERIFIED] | Control model response length | UNMAPPED |
+
+**GENCOST03-BP01 decomposition (4 steps; risk: Medium):**
+
+- **Step 1** — *Identify a verbose prompt which could be optimized.* → **not_promoted / absorbed** into GC3B1-01. A template that breaches its declared ceiling IS the identified verbose prompt — the Option A footprint gate surfaces it mechanically instead of by manual hunting. Decision-process / observation input, no standalone artefact (same shape as GENCOST01-BP01 step 1).
+- **Step 2** — *Engineer the prompt to reduce the token count, trimming as many unnecessary words as possible.* → **promoted_to_principle: GC3B1-01.** step_promotion rubric 3/3/3/3. Concretised from coaching ("trim words") into an enforceable contract: a declared `runtime_token_budget.input` ceiling (reusing the GO3B1-01 manifest field) + a pre-merge footprint-vs-budget lint + a budget-inflation governance lint. Substrate GO3B1-01 (template registry + budget field) shipped 2026-06-03.
+- **Step 3** — *Consider using a separate LLM to offer a shortened prompt (Amazon Bedrock Prompt Optimization).* → **not_promoted.** Vendor/technique suggestion; no architectural mandate survives extraction. An optional tool a team may use to author a shorter prompt, not a gate. Vendor specifics deferred to GC3B1-01's framework_mappings notes.
+- **Step 4** — *Continue testing and optimizing the prompt to validate it meets the workload requirements (zero-shot / chain-of-thought / tree-of-thought / least-to-most).* → **not_promoted.** Prompt-engineering technique menu + process advice; no commitable artefact distinct from the GO1B1 eval-harness family. The "validate it meets requirements" slice is optionally absorbed by GC3B1-01's documented **Option B** (measured-from-eval-harness-fixtures), but the techniques themselves are coaching.
+
+Net for GENCOST03-BP01: **1 promoted (GC3B1-01); step 1 absorbed; steps 3/4 not_promoted.** BP01 closed. BP02 (response length) remains UNMAPPED — a natural sibling for a future walk (the output-side analogue: declared `runtime_token_budget.output`, already capped via `max_tokens` by GO3B1-01, could be gated the same way).
 
 ### GENCOST04 — Cost-informed vector stores [VERIFIED focus area title]
 

@@ -1,11 +1,12 @@
 {
-  "version": "v1",
-  "last_updated": "2026-05-27",
+  "version": "v2",
+  "last_updated": "2026-06-02",
   "section": "maturity_level",
-  "purpose": "Rubric for scoring a draft maturity_level. Three dimensions, 0-3 scale, threshold = all ≥ 2.",
+  "purpose": "Rubric for scoring a draft maturity_level. Four dimensions, 0-3 scale, threshold = all ≥ 2.",
   "composes_with": "system_prompts/rubric.json",
+  "history": "v1 (2026-05-27) — three dimensions: value_in_enum, depends_on_deployment, parallel_with_siblings. The dimensions did not actually distinguish scaling from mature; v1 had no calibration example for mature at all. v2 (2026-06-02) — added adoption_trigger_portfolio_size to force the scorer to name the portfolio scale at which the principle first pays off net-positive (project #1 → foundational; 2–5 projects → scaling; 5+ projects with formal ARB and dedicated platform team → mature). Added calibration example for mature and a FAIL example to anchor the boundary. Surfaced while authoring the centralised observability SDK principle for GENOPS03-BP02.",
 
-  "system_addendum": "SECTION YOU ARE SCORING: maturity_level\n\nScore against:\n\n1. value_in_enum — foundational / scaling / mature.\n   - 3: Exact match.\n   - 0: Anything else.\n\n2. depends_on_deployment — if the principle requires a deployed artefact to operate against, it cannot be foundational.\n   - 3: Maturity level is consistent with deployment dependencies. Drift monitor (needs baseline) → scaling. Per-PR harness (needs only the workload repo) → foundational.\n   - 2: Borderline but defensible.\n   - 1: Material inconsistency — e.g. foundational for a principle that needs production data.\n   - 0: Clearly wrong (foundational assigned to a principle that requires production telemetry, etc.).\n\n3. parallel_with_siblings — consistent with siblings; outliers justified.\n   - 3: Matches sibling pattern, or principled outlier.\n   - 2: Outlier defensible.\n   - 1: Inconsistent without reason.\n   - 0: Clear mismatch.\n\nTHRESHOLD\n\nDraft passes if all three ≥ 2.",
+  "system_addendum": "SECTION YOU ARE SCORING: maturity_level\n\nScore against:\n\n1. value_in_enum — foundational / scaling / mature.\n   - 3: Exact match.\n   - 0: Anything else.\n\n2. depends_on_deployment — if the principle requires a deployed artefact to operate against, it cannot be foundational.\n   - 3: Maturity level is consistent with deployment dependencies. Drift monitor (needs baseline) → scaling. Per-PR harness (needs only the workload repo) → foundational.\n   - 2: Borderline but defensible.\n   - 1: Material inconsistency — e.g. foundational for a principle that needs production data.\n   - 0: Clearly wrong (foundational assigned to a principle that requires production telemetry, etc.).\n\n3. parallel_with_siblings — consistent with siblings; outliers justified.\n   - 3: Matches sibling pattern, or principled outlier.\n   - 2: Outlier defensible.\n   - 1: Inconsistent without reason.\n   - 0: Clear mismatch.\n\n4. adoption_trigger_portfolio_size — does the candidate maturity_level match the portfolio scale at which the principle first pays off net-positive? Score against the SKILL.md intent definitions: foundational = adopt at project #1, skipping it creates debt that compounds; scaling = adopt once running 2–5 projects or multiple teams; mature = adopt once running a 5+ project portfolio with formal ARB and dedicated platform team. The justification MUST name the portfolio threshold explicitly (e.g., 'pays off at project #2 because the SDK header amortises across teams') rather than gesturing at maturity in the abstract.\n   - 3: Exact match between candidate level and the portfolio scale at which the principle pays off, with the threshold named in the justification.\n   - 2: Defensible but the threshold is borderline (e.g., candidate=scaling on a principle that arguably pays off at project #1 for a high-risk workload; candidate=mature on a principle that pays off at project #4 but whose enforcement infrastructure is heavy enough to make pre-portfolio adoption uneconomic).\n   - 1: Material inconsistency — e.g. candidate=mature on a principle shippable by one platform engineer in a week and paying off at project #2; or candidate=foundational on a principle whose enforcement cannot exist without an org-wide platform team. Reads to delivery teams as 'defer until we're bigger' on something they should already be doing, or the inverse.\n   - 0: Clearly wrong — candidate=mature on a principle that pays off at project #1, or candidate=foundational on a principle that requires a 5+ project portfolio to justify the build cost.\n\nDISTINGUISHING SCALING vs MATURE\n\nThe practical cut: if the principle's enforcement is shippable by a small platform team (1–3 engineers, no formal ARB required to operate it) and pays off when a second or third project lands, it is scaling. If the principle requires a funded platform team plus a formal governance gate (ARB sign-off, cross-portfolio review board, regulatory attestation) to operate, AND the payoff only materialises across a 5+ project portfolio, it is mature. Labelling scaling-shaped principles as mature reads to delivery orgs as permission to defer — which is precisely when the retrofit cost gets locked in.\n\nTHRESHOLD\n\nDraft passes if all four ≥ 2.",
 
   "user_template": "Score this maturity_level.\n\n<statement>{{ statement_title }}</statement>\n<problem>{{ problem_description }}</problem>\n<applicability>{{ applicability }}</applicability>\n<siblings_maturity_levels>{{ sibling_maturity_levels }}</siblings_maturity_levels>\n<candidate><maturity_level>{{ candidate_maturity_level }}</maturity_level></candidate>\n\nReturn the JSON object specified in the output contract.",
 
@@ -13,12 +14,54 @@
     "schema": {
       "value_in_enum": { "score": "int 0-3", "justification": "string" },
       "depends_on_deployment": { "score": "int 0-3", "justification": "string" },
-      "parallel_with_siblings": { "score": "int 0-3", "justification": "string" }
+      "parallel_with_siblings": { "score": "int 0-3", "justification": "string" },
+      "adoption_trigger_portfolio_size": { "score": "int 0-3", "justification": "string — MUST name the portfolio scale (project #N) at which the principle first pays off net-positive" }
     }
   },
 
   "calibration_examples": [
-    { "context": "GO1B1-01 / 02 / 03 (per-project, no deployment dep)", "selected": "foundational", "expected_outcome": "PASS" },
-    { "context": "GO1B1-04 (needs deployment baseline)", "selected": "scaling", "expected_outcome": "PASS", "note": "Drift monitor requires a deployed baseline to fire against; foundational doesn't fit." }
+    {
+      "context": "GO1B1-01 / 02 / 03 (per-project eval harness, no deployment dep)",
+      "selected": "foundational",
+      "expected_outcome": "PASS",
+      "adoption_trigger_score": 3,
+      "adoption_trigger_justification": "Eval harness pays off on the first agentic workload — the team needs a way to verify performance before shipping. No portfolio scale required; one team can stand it up inside their own repo."
+    },
+    {
+      "context": "GO1B1-04 (drift monitor — needs deployment baseline)",
+      "selected": "scaling",
+      "expected_outcome": "PASS",
+      "note": "Drift monitor requires a deployed baseline to fire against; foundational doesn't fit.",
+      "adoption_trigger_score": 3,
+      "adoption_trigger_justification": "Drift monitor pays off once a workload has been in production long enough to establish a baseline — typically project #2+ when a team has the operational headcount to read the alerts."
+    },
+    {
+      "context": "Centralised observability SDK for AI workloads (GO3B2-01 draft — header/payload split, central adapters, merge gate on direct backend calls)",
+      "selected": "scaling",
+      "expected_outcome": "PASS",
+      "adoption_trigger_score": 3,
+      "adoption_trigger_justification": "Pays off at project #2–3 when fragmented backends, schema drift, and missing cost attribution first appear. The thin enforcement (Python + 1 backend adapter + price-table file + merge-gate scan) is shippable by a small platform team without ARB. Mature would defer adoption past the point where retrofit cost dwarfs build cost."
+    },
+    {
+      "context": "Hypothetical — Cross-portfolio prompt-drift governance review (ARB sign-off when a prompt change touches >N production workloads, with portfolio-wide drift dashboards)",
+      "selected": "mature",
+      "expected_outcome": "PASS",
+      "adoption_trigger_score": 3,
+      "adoption_trigger_justification": "Requires a portfolio large enough to produce cross-prompt drift signal AND a formal ARB to act on it; below 5+ projects neither exists. The cross-portfolio diffing infrastructure cannot be amortised by fewer projects, so pre-portfolio adoption is uneconomic."
+    },
+    {
+      "context": "FAIL example — labelling the centralised observability SDK as 'mature'",
+      "selected": "mature",
+      "expected_outcome": "FAIL",
+      "adoption_trigger_score": 1,
+      "adoption_trigger_justification": "Principle pays off at project #2–3 and the thin version is shippable by a 1–3 engineer platform team. Calling it mature signals 'defer until 5+ projects' — which locks in fragmentation and inflates retrofit cost. Reads as permission to skip something that should be in flight already."
+    },
+    {
+      "context": "FAIL example — labelling a per-PR repo-local lint as 'scaling'",
+      "selected": "scaling",
+      "expected_outcome": "FAIL",
+      "adoption_trigger_score": 1,
+      "adoption_trigger_justification": "Per-PR lint runs against the workload repo with no deployment dependency, no cross-team coordination, and pays off the moment the first PR opens. Labelling it scaling signals 'wait for a second project' on something every project should ship with — same shape as labelling GO1B1-01 scaling."
+    }
   ]
 }
