@@ -1,8 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import type { HTMLAttributes } from "react"
 import Link from "next/link"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { asArray, asObject, asString } from "@/lib/principles/types"
+import { markdownComponents } from "@/components/principles/markdownComponents"
+
+// Inline variant: drop the block <p> margins so markdown sits flush inside a
+// list item (used for key_benefits, which are single inline strings).
+const inlineMarkdownComponents = {
+  ...markdownComponents,
+  p: (props: HTMLAttributes<HTMLElement>) => <span {...props} />,
+}
 
 export function SolutionSection({
   node,
@@ -40,14 +51,22 @@ export function SolutionSection({
   return (
     <div className="space-y-4">
       {approach && (
-        <p className="leading-relaxed text-foreground/90 whitespace-pre-wrap">{approach}</p>
+        <div className="leading-relaxed text-foreground/90 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {approach}
+          </ReactMarkdown>
+        </div>
       )}
       {benefits.length > 0 && (
         <div>
           <div className="text-sm font-medium text-foreground/80 mb-2">Key benefits</div>
           <ul className="space-y-1.5 pl-5 list-disc text-sm leading-relaxed text-foreground/80">
             {benefits.map((b, i) => (
-              <li key={i}>{b}</li>
+              <li key={i}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={inlineMarkdownComponents}>
+                  {b}
+                </ReactMarkdown>
+              </li>
             ))}
           </ul>
         </div>

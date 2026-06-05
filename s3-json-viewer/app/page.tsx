@@ -3,7 +3,7 @@
 import { useMemo } from "react"
 import Link from "next/link"
 import { usePrinciples } from "@/lib/principles/PrinciplesContext"
-import { asArray, asObject, asString } from "@/lib/principles/types"
+import { asString } from "@/lib/principles/types"
 
 function formatDate(iso: string): string {
   const d = new Date(iso + "T00:00:00")
@@ -21,11 +21,8 @@ export default function Home() {
     for (const p of principles) {
       const pillar = asString(p.pillar)?.trim() || "Unassigned"
       counts.set(pillar, (counts.get(pillar) ?? 0) + 1)
-      const changes = asArray(asObject(p.change_history)?.changes) ?? []
-      for (const c of changes) {
-        const date = asString(asObject(c)?.date)
-        if (date && date > lastUpdated) lastUpdated = date
-      }
+      const date = asString(p.last_updated)
+      if (date && date > lastUpdated) lastUpdated = date
     }
     const rows = Array.from(counts.entries())
       .map(([pillar, count]) => ({ pillar, count }))

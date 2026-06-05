@@ -1,22 +1,25 @@
 {
-  "status": "completed",
+  "status": "in_progress",
   "started_on": "2026-06-05",
-  "completed_on": "2026-06-05",
-  "promoted_to_principle": "GC3B3-01",
-  "bp_code": "GENCOST03-BP03",
-  "bp_title": "Implement prompt caching to reduce token costs",
+  "completed_on": null,
+  "promoted_to_principle": null,
+  "bp_code": "GENCOST03-BP04",
+  "bp_title": "Annotate user input to enable cost-aware content filtering",
   "pillar": "Cost Optimization",
   "focus_area": "Cost-aware prompting (GENCOST03)",
   "aws_risk_level": "Medium",
   "anchor_type": "implementation_step",
-  "candidate_step_focus": "steps 1-2 (identify caching opportunities + enable caching / place checkpoints)",
-  "bp_verbatim": "Implement prompt caching for supported foundation models to reduce inference response latency and input token costs. This best practice helps organizations optimize costs by caching frequently used portions of prompts to avoid recomputation, while maintaining performance and reliability. Desired outcome: Reduce inference costs by caching commonly used prompt components and using cached tokens at a reduced rate. Level of risk exposed if this best practice is not established: Medium.",
+  "candidate_step_focus": "steps 1-3 (tag untrusted user content for filtering; leave trusted content untagged)",
+  "bp_verbatim": "Annotate specific sections of input prompts to selectively apply content filtering and reduce token usage costs. By using input tags to mark only the user-provided content for filtering, you can avoid unnecessary processing of system prompts, search results, and conversation history while maintaining essential safeguards. Desired outcome: Enable more efficient and cost-effective content filtering by processing only the relevant portions of input that require guardrails evaluation. Level of risk exposed if this best practice is not established: Medium. Note: input tags are NOT supported by the ApplyGuardrail API; filtering must be implemented application-side to derive the benefit.",
   "steps_verbatim": [
-    "Step 1 — Identify opportunities for caching: Review workload for repeated prompt components; Verify prompts meet minimum token requirements; Assess potential cost savings from reduced token rates.",
-    "Step 2 — Enable prompt caching for supported models: Turn on caching in Amazon Bedrock console; For APIs, set appropriate caching flags; Configure cache checkpoints at optimal locations.",
-    "Step 3 — Monitor caching metrics: Track cache hit and miss rates; Monitor token costs for cached compared to uncached content; Analyze latency improvements.",
-    "Step 4 — Optimize cache usage: Tune checkpoint placement; Adjust prompt structure to maximize cache hits; Balance cache write costs with read savings."
+    "Step 1 — Use XML-style tags to mark specific sections of input prompts for content filtering (format: <amazon-bedrock-guardrails-guardContent_xyz>...</...>). Generate a unique random tag suffix (xyz) per request to reduce prompt injection; alphanumeric 1-20 chars; include the suffix in guardrailConfig.tagSuffix.",
+    "Step 2 — Apply tags selectively to user queries and input, current conversation turns, and new or unverified content.",
+    "Step 3 — Leave system prompts, verified search results, historical conversation context, and other trusted content untagged.",
+    "Step 4 — Define a minimalist response scheme (e.g. 0 affirmative, 1 rejection).",
+    "Step 5 — Inform the model in the prompt of the requested response scheme and ask it to respond in kind.",
+    "Step 6 — Set a hard limit on the response length via the response-length hyperparameter.",
+    "Step 7 — Continue testing/optimizing: track token usage with vs without selective filtering; measure latency impact; verify filtering effectiveness on tagged vs untagged content; adjust tag placement."
   ],
   "fetched": "2026-06-05",
-  "note": "Walk started 2026-06-05. Substrate context: GO3B1-01 (template registry + manifest) and GC3B1-01 (computes scaffolding/static-prefix tokens via model tokenizer) already ship. Central promote/not_promote question: does prompt caching yield a CI-gateable, versioned artefact, or is it runtime config + monitoring discipline that not_promotes (or absorbs into GO3B1-01 as a manifest cache-checkpoint field)? Candidate gateable spine: reuse GC3B1-01's static-prefix token computation to mechanically flag templates whose stable prefix clears the model's minimum cache-checkpoint threshold AND are called above a frequency bar, then require either a declared cache checkpoint or a recorded opt-out. HALT for user discussion before any promote/not_promote scoring."
+  "note": "Walk started 2026-06-05. Fourth and final BP under GENCOST03 / P52. Substrate: GO3B1-01 (template registry + manifest + central SDK) and the GC3B1-01 / GC3B3-01 'annotate-template-segment-in-the-registry' family already ship. Central promote/not_promote question: do steps 1-3 (trust-class segmentation of the prompt so only untrusted spans hit the content filter) yield a CI-gateable, versioned artefact (a per-segment trust_class declared in the manifest + SDK-applied guard tags + a lint), or is it runtime tagging discipline that not_promotes? Cost-vs-safety tension: filed under Cost Optimization, but mis-tagging (untrusted span left unfiltered) is a SAFETY gap, not just cost waste — the gate must bite both directions. Steps 4-6 (minimalist response scheme + hard response-length cap) overlap BP02 (control response length) and GC3B1-01's output budget — candidate not_promote/defer to the BP02 sibling rather than absorb here. HALT for user discussion before any promote/not_promote scoring."
 }

@@ -1,9 +1,13 @@
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { asArray, asObject, asString } from "@/lib/principles/types"
+import { markdownComponents } from "@/components/principles/markdownComponents"
 
 export function ChangeHistorySection({ node }: { node: unknown }) {
   const o = asObject(node)
   if (!o) return null
-  const changes = asArray(o.changes) ?? []
+  // Data is stored oldest-first; show newest version at the top.
+  const changes = [...(asArray(o.changes) ?? [])].reverse()
   const current = asString(o.current_version)
   return (
     <div className="space-y-3">
@@ -30,9 +34,12 @@ export function ChangeHistorySection({ node }: { node: unknown }) {
                   {author && <span>· {author}</span>}
                 </div>
                 {summary && (
-                  <p className="mt-1 text-foreground/85 leading-relaxed whitespace-pre-wrap">
-                    {summary}
-                  </p>
+                  <div className="mt-1 text-foreground/85 leading-relaxed [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                      {/* preserve single newlines as <br> — markdown would otherwise collapse them */}
+                      {summary.replace(/\n/g, "  \n")}
+                    </ReactMarkdown>
+                  </div>
                 )}
               </li>
             )

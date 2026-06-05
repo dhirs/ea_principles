@@ -49,7 +49,9 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
   const [maturityLevel, setMaturityLevel] = useState("")
 
   useEffect(() => {
-    fetch("/api/data")
+    // Lightweight list (id/title/pillar/focus/maturity/best-practices) for the
+    // list page + sidebar filters. Full principle is fetched per-detail-page.
+    fetch("/api/index")
       .then(async (r) => {
         if (!r.ok) throw new Error(`${r.status} ${r.statusText}`)
         return r.json()
@@ -67,15 +69,24 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
     for (const p of principles) {
       const pv = asString(p.pillar)
       if (pv && pv.trim()) pillarSet.add(pv)
-      const fv = asString(p.focus_area)
-      if (fv && fv.trim()) focusSet.add(fv)
+      // Scope focus areas to the selected pillar so the dropdown only offers
+      // focus areas that exist within it.
+      if (!pillar || pv === pillar) {
+        const fv = asString(p.focus_area)
+        if (fv && fv.trim()) focusSet.add(fv)
+      }
       for (const bp of getAwsBestPractices(p)) bpSet.add(bp)
       const mv = asString(p.maturity_level)
       if (mv && mv.trim()) maturitySet.add(mv)
     }
     const sort = (s: Set<string>) => Array.from(s).sort((a, b) => a.localeCompare(b))
     return [sort(pillarSet), sort(focusSet), sort(bpSet), sort(maturitySet)]
-  }, [data])
+  }, [data, pillar])
+
+  // If the active focus area isn't part of the selected pillar, drop it.
+  useEffect(() => {
+    if (focusArea && !focusAreas.includes(focusArea)) setFocusArea("")
+  }, [focusArea, focusAreas])
 
   const filtered = useMemo(() => {
     const principles = data?.principles ?? []
