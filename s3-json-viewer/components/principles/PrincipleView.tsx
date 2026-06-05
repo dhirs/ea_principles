@@ -15,18 +15,16 @@ export function PrincipleView({ principle }: { principle: Principle }) {
       {sections.length === 0 ? (
         <p className="text-muted-foreground">This principle has no displayable fields.</p>
       ) : (
-        <Tabs defaultValue={sections[0].key}>
-          <div className="overflow-x-auto -mx-1 px-1 pb-1">
-            <TabsList className="w-full shadow-md bg-card">
-              {sections.map((s) => (
-                <TabsTrigger key={s.key} value={s.key}>
-                  {s.title}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
+        <Tabs orientation="vertical" defaultValue={sections[0].key}>
+          <TabsList className="w-48 shrink-0 h-fit gap-1 shadow-md bg-card">
+            {sections.map((s) => (
+              <TabsTrigger key={s.key} value={s.key}>
+                {s.title}
+              </TabsTrigger>
+            ))}
+          </TabsList>
           {sections.map((s) => (
-            <TabsContent key={s.key} value={s.key} className="mt-5">
+            <TabsContent key={s.key} value={s.key} className="min-w-0">
               <div className="rounded-2xl bg-card p-8 shadow-lg">{s.content}</div>
             </TabsContent>
           ))}

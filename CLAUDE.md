@@ -1,4 +1,5 @@
 # CLAUDE.md - Project Documentation
+you need to reduce the amount of fart you give when I ask you questions. I prefer concise answers, be as concise as possible when you respond.
 
 ## Project Overview
 S3 JSON Viewer - A Next.js web application that fetches and displays JSON data from AWS S3 buckets with a modern, responsive UI.

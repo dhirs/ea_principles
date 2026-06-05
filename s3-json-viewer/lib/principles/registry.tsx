@@ -6,6 +6,7 @@ import { FrameworkMappingsSection } from "@/components/principles/sections/Frame
 import { EvidenceSection } from "@/components/principles/sections/EvidenceSection"
 import { KeyValueSection } from "@/components/principles/sections/KeyValueSection"
 import { ChangeHistorySection } from "@/components/principles/sections/ChangeHistorySection"
+import { DependenciesSection } from "@/components/principles/sections/DependenciesSection"
 import { MetaSection } from "@/components/principles/sections/MetaSection"
 
 export type SectionEntry = {
@@ -37,6 +38,7 @@ const REGISTRY: Array<[string, RegistryEntry]> = [
   ["problem",            { title: "Problem",            render: (n, p) => <ProblemSection node={n} principle={p} /> }],
   ["solution",           { title: "Solution",           render: (n, p) => <SolutionSection node={n} principle={p} /> }],
   ["gates",              { title: "Gates",              render: (n) => <GatesSection node={n} /> }],
+  ["dependencies",       { title: "Dependencies",       render: (n) => <DependenciesSection node={n} /> }],
   ["ownership",          { title: "Ownership",          render: (n) => <KeyValueSection node={n} /> }],
   ["evidence",           { title: "Evidence",           render: (n) => <EvidenceSection node={n} /> }],
   ["framework_mappings", { title: "Framework Mappings", render: (n) => <FrameworkMappingsSection node={n} /> }],

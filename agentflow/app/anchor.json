@@ -1,14 +1,22 @@
 {
   "status": "completed",
-  "completed_on": "2026-06-04",
-  "promoted_to_principle": "GC3B1-01",
-  "bp_code": "GENCOST03-BP01",
-  "bp_title": "Optimize prompt token length",
+  "started_on": "2026-06-05",
+  "completed_on": "2026-06-05",
+  "promoted_to_principle": "GC3B3-01",
+  "bp_code": "GENCOST03-BP03",
+  "bp_title": "Implement prompt caching to reduce token costs",
   "pillar": "Cost Optimization",
   "focus_area": "Cost-aware prompting (GENCOST03)",
   "aws_risk_level": "Medium",
-  "step_number": 2,
-  "step_title": "Engineer the prompt to reduce the token count",
-  "absorbed_steps": [1],
-  "note": "Step 2 promoted and authored as GC3B1-01 — Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it. Resumed from the paused budget-principle slot now that substrate GO3B1-01 (template registry + runtime_token_budget.input field) shipped 2026-06-03. Concretises step 2's coaching into an enforceable contract: declared per-template input ceiling + pre-merge footprint-vs-budget lint (Option A: scaffolding tokens via the model tokenizer + sum of variable typical_max, gated against runtime_token_budget.input) + budget-inflation governance lint. Options B (measured-from-eval-harness-fixtures) and C (runtime alarm on GO3B1-01's per-call actual-vs-declared signal) documented as additive alternatives in solution.approach and the RI at user direction; gates and RI built on Option A only. step_promotion rubric 3/3/3/3. Distinct from GO3B1-01 (which mandates the budget field EXISTS) by making the number a binding ceiling — different failure mode (silent token creep vs no addressable template), different focus area (P52 Cost-aware Prompting vs P13 Traceability). ownership.tier enterprise via D1=no / D2=2 → recommended_centralise. serving_paradigm all four mandatory (AWS verbatim: prompt length drives cost in both managed per-token billing and self-hosted compute time). maturity_level scaling (pays off project #2 on GO3B1-01 substrate). impact_level Medium (AWS BP risk Medium). New focus area P52 — Cost-aware Prompting created. Step 1 absorbed; steps 3 (vendor/technique) and 4 (technique menu + process advice) not_promoted. BP01 closed; GENCOST03-BP02 (Control model response length) remains UNMAPPED. Open items: (1) JSON parse not run in-session (sandbox could not reach the UNC workspace mount) — verify from a terminal before pushing; (2) exact GENCOST03 question-stem wording approximated pending a question-page check. This file is the next-BP staging slot — replace with the next anchor when starting the next walk."
+  "anchor_type": "implementation_step",
+  "candidate_step_focus": "steps 1-2 (identify caching opportunities + enable caching / place checkpoints)",
+  "bp_verbatim": "Implement prompt caching for supported foundation models to reduce inference response latency and input token costs. This best practice helps organizations optimize costs by caching frequently used portions of prompts to avoid recomputation, while maintaining performance and reliability. Desired outcome: Reduce inference costs by caching commonly used prompt components and using cached tokens at a reduced rate. Level of risk exposed if this best practice is not established: Medium.",
+  "steps_verbatim": [
+    "Step 1 — Identify opportunities for caching: Review workload for repeated prompt components; Verify prompts meet minimum token requirements; Assess potential cost savings from reduced token rates.",
+    "Step 2 — Enable prompt caching for supported models: Turn on caching in Amazon Bedrock console; For APIs, set appropriate caching flags; Configure cache checkpoints at optimal locations.",
+    "Step 3 — Monitor caching metrics: Track cache hit and miss rates; Monitor token costs for cached compared to uncached content; Analyze latency improvements.",
+    "Step 4 — Optimize cache usage: Tune checkpoint placement; Adjust prompt structure to maximize cache hits; Balance cache write costs with read savings."
+  ],
+  "fetched": "2026-06-05",
+  "note": "Walk started 2026-06-05. Substrate context: GO3B1-01 (template registry + manifest) and GC3B1-01 (computes scaffolding/static-prefix tokens via model tokenizer) already ship. Central promote/not_promote question: does prompt caching yield a CI-gateable, versioned artefact, or is it runtime config + monitoring discipline that not_promotes (or absorbs into GO3B1-01 as a manifest cache-checkpoint field)? Candidate gateable spine: reuse GC3B1-01's static-prefix token computation to mechanically flag templates whose stable prefix clears the model's minimum cache-checkpoint threshold AND are called above a frequency bar, then require either a declared cache checkpoint or a recorded opt-out. HALT for user discussion before any promote/not_promote scoring."
 }

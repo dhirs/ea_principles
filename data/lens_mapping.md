@@ -77,6 +77,8 @@ Per-step due-diligence. Each implementation step from the AWS BP carries one of 
 | 6 | Monitor for performance drifts | **GO1B1-04** (v1.0.2) — promoted | Concretises step 6 by specifying: `eval/drift/config.yaml` declaring per-dimension metrics, baselines anchored to deployment, cadence, thresholds, alert routing; baseline-update coupling gate tying model-changing PRs to baseline refresh or ADR. Absorbs the "run periodically" element non-promoted from step 3. **Enterprise-tier** (reclassified 2026-05-31 — drift-detection infrastructure, baseline-storage schema, alert-routing integration, model-version coupling centralised; D1 borderline for regulated industries where MRM regs apply); validator stays project_architect. Two pre_merge gates. Authored 2026-05-27 (PRIN_004 at authoring time, renamed to GO1B1-04 the same day). |
 | 7 | Regularly update the ground truth dataset | **GO1B1-05** (v1.0.0) — promoted | Concretises step 7 by specifying: `eval/refresh/config.yaml` declaring the refresh cadence + trigger conditions + named owner per cycle, `eval/refresh/log.yaml` as the audit trail, and two pre_merge CI gates coupling cadence enforcement and drift-alert response. Refresh closes the loop with step 6 (GO1B1-04) — drift detection without refresh discipline produces a permanently firing alert against a never-updated baseline. Project-tier; two pre_merge gates as required status checks on the integration branch. applicability: agentic-only (paired-narrow with GO1B1-01's harness scope); maturity: foundational. Authored 2026-05-27 end-to-end under the new agentflow sections/ + system_prompts/ structure; six new section rubrics authored alongside to enable the authoring (focus_area, impact_level, applicability, maturity_level, framework_mappings, explain_prompt). All implementation steps in GENOPS01-BP01 now mapped: 1, 2, 4, 6, 7 promoted; 3, 5 not_promoted. |
 
+**BP-guidance (model-change re-evaluation) → GO1B1-06 (v1.0.0) — promoted.** Beyond the seven numbered steps, GENOPS01-BP01's implementation guidance directs: *"Run these evaluations when new candidate models are available, or when model customization techniques are applied."* This is the **model-change gate** earmarked in the step-3 not_promoted note above. GO1B1-06 — *Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships* — concretises it: an approved model catalog + catalog-membership lint (no floating aliases), a runtime-refusing model SDK, and a pre_merge gate coupling any pinned-model-identifier change to a mandatory GO1B1-01 re-run. Enterprise-tier (D1=no borderline / D2=3); maturity scaling; impact High; applicability { llm/rag/agentic mandatory, ml nice_to_have }; serving_paradigm all four. Distinct from GO1B1-04 (drift): a discrete model swap is a step-change a window-to-window drift threshold can miss, with no per-PR trigger at all. step_promotion 3/3/3/3. `implementation_step: null` — anchors to the BP's guidance directive, not a numbered step (the seven steps are already concretised by GO1B1-01..05). Note: AWS ships **no dedicated BP for model versioning** (see GENOPS03 below); GO1B1-06's pin/catalog half is the model-side twin of GO3B1-01 and also concretises the GENOPS03 "model versioning" clause and the Reliability "standardized catalogs for prompts and models" design principle. Authored 2026-06-04.
+
 #### GENOPS01-BP02 — Collect and monitor user feedback [VERIFIED]
 
 UNMAPPED — pending walkthrough. No implementation steps decomposed yet.
@@ -98,6 +100,8 @@ UNMAPPED — pending walkthrough. No implementation steps decomposed yet.
 > *"How do you maintain traceability for your models, prompts, and assets?"*
 >
 > Covers practices and tools for maintaining a structured approach to prompt engineering, model versioning, performance evaluation, testing variants, capturing baselines, and optimising against defined metrics and ground truth data.
+
+> **Lens gap — model versioning has no dedicated BP.** GENOPS03's question names "your models, prompts, and assets" and the focus-area description names "model versioning," but GENOPS03 ships only two BPs: BP01 (prompt template management → GO3B1-01) and BP02 (tracing → GO3B2-01/02). The *model*-side of the question has no BP of its own. The model-version-lifecycle concern is partially covered by **GO1B1-06** (authored 2026-06-04 from GENOPS01-BP01's model-change re-evaluation guidance — pinning + approved-model-catalog + re-eval-on-change gate). A fuller model *registry* twin of GO3B1-01 (the model analogue of the prompt registry) remains an open extension candidate.
 
 | Best Practice | Title | Our principle |
 |---|---|---|
@@ -269,12 +273,14 @@ Net for GENCOST02 focus area: **1 promoted (GC2B2-01); 7 absorbed across both BP
 
 ### GENCOST03 — Cost-aware prompting [VERIFIED focus area title]
 
-> *Covers controlling prompt lengths, response sizes, and token usage to minimise inference costs. Maps to catalogue focus area **P52 — Cost-aware Prompting** (created 2026-06-04, distinct from P51 Inference Cost Optimization). The exact GENCOST03 question-stem wording is still pending a question-page verification pass; BP and step text below are verified against the live AWS Lens page (fetched 2026-06-04).*
+> *Covers controlling prompt lengths, response sizes, and token usage to minimise inference costs. Maps to catalogue focus area **P52 — Cost-aware Prompting** (created 2026-06-04, distinct from P51 Inference Cost Optimization). Question stem VERIFIED 2026-06-05: "How do you engineer prompts to optimize cost?" BP and step text below verified against the live AWS Lens page (BP01 fetched 2026-06-04; BP03 + BP-list fetched 2026-06-05).*
 
 | Best Practice | Title | Our principle |
 |---|---|---|
 | GENCOST03-BP01 [VERIFIED] | Optimize prompt token length | **GC3B1-01** — Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it (anchors step 2; absorbs step 1) |
 | GENCOST03-BP02 [VERIFIED] | Control model response length | UNMAPPED |
+| GENCOST03-BP03 [VERIFIED] | Implement prompt caching to reduce token costs | **GC3B3-01** — Mark the cacheable static prefix of every reused prompt template and fail builds that leave a cache-eligible template uncached or mis-declare its prefix size (anchors step 2; absorbs step 1) |
+| GENCOST03-BP04 [VERIFIED] | Annotate user input to enable cost-aware content filtering | UNMAPPED |
 
 **GENCOST03-BP01 decomposition (4 steps; risk: Medium):**
 
@@ -283,7 +289,13 @@ Net for GENCOST02 focus area: **1 promoted (GC2B2-01); 7 absorbed across both BP
 - **Step 3** — *Consider using a separate LLM to offer a shortened prompt (Amazon Bedrock Prompt Optimization).* → **not_promoted.** Vendor/technique suggestion; no architectural mandate survives extraction. An optional tool a team may use to author a shorter prompt, not a gate. Vendor specifics deferred to GC3B1-01's framework_mappings notes.
 - **Step 4** — *Continue testing and optimizing the prompt to validate it meets the workload requirements (zero-shot / chain-of-thought / tree-of-thought / least-to-most).* → **not_promoted.** Prompt-engineering technique menu + process advice; no commitable artefact distinct from the GO1B1 eval-harness family. The "validate it meets requirements" slice is optionally absorbed by GC3B1-01's documented **Option B** (measured-from-eval-harness-fixtures), but the techniques themselves are coaching.
 
-Net for GENCOST03-BP01: **1 promoted (GC3B1-01); step 1 absorbed; steps 3/4 not_promoted.** BP01 closed. BP02 (response length) remains UNMAPPED — a natural sibling for a future walk (the output-side analogue: declared `runtime_token_budget.output`, already capped via `max_tokens` by GO3B1-01, could be gated the same way).
+Net for GENCOST03-BP01: **1 promoted (GC3B1-01); step 1 absorbed; steps 3/4 not_promoted.** BP01 closed.
+
+**GENCOST03 remaining BPs (UNMAPPED, not yet walked):**
+
+- **BP02 — Control model response length.** Output-side analogue of BP01: declared `runtime_token_budget.output`, already capped via `max_tokens` by GO3B1-01, could be gated the same way. Natural future sibling.
+- **BP03 — Implement prompt caching to reduce token costs** (risk: Medium; verbatim fetched 2026-06-05). **PROMOTED → GC3B3-01** (authored 2026-06-05). Anchors step 2 (enable caching / configure cache checkpoints); absorbs step 1 (identify caching opportunities) as the eligibility computation inside the gate — a template whose recomputed static prefix clears the model's minimum cache size IS the identified opportunity. The open question (does a CI-gateable artefact survive extraction, given caching looks like runtime config?) resolved YES via the manifest-derivable Option A: declare `cache.static_prefix_tokens` + a cache decision in the GO3B1-01 manifest, with a pre-merge lint that (1) requires the declaration, (2) requires cache-eligible templates to be checkpointed or opted out against `models/cache_minimums.yaml`, (3) recomputes the contiguous prefix tokenisation and fails on variance. Steps 3 (monitor caching metrics) and 4 (optimize cache usage) **not_promoted**: step 3 is realised as the optional Option C runtime telemetry alarm and belongs to the GO3B2 observability family; step 4 is tuning/process advice with no commitable pre-merge artefact. step_promotion 3/3/3/3. Distinct from GC3B1-01: opposite cost lever (GC3B1-01 fails prompts too big; GC3B3-01 caches big stable prefixes).
+- **BP04 — Annotate user input to enable cost-aware content filtering** (not yet fetched in detail). UNMAPPED — natural future sibling under GENCOST03 / P52.
 
 ### GENCOST04 — Cost-informed vector stores [VERIFIED focus area title]
 

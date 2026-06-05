@@ -23,6 +23,7 @@
   "principles": [
     {
       "principle_id": "GO1B1-01",
+      "dependencies": [],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
@@ -107,7 +108,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.6.0",
+        "current_version": "1.7.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -168,6 +169,12 @@
             "date": "2026-05-29",
             "author": "Dheeraj",
             "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the ground-truth harness existence discipline applies regardless of how the foundation model is served (the harness lives in the workload repository whether the model is called via OpenAI/Anthropic API, hosted on Bedrock Provisioned Throughput, deployed on SageMaker AI endpoints, or run on a self-hosted EKS/Slurm cluster). serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          },
+          {
+            "version": "1.7.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [] — GO1B1-01 is the foundational eval-harness substrate and stands alone with no catalogue dependency. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -181,6 +188,9 @@
     },
     {
       "principle_id": "GO1B1-02",
+      "dependencies": [
+        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Stratifies and gates GO1B1-01's ground-truth harness; there is nothing to stratify until the harness exists." }
+      ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
@@ -266,7 +276,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.4.0",
+        "current_version": "1.5.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -309,6 +319,12 @@
             "date": "2026-05-29",
             "author": "Dheeraj",
             "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the stratification + per-stratum gating discipline applies regardless of how the foundation model is served; strata reflect agent decision-branches / tool-paths / persona segments / policy carve-outs which are architectural properties of the workload, not properties of its serving paradigm. serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          },
+          {
+            "version": "1.5.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GO1B1-01: hard }] — stratification has nothing to operate on until GO1B1-01's harness exists. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -322,6 +338,9 @@
     },
     {
       "principle_id": "GO1B1-03",
+      "dependencies": [
+        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Encapsulates the evaluation metrics GO1B1-01's harness runs; the metric-as-code contract presumes the harness that invokes it." }
+      ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
@@ -408,7 +427,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "2.1.0",
+        "current_version": "2.2.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -451,6 +470,12 @@
             "date": "2026-05-29",
             "author": "Dheeraj",
             "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the evaluation-metric encapsulation discipline (metrics as named, encapsulated code units under `eval/metrics/`) applies regardless of how the foundation model is served; the discipline is software-engineering hygiene on the eval code, not a property of the model's hosting layer. serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          },
+          {
+            "version": "2.2.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GO1B1-01: hard }] — the metric-as-code contract presumes GO1B1-01's harness that invokes the metrics. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -464,6 +489,11 @@
     },
     {
       "principle_id": "GO1B1-04",
+      "dependencies": [
+        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Compares production metrics against the deployment baseline GO1B1-01's harness produces — no baseline, nothing to detect drift against." },
+        { "principle_id": "GO1B1-02", "kind": "soft", "reason": "Per-stratum drift detection reuses GO1B1-02's declared strata when present, but drift can be watched on the aggregate harness without them." },
+        { "principle_id": "GO1B1-03", "kind": "soft", "reason": "Runs GO1B1-03's encapsulated metric units on a cadence rather than re-implementing scoring logic." }
+      ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
@@ -538,7 +568,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.2.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -563,6 +593,12 @@
             "date": "2026-05-29",
             "author": "Dheeraj",
             "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the drift-monitoring discipline (`eval/drift/config.yaml` + per-dimension thresholds + baseline-update coupling) applies regardless of how the foundation model is served; drift can emerge against the baseline whether the model is API-served (vendor minor releases, prompt-shift effects) or self-hosted (data shift, traffic shift). serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          },
+          {
+            "version": "1.2.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GO1B1-01: hard }, { GO1B1-02: soft }, { GO1B1-03: soft }] — hard on the baseline GO1B1-01 produces; soft on GO1B1-02's strata and GO1B1-03's encapsulated metrics, reused for per-stratum cadence runs when present. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -576,6 +612,10 @@
     },
     {
       "principle_id": "GO1B1-05",
+      "dependencies": [
+        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Refreshes the `eval/scenarios/` harness GO1B1-01 mandates; the refresh discipline has no artefact to refresh without it." },
+        { "principle_id": "GO1B1-04", "kind": "soft", "reason": "The drift-alert-coupling gate fires on GO1B1-04 alerts; the calendar-cadence gate functions without GO1B1-04." }
+      ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
@@ -661,7 +701,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.2.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -674,6 +714,12 @@
             "date": "2026-05-29",
             "author": "Dheeraj",
             "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the harness-refresh cadence discipline (`eval/refresh/config.yaml` + refresh log + drift-alert coupling) applies regardless of how the foundation model is served; production input drift surfaces from customer behaviour evolution and upstream data shift independent of the serving paradigm. serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          },
+          {
+            "version": "1.2.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GO1B1-01: hard }, { GO1B1-04: soft }] — hard on the harness it refreshes; soft on GO1B1-04, whose drift alerts the second gate couples to. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -686,7 +732,119 @@
       }
     },
     {
+      "principle_id": "GO1B1-06",
+      "dependencies": [
+        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "The re-eval-on-model-change gate re-runs GO1B1-01's harness against the new model version and gates on its baseline." }
+      ],
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P11 — Model Performance Evaluation",
+      "impact_level": "High",
+      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "maturity_level": "scaling",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Model performance evaluation",
+              "question": "GENOPS01 — How do you achieve and verify consistent model output quality?",
+              "best_practice": "GENOPS01-BP01 — Periodically evaluate functional performance",
+              "implementation_step": null,
+              "mapping_state": "verified",
+              "last_checked": "2026-06-04",
+              "note": "Anchors to GENOPS01-BP01's implementation-guidance directive rather than one of its seven numbered steps (which the GO1B1-01..05 eval-harness family already concretises). The verbatim directive: 'Run these evaluations when new candidate models are available, or when model customization techniques are applied. For example, fine-tuned and customized models should be subject to the same evaluation criteria and cadence as non-customized models.' (verified against the live AWS Lens page, fetched 2026-06-04). This is the 'future model-change gate' the catalogue earmarked when GENOPS01-BP01 was first walked. AWS states the trigger (re-evaluate when the model changes) but leaves four things unspecified that this principle concretises: (1) how a model change is detected at all — AWS assumes you know the model changed, but a workload on a floating alias does not; (2) the pinning + approved-model-catalog mechanism that makes a change detectable and reviewable; (3) the runtime SDK contract refusing un-pinned model calls; (4) the pre-merge gate coupling a model-identifier change to a mandatory eval-harness re-run. Cross-references: the pin/catalog half is the model-side twin of GO3B1-01 (prompt registry) and concretises the 'model versioning' clause named in the GENOPS03 question ('How do you maintain traceability for your models, prompts, and assets?'), which ships no dedicated BP; it also concretises the GenAI Lens Reliability design principle 'Standardize resource management through catalogs: maintain centralized catalogs for prompts and models ... version control ... updates or rollbacks.' implementation_step is null per the schema's whole-BP/guidance-clause exception; the verbatim directive is quoted above."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-04",
+              "note": "Provisional mapping based on subject-matter proximity — pinning model versions and gating model changes on re-evaluation is a model-lifecycle governance control, aligning with III.B's scope (the same anchor as the cost siblings GC1B1-01 / GC2B2-01 / GC3B1-01). Distinct from the data-governance III.A the rest of the GO1B1 eval family maps to, because this principle governs the model artefact's version lifecycle, not the ground-truth data. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships",
+        "description": "Every model reference in a workload must resolve to an exact, immutable model version drawn from an approved model catalog — never a floating alias (e.g. a `-latest` pointer) and never a runtime-resolved default. A pre-merge gate fails any model reference that is not a catalogued pinned version; and any PR that changes a pinned model identifier must re-run the workload's evaluation harness (GO1B1-01) and clear its baseline bar before it can merge. This makes a model change impossible without a reviewed PR and impossible to ship without re-evaluation — so the foundation model cannot silently move under the agent via provider roll-forwards, deprecations, or gateway default upgrades."
+      },
+      "problem": {
+        "description": "Without pinning model references to immutable versions and gating model changes on re-evaluation, the foundation model can change underneath a workload without anyone deciding it should. A team that calls the model through a floating alias, a provider `-latest` pointer, or a shared-gateway default inherits whatever the provider or platform ships next — a roll-forward, a deprecation-and-migration, a quietly upgraded default. The agent's own code, prompts, and tests are untouched, so no PR is opened and no per-PR or drift gate fires; infrastructure dashboards stay green because the model is responding, just differently. The behaviour shifts — tone, verbosity, formatting, refusal rate, a few-shot pattern the prompt relied on — and the first signal is customers, not CI. This is distinct from the gradual cumulative drift GO1B1-04 watches for: a model swap is a discrete step-change at a single moment, which a window-to-window drift threshold can miss entirely and which has no per-PR trigger at all. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A retail customer-support chatbot calls the model via the provider's `-latest` alias; overnight the provider rolls the alias to a newer, more cautious model; by morning the bot hedges every answer with disclaimers and refuses routine account questions it used to handle; no PR was opened, infra dashboards are green, and the team only learns of it from a CSAT drop a week later.",
+          "A workload pins the exact model in dev but reads the model name from an env var in prod that defaults to the gateway's current default; a platform-wide gateway upgrade swaps that default; the prod agent silently runs a different model than dev, and the divergence is invisible until output differences are reported by a downstream team.",
+          "A provider deprecates the dated model snapshot a workload used and auto-migrates its calls to the successor; response formatting changes just enough to break a downstream JSON parser the agent's outputs feed; the breakage is attributed to 'the model getting worse' rather than to an un-pinned version that moved.",
+          "A team upgrades the model deliberately by editing one line, assuming the newer model is strictly better; it regresses on a minority class of cases the eval harness already covers, but nothing forces the harness to re-run on a model change, so the regression ships and surfaces as customer complaints weeks later.",
+          "A model swap lands a clean overnight step-change in behaviour that falls inside a single drift-monitor window, so GO1B1-04's window-to-window threshold never flags it; with no gate on the model identifier itself, there is no control positioned to catch the change at its source."
+        ]
+      },
+      "solution": {
+        "approach": "Pin every model reference to an exact, immutable version drawn from an approved model catalog, and gate model changes on re-evaluation. (1) Maintain a model catalog of approved pinned model identifiers (convention: `models/catalog.yaml`, platform-owned), each entry an exact version — a dated provider snapshot or a self-hosted weights digest — never an alias. (2) A pre-merge lint scans the workload for every model reference (config, code, env defaults) and fails the PR unless each resolves to a catalog entry; floating aliases (`-latest`, `default`) and un-catalogued identifiers fail. (3) The central model client / SDK refuses at runtime to call any model not resolved to a catalog entry, closing the dynamically-resolved-alias hole the static lint cannot see — the same contract shape as GO3B1-01's SDK refusing inline prompts, applied to model identifiers. (4) A pre-merge gate detects any change to a pinned model identifier (diff vs the merge base) and requires the workload's evaluation harness (GO1B1-01) to re-run and clear its baseline bar before the PR can merge; a model change that fails the harness blocks. (5) Because the version is pinned in config, rollback after a bad model is a one-line revert to the prior catalog entry. The model catalog, the catalog-membership lint, and the SDK refusal are platform-team-owned; the workload owns which catalogued version it pins and the eval result on change. This principle gates the model-change trigger; it reuses GO1B1-01's harness for the evaluation itself and does not re-implement evaluation machinery.",
+        "key_benefits": [
+          "Makes a model change impossible without a reviewed PR and impossible to ship without re-evaluation — the silent overnight provider roll-forward that today surfaces as a CSAT drop becomes a blocked, evaluated, deliberate change.",
+          "Closes the hole the drift monitor can miss — a model swap is a discrete step-change, not the gradual sub-threshold drift GO1B1-04 watches for; this gate catches the change at its source (the model identifier) rather than after the behaviour has already shifted in production.",
+          "Catalog membership enforces pinning by construction — the catalog holds only exact versions, so 'must be in the catalog' means 'must be pinned'; the runtime SDK refusal extends the guarantee to env-default and dynamically-resolved references the static lint cannot see (the GO3B1-01 SDK pattern, applied to models).",
+          "Re-evaluation reuses the existing eval harness — no new evaluation machinery; the model-change gate simply re-runs GO1B1-01 against the new version and gates on the baseline, turning 'we assumed the new model was better' into 'the new model passed our bar'.",
+          "Rollback is a one-line config revert — because the version is pinned, recovering from a bad model is reverting one catalog reference, not a scramble to reconstruct what changed and when."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, a lint scans the workload for every foundation-model reference (model identifiers in config such as `eval/config.yaml` or `models/*.yaml`, in `src/`, and in environment-variable defaults) and fails the PR unless each reference resolves to an entry in the approved model catalog (`models/catalog.yaml` or the platform-owned catalog it points to). Floating aliases (`-latest`, `default`, an undated provider pointer) and identifiers absent from the catalog fail, since every catalog entry is an exact immutable version (a dated provider snapshot or a self-hosted weights digest). Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR that changes a pinned model identifier (diff vs the merge base on any model reference the catalog-membership lint tracks), the workload's evaluation harness (GO1B1-01) must re-run against the new model version and clear its declared baseline bar; the PR fails if the harness has not re-run for the new identifier, or if it re-ran and did not pass the baseline, unless a linked ADR under `docs/adrs/` justifies the exception. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.1.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-06-04",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENOPS01-BP01 (Periodically evaluate functional performance), anchored on its implementation-guidance directive 'Run these evaluations when new candidate models are available, or when model customization techniques are applied' (verbatim verified against the live AWS Lens page, fetched 2026-06-04) — the 'future model-change gate' the catalogue earmarked when GENOPS01-BP01 was first walked. Sixth principle in the GO1B1 eval family. Prompted by a customer-experience failure example: a support chatbot whose model silently moved under it (provider rolled a floating alias forward), degrading answers with no PR, no CI signal, and green infra dashboards. step_promotion rubric 3/3/3/3 (enforceable artefacts: approved model catalog + catalog-membership lint + re-eval-on-change gate; architecturally distinct from GO1B1-04 drift — discrete model-swap step-change vs gradual cumulative drift, named with the window-miss argument; in-bp-scope: GENOPS01-BP01 guidance literally directs re-evaluation on model change; not vendor menu: Bedrock/SageMaker tooling stripped, generic pin-and-re-eval mandate survives). ANCHOR NOTE: no dedicated GenAI Lens BP exists for model versioning — GENOPS03's question names 'model versioning' but ships only prompt-management (GO3B1-01) and tracing (GO3B2) BPs; the model-change re-eval directive lives in GENOPS01-BP01's implementation guidance, not a numbered step (the 7 numbered steps are already concretised by GO1B1-01..05). implementation_step set null per the schema's guidance-clause/whole-BP exception with the verbatim quoted in the note; the pin/catalog half is cross-referenced as the model-side twin of GO3B1-01 and to the Reliability 'standardized catalogs for prompts and models' design principle. SCOPE: one principle — pinning + approved-model-catalog membership is the enabling mechanism (a change is undetectable on a floating alias), and the re-evaluation gate is the principle; the runtime SDK refusal of un-pinned models (GO3B1-01 pattern applied to models) is carried in solution.approach as a runtime control, not a separate pre_merge gate, parallel to how GO3B1-01 framed its runtime refusal. Hand-scored against section rubrics: statement 3/2/3/2/3; problem 3/3/3/3/3/3 (every example is a discrete model-substitution failure that per-PR gates miss and the drift monitor can miss); solution 3/3/3/3/3/2; gates 3/3/3/3/3/3 (two pre_merge required-status-check gates: catalog-membership; re-eval-on-model-change). tier rubric D1=no (model-lifecycle governance; borderline yes in regulated model-risk-management regimes, same hedge as GO1B1-04) / D2=3 (model catalog + membership lint + runtime-refusing SDK + re-eval gate wiring + rollback tooling — substantial platform engineering reused across projects) → recommended_centralise → enterprise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check parallel to GO1B1-04. maturity_level scaling — pays off at project #2: needs the GO1B1-01 eval-harness substrate to gate against and a deployed model to change, and the enforcement infra (central model catalog + SDK) amortises across the portfolio; foundational rejected because the gated discipline (not the bare pin) needs the harness substrate and platform tooling, parallel with GO1B1-04. serving_paradigm all four mandatory — AWS-billed workloads face provider roll-forwards / deprecations / gateway-default swaps; self-hosted workloads still need the re-eval-on-change gate when new weights are deployed (the pin is trivially under their control there, but the gate is not). impact_level High parallel to the GO1B1 family and AWS's HIGH risk rating for GENOPS01-BP01; the worst-case is a silent customer-facing regression, a High-shape consequence. applicability { llm/rag/agentic: mandatory, ml: nice_to_have } — classical ML typically already has model-registry/version discipline via MLOps tooling. AIGP III.B (Govern the AI Model Lifecycle) unverified — note the deliberate shift from the III.A data-governance anchor the rest of the GO1B1 family uses, because this principle governs the model artefact's version lifecycle, not the ground-truth data. explain_prompt compiled with setup_absence failure shape (the pin + re-eval discipline was never built; a provider/gateway model change makes the absence visible) — distinguished from GO1B1-04's cumulative_drift shape because this is a discrete model-substitution event, not gradual environmental drift. RI README at data/ri/GO1B1-06/README.md following the GO1B1-04 template. OPEN ITEMS: (1) JSON parse not run in-session — the sandbox could not reach the workspace (UNC mount); verify with `python3 -c \"import json; json.load(open('data/principles.json'))\"` from a terminal before pushing. (2) No dedicated AWS BP for model versioning is itself a documented Lens gap worth recording in lens_mapping under GENOPS03; the model-registry twin of GO3B1-01 may warrant its own extension principle later."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GO1B1-01: hard }] — the re-eval-on-model-change gate re-runs GO1B1-01's harness against the new version. The GO3B1-01 SDK-refusal parallel in solution.approach is pattern reuse, not a substrate dependency, so it is not listed. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GO1B1-06 — Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery model reference in a workload must resolve to an exact, immutable model version drawn from an approved model catalog — never a floating alias (a `-latest` pointer) and never a runtime-resolved default. A pre-merge lint fails any model reference that is not a catalogued pinned version; the central model SDK refuses at runtime to call an un-pinned model; and any change to a pinned model identifier must re-run the workload's evaluation harness and clear its baseline bar before it can merge. Because the version is pinned, rollback is a one-line config revert.\n\nTHE FAILURE SHAPE\n\nThis is a setup-absence failure: the pin-and-re-evaluate discipline was never built, and a discrete model-substitution event makes the absence visible. The team has a workload in production that calls the foundation model — but through a floating alias, a provider `-latest` pointer, or a shared-gateway default rather than a pinned, catalogued version. Nothing watches the model identity, and no gate couples a model change to re-evaluation. Locally everything looks fine: the model responds, latency and error-rate dashboards are green, and the team has not changed their own code. The discipline that nobody set up is the one that makes a model change a deliberate, reviewed, evaluated event instead of something that can happen TO the workload from outside.\n\nThe absence becomes visible at a discrete triggering moment that is outside the team's control: the provider rolls the `-latest` alias forward to a newer model overnight; the provider deprecates the dated snapshot the workload used and auto-migrates its calls to a successor; a platform-wide gateway upgrade changes the default model the workload's env var resolves to. The agent's code, prompts, and tests are untouched, so no PR is opened and no per-PR or drift gate fires. But the model underneath has changed, and its behaviour shifts — more verbose, more cautious, different formatting, a higher refusal rate, a few-shot pattern the prompt relied on no longer honoured. The first signal is not CI; it is customers — a CSAT drop, a spike in complaints, a downstream parser breaking on the new output format, a class of requests quietly mishandled. The team cannot point to a change they made, because they did not make one; the change happened to them, and there was no control positioned to catch a foundation model moving underneath a workload that was otherwise standing still.\n\nThe principle's value is forcing the model to be a pinned, catalogued artefact that cannot move without a reviewed PR, and cannot ship without re-evaluation — so a model change is always deliberate, always evaluated, and always one revert away from rollback.\n\nAPPLICABILITY\n\nGO1B1-06 is mandatory for LLM Only, RAG, and Agent workloads (anywhere a foundation model is called and can be moved by a provider, a deprecation, or a gateway). It is nice_to_have for traditional ML workloads, which typically already carry model-version discipline through established MLOps registries. If the chosen Implementation type is ML, open use_case_background with one italicised sentence noting the principle is most acute for foundation-model workloads where the model is a provider-served dependency that can change outside the team's control, and that the example below is illustrative of how the same setup-absence failure would manifest if an ML workload's model registry did not pin and re-validate on version change.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GO1B1-06's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe an enterprise with a workload in production that calls a foundation model. Be specific about the industry and the implementation type. Name the team, the workload, the integrating systems (with plausible invented names), and how the model is referenced — crucially, an UN-pinned way: a provider `-latest` alias, an env var defaulting to a shared gateway's current model, a model name copied between repos. Hint offhandedly that nobody watches model identity, that the budget/quality was validated once at launch, that model upgrades have never been a review-time concern. The reader should picture a confident team that does not realise the model is a moving dependency. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe the moment the model moves underneath the workload. Walk through chronologically: name the trigger (the provider rolls the `-latest` alias forward; the provider deprecates the dated snapshot and auto-migrates; a gateway upgrade swaps the default). Emphasise that this is OUTSIDE the team's control and that NO PR is opened, so per-PR and drift gates never fire and infra dashboards stay green. Then describe how the behaviour shifts (verbosity, caution, formatting, refusal rate, a broken downstream parser) and how the team discovers it — a CSAT drop, customer complaints, a downstream team reporting output differences — not from CI. Name roles (the platform engineer who eventually correlates it to the model change; the support lead escalating; the on-call who finds the version moved days ago). Make the consequence concrete — degraded customer experience across every interaction for days, a scramble to identify what changed, a rollback that is hard because nothing was pinned. The failure must demonstrate something a pinned, catalogued model plus a re-eval-on-change gate would have caught at the moment of change — not a generic 'the model got worse' regression, and specifically NOT gradual drift (this is a discrete swap).\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, decisions. 'The claims-triage chatbot' not 'the AI system'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or prompt-chained without retrieval or tools; ML is classical with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly a week before anyone correlated it', 'about a 20% jump in refusals').\n- Do not invent regulatory specifics. Generic framing only ('the firm's quarterly service review', 'the platform team's incident review').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-06-04",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
       "principle_id": "GO3B1-01",
+      "dependencies": [],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P13 — Traceability",
       "impact_level": "High",
@@ -780,13 +938,19 @@
         }
       ],
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.1.0",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-03",
             "author": "Dheeraj",
             "summary": "Initial draft authored from GENOPS03-BP01 step 1 promotion (absorbing step 4). step_promotion rubric scored 3/3/3/3 (specific path-shaped artefacts + content-shape gates; sibling distinction from GO3B2-01 named with disjoint artefacts — GO3B2-01 owns the emission contract, GO3B1-01 owns the call-signature contract; AWS placement BP-native since GENOPS03 question literally names prompts; vendor-menu language stripped, generic mandate survives). Step 4 absorbed because the SDK call-signature contract is inseparable from the registry — gate from step 1 only bites if step 4's call signature is enforced. Steps 2/3/5/6 non-promoted: step 2 (baseline eval) and step 3 (A/B variants) absorbed by GO1B1-01..05 eval-harness family; step 5 (periodic review) is process advice without commitable artefact (same shape as GENCOST01-BP01 step 4 deferral); step 6 (cross-team collaboration) is mechanical consequence of step 1's central registry. Five-example problem section in setup-absence shape (f-string scatter, voluntary registry erosion, downstream gate collapse, model-upgrade rollback pain, regulator archaeology). Solution carries the (template_id, variables) SDK contract with storage-neutrality (Mode A file-based + manifest, Mode B hosted TMS — Bedrock PM / Langfuse / PromptLayer / Humanloop / MLflow Prompt Registry deferred to framework_mappings notes); central team owns SDK + lint suite + tokenizer integration + manifest schema, project team owns body content + metadata values + budget rationale. Three pre_merge gates parallel to GO3B2-01 shape: (1) template_id ↔ registry ↔ body consistency + content-shape on declared metadata; (2) no-inline-call AST lint banning direct provider-SDK invocations outside central SDK module; (3) central LLM SDK version floor at prompts/sdk_floor.txt. Hand-scored against all section rubrics: statement 3/3/3/2/3; problem 3/3/3/3/3/3; solution 3/3/3/3/3/2; gates 2/3/3/3/3/3 (with open item: lifecycle_point_valid descriptor in gates rubric is stale per the 2026-05-31 tier-rubric redefinition — siblings GO3B2-01/02 also gate at pre_merge despite enterprise tier); applicability 3/3/3/3/3; maturity_level 3/3/3/3 (scaling, pays off at project #2 when downstream gates need addressable template_id); tier rubric D1=no borderline (PII/policy-content hedge for regulated workloads, same shape as GO3B2-01) / D2=3 (SDK multi-language + tokenizer integration + 3 lints + manifest schema + TMS adapters) → recommended_centralise → enterprise; impact_level High parallel to GO3B2-01/02 and AWS's HIGH risk rating; focus_area P13 — Traceability (GENOPS03 → P13 direct); framework_mappings 3/3/3/3/3/3 with AWS verified and AIGP IV.A primary / IV.B secondary unverified; explain_prompt 3/3/3/3/3/3 with setup_absence failure shape parallel to GO3B2-01. serving_paradigm scored informally (no rubric file under data/sections/serving_paradigm/) — all four mandatory parallel to GO3B2-01/02 since prompts exist regardless of serving paradigm. RI README at data/ri/GO3B1-01/README.md following GO3B2-01 template. Substrate principle: GENCOST03-BP01 budget principle (currently paused) becomes shippable once GO3B1-01 is in place — prompts/budgets.yaml has somewhere to point."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [] — GO3B1-01 is the foundational prompt-registry substrate and stands alone. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -800,6 +964,7 @@
     },
     {
       "principle_id": "GO3B2-01",
+      "dependencies": [],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P13 — Traceability",
       "impact_level": "High",
@@ -893,13 +1058,19 @@
         }
       ],
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.1.0",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-02",
             "author": "Dheeraj",
             "summary": "Initial draft authored from GENOPS03-BP02 step 2 promotion. Five-example problem section grounded in retailer-shape failures (fragmented backends without shared billing, PII leak in CloudWatch, recurring cost-attribution misses, broken cross-team trace correlation, schema drift across projects). Solution carries the header/payload split with central adapter pattern and an escape-hatch custom_payload field. Three pre_merge gates (direct-backend-call ban, mandatory header fields, SDK version floor). Framework mappings anchor against AWS verbatim step 1 (verified) and AIGP IV.B primary / IV.C secondary (unverified). maturity_level scaling — the first principle scored under maturity_level rubric v2's new adoption_trigger_portfolio_size dimension (rubric calibration example #3). ownership.tier enterprise via D1=no / D2=3 → recommended_centralise (recorded inline per the 2026-05-31 tier-rubric convention for new principles); same shape as GC2B2-01 and the catalogue's centralised-SDK precedent. explain_prompt compiled manually with setup_absence failure shape. RI README at data/ri/GO3B2-01/README.md."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [] — GO3B2-01 is the foundational observability-emission substrate and stands alone. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -913,6 +1084,9 @@
     },
     {
       "principle_id": "GO3B2-02",
+      "dependencies": [
+        { "principle_id": "GO3B2-01", "kind": "hard", "reason": "Governs read access and retention on the traces GO3B2-01 emits, keyed on the `compliance_tier` header GO3B2-01 sets; without the emit contract there is no classified trace to govern." }
+      ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P13 — Traceability",
       "impact_level": "High",
@@ -1006,13 +1180,19 @@
         }
       ],
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.1.0",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-02",
             "author": "Dheeraj",
             "summary": "Initial draft authored from GENOPS03-BP02 step 2 promotion. Sibling principle to GO3B2-01 under the same focus area (P13 Traceability) — Option A (sibling under P13) chosen over Option B (defer to GENSEC P22 Data Protection / P21 IAM) on the audit-trail argument: compliance_tier flows from emit (set in GO3B2-01) to read (the keying field here), and splitting governance across pillars fragments the regulator-facing walk. Step 2's emission-time slice (PII pre-scrub) is absorbed by GO3B2-01; this principle's substance is the remaining post-emission slice (read-side access governance + retention). Promotion decision scored 3/3/3/3 against step_promotion rubric (specific path-shaped artefacts + content-shape gates; sibling distinction named with disjoint artefacts; AWS placement honoured; mandate language not vendor menu). Five-example problem section drawn from retailer-shape failures: contractor offboarding miss across separate backend grants, retention drift across vendor defaults causing a GDPR DSAR finding, cross-team incident reconstruction blocked at backend boundary, read-side audit absent leading to a SOC2 deficiency, compliance_tier honoured at emit but ignored at storage. Solution centres on `observability/access_policy.yaml` + `observability/retention_policy.yaml` at the platform repo, with project-side `compliance_tier` declared in the existing `observability/config.yaml` introduced by GO3B2-01. Three pre_merge gates: compliance_tier declared and matching project registry; no project-local IAM grants on observability backend resources outside the central allow-list; central policy package version floor. ownership.tier enterprise via D1=no (borderline — read-side governance on already-PII-scrubbed traces is one step removed from the raw-PII exposure GO3B2-01's emit-time scrub addresses; same hedge GO3B2-01 used) / D2=3 (access policy schema + retention policy with backend lifecycle rule generation for 4+ backends + IaC bypass lint + read-audit pipeline + central security review workflow with 1-week SLA); audit_mode kept self_attestation_with_mechanical_evidence parallel to GO3B2-01 and the broader catalogue. maturity_level scaling — pays off at project #2-3 when fragmented per-team access controls and retention drift first appear at multi-backend scale; the thin enforcement (3 lints + central policy YAMLs + lifecycle-rule IaC for 3-4 backends) is shippable by a 1-3 engineer security/platform team without ARB. Framework mappings anchor against AWS step 2 verbatim (verified) and AIGP IV.C primary / IV.B secondary (unverified) — the GO3B2 pair now covers IV.B and IV.C from both directions (GO3B2-01 IV.B/IV.C; GO3B2-02 IV.C/IV.B). impact_level High parallel to GO3B2-01; Critical considered and rejected to keep parity with the broader catalogue's conservative bar on Critical. explain_prompt compiled manually with audit_time_discovery failure shape — accumulated access-control and retention drift surfacing at a discrete audit / DSAR / incident-reconstruction moment, distinguished from GO3B2-01's setup_absence shape because the SDK in GO3B2-01 was never built but the read-side controls in GO3B2-02 exist per-team and drift silently. RI README at data/ri/GO3B2-02/README.md."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GO3B2-01: hard }] — read-side governance keys on the compliance_tier GO3B2-01 emits; no classified trace exists without the emit contract. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -1026,6 +1206,7 @@
     },
     {
       "principle_id": "GC1B1-01",
+      "dependencies": [],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P41 — Model Selection & Right-sizing",
       "impact_level": "Medium",
@@ -1111,7 +1292,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.2.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -1124,6 +1305,12 @@
             "date": "2026-05-29",
             "author": "Dheeraj",
             "summary": "MINOR. Added required `serving_paradigm` root-level field under schema v1.9 (see taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md). Value: { api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory } — the model-selection decision record discipline applies regardless of how the chosen model is served; the ADR captures the choice itself (which model + which serving paradigm), so it must exist whether the workload uses pure-API on-demand, committed API capacity, managed self-hosting, or raw self-hosting. (Indeed, the serving-paradigm choice IS one of the prioritized cost dimensions the ADR's cost-aware rationale names.) serving_paradigm is orthogonal to applicability (AI pattern) and maturity_level (org-level adoption point). No content change to statement, problem, solution, gates, ownership, applicability, maturity_level, framework_mappings, evidence, or explain_prompt."
+          },
+          {
+            "version": "1.2.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [] — GC1B1-01 is a foundational model-selection-record principle and stands alone. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -1137,6 +1324,9 @@
     },
     {
       "principle_id": "GC2B2-01",
+      "dependencies": [
+        { "principle_id": "GC1B1-01", "kind": "soft", "reason": "The serving-paradigm choice GC1B1-01 records determines whether there is hosting infrastructure to right-size; GC2B2-01 gates on `infra/` independently of that ADR." }
+      ],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P51 — Inference Cost Optimization",
       "impact_level": "Medium",
@@ -1223,7 +1413,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.1.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -1236,6 +1426,12 @@
             "date": "2026-05-29",
             "author": "Dheeraj",
             "summary": "PATCH. maturity_level corrected scaling → mature (hardcoded override). Reasoning: Gate 2's code-vs-record consistency lint plus deployed-alarm verification against cloud APIs is genuine portfolio-tier engineering — IaC parser, cross-workload monitoring stack assumption, platform-team capability — not the per-workload capability scaling-tier orgs typically have. Per the field convention 'pick the strictest level that honestly applies; safer to over-adopt than under-adopt,' mature is the honest call. Surfaced during a conversation about the scaling-vs-mature gap in the current maturity_level rubric (3 dimensions, none structurally encoding workload-scoped vs portfolio-scoped). No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, framework_mappings, evidence, or explain_prompt. The generator prompt at agentflow/sections/maturity_level/generate.json is being updated in the same session to add an explicit workload-vs-portfolio decision tree so future authoring catches this distinction at draft time."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GC1B1-01: soft }] — the serving-paradigm choice GC1B1-01 records is the precondition for there being hosting infrastructure to right-size; the gate fires on infra/ independently. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -1249,6 +1445,9 @@
     },
     {
       "principle_id": "GC3B1-01",
+      "dependencies": [
+        { "principle_id": "GO3B1-01", "kind": "hard", "reason": "Reuses GO3B1-01's per-template manifest row, `runtime_token_budget.input` field, and tokenizer adapters; the budget gate needs an addressable `template_id` to bite on." }
+      ],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P52 — Cost-aware Prompting",
       "impact_level": "Medium",
@@ -1335,13 +1534,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.1.0",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-04",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENCOST03-BP01 (Optimize prompt token length), anchored on implementation step 2 (Engineer the prompt to reduce the token count) with step 1 (Identify a verbose prompt) absorbed — a template breaching its ceiling IS the identified verbose prompt, surfaced mechanically. Third principle in the GENCOST pillar; resumed from the paused budget-principle slot now that its substrate (GO3B1-01, authored 2026-06-03) ships the template registry and the runtime_token_budget.input field this principle enforces. step_promotion rubric scored 3/3/3/3 (has_enforceable_artefact: declared ceiling in prompts/manifest.yaml + pre-merge footprint-vs-budget lint + budget-inflation governance lint; architecturally_distinct: GO3B1-01 mandates the budget field EXISTS while this makes the number a binding ceiling — different failure mode, sibling named with disjoint artefacts; in_bp_scope: BP literally named 'Optimize prompt token length', step 2 'reduce the token count' is the operative mandate; not_vendor_menu: Amazon Bedrock Prompt Optimization stripped from steps 3/4 and deferred to framework_mappings notes, generic ceiling-and-gate mandate survives). Steps 3 (separate-LLM / Bedrock Prompt Optimization) and 4 (zero-shot/CoT/ToT/least-to-most technique menu + 'continue testing') not_promoted as vendor/technique menu and process advice respectively (see lens_mapping.md GENCOST03-BP01 ledger). SOLUTION: Option A (declared-worst-case, manifest-derivable: scaffolding tokens via the model tokenizer + sum of declared variable typical_max, gated against runtime_token_budget.input) chosen as the mandated spine after an interactive design discussion; Options B (measured-from-eval-harness-fixtures) and C (runtime alarm on GO3B1-01's per-call actual-vs-declared signal) documented within solution.approach as alternative reference implementations a workload MAY additionally adopt, at the user's direction, so adopters have options — the RI and gates are built on Option A only, keeping gate coverage clean. New focus area P52 — Cost-aware Prompting created to mirror AWS GENCOST03's verified focus-area title; distinct from P51 — Inference Cost Optimization (which maps from GENCOST02 / GC2B2-01) and P41 — Model Selection & Right-sizing (GENCOST01 / GC1B1-01), per the focus_area rubric's one-focus-area-per-AWS-question mapping. Hand-scored against section rubrics: statement 3/2/3/2/3; problem 3/3/3/3/3/3 (every example is a prompt-length cost failure the model-selection / hosting gates and GO3B1-01's existence-only check all miss); solution 3/3/3/3/3/2 (Option A artefacts named with paths + gate points; B/C explicitly optional so coverage_completeness scopes to Option A); gates 3/3/3/3/3/3 (two pre_merge required-status-check gates covering the footprint check + budget-inflation governance). tier rubric D1=no (token-counting is cost discipline, no regulator/audit/litigation exposure) / D2=2 (a footprint lint + budget-governance lint with ongoing tokenizer maintenance reused across projects, thinner than GO3B1-01's D2=3 because it extends GO3B1-01's existing tokenizer + manifest tooling) → recommended_centralise → enterprise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check parallel to GO3B1-01 and GC2B2-01. maturity_level scaling — pays off at project #2: the gate sits on GO3B1-01's registry substrate (itself scaling) and amortises once a portfolio of prompt templates whose token costs compound exists; foundational rejected because a principle cannot pay off before its scaling-tier substrate is adopted, and the tokenizer-lint build is not first-project capability. depends_on_deployment: no — Option A is manifest-derivable, which is why scaling (not mature) is correct: a small platform team ships it, no ARB. serving_paradigm all four mandatory — AWS verbatim states prompt length drives cost in BOTH managed per-token billing AND self-hosted/provisioned compute time, so unlike GC2B2-01 (self-hosting-only) this applies everywhere. impact_level Medium (matches AWS BP risk rating Medium and the GC1B1-01/GC2B2-01 cost-pillar pattern; prompt-cost failures are recoverable via trimming, not customer regressions or safety events). applicability { llm/rag/agentic: mandatory, ml: nice_to_have } matching the cost siblings (classical ML has no prompt-shaped artefact). AIGP cross-reference Domain III.B (Govern the AI Model Lifecycle — Design & Build), mapping_state unverified, parallel to GC1B1-01/GC2B2-01. explain_prompt compiled with cumulative_drift failure shape (many locally-rational token additions across PRs and templates compounding into a portfolio cost regression no single review catches) — distinguished from GO3B1-01's setup_absence shape because here the registry and budget field DO exist and the failure is drift past a ceiling that was never enforced. RI README at data/ri/GC3B1-01/README.md built on Option A. OPEN ITEMS: (1) JSON parse not run in-session — the sandbox could not reach the workspace (UNC mount); verify with `python3 -c \"import json; json.load(open('data/principles.json'))\"` from a terminal before pushing. (2) The exact GENCOST03 question-stem wording in framework_mappings.aws.references[0].question is approximated from the verified focus-area title pending a question-page verification pass; BP title and step-2 verbatim_text are verified against the live AWS Lens page fetched 2026-06-04."
+          },
+          {
+            "version": "1.1.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added required `dependencies` field under schema v1.10 (2026-06-05; see taxonomy.json conventions.dependencies and the 2026-06-05 dependencies entry in decisions.md). Value: [{ GO3B1-01: hard }] — the budget gate reuses GO3B1-01's manifest row, runtime_token_budget.input field, and tokenizer adapters, and needs an addressable template_id to bite on. Records DIRECT dependencies only. No content change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, framework_mappings, evidence, or explain_prompt."
           }
         ]
       },
@@ -1350,6 +1555,116 @@
         "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
         "compiled_for_principle_version": "1.0.0",
         "compiled_at": "2026-06-04",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "principle_id": "GC3B3-01",
+      "dependencies": [
+        { "principle_id": "GO3B1-01", "kind": "hard", "reason": "Needs GO3B1-01's registered, addressable prompt templates, the manifest the cache fields live in, and its per-provider tokenizer adapters; there is no template body or `template_id` to mark a cache checkpoint on without the registry." },
+        { "principle_id": "GC3B1-01", "kind": "soft", "reason": "Reuses GC3B1-01's tokenizer-integration pattern for static-token counting; GC3B3-01 computes the contiguous cache-prefix specifically (the fixed run before the first variable) rather than total scaffolding tokens, so it extends rather than strictly requires GC3B1-01." }
+      ],
+      "pillar": "P5 — Cost Optimization",
+      "focus_area": "P52 — Cost-aware Prompting",
+      "impact_level": "Medium",
+      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
+      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "nice_to_have", "self_hosted_unmanaged": "nice_to_have" },
+      "maturity_level": "scaling",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENCOST — Cost Optimization",
+              "focus_area": "Cost-aware prompting",
+              "question": "GENCOST03 — How do you engineer prompts to optimize cost?",
+              "best_practice": "GENCOST03-BP03 — Implement prompt caching to reduce token costs",
+              "implementation_step": {
+                "number": 2,
+                "title": "Enable prompt caching for supported models",
+                "verbatim_text": "Enable prompt caching for supported models: Turn on caching in Amazon Bedrock console; For APIs, set appropriate caching flags; Configure cache checkpoints at optimal locations."
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-06-05",
+              "note": "AWS BP03 verbatim and step list fetched from the live AWS Lens page 2026-06-05. Anchors step 2 (enable caching + configure cache checkpoints) and absorbs step 1 (Identify opportunities for caching — review for repeated prompt components, verify minimum-token thresholds) as the eligibility computation WITHIN the gate: a template whose computed static prefix clears the model's minimum cache size IS the identified caching opportunity, surfaced mechanically rather than by manual review. AWS leaves unspecified: where the cacheable-prefix size is declared, how eligibility is decided against the model's minimum-token threshold, how the declaration is kept honest against the actual prompt body, and how this is enforced as a versioned artefact in CI. This principle concretises all four. AWS's implementation guidance is Bedrock-specific (console toggle, Bedrock cache checkpoints) but the underlying mandate — mark the stable leading prefix of a reused prompt as a cache checkpoint so it bills at the provider's reduced cached-token rate — is provider-neutral (Anthropic `cache_control`, OpenAI automatic prefix caching, Bedrock cache checkpoints all implement the same prefix-reuse contract); vendor specifics are deferred to this note. Steps 3 (Monitor caching metrics — hit/miss rates, cached-vs-uncached cost) and 4 (Optimize cache usage — tune checkpoint placement, balance write vs read cost) are not_promoted as standalone principles: step 3's runtime monitoring is captured as the optional Option C (telemetry alarm on cache hit-rate) documented in solution.approach and properly belongs to the GO3B2 observability family; step 4 is tuning/process advice with no commitable pre-merge artefact. See lens_mapping.md GENCOST03-BP03 ledger."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-05",
+              "note": "Provisional mapping based on subject-matter proximity — prompt-caching configuration is a build-phase design discipline on the prompt artefact, aligning with III.B's scope, parallel to the cost siblings GC1B1-01 / GC2B2-01 / GC3B1-01. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Mark the cacheable static prefix of every reused prompt template and fail builds that leave a cache-eligible template uncached or mis-declare its prefix size",
+        "description": "Every registered prompt template must declare, in the GO3B1-01 manifest, the token count of its static prefix — the contiguous fixed leading span of the prompt before the first runtime variable — together with a cache decision. Any template whose declared static-prefix token count clears its model's minimum cache-checkpoint size must mark a cache checkpoint, so the reused prefix bills at the provider's reduced cached-token rate, or carry a recorded opt-out. A pre-merge gate fails the build when the static-prefix count is undeclared, when a cache-eligible template is neither cached nor opted out, or when the declared prefix count diverges from the value CI recomputes with the model's own tokenizer. This converts AWS's 'implement prompt caching' from an optional console toggle into an enforced, auditable property of every template, so the cheap-by-default savings on large reused prefixes are taken by construction rather than left on the inference bill."
+      },
+      "problem": {
+        "description": "Prompt caching bills the stable, reused leading portion of a prompt at a steeply reduced rate (often a fraction of the standard input-token price) once it is marked as a cache checkpoint. Without a discipline that forces eligible templates to be marked, caching is simply never turned on: the workload runs fine, the output is correct, and the only signal that a large fixed prefix is being re-processed and billed at full rate on every call is the inference bill — thirty days late, attributed to finance, absorbed as 'model usage.' The discipline is also fragile in two further ways: a cacheable prefix silently breaks when a variable is inserted ahead of it, and a declared prefix size drifts into fiction when the body changes underneath it or the number is hand-written to pass a review. None of these are visible to per-PR review, and no other cost gate looks at prompt-prefix structure — model-selection and hosting right-sizing are blind to it. Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A RAG support assistant prepends a roughly 6,000-token product manual to every query as a stable system block; caching is never enabled, so the manual is re-processed and billed at full input rate across all ~50K daily calls; the waste surfaces only at the quarterly cost review, when someone realises the unchanging manual could have billed at the reduced cached-token rate from day one.",
+          "A claims-triage agent carries a roughly 3,000-token policy preamble that is byte-identical on every call; no cache checkpoint is declared; the team pays full input price for that preamble on every invocation for two quarters until a cost audit asks why a static preamble is billed fresh each time.",
+          "A template that was cacheable gets a `{{customer_name}}` personalisation variable inserted near the top during a feature PR; everything after it is now uncacheable; the cache hit rate silently collapses and per-call cost climbs, with no review flag because nothing checks that the stable prefix is still contiguous and ahead of the first variable.",
+          "A team declares a cache checkpoint but the static prefix is only about 600 tokens — below the model's ~1,024-token minimum — so caching never actually engages; nobody computed the prefix size, so the team believes caching is saving money while every call bills at full rate.",
+          "A developer hand-writes `static_prefix_tokens: 4000` in the manifest to clear a cost review, but the real fixed prefix is about 900 tokens because most of the 'fixed' text is actually filled per call; the declared number is fiction, the expected savings never materialise, and no gate recomputes the prefix against the tokenised body to catch the discrepancy."
+        ]
+      },
+      "solution": {
+        "approach": "The baseline mandate (Option A — declared-and-recomputed, manifest-derivable) reuses the prompt registry GO3B1-01 already requires. Each template's manifest row (Mode A: `prompts/manifest.yaml`; Mode B: TMS metadata) carries a `cache` block: `static_prefix_tokens` (the declared token count of the contiguous fixed leading span before the first `{{variable}}`) and a cache decision — either `checkpoint: true` (a cache checkpoint is marked at the end of the static prefix via the central SDK's provider-neutral caching contract) or `opt_out` with a recorded reason. A central lint (shipped in the GO3B1-01 llm-sdk lint suite; convention `prompts/cache_check`) enforces three things at pre-merge: (1) `cache.static_prefix_tokens` is declared for every template and fails when absent; (2) for any template whose declared `static_prefix_tokens` is greater than or equal to its model's minimum cache-checkpoint size — read from a central, platform-owned `models/cache_minimums.yaml` keyed by model identifier — the row must set `checkpoint: true` or carry a non-empty `opt_out` reason, and the build fails otherwise; (3) the lint recomputes the static prefix itself (the contiguous body span at `prompts/<template_id>.{md,j2}` up to the first `{{variable}}`, tokenised with the model's own tokenizer named in the manifest `model` field, reusing GO3B1-01's per-provider tokenizer adapters) and fails when the declared `static_prefix_tokens` diverges from the recomputed value beyond a declared tolerance (default 10%), which closes both the silent-break case (a variable inserted ahead of the prefix shrinks the computed prefix) and the hand-written-fiction case. All three checks are manifest-derivable — no fixtures, no deployed baseline, no runtime — so they fire at review time. One alternative reference implementation is documented for workloads wanting runtime assurance and MAY be adopted in addition to (not instead of) the Option A baseline: **Option C (runtime telemetry alarm)** wires the cache hit-rate and the actual production prefix size — already observable through GO3B2-01's central observability stream — into an alarm that dashboard-flags or pages when a cache-eligible template's production hit rate falls below a threshold or its actual prefix diverges from the declared value. Option C is post-deploy observability, not a pre-merge gate; it catches runtime cache misses (TTL expiry under low traffic, non-contiguous fills) that Option A cannot see, and properly belongs to the GO3B2 observability family, so it complements rather than replaces the CI gate. The reference implementation at `data/ri/GC3B3-01/README.md` is built on Option A.",
+        "key_benefits": [
+          "Takes the cheap-by-default savings by construction — a large reused prefix that today bills at full input rate on every call cannot merge until it either carries a cache checkpoint or a recorded opt-out, so the saving is the default rather than something a team has to remember to turn on.",
+          "The recompute gate stops the declared prefix count from drifting into fiction — a hand-written number that does not match the tokenised body fails the build, closing the gaming loophole the same way GC3B1-01's footprint gate closes the budget-as-placeholder loophole.",
+          "Catches the silent cache-break: inserting a variable ahead of the stable prefix shrinks the recomputed prefix, which the gate surfaces at the PR that introduces it instead of as an unexplained per-call cost rise a quarter later.",
+          "Catches false eligibility — a declared checkpoint on a sub-minimum prefix (where caching never actually engages) is flagged because the gate compares the recomputed prefix against the model's minimum cache size in `models/cache_minimums.yaml`.",
+          "Distinct from GC3B1-01 without overlap and reuses its machinery — GC3B1-01 fails prompts whose footprint is too BIG (creep past a ceiling); GC3B3-01 acts when a big prefix is STABLE and reused (mark it cacheable). Opposite lever on the same token cost, different failure mode (waste-by-not-caching vs creep-past-ceiling), both manifest-derivable on GO3B1-01's registry and tokenizer."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, a lint verifies that every registered prompt template declares `cache.static_prefix_tokens` in its manifest row (Mode A `prompts/manifest.yaml`; Mode B TMS metadata) and fails the build when the field is absent. For any template whose declared `cache.static_prefix_tokens` is greater than or equal to its model's minimum cache-checkpoint size (read from the central, platform-owned `models/cache_minimums.yaml` keyed by the manifest `model` field), the row must set `cache.checkpoint: true` or carry a non-empty `cache.opt_out` reason; the build fails for a cache-eligible template that is neither cached nor opted out. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR, a lint recomputes each template's static prefix — the contiguous body span at `prompts/<template_id>.{md,j2}` (Mode A) or the TMS-resolved body (Mode B) up to the first `{{variable}}`, tokenised with the model's own tokenizer named in the manifest `model` field — and fails the build when the declared `cache.static_prefix_tokens` diverges from the recomputed value beyond the declared tolerance (default 10%). This catches both a prefix silently broken by a variable inserted ahead of it (recomputed prefix shrinks) and a hand-declared count that does not match the body. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-06-05",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENCOST03-BP03 (Implement prompt caching to reduce token costs), anchored on implementation step 2 (Enable prompt caching for supported models / configure cache checkpoints) with step 1 (Identify opportunities for caching) absorbed as the eligibility computation within the gate — a template whose recomputed static prefix clears the model's minimum cache size IS the identified caching opportunity, surfaced mechanically. Fourth principle in the GENCOST pillar, second under GENCOST03 / focus area P52 — Cost-aware Prompting (sibling to GC3B1-01). BP03 verbatim + the full GENCOST03 BP list (BP01–BP04) and the question stem 'How do you engineer prompts to optimize cost?' fetched from the live AWS Lens page 2026-06-05; lens_mapping.md updated the same day to record BP03/BP04 (previously missing from the ledger). step_promotion rubric scored 3/3/3/3 (has_enforceable_artefact: `cache` block in the GO3B1-01 manifest + three pre-merge checks reusing the tokenizer; architecturally_distinct: opposite cost lever from GC3B1-01 — GC3B1-01 fails prompts too BIG, GC3B3-01 acts when a big prefix is STABLE and reused — named with disjoint gates and the `models/cache_minimums.yaml` artefact; in_bp_scope: BP literally 'Implement prompt caching to reduce token costs' under GENCOST03; not_vendor_menu: Bedrock console/checkpoint specifics stripped, the provider-neutral mark-the-stable-prefix-as-a-checkpoint mandate survives — Anthropic cache_control, OpenAI prefix caching, Bedrock checkpoints all implement it). Steps 3 (Monitor caching metrics) and 4 (Optimize cache usage) not_promoted: step 3's runtime monitoring is captured as optional Option C (telemetry alarm) in solution.approach and belongs to the GO3B2 observability family; step 4 is tuning/process advice with no commitable pre-merge artefact. SOLUTION: Option A (declared-and-recomputed, manifest-derivable) is the mandated spine — declare `cache.static_prefix_tokens` + a cache decision (checkpoint or opt_out); a `prompts/cache_check` lint enforces (1) the count is declared, (2) cache-eligible templates (prefix >= model minimum from `models/cache_minimums.yaml`) are cached or opted out, (3) the declared count matches the recomputed contiguous-prefix tokenisation within tolerance. This realises the user's three-check design: (check 1) declare the fixed-prefix count, fail if absent; (check 2) recompute and fail on high variance; (check 3) telemetry on actual size = optional Option C, documented as an additive advanced implementation, not the spine. Hand-scored against section rubrics: statement 3/3/3/2/3; problem 3/3/3/3/3/3 (five examples: never-enabled on a large RAG manual prefix, never-enabled on a policy preamble, silent break by a leading variable, false eligibility below the model minimum, hand-written fiction caught by recompute — each a caching cost failure invisible to the model-selection / hosting / footprint gates); solution 3/3/3/3/3/2 (Option A artefacts named with paths + gate points; Option C explicitly optional so coverage_completeness scopes to Option A); gates 3/3/3/3/3/3 (two pre_merge required-status-check gates: declare+eligibility, and recompute-variance). dependencies (schema v1.10): GO3B1-01 hard (registry + manifest + tokenizer adapters + addressable template_id), GC3B1-01 soft (reuses the tokenizer-integration pattern; computes the contiguous cache-prefix specifically rather than total scaffolding tokens). tier rubric D1=no (caching is cost discipline; no regulator/audit/litigation exposure) / D2=2 (a cache-eligibility lint + a recompute-variance lint with ongoing tokenizer + cache-minimums maintenance, reused across projects, thinner than GO3B1-01's D2=3 because it extends GO3B1-01's existing tokenizer + manifest tooling) → recommended_centralise → enterprise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check parallel to GC3B1-01 / GO3B1-01. maturity_level scaling — pays off at project #2: the gate sits on GO3B1-01's registry substrate (itself scaling) and amortises once a portfolio of templates with large reusable prefixes exists; the tokenizer/prefix lint is not first-project capability; foundational rejected because a principle cannot pay off before its scaling-tier substrate is adopted. serving_paradigm api_on_demand mandatory + api_provisioned mandatory, self_hosted_managed nice_to_have + self_hosted_unmanaged nice_to_have — AWS BP03 frames the benefit as cached tokens billed at a reduced rate, a managed-API pricing feature; on committed throughput caching frees billed capacity (mandatory), while on self-hosted the benefit is KV-cache recompute/latency rather than a per-token bill line (nice_to_have). This is a deliberate departure from GC3B1-01's all-four-mandatory because token-length cost exists on every paradigm whereas the reduced-cached-rate billing does not. impact_level Medium (matches AWS BP03 risk rating Medium and the GC1B1-01/GC2B2-01/GC3B1-01 cost-pillar pattern; caching cost failures are recoverable by marking the prefix, not customer regressions or safety events). applicability { llm/rag/agentic: mandatory, ml: nice_to_have } matching the cost siblings (classical ML has no prompt-shaped artefact). AIGP cross-reference Domain III.B (Govern the AI Model Lifecycle — Design & Build), mapping_state unverified, parallel to the cost siblings. explain_prompt compiled with setup_absence failure shape (the caching discipline was never set up; a cost review / audit / migration makes the absence visible) with a secondary nod to the silent-break variant — distinguished from GC3B1-01's cumulative_drift shape because the dominant failure is a discrete never-enabled absence rather than gradual creep past a ceiling. RI README at data/ri/GC3B3-01/README.md built on Option A, following the GC3B1-01 template. OPEN ITEMS: (1) JSON parse not run in-session — the sandbox could not reach the workspace (UNC mount); verify with `python3 -c \"import json; json.load(open('data/principles.json'))\"` from a terminal before pushing. (2) `models/cache_minimums.yaml` per-model minimum-token thresholds must be maintained against provider docs (e.g. Anthropic ~1,024-token minimum for some models); the central platform team owns this table, flagged in the RI."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GC3B3-01 — Mark the cacheable static prefix of every reused prompt template and fail builds that leave a cache-eligible template uncached or mis-declare its prefix size — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery registered prompt template declares, in the GO3B1-01 manifest, the token count of its static prefix (the contiguous fixed leading span before the first runtime variable) and a cache decision. Any template whose static prefix clears its model's minimum cache-checkpoint size must mark a cache checkpoint — so the reused prefix bills at the provider's reduced cached-token rate — or carry a recorded opt-out. A pre-merge gate fails the build when the prefix count is undeclared, when a cache-eligible template is neither cached nor opted out, or when the declared prefix count diverges from the value CI recomputes with the model's own tokenizer.\n\nTHE FAILURE SHAPE\n\nThis is a setup-absence failure: prompt caching is simply never turned on for prompts that are eligible for it, and the absence is invisible until the bill is examined. The team has prompts registered (the GO3B1-01 registry is in place — templates are addressable, bodies are versioned). Many templates carry a large, byte-identical leading block reused on every call: a product manual prepended to every RAG query, a long policy preamble in an agent's system prompt, a fixed instruction-and-schema header. Caching that block would bill it at a fraction of the standard input rate. But nobody marked a cache checkpoint, because nothing required it; the prompt works, the output is correct, and the full-rate reprocessing of the stable prefix on every call shows up only as an undifferentiated line on the inference bill — thirty days late, owned by finance, absorbed as 'model usage growth.'\n\nThe absence is forced into view by a triggering event: a quarterly cost review flags the workload as a top-N spend item; a finance partner asks why a static preamble is billed fresh on every call; a migration audit examining prompt structure finds large reused prefixes that were never cached; a per-template cost dashboard finally attributes spend and the un-cached prefixes become legible. A close variant is the silent break — a template that WAS cacheable stops being cacheable when a personalisation variable is inserted ahead of the stable prefix, collapsing the cache hit rate with no review flag — and the false-positive — a declared checkpoint on a prefix below the model's minimum cache size, where caching never actually engages and the team believes it is saving money while paying full rate.\n\nThe principle's value is forcing every eligible template to be marked (or explicitly opted out) and forcing the declared prefix size to match the tokenised body at review time, so the cheap-by-default saving is taken by construction and a broken or fictional declaration fails the PR rather than surfacing as an unexplained cost months later.\n\nAPPLICABILITY\n\nGC3B3-01 is mandatory for LLM Only, RAG, and Agent workloads on managed-API serving (on-demand or provisioned), where reused prefixes bill at a reduced cached-token rate — RAG workloads with large stable context blocks benefit most. It is nice_to_have on self-hosted serving (the benefit there is KV-cache recompute and latency rather than a per-token bill line) and nice_to_have for traditional ML workloads (no prompt-shaped artefact). If the chosen Implementation type is ML, open use_case_background with one italicised sentence noting the principle is most acute for LLM-based and agentic workloads with large reused prompt prefixes on managed-API serving, and that the example below is illustrative of how the same setup-absence cost failure would manifest in the closest analogue.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GC3B3-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe an enterprise with one or more AI workloads in production whose prompts are registered as versioned templates (assume the GO3B1-01 registry is in place; do not labour it) and that are served on a managed API. Be specific about the industry and the implementation type. Name a workload, the team, the integrating systems (with plausible invented names), and crucially the large, byte-identical leading block one or more templates carry on every call (a product manual, a policy preamble, a fixed instruction-and-schema header) and roughly how big it is. Hint at the absence offhandedly — caching was never part of the prompt-authoring checklist, nobody tracks per-template token cost, the team assumes the model 'just works.' Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe the moment the never-enabled caching surfaces as cost. Walk through chronologically: name the trigger (a quarterly cost review flags the workload; finance asks why a static preamble is billed fresh every call; a model migration audit examines prompt structure; a per-template cost dashboard finally attributes spend). Then describe what the team finds — a large stable prefix re-processed and billed at full input rate on every call across high daily volume, when it could have billed at the reduced cached-token rate; OR the silent-break variant where a leading variable killed an existing cache; OR a declared checkpoint that never engaged because the prefix was below the model's minimum. Name roles (the platform engineer building the cost dashboard; the finance partner asking for attribution; the engineer who added a personalisation variable). Make the consequence concrete — months of accumulated full-rate reprocessing across the portfolio, a scramble to retrofit cache checkpoints, savings that were available from day one and simply never taken. The failure must demonstrate something a declare-plus-recompute caching gate would have caught at the PR — not a generic 'our bill was high' regression.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, templates. 'The policy-preamble block in the claims-triage template' not 'the AI prompt'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over multiple steps and calls tools; LLM Only is single-turn or prompt-chained without retrieval or tools; ML is classical with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly 6,000 tokens of stable manual', 'about a quarter before anyone looked').\n- Do not invent regulatory specifics. Generic framing only ('the firm's quarterly cost review', 'the platform team's cost audit').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-06-05",
         "compiled_by": "manual_authoring"
       }
     }

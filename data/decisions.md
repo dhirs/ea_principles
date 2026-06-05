@@ -8,7 +8,75 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-04 (latest) — Authored GC3B1-01 (Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it); resumed the paused GENCOST03-BP01 budget principle now that its GO3B1-01 substrate ships; first principle under GENCOST03; created focus area P52 — Cost-aware Prompting
+## 2026-06-05 (latest) — Added schema v1.10 `dependencies` field (retrofitted onto all 12 prior principles); authored GC3B3-01 (prompt caching) from GENCOST03-BP03; corrected the GENCOST03 Lens ledger (BP03/BP04 were missing)
+
+### Context
+
+Session opened on GC1B1-01. A critique surfaced and was worked through: GC1B1-01 (and the catalogue generally) concretises AWS outcome-BPs into *documentation + mechanical gate* because "did you pick the right-sized model / actually cache" is not CI-gateable; the catalogue trades enforcing the outcome for enforcing a falsifiable proxy. We then checked the live AWS Lens for GENCOST03 and found the ledger was stale — it listed only BP01/BP02, but the live page (fetched 2026-06-05) ships **four** BPs, with BP03 (prompt caching) and BP04 (cost-aware content filtering) missing. Question stem verified: "How do you engineer prompts to optimize cost?"
+
+Two pieces of work followed: a schema addition (`dependencies`) the user requested while reasoning about how GC3B3-01 leans on GO3B1-01 + GC3B1-01, and the GC3B3-01 authoring itself.
+
+### Decisions
+
+1. **Schema v1.10 — new required root-level field `dependencies`** on every principle. An array of `{ principle_id, kind, reason }`; `kind` ∈ new `enums.dependency_kind` {hard, soft}. `hard` = the principle cannot be enforced/function without the dependency's substrate (e.g. GC3B1-01's budget gate has no `template_id` without GO3B1-01's registry); `soft` = composes with / is strengthened by but adoptable independently. Records DIRECT edges only (transitive closure recovered by walking the graph); directional, acyclic; `[]` for standalone foundational principles. Bumped `format_version` + `applies_to_principles_schema_version` to 1.10 in taxonomy.json and `schema_version` to 1.10 in principle_schema.json; added the field spec, the `dependency_kind` enum, a `conventions.dependencies` block, and a meta notes entry.
+
+2. **Retrofitted `dependencies` onto all 12 prior principles** with a MINOR change_history entry + current_version bump on each. Map: GO1B1-01 []; GO1B1-02 → GO1B1-01 (hard); GO1B1-03 → GO1B1-01 (hard); GO1B1-04 → GO1B1-01 (hard) + GO1B1-02/03 (soft); GO1B1-05 → GO1B1-01 (hard) + GO1B1-04 (soft); GO1B1-06 → GO1B1-01 (hard) (the GO3B1-01 SDK-refusal mention is pattern reuse, not substrate, so omitted); GO3B1-01 []; GO3B2-01 []; GO3B2-02 → GO3B2-01 (hard); GC1B1-01 []; GC2B2-01 → GC1B1-01 (soft); GC3B1-01 → GO3B1-01 (hard).
+
+3. **Authored GC3B3-01 — Mark the cacheable static prefix of every reused prompt template and fail builds that leave a cache-eligible template uncached or mis-declare its prefix size.** Anchored on GENCOST03-BP03 step 2 (enable caching / configure checkpoints), absorbing step 1 (identify opportunities) as the gate's eligibility computation. Fourth GENCOST principle; second under GENCOST03 / P52 (sibling to GC3B1-01). 14 principles in the catalogue now. dependencies: GO3B1-01 hard, GC3B1-01 soft.
+
+4. **Design — the user's three-check shape, realised as manifest-derivable Option A.** Each template declares `cache.static_prefix_tokens` + a cache decision (checkpoint / opt_out). A `prompts/cache_check` lint: (check 1) requires the prefix-count declaration, fails if absent; (eligibility) requires templates whose declared prefix ≥ the model minimum in `models/cache_minimums.yaml` to be checkpointed or opted out; (check 2) recomputes the contiguous static prefix (body up to the first `{{variable}}`, model tokenizer) and fails on >10% variance — catching the silent-break (leading variable shrinks the prefix), the below-minimum false-positive, and the hand-written-fiction cases. (check 3) telemetry on actual size = optional **Option C** (runtime cache-hit-rate alarm via GO3B2-01's stream), documented as additive, not the spine — this is also where not_promoted step 3 (monitor caching metrics) lands. Step 4 (optimize/tune) not_promoted as process advice.
+
+5. **The promote call resolved the "is caching even gateable?" question YES** — via Option A's manifest-derivable artefact. step_promotion 3/3/3/3. Distinct from GC3B1-01 (the load-bearing distinction): opposite cost lever — GC3B1-01 fails prompts whose footprint is too BIG; GC3B3-01 acts when a big prefix is STABLE and reused. Disjoint gates, same GO3B1-01 registry + tokenizer substrate.
+
+6. **serving_paradigm departs from the cost siblings** — api_on_demand + api_provisioned mandatory, self_hosted_managed + self_hosted_unmanaged nice_to_have. Rationale: the reduced-cached-token-rate billing is a managed-API pricing feature; self-hosted prompt caching is a KV-cache recompute/latency win, not a per-token bill line. (GC3B1-01 is all-four-mandatory because token *length* drives cost on every paradigm; the *cached-rate* benefit does not.) impact Medium; applicability { llm/rag/agentic mandatory, ml nice_to_have }; maturity scaling (on GO3B1-01 substrate); tier enterprise (D1=no / D2=2). AIGP III.B unverified. explain_prompt setup_absence shape (caching never enabled) with a secondary silent-break nod.
+
+7. **Lens ledger corrected.** `lens_mapping.md` GENCOST03 now lists all four BPs (BP03 → GC3B3-01; BP04 UNMAPPED); question stem marked verified 2026-06-05. `lens_mapping_authored.md` prepended with BP03 step 2 promotion + steps 1/3/4 not_promote records. `agentflow/app/anchor.json` marked completed.
+
+### Open items
+
+- **JSON parse not run in-session** — the sandbox cannot reach the workspace (UNC mount rejected by the shell, and `ls`/Glob over the WSL mount time out). Run `python3 -c "import json; json.load(open('data/principles.json')); json.load(open('data/taxonomy.json')); json.load(open('data/principle_schema.json'))"` from a terminal before pushing.
+- **`models/cache_minimums.yaml`** per-model minimum-token thresholds must be maintained against provider docs (caching support + minimums shift as providers ship models). Platform-team-owned; flagged in the GC3B3-01 RI.
+- **GENCOST03-BP04** (Annotate user input to enable cost-aware content filtering) remains UNMAPPED — natural next sibling under P52; not yet fetched in detail.
+- **GC1B1-01 teeth gap** (from the opening critique) still stands: a stronger eval-evidence-backed model-right-sizing principle (the GC1B1-02 "periodic re-evaluation" slot) remains unauthored.
+
+---
+
+## 2026-06-04 — Authored GO1B1-06 (Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships); fulfils the model-change gate earmarked from GENOPS01-BP01; surfaced a Lens gap (no AWS BP for model versioning)
+
+### Context
+
+While building customer-experience failure examples for the workshop decks, a strong project-level, in-scope example surfaced: a support chatbot whose foundation model silently moves underneath it — a provider rolls a floating `-latest` alias forward, deprecates a snapshot and auto-migrates, or a shared gateway swaps its default. The agent's code/prompts/tests are unchanged, so no PR opens, no per-PR or drift gate fires, infra dashboards stay green — and the first signal is a CSAT drop. We confirmed this is environmental (the model substrate moves, not the agent's internal design), so it's in scope for the catalogue, and asked which principle prevents it.
+
+Anchor research on the live Lens: **there is no dedicated GenAI Lens BP for model versioning.** GENOPS03's question names "your models, prompts, and assets" and its description names "model versioning," but it ships only BP01 (prompt template management → GO3B1-01) and BP02 (tracing → GO3B2). The model-change re-evaluation directive lives in **GENOPS01-BP01's implementation guidance**: *"Run these evaluations when new candidate models are available, or when model customization techniques are applied."* (verbatim, fetched 2026-06-04). This is exactly the "future model-change gate" earmarked in GENOPS01-BP01 step 3's not_promoted note.
+
+### Decisions
+
+1. **Authored GO1B1-06 — Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships.** Sixth principle in the GO1B1 eval family; inserted in `principles.json` between GO1B1-05 and GO3B1-01. 12 principles in the catalogue now.
+
+2. **Anchor: GENOPS01-BP01 implementation-guidance directive, `implementation_step: null`.** Not a numbered step (the seven steps are already concretised by GO1B1-01..05); the model-change re-eval directive is BP-guidance-level. The verbatim is quoted in the framework_mappings note. The pin/catalog half is cross-referenced as the model-side twin of GO3B1-01 and to the Reliability "standardized catalogs for prompts and models" design principle.
+
+3. **Scope: one principle.** Pinning + approved-model-catalog membership is the *enabling mechanism* (a change is undetectable on a floating alias); the re-evaluation gate is the principle. The runtime SDK refusal of un-pinned models (GO3B1-01 pattern applied to model identifiers) is carried in solution.approach as a runtime control, not a separate pre_merge gate — parallel to how GO3B1-01 framed its runtime refusal.
+
+4. **Two pre_merge gates.** (1) Catalog-membership lint — every model reference (config, src, env defaults) must resolve to an exact catalogued version; floating aliases and un-catalogued ids fail. (2) Re-eval-on-change — any PR changing a pinned model identifier must re-run the GO1B1-01 harness and clear the baseline (or carry an ADR). Both required status checks. step_promotion 3/3/3/3; gates rubric 3/3/3/3/3/3.
+
+5. **Distinct from GO1B1-04 (drift).** A model swap is a discrete step-change at one moment; GO1B1-04 watches gradual sub-threshold cumulative drift and its window-to-window threshold can miss a clean step entirely, and it has no per-PR trigger. GO1B1-06 gates the model identifier at its source.
+
+6. **tier enterprise** (D1=no, borderline yes under regulated model-risk-management regimes → those workloads treat as mandatory_centralise; D2=3 — model catalog + membership lint + runtime-refusing SDK + re-eval gate wiring + rollback tooling). **maturity scaling** (needs the GO1B1-01 harness substrate + a deployed model; enforcement infra amortises at project #2). **serving_paradigm all four mandatory** (API workloads face provider roll-forwards/deprecations/gateway swaps; self-hosted still need re-eval-on-change when new weights deploy). **impact High** (silent customer-facing regression). **applicability { llm/rag/agentic mandatory, ml nice_to_have }**. **AIGP III.B** (model lifecycle) unverified — a deliberate shift from the GO1B1 family's III.A data-governance anchor, because this governs the model artefact's version lifecycle, not the ground-truth data.
+
+7. **explain_prompt: setup_absence shape** (the pin + re-eval discipline was never built; a provider/gateway model change makes the absence visible) — distinguished from GO1B1-04's cumulative_drift shape because this is a discrete model-substitution event.
+
+8. **Lens gap recorded.** No dedicated AWS BP for model versioning. Noted in `lens_mapping.md` (GENOPS01-BP01 guidance entry + a GENOPS03 gap note); the model-*registry* twin of GO3B1-01 (the full model analogue of the prompt registry) left as an open extension candidate.
+
+9. **Tracking files updated.** `principles.json` (GO1B1-06 merged), RI at `data/ri/GO1B1-06/README.md` (GO1B1-04 template, pin+catalog+re-eval design), `lens_mapping.md` (GENOPS01-BP01 + GENOPS03 gap note), `lens_mapping_authored.md` (prepended), `agentflow/app/anchor.json` (completed).
+
+### Open items
+
+- **JSON parse not run in-session** — the sandbox cannot reach the workspace (UNC mount rejected by the shell), so `principles.json` was hand-edited without a parse check. Run `python3 -c "import json; json.load(open('data/principles.json'))"` from a terminal before pushing.
+- **Model-registry extension** — a fuller model-side twin of GO3B1-01 (a model registry, not just pin+re-eval) may warrant its own principle; recorded as an extension candidate under GENOPS03 in `lens_mapping.md`.
+
+---
+
+## 2026-06-04 — Authored GC3B1-01 (Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it); resumed the paused GENCOST03-BP01 budget principle now that its GO3B1-01 substrate ships; first principle under GENCOST03; created focus area P52 — Cost-aware Prompting
 
 ### Context
 

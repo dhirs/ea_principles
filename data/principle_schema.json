@@ -4,7 +4,7 @@
     "description": "The schema every principle in principles.json conforms to. Extracted from taxonomy.json on 2026-06-01 so the schema can be consumed standalone without the enums / usage / conventions noise. Source of truth remains taxonomy.json; this file is a derived view.",
     "extracted_from": "ai_principles_server/agentflow/taxonomy.json",
     "extracted_at": "2026-06-01",
-    "schema_version": "1.9"
+    "schema_version": "1.10"
   },
 
   "principle_schema": {
@@ -62,6 +62,14 @@
         "required": true,
         "allowed_values_ref": "enums.maturity_level",
         "description": "Organisational maturity at which this principle should be adopted: foundational (first AI project), scaling (2–5 projects or multi-team), mature (5+ project portfolio with formal ARB / dedicated platform team). Pick the strictest level that honestly applies."
+      },
+      {
+        "name": "dependencies",
+        "type": "array",
+        "required": true,
+        "item_structure": "{ principle_id: string, kind: string, reason: string }",
+        "values_ref": "enums.dependency_kind",
+        "description": "Other catalogue principles this principle DIRECTLY depends on — the substrate principles whose artefacts or enforcement machinery this principle's gates build on or reuse. Each entry: `principle_id` (the depended-on principle), `kind` (enums.dependency_kind: 'hard' — this principle cannot be enforced or cannot function without the dependency's substrate in place; 'soft' — it composes with / is strengthened by the dependency but can be adopted without it), and `reason` (one sentence naming the concrete artefact or mechanism inherited). Empty array `[]` for foundational principles that stand alone. List only DIRECT dependencies, not the transitive closure. See conventions.dependencies. Added schema v1.10 (2026-06-05)."
       },
       {
         "name": "framework_mappings",
