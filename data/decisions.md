@@ -8,7 +8,141 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-05 (latest) — Added schema v1.10 `dependencies` field (retrofitted onto all 12 prior principles); authored GC3B3-01 (prompt caching) from GENCOST03-BP03; corrected the GENCOST03 Lens ledger (BP03/BP04 were missing)
+## 2026-06-06 (latest) — Authored GC5B1-01 (Give every agent a hard stop) from GENCOST05-BP01; first principle under GENCOST05; created focus area P54 — Cost-informed Agents; GENCOST05 focus area closed
+
+### Context
+
+Walked GENCOST05-BP01 ("Create stopping conditions to control long-running workflows", verbatim fetched 2026-06-06) — the only BP under GENCOST05, the "Cost-informed agents" focus area, never previously walked. Question stem verified from gencost05.html: "How do you optimize agent workflows for cost?". The BP directs teams to develop controls limiting agents from running for extended periods without stopping, so the maximum cost of an agent's runtime becomes predictable from the implemented stopping conditions. **AWS risk rating: High** — the first GENCOST BP above Medium. Three implementation steps (1 estimate the maximum runtime; 2 implement stopping conditions that let an agent run up to that maximum; 3 re-architect to facilitate stopping — tool timeouts, prompts handling timeout responses, token limits on model output).
+
+The interactive HALT discussion (before scoring) resolved the substantive calls: anchor on step 2; absorb step 1 (the runtime estimate is the declaration's recorded `estimated_max`); and not_promote step 3 on the grounds that its tool/API-timeout + "prompts handle timeout responses" substance is reliability-error-handling (a future GENREL walk, cross-pillar) and its "token limits on model responses" sub-bullet is already GO3B1-01 (`max_tokens`) / GC3B1-01 (output budget) sibling territory. The user confirmed the one-principle outcome and the iteration-vs-token distinction before authoring proceeded.
+
+### Decisions
+
+1. **Authored GC5B1-01 — Give every agent a hard stop.** Anchored on GENCOST05-BP01 step 2 (Implement stopping conditions), absorbing step 1 as the declaration's `estimated_max` input. First principle under GENCOST05 / GenCost Q5; **15th principle** in the catalogue (9 GENOPS + 6 GENCOST). step_promotion rubric **3/3/3/3** (enforceable per-agent run-limits declaration + wired-in-consistency lint + relaxation-governance lint; architecturally distinct — the cost lever is the NUMBER OF STEPS and the DURATION of an agent run, which no sibling bounds: GO3B1-01 caps per-call `max_tokens`, GC3B1-01 caps a prompt's footprint, GC4B1-01 caps vector dimension; BP literally "Create stopping conditions…" under "Cost-informed agents"; the Bedrock timeout is one option among the explicit generic alternatives "prompt flow layer or software abstraction layer", so a vendor-neutral mandate survives). Step 1 absorbed; step 3 not_promoted (cross-pillar GENREL + GO3B1-01/GC3B1-01 sibling-absorbed). Merged into `principles.json` after GC4B1-01.
+
+2. **New focus area P54 — Cost-informed Agents** created to mirror AWS GENCOST05's verified focus-area title (distinct from P41 / P51 / P52 / P53 under the one-focus-area-per-AWS-question mapping). GENCOST05 ships exactly one BP, so the focus area is closed by this single principle.
+
+3. **Design — Option A (declared-and-wired, config/code-derivable) as the mandated spine.** Each agent commits `agent/run_limits.yaml` declaring `max_steps` + `max_wallclock_seconds` + `max_run_token_budget` + `on_limit` + `estimated_max` + `checked_on`. An `agent/stop_check` lint enforces at pre-merge: (1) declaration completeness; (2) wired-in consistency by parsing the agent's orchestration-framework construction (LangGraph `recursion_limit` / CrewAI `max_iter`+`max_execution_time` / Bedrock agent timeout / custom loop guard) so a declared-but-unbound limit fails; (3) ceiling-relaxation governance requiring a recorded cost rationale for any upward change. The gate enforces ceilings are declared and structurally wired in; it does NOT prove the agent halts under live load (runtime behaviour). **Option B (runtime circuit-breaker)** — a cost/step/duration meter that hard-stops a run on ceiling breach and emits the event to observability (GO3B2 territory) — documented as an additive alternative; RI and gates built on Option A only. Parallel to GC4B1-01's Option A/B and GC3B1-01's Option A/B/C treatment.
+
+4. **Field calls.** impact_level **High** — matches the AWS BP's High rating (the first GENCOST principle above Medium; the cost siblings are all Medium) and the spike-shaped failure (a runaway agent burns large amounts fast; the BP's whole desired outcome is cost *predictability*). maturity_level **foundational** — the gate reads the agent's own construction code in-repo (no deployed artefact, baseline, or telemetry), so a single unbounded run can be catastrophic on the first production session; pays off at project #1, matching the GO1B1-01/02/03 per-PR-repo-local-lint pattern and the maturity rubric's "per-PR repo-local lint labelled scaling = FAIL" anchor; a principled outlier from the cost siblings GC4B1-01 (scaling) / GC2B2-01 (mature), which parse *deployed* resources. tier **enterprise** (D1=no / D2=2 → recommended_centralise; the framework-aware wired-in parser across LangGraph/CrewAI/Bedrock/custom + the two lints repeat across projects with maintenance, lighter than GC2B2-01's multi-cloud IaC parse). **applicability { agentic mandatory } ONLY** — llm/rag/ml omitted (no agent loop to bound on a single-shot call, a fixed RAG pipeline, or classical ML; parallel to GO1B1-01/GO1B1-05 agentic-only and GC4B1-01's narrow-by-omission precedent). serving_paradigm all four mandatory (a runaway loop bills regardless of serving paradigm). dependencies: [] standalone (GO3B1-01's per-call `max_tokens` is adjacent but not a substrate dependency — this bounds run length, not per-call output). references (v1.11): DEV Community/Waxell (four LangChain agents looping eleven days for ~$47,000; alerts-are-not-enforcement) + n1n.ai (~$48,000 in fourteen hours from one session) populated at authoring. AIGP III.B unverified. explain_prompt compiled with a setup_absence shape + a runaway-spike trigger emphasis (distinguishing it from GC4B1-01's slow-default-cost shape — the agent failure is a discrete, fast, potentially catastrophic loop).
+
+5. **Statement title kept deliberately plain** — "Give every agent a hard stop", per the standing working-style rule in data/CLAUDE.md (plain spoken titles, no stacked clauses). Trades the statement rubric's `names_artefact_and_enforcement` down (hand-scored 1) in favour of the override; the artefact + enforcement are carried in `statement.description`.
+
+6. **New authoring rule + frontend markdown rendering for statement / problem / solution descriptions.** Added a working-style rule to data/CLAUDE.md: `statement.description`, `problem.description`, and `solution.approach` must be broken into 2–4 short paragraphs (`\n\n`) with markdown `-` bullets for genuine enumerations, not a single wall-of-text paragraph. Frontend: `SolutionSection.tsx` already markdown-renders `approach` (react-markdown + remark-gfm + markdownComponents) and was the reference pattern; mirrored it into `StatementSection.tsx` (was a single plain `<p>`) and `ProblemSection.tsx` (was `whitespace-pre-wrap`) so both now render paragraphs and bullets. GC5B1-01's three sections reformatted in place as the first worked example (same uncommitted v1.0.0 — no version bump). Then, on user direction, the same paragraph+bullet reformat was applied across ALL 15 principles' `statement.description` / `problem.description` / `solution.approach` (42 sections total) — long single-paragraph descriptions broken into short paragraphs, with bullets for genuine enumerations (declared-field lists, lint-check lists, failure-mode lists, Option A/B/C alternatives). Content unchanged; no version bumps (formatting-only, same uncommitted pass). The renderer change is what makes the bullets display.
+
+### Tracking files updated
+
+`principles.json` (GC5B1-01 merged after GC4B1-01; statement/problem/solution descriptions reformatted into paragraphs+bullets), `data/ri/GC5B1-01/README.md` (new, Option A, GC4B1-01 template), `lens_mapping.md` (GENCOST05 section built out with the BP01 3-step decomposition + P54 note + focus-area closure), `lens_mapping_authored.md` (prepended step 2 promote + steps 1/3 not_promote), `agentflow/app/anchor.json` (status completed → GC5B1-01), `data/CLAUDE.md` (description-formatting authoring rule), `s3-json-viewer/components/principles/sections/StatementSection.tsx` + `ProblemSection.tsx` (markdown rendering), this entry.
+
+### Catalogue count
+
+The catalogue now holds **15** principles (was 14): 9 GENOPS + 6 GENCOST (GC1B1-01, GC2B2-01, GC3B1-01, GC3B3-01, GC4B1-01, **GC5B1-01**).
+
+### Open items
+
+- **JSON parse not run in-session** — the sandbox cannot reach the WSL mount. Verify before pushing: `python3 -c "import json; json.load(open('data/principles.json'))"`. Structural spot-checks in-session passed (GC5B1-01 inserted as a well-formed object after GC4B1-01; all v1.11 fields present: references, dependencies, serving_paradigm, applicability, framework_mappings, ownership, gates, change_history, explain_prompt).
+- **Frontend** — P54 is a new focus_area string; confirm the runtime renders it with no registry change needed (focus_area is free-text, so it should). Run `npm run build` from `s3-json-viewer/` if in doubt.
+- **AIGP III.B mapping_state unverified** on GC5B1-01 — promote to verified after a side-by-side review against the AIGP competency definition (same standing item as the other cost siblings).
+- **GENREL not yet walked** — step 3's tool-timeout + "prompts handle timeout responses" substance lands there (cross-pillar reliability/error-handling); flagged as a future walk.
+- Prior open items still stand (GENCOST03-BP02 output-length sibling; GENPERF04-BP02 vector-sizes performance side; `models/cache_minimums.yaml` maintenance; GC1B1-01 teeth gap; GC4B1-01's question-stem/parse verification from the prior entry).
+
+---
+
+## 2026-06-06 — Authored GC4B1-01 (Use the smallest embedding vector that still retrieves well) from GENCOST04-BP01; first principle under GENCOST04; created focus area P53 — Cost-informed Vector Stores; added a plain-title working-style rule to data/CLAUDE.md
+
+### Context
+
+Walked GENCOST04-BP01 ("Reduce vector length on embedded tokens", Medium risk, verbatim fetched 2026-06-06) — the first BP under the GENCOST04 focus area "Cost-informed vector stores", never previously walked. The BP directs teams to embed with a smaller vector dimension to cut vector-store storage/compute (and embedding-output tokens), deliberately trading against retrieval quality; some embedding models also offer compressed vector types. Four implementation steps (1 identify smallest supported dimension; 2 embed at smallest length; 3 latency/load test retrieval quality; 4 re-test with larger dimension / different chunking / different search algorithm).
+
+The session was driven hard on plain language by the user (see the working-style decision below). The substantive promote/not_promote hinge discussed interactively before scoring: is "embedding model + its dimension" architecturally distinct from GC1B1-01's model-selection ADR, or just another cost dimension inside it? Resolved distinct: the cost lever is the vector store (storage / index / query), not generation inference; dimension is independent of model choice (Matryoshka/MRL truncatable-dimension models make it a free-standing knob — confirmed by a web search: Gemini Embedding 2 truncates 3,072 → 768/256 without significant retrieval drop, and dimension reduction cuts vector-search infra cost up to ~80%); and the choice is largely irreversible once the index is built (re-dimensioning means a full re-embed + re-index).
+
+### Decisions
+
+1. **Authored GC4B1-01 — Use the smallest embedding vector that still retrieves well.** Anchored on GENCOST04-BP01 implementation **step 2** (Embed data using the smallest vector length), absorbing step 1 (identify the smallest supported dimension) as the gate's recorded input. First principle under GENCOST04 / GenCost Q4; **14th principle** in the catalogue. step_promotion rubric **3/3/3/3** (enforceable declaration + consistency/governance gates; architecturally distinct from GC1B1-01 and disjoint from the P52 prompt-cost siblings; BP literally "Reduce vector length on embedded tokens" under "Cost-informed vector stores"; generic dimension mandate, compressed-vector-types aside stripped). Steps 3 and 4 not_promoted (retrieval-quality testing + chunking/search-algorithm tuning — process advice overlapping the GO1B1 eval-harness family and GENPERF04 Vector store optimization, no commitable pre-merge artefact distinct from the quality-floor number the declaration records). Merged into `principles.json` after GC3B3-01.
+
+2. **New focus area P53 — Cost-informed Vector Stores** created to mirror AWS GENCOST04's verified focus-area title (distinct from P41 Model Selection & Right-sizing / P51 Inference Cost Optimization / P52 Cost-aware Prompting under the one-focus-area-per-AWS-question mapping).
+
+3. **Design — Option A (declared-and-verified, config-derivable) as the mandated spine.** Each vector store commits `vectorstore/embedding.yaml` declaring `embedding_model` + `vector_dimension` + `quality_floor` + `quality_result` + `checked_on`. A `vectorstore/dimension_check` lint enforces at pre-merge: (1) declaration completeness; (2) deployed-index-vs-declared-dimension consistency by parsing the index IaC/config (Pinecone / pgvector / OpenSearch / Weaviate / Terraform adapters); (3) dimension-inflation governance requiring a recorded rationale for any upward change. The gate enforces that a quality number is RECORDED and the deployed dimension is real/stable; it does NOT re-run retrieval evaluation (that leans on a retrieval-eval harness — GENPERF04 territory). **Option B (measured-from-retrieval-eval)** documented as an additive alternative (gate the chosen dimension against the smallest clearing the quality_floor across a harness sweep); RI and gates built on Option A only. Parallel to GC3B1-01's Option A/B/C treatment and GC2B2-01's deployed-vs-declared consistency lint.
+
+4. **Field calls.** tier enterprise (D1=no / D2=2 → recommended_centralise; the multi-backend index-config parser + governance lint is platform work, lighter than GC2B2-01's mature because it reads a single scalar — the index dimension). maturity_level scaling. **applicability { rag mandatory, agentic mandatory, ml nice_to_have } — llm deliberately OMITTED** because a pure LLM-only workload with no retrieval has no vector store; first cost principle to narrow applicability by omission (parallel to GC2B2-01 narrowing serving_paradigm). serving_paradigm all four mandatory (vector-store + embedding-output cost exist on every paradigm). impact Medium. dependencies: GC1B1-01 soft (embedding-model choice bounds the dimension range; gate operates independently) — parallel to GC2B2-01's soft dep on GC1B1-01. references (v1.11): Towards Data Science + MindStudio/Gemini Embedding 2 populated at authoring. AIGP III.B unverified (III.A "Govern Data" noted as a viable alternative anchor). explain_prompt compiled with setup_absence shape (default dimension never deliberately chosen; cost review makes it visible) + an irreversibility-lock-in nod.
+
+5. **Statement title kept deliberately plain.** Title "Use the smallest embedding vector that still retrieves well" — a plain spoken sentence rather than the stacked-clause "Declare … and fail builds where …" form the GC3xxx siblings use. This was an explicit, emphatic user directive this session and is now a standing rule (next decision). It trades the statement rubric's `names_artefact_and_enforcement` dimension down (hand-scored 1) in favour of the override; the artefact + enforcement are carried in `statement.description` instead.
+
+6. **Working-style rule added to data/CLAUDE.md.** New rule under "Keep responses SHORT": names, titles, and statements must be plain and short — say it the way you'd say it out loud, no stacked clauses, no "fail builds where… and… unless…" constructions, no flowery phrasing; "if a title needs commas to survive, it's wrong"; applies to principle titles too. Added after the user repeatedly flagged over-engineered principle titles.
+
+### Tracking files updated
+
+`principles.json` (GC4B1-01 merged after GC3B3-01), `data/ri/GC4B1-01/README.md` (new, Option A, GC3B1-01/GC3B3-01 template), `lens_mapping.md` (GENCOST04 section built out with the BP01 4-step decomposition + P53 note), `lens_mapping_authored.md` (prepended step 2 promote + steps 1/3/4 not_promote), `agentflow/app/anchor.json` (status completed → GC4B1-01), `data/CLAUDE.md` (plain-title rule), this entry.
+
+### Catalogue count
+
+The catalogue now holds **14** principles (was 13): 9 GENOPS + 5 GENCOST (GC1B1-01, GC2B2-01, GC3B1-01, GC3B3-01, **GC4B1-01**).
+
+### Open items
+
+- **JSON parse not run in-session** — the sandbox cannot reach the WSL mount. Verify before pushing: `python3 -c "import json; json.load(open('data/principles.json'))"`. Structural spot-checks in-session passed (GC4B1-01 inserted as a well-formed object after GC3B3-01; all v1.11 fields present: references, dependencies, serving_paradigm, applicability, framework_mappings, ownership, gates, change_history, explain_prompt).
+- ~~GENCOST04 question stem approximated~~ **RESOLVED same session** — fetched gencost04.html; verified stem is "How do you optimize vector stores for cost?" GC4B1-01's `question` field corrected from the approximation to the verified text and marked verified.
+- ~~GENCOST04 focus-area BP list not yet enumerated~~ **RESOLVED same session** — gencost04.html lists exactly ONE BP (BP01). GENCOST04 focus area is fully covered by GC4B1-01 and is CLOSED. Note: a vector-size BP also exists on the performance side at GENPERF04-BP02 (Optimize vector sizes for your use case) — the latency/accuracy analogue and a natural future GENPERF walk where the retrieval-quality testing not_promoted from BP01 steps 3/4 lands.
+- **Frontend** — P53 is a new focus_area string; confirm the runtime renders it with no registry change needed (focus_area is a free-text field, so it should). Run `npm run build` from `s3-json-viewer/` if in doubt.
+- Prior open items still stand (GENCOST03-BP02 output-length sibling; `models/cache_minimums.yaml` maintenance; GC1B1-01 teeth gap; the v1.11 references/frontend build check from the prior entry).
+
+---
+
+## 2026-06-06 — Schema v1.11: added `references` field (real-world evidence links) on every principle; populated GC3B1-01; built the runtime References tab
+
+### Context
+
+While refreshing GC3B1-01 (cap prompt templates at a declared token budget), the user asked whether the catalogue could capture real-world evidence that a principle's failure mode actually happens in industry — distinct from the synthetic, in-house `problem.examples`. A web search on GC3B1-01's failure (unenforced prompt-budget cost drift) surfaced multiple genuine write-ups: Adaline (a system prompt drifting 300→1,800 tokens over six months of edits), Opsmeter ("reliability stays green while token usage doubles"), ProjectDiscovery (named case — 20K-token agent system prompts, ~60M tokens per task), Cycles (prompt-regression as a standard cost-spike bucket; a 200x token-rate incident), Redis (token-bloat 10x cost jump). The catalogue had no structured slot to attach that evidence to the principle it validates.
+
+### Decisions
+
+1. **Schema v1.11 — new required root-level field `references`** on every principle. An array of `{ url, title, source, note, date }`. It is the external, citable counterpart to `problem.examples` (which are synthetic): examples teach the failure shape, references prove it happens. Empty array `[]` is the correct and expected state until matching evidence is found, and a reference must genuinely document THIS principle's failure mode, not generic topic-adjacent content. Field name `references` was chosen by the user over `examples` / `evidence` (both collide — with `problem.examples` and the existing top-level `evidence` field respectively). Bumped taxonomy.json `format_version` + `applies_to_principles_schema_version` to 1.11, principle_schema.json `schema_version` to 1.11, and principles.json meta `format_version` 1.9→1.11 (also backfilled the missing v1.10 dependencies meta note in principles.json). Added the field to both schema files, a `references_spec` block to each, a `conventions.references` block, and meta notes.
+
+2. **Retrofitted `references` onto all 13 principles**, each with a MINOR change_history + current_version bump. GC3B1-01 was populated first with the five discovered links; the other twelve initially carried `[]`, then — in a follow-on pass the same session — a batch web-search sweep (results vetted by the user before insertion) populated **all twelve** with 1–2 evidence links each, so every principle now carries at least one real-world reference. GO1B1-03 (metric-as-code) is the one deliberately looser mapping, flagged as such in its own change_history. The empty-state change_history summaries were amended in place (same uncommitted v1.11 change) to describe the actual links rather than stacking a second same-day bump. Per-principle current_version bumps: GO1B1-01 1.7→1.8, GO1B1-02 1.5→1.6, GO1B1-03 2.2→2.3, GO1B1-04 1.2→1.3, GO1B1-05 1.2→1.3, GO1B1-06 1.1→1.2, GO3B1-01 1.1→1.2, GO3B2-01 1.1→1.2, GO3B2-02 1.1→1.2, GC1B1-01 1.2→1.3, GC2B2-01 1.1→1.2, GC3B1-01 1.1→1.2, GC3B3-01 1.0→1.1.
+
+3. **Frontend.** Added `s3-json-viewer/components/principles/sections/ReferencesSection.tsx` (renders each reference as an external hyperlink + source badge + note + capture date) and registered it in `lib/principles/registry.tsx` as a "References" tab between Problem and Solution. The registry's existing `isEmptyNode` check means the tab shows only when `references` is non-empty — now on all 13 principles.
+
+### Catalogue count correction
+
+The catalogue holds **13** principles, not 14 — the "14" in the two 2026-06-05 entries is a miscount. GENCOST03 ships 4 BPs but BP02 and BP04 are not_promoted, so the GENCOST pillar has 4 principles (GC1B1-01, GC2B2-01, GC3B1-01, GC3B3-01); 9 GENOPS + 4 GENCOST = 13. Flagged for reconciliation of any downstream count references.
+
+### Tracking files updated
+
+`taxonomy.json` (version bumps + `references` field + `references_spec` + `conventions.references` + meta note), `principle_schema.json` (version + field + `references_spec`), `principles.json` (13 `references` fields + 13 change_history/current_version bumps + meta), `s3-json-viewer/components/principles/sections/ReferencesSection.tsx` (new), `s3-json-viewer/lib/principles/registry.tsx` (import + tab), this entry.
+
+### Open items
+
+- **JSON parse not run in-session** — the sandbox cannot reach the WSL mount (UNC rejected by the shell; Glob over the mount times out). Verify before pushing: `python3 -c "import json; json.load(open('data/principles.json')); json.load(open('data/taxonomy.json')); json.load(open('data/principle_schema.json'))"`. Structural spot-checks in-session passed (13 `references` fields, version sequence correct, GC3B1-01 5-object array and change-entry boundaries well-formed).
+- **Frontend not type-checked/built in-session** (same mount limitation). Run `npm run build` from `s3-json-viewer/` to confirm the new tab compiles and renders.
+- Catalogue-count "14→13" correction above to reconcile in any place that quotes the count.
+- Prior open items still stand (GENCOST03-BP02 output-length sibling; `models/cache_minimums.yaml` maintenance; GC1B1-01 teeth gap).
+
+---
+
+## 2026-06-05 — GENCOST03-BP04 walked and not_promoted (no principle); GENCOST03 focus area closed
+
+### Context
+
+Walked the last BP under GENCOST03 / P52. BP04 ("Annotate user input to enable cost-aware content filtering", verbatim fetched 2026-06-05, 7 steps, risk Medium) directs wrapping only untrusted user spans in Bedrock `<amazon-bedrock-guardrails-guardContent_xyz>` tags (random per-request `tagSuffix`) so the **input content filter** scans the user span alone instead of the full assembled prompt (system + retrieval + history) — shrinking the moderation-pass token bill. AWS notes input tags are unsupported by the ApplyGuardrail API; filtering must be application-side.
+
+### Decision
+
+**not_promoted — no principle authored. User rejected it as a non-principle.** Reasoning developed in the walk: (1) the BP is essentially a Bedrock-specific tag mechanism; once stripped, the residual mandate ("scope the content filter to the untrusted input span") is a thin runtime prompt-assembly detail with no durable, CI-gateable artefact distinct from the existing P52 siblings (GC3B1-01 token size, GC3B3-01 cacheability). (2) The cost-vs-safety tension first raised dissolved: input content filters are span-local classifiers, so scanning the user span alone loses nothing for standard content-policy categories; relational checks (grounding/faithfulness) are a separate guardrail type input tagging doesn't affect. step_promotion not formally scored — the user made the call directly; rubric outcome would be not_promote on thin has_enforceable_artefact + not_vendor_menu. Steps 4–6 (minimalist response scheme + hard response-length cap) are output-side, deferred to BP02 / GC3B1-01's output budget.
+
+**GENCOST03 closed:** BP01 → GC3B1-01; BP02 → UNMAPPED (open output-length sibling); BP03 → GC3B3-01; BP04 → not_promoted. Catalogue count unchanged at 14.
+
+### Tracking files updated
+
+`lens_mapping.md` (BP04 row + decomposition note → not_promoted; focus-area closure line), `lens_mapping_authored.md` (prepended BP04 not_promote entry), `agentflow/app/anchor.json` (status not_promoted), this entry.
+
+### Open items
+
+- **GENCOST03-BP02 (Control model response length)** remains the one open sibling under P52 — the output-side analogue of GC3B1-01 (declared `runtime_token_budget.output`, already capped via `max_tokens` by GO3B1-01). Natural next walk.
+- Prior open items below still stand (JSON parse not run in-session; `models/cache_minimums.yaml` maintenance; GC1B1-01 teeth gap).
+
+---
+
+## 2026-06-05 — Added schema v1.10 `dependencies` field (retrofitted onto all 12 prior principles); authored GC3B3-01 (prompt caching) from GENCOST03-BP03; corrected the GENCOST03 Lens ledger (BP03/BP04 were missing)
 
 ### Context
 

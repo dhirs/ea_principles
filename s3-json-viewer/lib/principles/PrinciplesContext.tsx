@@ -2,12 +2,14 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react"
+import { useRouter } from "next/navigation"
 import { asArray, asObject, asString, type Principle, type PrinciplesPayload } from "./types"
 
 function getAwsBestPractices(p: Principle): string[] {
@@ -40,13 +42,26 @@ type PrinciplesContextValue = {
 const PrinciplesContext = createContext<PrinciplesContextValue | null>(null)
 
 export function PrinciplesProvider({ children }: { children: ReactNode }) {
+  const router = useRouter()
   const [data, setData] = useState<PrinciplesPayload | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState("")
-  const [pillar, setPillar] = useState("")
-  const [focusArea, setFocusArea] = useState("")
-  const [bestPractice, setBestPractice] = useState("")
-  const [maturityLevel, setMaturityLevel] = useState("")
+  const [pillar, setPillarState] = useState("")
+  const [focusArea, setFocusAreaState] = useState("")
+  const [bestPractice, setBestPracticeState] = useState("")
+  const [maturityLevel, setMaturityLevelState] = useState("")
+
+  // Selecting a filter only affects the list view; if we're elsewhere (a detail
+  // page or the landing dashboard), jump to /principles so the result is visible.
+  // Pushing while already on /principles is a no-op, so no pathname check needed.
+  const goToList = useCallback(() => {
+    router.push("/principles")
+  }, [router])
+
+  const setPillar = useCallback((v: string) => { setPillarState(v); goToList() }, [goToList])
+  const setFocusArea = useCallback((v: string) => { setFocusAreaState(v); goToList() }, [goToList])
+  const setBestPractice = useCallback((v: string) => { setBestPracticeState(v); goToList() }, [goToList])
+  const setMaturityLevel = useCallback((v: string) => { setMaturityLevelState(v); goToList() }, [goToList])
 
   useEffect(() => {
     // Lightweight list (id/title/pillar/focus/maturity/best-practices) for the
@@ -71,22 +86,31 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       if (pv && pv.trim()) pillarSet.add(pv)
       // Scope focus areas to the selected pillar so the dropdown only offers
       // focus areas that exist within it.
+      const fv = asString(p.focus_area)
       if (!pillar || pv === pillar) {
-        const fv = asString(p.focus_area)
         if (fv && fv.trim()) focusSet.add(fv)
       }
-      for (const bp of getAwsBestPractices(p)) bpSet.add(bp)
+      // Scope best practices to the selected pillar AND focus area so the
+      // dropdown only offers practices that exist within the current selection.
+      if ((!pillar || pv === pillar) && (!focusArea || fv === focusArea)) {
+        for (const bp of getAwsBestPractices(p)) bpSet.add(bp)
+      }
       const mv = asString(p.maturity_level)
       if (mv && mv.trim()) maturitySet.add(mv)
     }
     const sort = (s: Set<string>) => Array.from(s).sort((a, b) => a.localeCompare(b))
     return [sort(pillarSet), sort(focusSet), sort(bpSet), sort(maturitySet)]
-  }, [data, pillar])
+  }, [data, pillar, focusArea])
 
   // If the active focus area isn't part of the selected pillar, drop it.
   useEffect(() => {
-    if (focusArea && !focusAreas.includes(focusArea)) setFocusArea("")
+    if (focusArea && !focusAreas.includes(focusArea)) setFocusAreaState("")
   }, [focusArea, focusAreas])
+
+  // If the active best practice isn't part of the current pillar/focus area, drop it.
+  useEffect(() => {
+    if (bestPractice && !bestPractices.includes(bestPractice)) setBestPracticeState("")
+  }, [bestPractice, bestPractices])
 
   const filtered = useMemo(() => {
     const principles = data?.principles ?? []

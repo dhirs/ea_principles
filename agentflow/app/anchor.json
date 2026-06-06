@@ -1,25 +1,23 @@
 {
-  "status": "in_progress",
-  "started_on": "2026-06-05",
-  "completed_on": null,
-  "promoted_to_principle": null,
-  "bp_code": "GENCOST03-BP04",
-  "bp_title": "Annotate user input to enable cost-aware content filtering",
+  "status": "completed",
+  "started_on": "2026-06-06",
+  "completed_on": "2026-06-06",
+  "promoted_to_principle": "GC5B1-01",
+  "outcome_note": "Step 2 promoted as GC5B1-01 — Give every agent a hard stop. First principle under GENCOST05; new focus area P54 — Cost-informed Agents. 15th principle in the catalogue (9 GENOPS + 6 GENCOST). Step 1 absorbed (runtime estimate = the declaration's estimated_max field); step 3 not_promoted (tool/API timeouts + 'prompts handle timeout responses' = reliability/GENREL cross-pillar; 'token limits on model responses' = GO3B1-01/GC3B1-01 sibling-absorbed). step_promotion 3/3/3/3. tier enterprise (D1=no / D2=2); maturity foundational (gate reads in-repo agent construction, pays off project #1, AWS High risk); impact High (first GENCOST principle above Medium); applicability agentic-only; serving_paradigm all four. Statement title kept deliberately plain per the data/CLAUDE.md working-style rule. GENCOST05 focus area CLOSED — gencost05.html (fetched 2026-06-06) lists exactly one BP (BP01); verified question stem 'How do you optimize agent workflows for cost?'. Next pillar gaps: GENCOST03-BP02 (output length, open P52 sibling); GENPERF04-BP02 (vector sizes, performance side); the GENREL walk where step 3's tool-timeout/error-handling substance lands.",
+  "bp_code": "GENCOST05-BP01",
+  "bp_title": "Create stopping conditions to control long-running workflows",
   "pillar": "Cost Optimization",
-  "focus_area": "Cost-aware prompting (GENCOST03)",
-  "aws_risk_level": "Medium",
+  "focus_area": "Cost-informed agents (GENCOST05) -> catalogue P54 — Cost-informed Agents",
+  "aws_risk_level": "High",
   "anchor_type": "implementation_step",
-  "candidate_step_focus": "steps 1-3 (tag untrusted user content for filtering; leave trusted content untagged)",
-  "bp_verbatim": "Annotate specific sections of input prompts to selectively apply content filtering and reduce token usage costs. By using input tags to mark only the user-provided content for filtering, you can avoid unnecessary processing of system prompts, search results, and conversation history while maintaining essential safeguards. Desired outcome: Enable more efficient and cost-effective content filtering by processing only the relevant portions of input that require guardrails evaluation. Level of risk exposed if this best practice is not established: Medium. Note: input tags are NOT supported by the ApplyGuardrail API; filtering must be implemented application-side to derive the benefit.",
+  "candidate_step_focus": "step 2 (Implement stopping conditions that enable an agent to run to the maximum duration) — PROMOTED as GC5B1-01; step 1 absorbed; step 3 not_promoted",
+  "question_stem": "GENCOST05 — How do you optimize agent workflows for cost? (verified 2026-06-06 from gencost05.html)",
+  "bp_verbatim": "Agentic workflows can be long-running, which can incur additional cost to your application. Develop controls to limit agents from running for extended periods of time without stopping. Desired outcome: Maximum costs for an agent's runtime can be predicted based on the implemented stopping conditions. Level of risk exposed if this best practice is not established: High. Implementation guidance: For generative AI prompt flows where you lack control over the duration of the workflow, consider introducing a time-out mechanism or regaining control over the flow. This scenario is particularly common within agentic architectures. Agent architectures assist customers by taking on additional tasks. Sometimes these tasks can run for an extended duration, which may incur additional cost considerations, especially when they call external resources. Consider introducing a timeout over the agent to limit long-running processes from incurring costs unnecessarily. Additionally, evaluate asynchronous workflows orchestrated through events. Asynchronous workflows create opportunities to interrupt or halt long-running events after an extended duration. Consider the entire architecture before determining the best place to interrupt long-running workflows for cost savings.",
   "steps_verbatim": [
-    "Step 1 — Use XML-style tags to mark specific sections of input prompts for content filtering (format: <amazon-bedrock-guardrails-guardContent_xyz>...</...>). Generate a unique random tag suffix (xyz) per request to reduce prompt injection; alphanumeric 1-20 chars; include the suffix in guardrailConfig.tagSuffix.",
-    "Step 2 — Apply tags selectively to user queries and input, current conversation turns, and new or unverified content.",
-    "Step 3 — Leave system prompts, verified search results, historical conversation context, and other trusted content untagged.",
-    "Step 4 — Define a minimalist response scheme (e.g. 0 affirmative, 1 rejection).",
-    "Step 5 — Inform the model in the prompt of the requested response scheme and ask it to respond in kind.",
-    "Step 6 — Set a hard limit on the response length via the response-length hyperparameter.",
-    "Step 7 — Continue testing/optimizing: track token usage with vs without selective filtering; measure latency impact; verify filtering effectiveness on tagged vs untagged content; adjust tag placement."
+    "Step 1 — Estimate the maximum time needed for an agent to complete its runtime. (Sub: Include model response times, tool execution times, and network latency in the estimation.)",
+    "Step 2 — Implement stopping conditions that enable an agent to run to the maximum duration. (Sub: Stopping conditions may be a timeout mechanism like the one in Amazon Bedrock. Alternatively, stopping conditions may be implemented in the prompt flow layer or within a software abstraction layer.)",
+    "Step 3 — Re-architect your workflows to facilitate stopping conditions. (Sub: Set timeouts on external tools such as Lambda functions or API endpoints, verify that your prompts understand how to handle timeout responses. Set token limits on model responses to simulate timeout functionality by stopping models from printing long-running responses.)"
   ],
-  "fetched": "2026-06-05",
-  "note": "Walk started 2026-06-05. Fourth and final BP under GENCOST03 / P52. Substrate: GO3B1-01 (template registry + manifest + central SDK) and the GC3B1-01 / GC3B3-01 'annotate-template-segment-in-the-registry' family already ship. Central promote/not_promote question: do steps 1-3 (trust-class segmentation of the prompt so only untrusted spans hit the content filter) yield a CI-gateable, versioned artefact (a per-segment trust_class declared in the manifest + SDK-applied guard tags + a lint), or is it runtime tagging discipline that not_promotes? Cost-vs-safety tension: filed under Cost Optimization, but mis-tagging (untrusted span left unfiltered) is a SAFETY gap, not just cost waste — the gate must bite both directions. Steps 4-6 (minimalist response scheme + hard response-length cap) overlap BP02 (control response length) and GC3B1-01's output budget — candidate not_promote/defer to the BP02 sibling rather than absorb here. HALT for user discussion before any promote/not_promote scoring."
+  "fetched": "2026-06-06",
+  "note": "Walk completed 2026-06-06. GC5B1-01 authored end-to-end: principles.json (merged after GC4B1-01), RI at data/ri/GC5B1-01/README.md (Option A), lens_mapping.md GENCOST05 section built out, lens_mapping_authored.md prepended (step 2 promote + steps 1/3 not_promote), decisions.md (latest) entry added. references populated (DEV/Waxell $47k loop + n1n.ai $48k session). OPEN: JSON parse not run in-session (sandbox cannot reach the WSL mount) — verify before push; P54 new focus_area string — confirm frontend renders (free-text, should); AIGP III.B unverified."
 }

@@ -1,5 +1,6 @@
 import { StatementSection } from "@/components/principles/sections/StatementSection"
 import { ProblemSection } from "@/components/principles/sections/ProblemSection"
+import { ReferencesSection } from "@/components/principles/sections/ReferencesSection"
 import { SolutionSection } from "@/components/principles/sections/SolutionSection"
 import { GatesSection } from "@/components/principles/sections/GatesSection"
 import { FrameworkMappingsSection } from "@/components/principles/sections/FrameworkMappingsSection"
@@ -44,6 +45,7 @@ const REGISTRY: Array<[string, RegistryEntry]> = [
   ["framework_mappings", { title: "Framework Mappings", render: (n) => <FrameworkMappingsSection node={n} /> }],
   ["aigp",               { title: "AIGP",               render: (n) => <KeyValueSection node={n} /> }],
   ["change_history",     { title: "History",            render: (n) => <ChangeHistorySection node={n} /> }],
+  ["references",         { title: "References",         render: (n) => <ReferencesSection node={n} /> }],
 ]
 
 const REGISTRY_KEYS = new Set(REGISTRY.map(([k]) => k))
@@ -59,6 +61,7 @@ function isEmptyNode(v: unknown): boolean {
 export function getSectionEntries(principle: Record<string, unknown>): SectionEntry[] {
   const out: SectionEntry[] = []
   let historyEntry: SectionEntry | null = null
+  let referencesEntry: SectionEntry | null = null
 
   for (const [key, entry] of REGISTRY) {
     if (!(key in principle)) continue
@@ -67,6 +70,8 @@ export function getSectionEntries(principle: Record<string, unknown>): SectionEn
     const section = { key, title: entry.title, content: entry.render(node, principle) }
     if (key === "change_history") {
       historyEntry = section
+    } else if (key === "references") {
+      referencesEntry = section
     } else {
       out.push(section)
     }
@@ -88,6 +93,7 @@ export function getSectionEntries(principle: Record<string, unknown>): SectionEn
   }
 
   if (historyEntry) out.push(historyEntry)
+  if (referencesEntry) out.push(referencesEntry)
 
   return out
 }

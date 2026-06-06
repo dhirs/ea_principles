@@ -4,7 +4,7 @@
     "description": "The schema every principle in principles.json conforms to. Extracted from taxonomy.json on 2026-06-01 so the schema can be consumed standalone without the enums / usage / conventions noise. Source of truth remains taxonomy.json; this file is a derived view.",
     "extracted_from": "ai_principles_server/agentflow/taxonomy.json",
     "extracted_at": "2026-06-01",
-    "schema_version": "1.10"
+    "schema_version": "1.11"
   },
 
   "principle_schema": {
@@ -70,6 +70,13 @@
         "item_structure": "{ principle_id: string, kind: string, reason: string }",
         "values_ref": "enums.dependency_kind",
         "description": "Other catalogue principles this principle DIRECTLY depends on — the substrate principles whose artefacts or enforcement machinery this principle's gates build on or reuse. Each entry: `principle_id` (the depended-on principle), `kind` (enums.dependency_kind: 'hard' — this principle cannot be enforced or cannot function without the dependency's substrate in place; 'soft' — it composes with / is strengthened by the dependency but can be adopted without it), and `reason` (one sentence naming the concrete artefact or mechanism inherited). Empty array `[]` for foundational principles that stand alone. List only DIRECT dependencies, not the transitive closure. See conventions.dependencies. Added schema v1.10 (2026-06-05)."
+      },
+      {
+        "name": "references",
+        "type": "array",
+        "required": true,
+        "item_structure": "{ url: string, title: string, source: string, note: string, date: string }",
+        "description": "Real-world evidence that this principle's failure mode occurs in industry: published incident write-ups, engineering postmortems, vendor case studies, or practitioner accounts documenting the problem the principle prevents. Each entry: `url` (link to a public page), `title` (hyperlink display text), `source` (publisher/author, e.g. 'Adaline', 'ProjectDiscovery'), `note` (one sentence on what the link shows and how it maps to this principle's failure mode), `date` (YYYY-MM-DD captured). Distinct from `problem.examples`, which are synthetic in-house scenarios — references are external, real, and citable. Empty array `[]` when no real-world write-up has yet been mapped to this principle. Surfaced as hyperlinks in the runtime UI. Added schema v1.11 (2026-06-06). See conventions.references and references_spec."
       },
       {
         "name": "framework_mappings",
@@ -195,6 +202,19 @@
       "intro": "Every principle carries a change_history field tracking its evolution over time. Append-only.",
       "shape": "{ current_version: string, changes: [{ version, date, author, summary }] }",
       "version_rules": "MAJOR for rule changes, MINOR for additions, PATCH for clarifications. current_version mirrors the most recent entry in changes."
+    },
+
+    "references_spec": {
+      "intro": "The references field holds external, real-world evidence that the principle's failure mode is not hypothetical — published incidents, engineering postmortems, vendor case studies, practitioner write-ups. It is the citable counterpart to problem.examples (which are synthetic, in-house illustrations): examples teach the failure shape, references prove it happens.",
+      "entry_fields": [
+        { "name": "url", "type": "string", "required": true, "description": "The link. Must resolve to a public page." },
+        { "name": "title", "type": "string", "required": true, "description": "Hyperlink display text — the article/page title or a short descriptive label." },
+        { "name": "source", "type": "string", "required": true, "description": "Publisher or author (e.g. 'Adaline', 'ProjectDiscovery', 'Redis')." },
+        { "name": "note", "type": "string", "required": true, "description": "One sentence: what the link demonstrates and how it maps to this principle's failure mode." },
+        { "name": "date", "type": "string", "required": true, "format": "YYYY-MM-DD", "description": "Date the link was captured/verified." }
+      ],
+      "authoring_rule": "Only add a reference when the linked material genuinely documents THIS principle's failure mode — not generic topic-adjacent content. Empty array [] is correct and expected until matching evidence is found.",
+      "distinct_from_problem_examples": "problem.examples are synthetic scenarios authored to illustrate the failure shape; references are external, real, and citable."
     }
   }
 }

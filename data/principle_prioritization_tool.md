@@ -1,6 +1,6 @@
 # Principle Prioritization Tool
 
-A free, self-contained workshop tool for any org that wants to take a published catalogue of AI architecture principles and produce its own per-org prioritization — which principles to adopt this quarter, which to defer, which to skip.
+A free, self-contained workshop tool for any org that wants to take a published catalogue of AI architecture principles and produce its own per-org prioritization — which principles to adopt first, which to defer, which to skip.
 
 This tool is **not part of the catalogue**. The catalogue tells you what production-ready AI architecture looks like. This tool tells you what to do about it given your specific context.
 
@@ -10,17 +10,39 @@ This tool is **not part of the catalogue**. The catalogue tells you what product
 
 Frameworks like AWS Generative AI Lens, NIST AI RMF, ISO 42001, and the AIGP body of knowledge teach you to assess AI **systems** for risk. None of them teach you how to prioritize the **controls** that prevent the risks. The community gap, in one sentence: risk awareness ≠ control prioritization.
 
-Most orgs end up doing this implicitly — "what's loudest this quarter?" — which produces inconsistent adoption, retrofit pain, and a portfolio of half-implemented principles. This tool replaces the implicit "loudest wins" with a four-axis assessment grounded in the cost of **not** implementing each principle.
+Most orgs end up doing this implicitly — "what's loudest this quarter?" — which produces inconsistent adoption, retrofit pain, and a portfolio of half-implemented principles. This tool replaces the implicit "loudest wins" with a strict priority ladder grounded in the cost of **not** implementing each principle.
 
 ---
 
-## The four-axis assessment
+## The priority ladder (lexicographic, not weighted)
 
-Each principle is scored against four axes. Each axis asks the same question, framed for loss aversion: **"what does it cost the org if we do NOT implement this principle?"**
+Each principle is scored on four axes. Every axis asks the same question, framed for loss aversion: **"what does it cost the org if we do NOT implement this principle?"** Asking "what's the value of implementing it?" instead invites optimism and double-counting. Asking what breaks if you skip it produces sharper, more honest scores.
 
-Asking "what's the value of implementing it?" instead invites optimism and double-counting. Asking what breaks if you skip it produces sharper, more honest scores.
+The four axes are **not blended into a weighted average.** They are a strict hierarchy. Higher rungs always outrank lower rungs, and no amount of a lower axis can compensate for a higher one:
 
-### Axis 1 — Legal Risk Exposure
+```
+  Rung 1   Legal / Compliance Risk   ALWAYS first
+  Rung 2   Customer Experience       next
+  Rung 3   Org Readiness             next
+  Rung 4   Cost                      last
+```
+
+To order two principles, compare them on **Legal first**. The higher Legal score wins outright — nothing below it can pull the lower one ahead. Only when Legal *ties* do you look at Customer Experience. Only when CX ties do you look at Org Readiness. Cost is the final tiebreaker and **never promotes a principle above a higher rung** — it only orders principles that are already tied on Legal, CX, and Org Readiness.
+
+Formally: rank by the tuple `(Legal, CX, Org Readiness, Cost)` in descending order, compared left to right; the first axis on which they disagree decides.
+
+Two consequences this ladder forces, by design:
+
+- **Any principle with real legal/compliance exposure outranks every principle without it** — regardless of cost, complexity, or how cheap the legal one is to build.
+- **A pure cost principle can never reach the top.** A large Cost score cannot lift a principle past anything carrying Legal or CX weight.
+
+---
+
+## The four axes
+
+Score each principle 1–5 on every axis using the anchors verbatim — do not invent new shades of meaning. The anchors are ordered to match the ladder (Legal, CX, Org Readiness, Cost).
+
+### Axis 1 — Legal / Compliance Risk Exposure *(rung 1)*
 
 The regulatory, compliance, and litigation cost the org carries by NOT having this principle in place.
 
@@ -30,21 +52,9 @@ The regulatory, compliance, and litigation cost the org carries by NOT having th
 | 2 | Soft compliance signal (industry guidance, internal policy, customer questionnaires). Not yet enforceable. |
 | 3 | Mapped to a real regulation (GDPR, CCPA, SOX, NIST AI RMF, ISO 42001) but enforcement is rare or remote in your jurisdiction. |
 | 4 | Direct regulatory mapping in scope, audit findings likely if a regulator inspects. Material fines possible. |
-| 5 | Hard regulatory requirement that applies to you (EU AI Act Annex III for a high-risk system, SR 11-7 for a regulated bank, HIPAA for PHI handling). **Veto: any axis at 5 classifies the principle CRITICAL regardless of other scores.** |
+| 5 | Hard regulatory requirement that applies to you (EU AI Act Annex III for a high-risk system, SR 11-7 for a regulated bank, HIPAA for PHI handling). |
 
-### Axis 2 — Cost
-
-The direct financial and operational cost the org absorbs by NOT having this principle in place — wasted spend, duplicated build effort, incident-response hours, manual reconciliation.
-
-| Score | Anchor |
-|---|---|
-| 1 | Negligible cost. Skipping costs less than implementing. |
-| 2 | Modest recurring cost (a few engineer-days per quarter) the org currently absorbs. |
-| 3 | Significant cost (one engineer-week per month, or 5-figure annual spend), already visible in budgets. |
-| 4 | Material cost (multi-week recurring engineering toil, or 6-figure annual spend) that finance can quote. |
-| 5 | Strategic cost (engineering capacity routinely diverted, 7-figure spend or revenue loss). **Veto.** |
-
-### Axis 3 — Customer Experience
+### Axis 2 — Customer Experience *(rung 2)*
 
 The external impact on users, customers, or downstream consumers of the AI system if the principle is NOT in place — latency, hallucination rate, incident frequency, trust erosion.
 
@@ -54,11 +64,11 @@ The external impact on users, customers, or downstream consumers of the AI syste
 | 2 | Minor customer impact in edge cases (occasional confusing output, rare latency spike). |
 | 3 | Routine customer impact (regular complaints, measurable retention friction, support ticket volume). |
 | 4 | Material customer impact (named in surveys, churn signal, NPS hit, public reputational risk). |
-| 5 | Severe customer impact (safety risk, mass incident, brand-damaging headline territory). **Veto.** |
+| 5 | Severe customer impact (safety risk, mass incident, brand-damaging headline territory). |
 
-### Axis 4 — Org Readiness
+### Axis 3 — Org Readiness *(rung 3)*
 
-The internal capacity cost — what the org loses by not having the org structures, skills, and operating model the principle enables. This axis flips direction: a HIGH score means **the org is not ready to operate without this principle**, i.e., NOT adopting it leaves a structural gap the org cannot work around.
+The internal capacity cost — what the org loses by not having the org structures, skills, and operating model the principle enables. A HIGH score means **the org is not ready to operate without this principle**: not adopting it leaves a structural gap the org cannot work around.
 
 | Score | Anchor |
 |---|---|
@@ -66,74 +76,76 @@ The internal capacity cost — what the org loses by not having the org structur
 | 2 | Mild gap. Teams work around it informally. |
 | 3 | Operational friction. Cross-team coordination breaks down regularly without the principle's enforcement. |
 | 4 | Structural blockage. The org cannot scale to its next stage (next project, next team, next region) without this principle in place. |
-| 5 | Existential gap. The org has already publicly committed to a roadmap (regulator, board, customer) that requires this principle and cannot meet without it. **Veto.** |
+| 5 | Existential gap. The org has already publicly committed to a roadmap (regulator, board, customer) that requires this principle and cannot meet it without it. |
+
+### Axis 4 — Cost *(rung 4)*
+
+The direct financial and operational cost the org absorbs by NOT having this principle in place — wasted spend, duplicated build effort, incident-response hours, manual reconciliation.
+
+| Score | Anchor |
+|---|---|
+| 1 | Negligible cost. Skipping costs less than implementing. |
+| 2 | Modest recurring cost (a few engineer-days per quarter) the org currently absorbs. |
+| 3 | Significant cost (one engineer-week per month, or 5-figure annual spend), already visible in budgets. |
+| 4 | Material cost (multi-week recurring engineering toil, or 6-figure annual spend) that finance can quote. |
+| 5 | Strategic cost (engineering capacity routinely diverted, 7-figure spend or revenue loss). |
 
 ---
 
-## Scoring rules
+## The evidence rule
 
-1. Score each principle against each of the four axes on the 1–5 scale. Use the anchor descriptions verbatim — do not invent new shades of meaning.
-2. **Veto rule:** any single axis at 5 classifies the principle CRITICAL. Stop scoring; the principle is locked in.
-3. If no veto fires, compute the **weighted total** using the org's weights (see below). The classification follows the weighted total:
-   - Weighted total ≥ 4.0 → **CRITICAL**
-   - Weighted total 3.0–3.9 → **HIGH**
-   - Weighted total 2.0–2.9 → **MEDIUM**
-   - Weighted total < 2.0 → **LOW**
-4. Rank principles within each band by weighted total (highest first). Within ties, use the principle's `prerequisites` field to break — a principle that unlocks others ranks above an isolated one.
+A score is not a judgment — it is a claim that must be backed by a named, quotable artifact. The burden of proof rises with the number:
 
----
+- **1–2** may be qualitative — anecdote, a support thread, "we think."
+- **3** needs a real but soft figure — something visible in a budget line or a ticket count.
+- **4–5** require a hard, sourced number a third party would sign off on. A Legal 5 means an actual regulation in scope and a named clause or letter, not "regulators might care." A Cost 5 means finance can point at the invoice line. **No artifact → you cannot write a 4 or 5.**
 
-## Per-org weighting
+Anti-gaming: **set the 4 and 5 thresholds before you score, per axis, as concrete org numbers** (e.g. "Cost 5 = ≥ \$1M/yr of quantified, addressable waste"). Agree the line first, then go measure. You do not get to look at the measurement and decide afterwards where the line was.
 
-Default weights are equal (25% each). Adjust for context:
-
-| Org context | Legal | Cost | CX | Org Readiness | Reasoning |
-|---|---|---|---|---|---|
-| Regulated finance / health | **45%** | 20% | 15% | 20% | Regulator-driven; compliance dominates. |
-| B2C consumer product | 15% | 20% | **45%** | 20% | CX failures translate directly to churn and brand. |
-| Early-stage startup | 10% | **40%** | 20% | 30% | Burn rate dominates; can't afford controls that don't pay for themselves quickly. |
-| Mature enterprise scaling AI | 20% | 25% | 25% | **30%** | Org-structure gaps are the binding constraint, not money. |
-| Default (uncertain) | 25% | 25% | 25% | 25% | Equal weights until you have evidence to shift. |
-
-Document the chosen weights and the rationale in your prioritization catalog. The weights are an explicit per-org judgment — they should be revisited annually.
+Default when evidence is thin: **take the lower score.** Innocent until evidenced.
 
 ---
 
-## Worked example — applied to GO3B2-01 (Centralised Observability SDK for AI Workloads)
+## Ordering rules
 
-Imagine a mid-size B2B SaaS company with 3 AI workloads in production and a 3-engineer platform team. Not in a regulated industry; processes some customer PII (support tickets, account data). Uses the default 25/25/25/25 weights.
+1. Score each principle 1–5 on all four axes, evidenced per the rule above.
+2. Rank by the tuple `(Legal, CX, Org Readiness, Cost)` descending, compared left to right. The first axis on which two principles disagree decides their order. This is the strict priority order.
+3. **Dependency inheritance.** A high-ranked principle that hard-depends on a lower-ranked one does not wait, and the prerequisite is not demoted. The prerequisite **inherits the rank of the most important principle that needs it** and is hoisted to immediately precede it. Critical work gets built regardless of its prerequisites' own scores — you absorb the prerequisites into its delivery. Soft dependencies are not hoisted; a principle ships without them.
+4. The catalogue's `dependencies` field carries the hard/soft edges. Walk the ranked list top-down; for each item, pull any unbuilt **hard** prerequisites in front of it, tagged with that item's rank.
 
-| Axis | Score | Justification |
-|---|---|---|
-| Legal Risk Exposure | 3 | GDPR / CCPA exposure on PII leakage into traces, but no hard EU AI Act Annex III mapping. Real but not catastrophic in scope. |
-| Cost | 4 | Three teams already on three different backends; finance spends ~2 weeks per quarter reconciling observability invoices; one incident took 4 hours that would have been 15 minutes with cross-team trace correlation. Material cost, finance can quote it. |
-| Customer Experience | 2 | The principle is internal-facing. Incidents are slower to resolve without it, which has some indirect CX effect, but no direct customer-visible degradation. |
-| Org Readiness | 4 | The 3-engineer platform team exists and can ship the thin version. Without the principle, the org cannot onboard the 4th and 5th AI workload (planned this year) without compounding the fragmentation — that's a structural blockage on the planned roadmap. |
+The order is universal — the ladder (Legal > CX > Org Readiness > Cost) does not get re-weighted per org. What differs per org is the *evidenced scores*, not the ranking of the axes.
 
-No veto triggered (no axis at 5).
+---
 
-Weighted total = (3 × 0.25) + (4 × 0.25) + (2 × 0.25) + (4 × 0.25) = **3.25 → HIGH**.
+## Worked example — applied to the catalogue
 
-Comparison: for the same principle at a regulated bank (Legal 45% / Cost 20% / CX 15% / Org Readiness 20%), the legal score would likely move to 4 (regulator could find them for PII in traces under SR 11-7-adjacent guidance), giving (4 × 0.45) + (4 × 0.20) + (2 × 0.15) + (4 × 0.20) = **3.70 → HIGH**, ranked higher within the band. For a B2C consumer product (15/20/45/20), the CX score might stay at 2 and the total drops to (3 × 0.15) + (4 × 0.20) + (2 × 0.45) + (4 × 0.20) = **2.95 → MEDIUM** — the bank prioritizes it; the consumer product defers.
+A mid-size B2B SaaS company, 3 AI workloads in production, processes customer PII via support tickets, no high-risk EU AI Act systems.
 
-Same principle, three different priorities, all defensible from the same rubric.
+**GO3B2-02 (govern read access + retention on observability traces).** Intrinsic `impact_level` is High, but that is not its priority — its priority comes from the axes. The traces carry PII, so GDPR/CCPA access-and-retention obligations apply directly → **Legal 4** (sourced: the PII inventory shows ticket data flows into traces; counsel confirms retention scope). CX 1 (internal-facing), Org 3, Cost 2. Tuple `(4,1,3,2)`. No other principle scores Legal 4, so it ranks **first** — even though its CX is the lowest possible and it is only a `scaling`-tier principle.
+
+GO3B2-02 hard-depends on **GO3B2-01** (the observability SDK that emits the traces). GO3B2-01's own tuple is `(3,3,4,3)` — it would rank lower on its own. But it is the hard prerequisite of the top principle, so it **inherits rank 1** and builds immediately before GO3B2-02.
+
+Contrast: **GC3B3-01 (prompt caching).** Suppose the org is bleeding on inference. The temptation is to call this critical. But Cost is rung 4. Even a sourced Cost 5 (finance quotes \$1.2M/yr of cacheable waste) cannot lift it past anything with Legal or CX weight. Its tuple is `(1,2,2,4)` — Legal 1, CX 2 — so it lands at the **bottom** of the build order, alongside the other pure-cost principles. The cost bleed is real, but under this ladder cost never jumps the queue. That is the rule working as intended, not against you.
+
+Same four scores, one strict order, no weighting knob to argue over.
 
 ---
 
 ## Output — your prioritization catalog
 
-The deliverable is a table with one row per principle in the source catalogue. Recommended columns:
+The deliverable is a table with one row per principle, sorted in build order. Recommended columns:
 
-| Principle ID | Title | Legal | Cost | CX | Org Readiness | Weighted Total | Classification | Rank Within Band | Notes |
-|---|---|---|---|---|---|---|---|---|---|
-| GO3B2-01 | Centralised Observability SDK | 3 | 4 | 2 | 4 | 3.25 | HIGH | 2 | Unlocks GENOPS04 lifecycle automation; ship Q3. |
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+| Rank | Principle ID | Title | Legal | CX | Org | Cost | Inherited? | Notes |
+|---|---|---|---|---|---|---|---|---|
+| 0 | GO3B2-01 | Centralised Observability SDK | 3 | 3 | 4 | 3 | yes — hard prereq of GO3B2-02 | Build first to unblock rank-1 legal item. |
+| 1 | GO3B2-02 | Govern trace access + retention | 4 | 1 | 3 | 2 | no | Legal-4: PII in traces. Top priority. |
+| … | … | … | … | … | … | … | … | … |
 
 Header rows in the catalog should also capture:
 
 - **Assessed on:** YYYY-Q# — timestamp the assessment.
-- **Org context summary:** 1–2 sentences naming the regulatory posture, scale, and team capacity that drove the weights.
-- **Weights used:** the four axis weights with rationale.
+- **Org context summary:** 1–2 sentences naming the regulatory posture, scale, and team capacity.
+- **Thresholds used:** the pre-agreed org-specific numbers for the 4 and 5 anchors on each axis.
 - **Re-assessment cadence:** when this catalog is next re-run (recommended: quarterly for the first year, annually thereafter).
 
 ---
@@ -142,10 +154,10 @@ Header rows in the catalog should also capture:
 
 The four axes are not equally stable over time:
 
-- **Legal Risk Exposure** changes when new regulations land (EU AI Act enforcement, sector-specific guidance). Re-score when a relevant regulation is announced or revised.
-- **Cost** changes as the org's workload portfolio grows. A cost-3 principle becomes cost-5 once you have 10 workloads instead of 3.
+- **Legal** changes when new regulations land (EU AI Act enforcement, sector-specific guidance). Re-score when a relevant regulation is announced or revised — and remember a Legal move reshuffles the whole order, because it is rung 1.
 - **Customer Experience** changes as the product evolves. A previously-internal AI feature shipped to end users moves the CX score sharply up.
 - **Org Readiness** changes as the org hires, restructures, or makes platform investments. A structural gap can close in a quarter.
+- **Cost** changes as the workload portfolio grows — but a rising Cost score only re-orders principles already tied on the three rungs above it.
 
 Recommended cadence: full re-assessment quarterly during the first year of catalogue adoption, annually thereafter. Always re-assess immediately after a regulatory change, a material headcount change, or a strategic roadmap commitment.
 
@@ -156,28 +168,27 @@ Recommended cadence: full re-assessment quarterly during the first year of catal
 ```yaml
 prioritization_catalog:
   assessed_on: "2026-Q3"
-  org_context: "Mid-size B2B SaaS, 3 AI workloads in production, 3-engineer platform team, processes PII via support tickets, no high-risk EU AI Act systems."
-  weights:
-    legal: 0.25
-    cost: 0.25
-    customer_experience: 0.25
-    org_readiness: 0.25
-    rationale: "Defaults retained — no evidence yet to shift weights. Will reassess after Q4 audit."
+  org_context: "Mid-size B2B SaaS, 3 AI workloads in production, processes PII via support tickets, no high-risk EU AI Act systems."
+  ladder: ["legal", "customer_experience", "org_readiness", "cost"]  # fixed order, not re-weighted
+  thresholds:
+    legal_5: "Hard regulation in scope with a named clause/letter."
+    cost_5: ">= $1M/yr quantified, addressable waste (finance-sourced)."
   next_reassessment: "2026-Q4"
   principles:
-    - principle_id: "GO3B2-01"
+    - rank: 0
+      principle_id: "GO3B2-01"
       title: "Centralised Observability SDK for AI Workloads"
-      scores:
-        legal: 3
-        cost: 4
-        customer_experience: 2
-        org_readiness: 4
-      veto_triggered: null
-      weighted_total: 3.25
-      classification: "HIGH"
-      rank_within_band: 2
-      notes: "Unlocks lifecycle automation principle. Ship the thin Python+1-backend version Q3, expand Q4."
-    - principle_id: "<next>"
+      scores: { legal: 3, customer_experience: 3, org_readiness: 4, cost: 3 }
+      inherited_from: "GO3B2-02"   # hoisted as hard prereq
+      notes: "Build first to unblock the rank-1 legal item."
+    - rank: 1
+      principle_id: "GO3B2-02"
+      title: "Govern read access and retention on AI observability traces"
+      scores: { legal: 4, customer_experience: 1, org_readiness: 3, cost: 2 }
+      inherited_from: null
+      notes: "Legal-4: PII in traces under GDPR/CCPA. Top of the build order."
+    - rank: 2
+      principle_id: "<next>"
       # ...
 ```
 
@@ -185,11 +196,9 @@ prioritization_catalog:
 
 ## What this tool does NOT do
 
-Be honest about scope:
+- **It does not score the principle's intrinsic criticality.** A principle's catalogue metadata (`impact_level`, `applicability`, `maturity_level`, `ownership.tier`) describes what the principle *is*. This tool describes what it is *worth to you*, and in what order to build it.
+- **It does not replace a regulatory risk assessment.** EU AI Act conformity assessments, NIST AI RMF profiles, ISO 42001 audits, and AIGP-domain reviews still need to happen. This tool decides build order; it does not certify your systems are risk-assessed.
+- **It does not let you re-weight the ladder.** The axis order (Legal > CX > Org Readiness > Cost) is fixed. Per-org judgment lives in the *evidenced scores*, not in the ranking of the axes.
+- **It does not lock in forever.** Re-assessment is mandatory. A prioritization catalog not revisited in 12 months is stale by definition.
 
-- **It does not score the principle's intrinsic criticality.** A principle's catalogue-level metadata (impact_level, applicability, maturity_level, ownership.tier) describes what the principle is. This tool describes what it's worth to you.
-- **It does not replace a regulatory risk assessment.** EU AI Act conformity assessments, NIST AI RMF profiles, ISO 42001 audits, and AIGP-domain risk reviews still need to happen. This tool helps you decide which controls to adopt first; it does not certify that you've assessed your AI systems for risk.
-- **It does not produce a roadmap.** Once you have a ranked catalog, you still need to sequence the work against dependencies (`prerequisites` / `enables` on each principle) and against your team's available capacity per quarter.
-- **It does not lock in forever.** Re-assessment is mandatory. A prioritization catalog that has not been revisited in 12 months is stale by definition.
-
-If your org is in scope of a regulator that mandates a specific risk framework, that framework comes first. This tool is for orgs that have done the risk awareness work and need help with the next question: which control do we build this quarter?
+If your org is in scope of a regulator that mandates a specific risk framework, that framework comes first. This tool is for orgs that have done the risk-awareness work and need help with the next question: which control do we build first?
