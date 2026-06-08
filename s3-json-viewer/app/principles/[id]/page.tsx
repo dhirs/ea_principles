@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Loader2 } from "lucide-react"
 import { PrincipleView } from "@/components/principles/PrincipleView"
 import type { Principle } from "@/lib/principles/types"
 
@@ -50,10 +50,8 @@ export default function PrinciplePage() {
 
   if (state.status === "loading") {
     return (
-      <div className="space-y-4">
-        <Skeleton className="h-8 w-40" />
-        <Skeleton className="h-10 w-full" />
-        <Skeleton className="h-64 w-full" />
+      <div className="flex items-center justify-center py-24 text-muted-foreground">
+        <Loader2 className="size-8 animate-spin" />
       </div>
     )
   }

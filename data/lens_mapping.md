@@ -79,9 +79,22 @@ Per-step due-diligence. Each implementation step from the AWS BP carries one of 
 
 **BP-guidance (model-change re-evaluation) → GO1B1-06 (v1.0.0) — promoted.** Beyond the seven numbered steps, GENOPS01-BP01's implementation guidance directs: *"Run these evaluations when new candidate models are available, or when model customization techniques are applied."* This is the **model-change gate** earmarked in the step-3 not_promoted note above. GO1B1-06 — *Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships* — concretises it: an approved model catalog + catalog-membership lint (no floating aliases), a runtime-refusing model SDK, and a pre_merge gate coupling any pinned-model-identifier change to a mandatory GO1B1-01 re-run. Enterprise-tier (D1=no borderline / D2=3); maturity scaling; impact High; applicability { llm/rag/agentic mandatory, ml nice_to_have }; serving_paradigm all four. Distinct from GO1B1-04 (drift): a discrete model swap is a step-change a window-to-window drift threshold can miss, with no per-PR trigger at all. step_promotion 3/3/3/3. `implementation_step: null` — anchors to the BP's guidance directive, not a numbered step (the seven steps are already concretised by GO1B1-01..05). Note: AWS ships **no dedicated BP for model versioning** (see GENOPS03 below); GO1B1-06's pin/catalog half is the model-side twin of GO3B1-01 and also concretises the GENOPS03 "model versioning" clause and the Reliability "standardized catalogs for prompts and models" design principle. Authored 2026-06-04.
 
-#### GENOPS01-BP02 — Collect and monitor user feedback [VERIFIED]
+#### GENOPS01-BP02 — Collect and monitor user feedback [VERIFIED — walked 2026-06-07]
 
-UNMAPPED — pending walkthrough. No implementation steps decomposed yet.
+> *"Supplement model performance evaluation with direct feedback from users. Implement continuous feedback loops to optimize application performance and enhance user satisfaction."* AWS risk **High**. Desired outcome: surface FM performance degradation as it happens **without** requiring ground truth data.
+
+**not_promoted (whole BP) — no principle authored. User-directed 2026-06-07.** 4 steps:
+
+| Step | AWS title | Status | Notes |
+|---|---|---|---|
+| 1 | For Amazon Q Business, set up user feedback collection | **not_promoted** | Vendor menu (PutFeedback API, DynamoDB, conversation logging to S3/CloudWatch/Firehose). Cleanest `not_vendor_menu` failure. |
+| 2 | For Amazon Bedrock, set up user feedback collection | **not_promoted** | Vendor menu (S3 bucket, web form/API endpoint, Lambda processor, EventBridge trigger). |
+| 3 | Establish a regular review process | **not_promoted** | Cadence/review-process advice (Step Functions pipeline, Bedrock LLM analysis, QuickSight dashboards). Same shape not_promoted at GENOPS03-BP01 step 5 / deferred at GENCOST01-BP01 step 4 — portfolio-scale cadence enforcement exceeds catalogue depth. |
+| 4 | Implement and test improvements | **not_promoted** | Improve + A/B test; absorbed by the GO1B1 eval-harness family. |
+
+The honest promote candidate — a **feedback-as-telemetry** contract (declare a feedback signal + emit through **GO3B2-01**'s `emit()` as a `user_feedback` event referencing the response `trace_id`, so a rising 👎 rate surfaces degradation with no golden dataset) — was constructed and rejected: it rides GO3B2-01 as substrate (feedback is just another event type on the existing emission stream, nothing architecturally distinct survives), and the only thing the BP uniquely adds — the feedback-capture UX — is exactly what no CI gate can prove. High AWS risk does not substitute for architectural distinctness. See decisions.md (latest) + lens_mapping_authored.md.
+
+**GENOPS01 focus area CLOSED** — BP01 → GO1B1-01..06 (5 steps promoted + model-change guidance); BP02 → not_promoted.
 
 ### GENOPS02 — Monitor and manage operational health [VERIFIED]
 
@@ -118,8 +131,10 @@ UNMAPPED — pending walkthrough. No implementation steps decomposed yet.
 
 | Best Practice | Title | Our principle |
 |---|---|---|
-| GENOPS04-BP01 [VERIFIED title; full guidance not yet read] | Automate generative AI application lifecycle with infrastructure as code (IaC) | Possibly **PRIN_005** (Context Lifecycle Management) — verify; the BP is about IaC for the workload's infrastructure, not about lifecycle of context specifically, so the mapping may be partial |
-| GENOPS04-BP02 [VERIFIED title; full guidance not yet read] | Implement GenAIOps to optimize the application lifecycle | UNMAPPED |
+| GENOPS04-BP01 [VERIFIED — walked 2026-06-07] | Automate generative AI application lifecycle with infrastructure as code (IaC) | **not_promoted** (whole BP; AWS risk High; user-directed 2026-06-07). Generic IaC/DevOps discipline owned by the base WAF — AWS's own Resources cross-reference five base OPS BPs (OPS05-BP01/08/10, OPS06-BP03/04). 7 steps: step 1 tool-selection + vendor menu (CDK/CloudFormation/Terraform); steps 2/3/5 textbook IaC; step 4 CI/CD vendor menu (CodePipeline/Jenkins); step 6 governance vendor menu (AWS Config/Service Catalog); step 7 audit-process advice. GenAI veneer is thin (Bedrock resource templating, HyperPod recipes); the GenAI-distinct slice (model catalog / prompt registry / eval infra as code) is already owned by GO3B1-01 + GO1B1-06 + GC2B2-01. Stale provisional "possibly PRIN_005" mapping removed (mis-fit). See decisions.md + lens_mapping_authored.md. |
+| GENOPS04-BP02 [VERIFIED — walked 2026-06-07] | Implement GenAIOps to optimize the application lifecycle | **not_promoted** (whole BP; AWS risk High; user-directed 2026-06-07). Umbrella BP — AWS's own "common concerns" (CI/CD, prompt management, artifact versioning, model upgrades, evaluation, monitoring) are each already owned: prompt mgmt → GO3B1-01; model versioning → GO1B1-06; evaluation → GO1B1-01..05; monitoring → GO3B2-01/02; CI/CD → base WAF (+ BP01); step-5 feedback loop → GENOPS01-BP02. The uniquely-here FMOps/LLMOps training-pipeline half is a vendor menu (SageMaker Pipelines / managed MLflow / Model Registry / Clarify / Code*) and narrow (only teams training/fine-tuning their own models). Cross-refs base WAF OPS (OPS05-BP01/07/10). See decisions.md + lens_mapping_authored.md. |
+
+**GENOPS04 focus area CLOSED — zero principles.** Both BPs are AWS-rated High risk yet neither yields GenAI-distinct enforceable architecture: BP01 is generic IaC/DevOps owned by the base WAF; BP02 is a GenAIOps umbrella whose concerns are each already concretised by existing principles (GO3B1-01 / GO1B1-06 / GO1B1-01..05 / GO3B2-01/02) plus an FMOps training-pipeline vendor menu. A clean worked-example result, paralleling the GENPERF pillar.
 
 ### GENOPS05 — Model customization [TODO]
 
@@ -131,41 +146,61 @@ All best practices to be enumerated from Lens documentation. BP01 title from sea
 
 GENSEC pillar focus areas now VERIFIED from AWS documentation. Full BP detail still TODO for several focus areas (BP titles below extracted from search-result snippets where available).
 
-### GENSEC01 — Endpoint security [VERIFIED focus area title]
+### GENSEC01 — Endpoint security [VERIFIED — question + BP list 2026-06-07]
 
-> *Question text TODO — focus area covers endpoint security for foundation models and their data stores.*
+> *"GENSEC01: How do you manage access to generative AI endpoints?" (verified 2026-06-07 from gensec01.html). Foundation models are available through managed, serverless, or self-hosted endpoints; each paradigm has its own security considerations. Ships 4 BPs.*
 
 | Best Practice | Title | Our principle |
 |---|---|---|
-| GENSEC01-BP01 [VERIFIED title] | Grant least privilege access to foundation model endpoints | Possibly **PRIN_003** (Centralized LLM SDK) — verify |
-| GENSEC01-BP02 [TITLE FROM SEARCH] | Implement private network communication between foundation models and applications | UNMAPPED |
-| GENSEC01-BP03 [VERIFIED title] | Implement least privilege access permissions for foundation models accessing data stores | UNMAPPED |
-| GENSEC01-BP04 [VERIFIED title] | Implement access monitoring to generative AI services and foundation models | UNMAPPED |
+| GENSEC01-BP01 [VERIFIED — walked 2026-06-07] | Grant least privilege access to foundation model endpoints | **not_promoted** (whole BP; AWS risk High; user-directed 2026-06-07). Generic IAM least-privilege owned by the base WAF Security pillar — AWS's own Resources cross-reference five base BPs (SEC02-BP01/02/06, SEC03-BP01/02). 4 steps: custom IAM policy on endpoint ARNs → role + permission boundary + trust policy → verify → Q Developer subscription access. The one GenAI-distinct slice (org-layer SCP/RCP "block models you haven't approved") is already owned by **GO1B1-06**'s approved-model catalog at the code layer that matters — GO3B1-01's no-inline-call AST lint already catches direct in-repo model calls, so the IAM layer's residual ("lock down stray account identities") is generic SEC03 hygiene, not GenAI-distinct. Stale "possibly PRIN_003" mapping removed (mis-fit: PRIN_003 is call-routing via a central SDK, not IAM endpoint permissions). See decisions.md + lens_mapping_authored.md. |
+| GENSEC01-BP02 [VERIFIED — walked 2026-06-07] | Implement private network communication between foundation models and applications | **not_promoted** (whole BP; AWS risk High; user-directed 2026-06-07). Pure network security (PrivateLink, VPC endpoints, private subnets, security groups) owned by the base WAF Security pillar — AWS cross-references SEC05-BP01/02. Three steps are generic VPC-endpoint setup, identical for any AWS service; the GenAI-flavoured "FM reaches its vector store/agent tools privately" line is generic perimeter, no GenAI-distinct artefact. See decisions.md + lens_mapping_authored.md. |
+| GENSEC01-BP03 [VERIFIED — walked 2026-06-07] | Implement least privilege access permissions for foundation models accessing data stores | **GS1B3-01** (Never retrieve what the user isn't allowed to see) — **PROMOTED 2026-06-07; first Security-pillar principle, 16th in the catalogue.** Anchors step 4 (least-privilege access policies on specific vector-store data), absorbs steps 1–2, operationalises the metadata-filtering guidance. Concretises the one GenAI-distinct, sibling-unowned slice of BP03 — RAG **retrieval-time per-query authorization**: acl label per document at ingestion + central retrieval SDK applying an IdP-derived identity pre-filter + AST lint banning direct multi-tenant store calls + quarterly security label-audit. Distinct from generic IAM (store reachability, not per-chunk retrieval) and from base-WAF data discipline (SEC03/07/08). First D1=yes / first central_review_at_gate principle. Honest enforcement limit (lint enforces plumbing not label correctness) recorded in enforcement_limits.md. Steps 5/6 not_promoted; step 3 PII-removal half deferred to a future GENSEC data-protection walk. See decisions.md (latest) + lens_mapping_authored.md. |
+| GENSEC01-BP04 [VERIFIED — walked 2026-06-07] | Implement access monitoring to generative AI services and foundation models | **not_promoted** (whole BP; AWS risk High; user-directed 2026-06-07). Decomposes into three already-owned buckets: generic access logging + alerting (CloudTrail / CloudWatch alarms / Security Hub / S3 retention) = base-WAF security monitoring (cross-refs SEC03-BP08); vendor menu (steps 1–4: Bedrock invocation logging / Q activity capture / Q Business log delivery / SageMaker logging); GenAI telemetry (trace every model call / tool / retrieval, per-agent) already owned by GO3B2-01 + GO3B2-02. End-user-attribution slice noted as a recommended `end_user_id` field on GO3B2-01's payload (absorbed, not promoted). See decisions.md + lens_mapping_authored.md. |
 
-### GENSEC02 — Response validation [VERIFIED focus area title]
+**GENSEC01 focus area CLOSED 2026-06-07 — 1 promoted, 3 not_promoted.** BP01 (least-priv IAM to endpoints) not_promoted (generic base-WAF IAM, approved-models slice owned by GO1B1-06); BP02 (private network) not_promoted (generic base-WAF network, SEC05); BP03 (FM access to data stores) → **GS1B3-01** promoted (RAG retrieval-time authorization — the one GenAI-distinct slice); BP04 (access monitoring) not_promoted (base-WAF logging + vendor menu + GO3B2 telemetry). The Security endpoint-security question yields exactly the RAG retrieval-authorization principle; the rest is generic base-WAF IAM/network/logging discipline.
 
-> *Question text TODO. Full BP list TODO.*
+### GENSEC02 — Response validation [VERIFIED — question + BP list 2026-06-07; CLOSED]
 
-### GENSEC03 — Event monitoring [VERIFIED focus area title]
+> *"GENSEC02: How do you stop generative AI applications from generating harmful, biased, or factually incorrect responses?" (verified 2026-06-07 from gensec02.html). Ships exactly ONE BP (BP01). Focus area CLOSED — 1 promoted.*
 
-> *Question text TODO. Full BP list TODO.*
+| Best Practice | Title | Our principle |
+|---|---|---|
+| GENSEC02-BP01 [VERIFIED — walked 2026-06-07] | Implement guardrails to mitigate harmful or incorrect model responses | **GS2B1-01** (Put every model response through a guardrail) — **PROMOTED 2026-06-07; second Security principle, 17th in the catalogue.** Anchored whole-BP (steps are vendor-console walkthroughs; mandate is in the implementation guidance). Concretises runtime OUTPUT validation — unowned by any sibling (GO1B1 eval / GO3B2 observability / GO3B1 input / GS1B3-01 retrieval): declare a guardrail config (content/toxicity/denied-topics/PII filters; grounding on for RAG; on_trip fallback) + route every response through the guardrail wrapper on GO3B1-01's SDK + three pre_merge lints (declaration / routed-output AST / grounding-for-RAG) + quarterly efficacy red-team. Scope: content/safety + grounding-vs-retrieved-context only; backend-correctness verification OUT of scope (app-side business logic); input-side injection → GENSEC04. Enforcement limit (lint = wiring not efficacy) per enforcement_limits.md. See decisions.md + lens_mapping_authored.md. |
+
+**GENSEC02 focus area CLOSED 2026-06-07 — 1 BP, promoted (GS2B1-01).**
+
+### GENSEC03 — Event monitoring [VERIFIED — question + BP list 2026-06-07; CLOSED]
+
+> *"GENSEC03: How do you monitor and audit events associated with your generative AI workloads?" (verified 2026-06-07 from gensec03.html). Ships exactly ONE BP (BP01). Focus area CLOSED — 0 promoted.*
+
+| Best Practice | Title | Our principle |
+|---|---|---|
+| GENSEC03-BP01 [VERIFIED — walked 2026-06-07] | Implement control plane and data access monitoring to generative AI services and foundation models | **not_promoted** (whole BP; AWS risk High; user-directed 2026-06-07). Broad monitoring umbrella (performance / quality / security / cost / audit-trail / compliance) via CloudTrail + CloudWatch. Generic control/data-plane monitoring owned by base WAF (cross-refs SEC04-BP01); vendor menu; sub-concerns each already owned (telemetry/audit → GO3B2-01/02, eval → GO1B1, cost → GENCOST); overlaps GENSEC01-BP04 (access monitoring, not_promoted). No GenAI-distinct artefact. See decisions.md + lens_mapping_authored.md. |
+
+**GENSEC03 focus area CLOSED 2026-06-07 — 1 BP, not_promoted.**
 
 ### GENSEC04 — Prompt security [VERIFIED focus area title]
 
 > *Question text TODO.*
 
-| Best Practice | Title | Our principle |
-|---|---|---|
-| GENSEC04-BP01 [VERIFIED title] | Implement a secure prompt catalog | Possibly **PRIN_014** — verify |
-| GENSEC04-BP02 [VERIFIED title] | Sanitize and validate user inputs to foundation models | UNMAPPED |
-
-### GENSEC05 — Excessive agency [VERIFIED focus area title — note: NOT "Agentic security" as previously assumed]
-
-> *Question text TODO — covers security for agentic workflows specifically, with the framing of "excessive agency" (preventing agents from doing more than they should).*
+> *"GENSEC04: How do you secure system and user prompts?" (verified 2026-06-07 from gensec04.html). Ships two BPs.*
 
 | Best Practice | Title | Our principle |
 |---|---|---|
-| GENSEC05-BP01 [VERIFIED title] | Implement least privilege access and permissions boundaries for agentic workflows | Possibly **PRIN_008** (Agent Security Framework) — verify |
+| GENSEC04-BP01 [VERIFIED — walked 2026-06-07] | Implement a secure prompt catalog | **not_promoted** (whole BP; AWS risk Medium; user-directed 2026-06-07). The catalog itself is already owned by **GO3B1-01** (registered, versioned prompt templates via the central SDK); BP01's only addition is generic IAM access control on the catalog (least-priv on prompt actions, separation of duties = base WAF + GO3B2-02 pattern) + a Bedrock Prompt Management vendor walkthrough. Provisional "possibly PRIN_014" resolved to GO3B1-01 + generic IAM. See decisions.md + lens_mapping_authored.md. |
+| GENSEC04-BP02 [VERIFIED — walked 2026-06-07; REVISITED + promoted 2026-06-07] | Sanitize and validate user inputs to foundation models | **promoted_to_principle: GS4B2-01** — Put every user input through a guardrail before it reaches the model. Input-side mirror of GS2B1-01 (output side): every user-influenced model-calling path declares an input-guardrail config (injection + prompt-extraction screening), size/rate limits, and an on_trip action, and routes user input through the input-guardrail wrapper; a pre-merge AST lint forbids passing raw user input to a model call that bypasses it; quarterly injection red-team for efficacy. New focus area **P23 — Prompt Security**. Context-boundary delimiter deferred to GO3B1-01's template registry (dependency). step_promotion 3/3/3/3. Initially not_promoted (user-deferred) earlier the same day, then revisited and authored. See decisions.md + lens_mapping_authored.md. |
+
+**GENSEC04 focus area — 2 BPs, 1 promoted** (BP01 not_promoted, owned by GO3B1-01 + generic IAM; BP02 promoted → GS4B2-01).
+
+### GENSEC05 — Excessive agency [VERIFIED — question + BP list 2026-06-08; CLOSED]
+
+> *"GENSEC05: How do you avoid excessive agency for models?" (verified 2026-06-08 from gensec05.html). Excessive agency is an OWASP Top-10 LLM threat, typically introduced through agentic architectures — an agent takes actions beyond its intended purpose (not malicious, an unintended consequence of automation; the agent has little knowledge beyond the prompt of what is permitted). Ships exactly ONE BP (BP01). Focus area CLOSED — 1 promoted.*
+
+| Best Practice | Title | Our principle |
+|---|---|---|
+| GENSEC05-BP01 [VERIFIED — walked 2026-06-08] | Implement least privilege access and permissions boundaries for agentic workflows | **GS5B1-01** (Put every consequential agent action through a gate before it runs) — **PROMOTED 2026-06-08; fourth Security principle, 19th in the catalogue.** Anchored whole-BP (implementation_step null): steps 1-3 are generic IAM least-privilege construction (scoped policies, resource ARNs, permission boundaries, trust-policy conditions — AWS Resources cross-ref SEC02-BP01/02/06 + SEC03-BP01/02, the same base-WAF BPs that drove the GENSEC01-BP01 not_promote); the GenAI-distinct mandate lives in the implementation guidance + step 4 (user confirmation for agent actions). Concretises agent ACTION authorization — the one GenAI-distinct, sibling-unowned slice: every agent declares a tool manifest (each tool `scope` + `class` read/write + a `gate` for writes), the agent loop executes tools only through a central wrapper, three pre-merge lints (declaration completeness / routed-execution AST lint / consequential-implies-gated, incl. unattended-write-needs-policy) + a quarterly agent red-team. THE ACTION-side member of the Security guardrail family: GS4B2-01 input, GS2B1-01 output, GS1B3-01 retrieval (read), this = what the agent DOES (write). New focus area **P24 — Agentic Action Control**. Gate has two forms — `confirm` (human-in-loop) or `policy:<name>` (deterministic, unattended) — so it holds for triggered/batch agents with no human. IAM half (steps 1-3) NOT re-linted: becomes the enforcement behind the manifest's `scope` (per-tool least-privilege execution role), depended on not reinvented. Enforcement limit (lint proves declared+routed+gated, not honest classification / minimal scope) per enforcement_limits.md. Legacy PRIN_008 (Agent Security Framework) formally ruled out (historical-only; not the specific action-authorization contract). step_promotion 3/3/3/3. See decisions.md (latest) + lens_mapping_authored.md. |
+
+**GENSEC05 focus area CLOSED 2026-06-08 — 1 BP, promoted (GS5B1-01).**
 
 ### GENSEC06 — Data poisoning [VERIFIED focus area title]
 
@@ -181,24 +216,51 @@ All question areas and best practices to be enumerated from Lens documentation.
 
 ## GENPERF — Performance Efficiency
 
-### GENPERF01 — Ground truth and performance metrics [PARTIAL]
+### GENPERF01 — Establish performance evaluation processes [question VERIFIED 2026-06-07; CLOSED]
 
-> *Question text TODO.*
-
-| Best Practice | Title | Our principle |
-|---|---|---|
-| GENPERF01-BP01 [PARTIAL] | Define a ground truth data set of prompts and responses | UNMAPPED (note: distinct from GENOPS01-BP01 — this is performance/latency focused, not functional correctness) |
-| GENPERF01-BP02 [PARTIAL] | Collect performance metrics from generative AI workloads | UNMAPPED |
-
-### GENPERF02–03 [TODO]
-
-### GENPERF04 — Vector store performance [PARTIAL]
-
-> *Question text TODO.*
+> *"GENPERF01: How do you capture and improve the performance of your generative AI models in production?"* (verified 2026-06-07 from genperf01.html)
+>
+> Ships **two** BPs — both not_promoted 2026-06-07. Focus area CLOSED.
 
 | Best Practice | Title | Our principle |
 |---|---|---|
-| GENPERF04-BP01 [PARTIAL] | Test vector store features for latency and relevant performance | UNMAPPED |
+| GENPERF01-BP01 [VERIFIED 2026-06-07] | Define a ground truth data set of prompts and responses | **not_promoted / absorbed by GO1B1 family.** Same golden prompt–response dataset + harness GO1B1-01/02/03 already mandate (and GO1B1-05's refresh = the "living artifact" line). The earlier "distinct from GENOPS01-BP01, performance/latency focused" note does NOT hold — the verbatim is task/response-quality eval over the same dataset, not latency. User directed not_promote 2026-06-07. See lens_mapping_authored.md. |
+| GENPERF01-BP02 [VERIFIED 2026-06-07] | Collect performance metrics from generative AI workloads | **not_promoted / absorbed.** Decomposes into GO3B2-01 (emit telemetry/traces), GO1B1 harness + GO1B1-04 drift (quality over time), generic infra observability the base WAF owns (cross-refs PERF05 + MLPER), and process/vendor advice (OpenLLMetry/CloudWatch/fmeval/MLflow). SLO-as-code promote case rejected (same alert-threshold substance not_promoted at GENPERF02-BP01). User directed not_promote 2026-06-07. |
+
+> **GENPERF pillar CLOSED 2026-06-07 — yields ZERO principles.** Every GENPERF BP (01-BP01/02, 02-BP01/02/03, 03-BP01, 04-BP01 still UNMAPPED but same shape, 04-BP02) resolved to either generic infrastructure discipline owned by the base Well-Architected framework (PERF05 / ML lens MLPER), a performance-framed restatement of an already-authored GENOPS eval (GO1B1) / observability (GO3B2) / GENCOST (GC4B1-01) principle, or a vendor menu. The GenAI performance pillar adds no enforceable architecture beyond what GENOPS + GENCOST already mandate. (GENPERF04-BP01 left UNMAPPED but flagged same-shape; can be formally swept to fully close.)
+
+### GENPERF02 — Maintaining model performance [question VERIFIED 2026-06-07; CLOSED]
+
+> *"GENPERF02: How do you verify your generative AI workload maintains acceptable performance levels?"* (verified 2026-06-07 from genperf02.html)
+>
+> Ships **three** BPs — all not_promoted 2026-06-07. Focus area CLOSED.
+
+| Best Practice | Title | Our principle |
+|---|---|---|
+| GENPERF02-BP01 [VERIFIED 2026-06-07] | Load test model endpoints | **not_promoted** (risk Medium). Generic performance engineering already owned by the base WAF (`PERF05-BP04`) + ML lens (`MLPER`), with only a thin GenAI veneer; promote-able core splits into observability (GO3B2) + the GO1B1 eval harness + the UNMAPPED GENPERF01-BP01, leaving a thin process-shaped pre_deploy test. Serving-paradigm-narrow (self-hosted/provisioned only). User directed not_promote 2026-06-07. See lens_mapping_authored.md. |
+| GENPERF02-BP02 [VERIFIED 2026-06-07] | Optimize inference parameters to improve response quality | **not_promoted** (risk Low). Hyperparameter tuning = experimentation/technique advice; the only gateable slice ("pin inference params per template") is absorbed into GO3B1-01's prompt-template manifest. User directed not_promote 2026-06-07. |
+| GENPERF02-BP03 [VERIFIED 2026-06-07] | Select and customize the appropriate model for your use case | **not_promoted / absorbed.** Performance-framed twin of GC1B1-01 (the "AI usage document" IS its model-selection ADR) + GO1B1 eval harness + GO1B1-06 (re-test on new model); routing/fine-tuning/distillation are a vendor/technique menu. Nothing architecturally distinct survives. User directed not_promote 2026-06-07. |
+
+### GENPERF03 — Optimize consumption of high-performance compute [question VERIFIED 2026-06-07; CLOSED]
+
+> *"GENPERF03: How do you optimize computational resources required for high-performance distributed computation tasks?"* (verified 2026-06-07 from genperf03.html)
+>
+> Ships exactly **one** BP.
+
+| Best Practice | Title | Our principle |
+|---|---|---|
+| GENPERF03-BP01 [VERIFIED 2026-06-07] | Use managed solutions for model hosting, customization, and data access where appropriate | **not_promoted** (risk Medium). Vendor menu — steps 2–5 are a service-selection tree (Bedrock / SageMaker endpoints / managed customization / HyperPod); step 1 is decision-process advice; step 6 is GENSEC/IAM data-access (cross-pillar). Only bites for the minority of GenAI teams self-hosting inference; the dominant managed-API RAG/agent pattern satisfies it by default with nothing to gate. Promote case (managed-by-default ADR) rejected — near the serving_paradigm axis, operational-governance not architecture, no vendor-neutral anchor. step_promotion would fail not_vendor_menu + has_enforceable_artefact. User directed not_promote 2026-06-07. **Focus area CLOSED.** See lens_mapping_authored.md. |
+
+### GENPERF04 — Vector store optimization [focus-area title + question VERIFIED 2026-06-07]
+
+> *"GENPERF04: How do you improve the performance of data retrieval systems?"* (verified 2026-06-07 from genperf04.html)
+>
+> Ships exactly **two** BPs (BP01, BP02).
+
+| Best Practice | Title | Our principle |
+|---|---|---|
+| GENPERF04-BP01 [PARTIAL] | Test vector embeddings for latency and relevant performance | UNMAPPED (latency/relevance testing — process-shaped; likely the same absorb/not_promote shape as BP02) |
+| GENPERF04-BP02 [VERIFIED 2026-06-07] | Optimize vector sizes for your use case | **not_promoted / absorbed into GC4B1-01** (risk Low). Experiment-and-pick BP (identify performance KPI → test vector sizes → keep most performant); the only enforceable artefact is GC4B1-01's declare-dimension-plus-measured-evidence record, here framed as a latency/accuracy KPI rather than a cost-vs-quality floor. Performance twin of the cost principle GC4B1-01; the retrieval-quality testing not_promoted from GENCOST04-BP01 steps 3/4 lands here and stays process-shaped. User directed not_promote 2026-06-07. See lens_mapping_authored.md. |
 
 ---
 
