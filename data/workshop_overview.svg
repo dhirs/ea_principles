@@ -1,0 +1,119 @@
+<svg viewBox="0 0 980 600" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc">
+  <title id="ttl">Two-part AI architecture principles workshop</title>
+  <desc id="dsc">Part 1 walks three scenarios then a GenAI Lens deep-dive. Part 2 is a methodology pipeline: GenAI Lens input, selection, taxonomy, reference implementation, prioritisation, producing a phased delivery roadmap at 6, 12 and 18 month horizons.</desc>
+
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#888780"/></marker>
+  </defs>
+
+  <!-- title -->
+  <text x="490" y="34" text-anchor="middle" font-size="25" font-weight="700" fill="#2C2C2A">AI Architecture Principles — A Two-Part Workshop</text>
+  <text x="490" y="58" text-anchor="middle" font-size="14" fill="#5F5E5A">From the AWS GenAI Lens to a phased delivery roadmap</text>
+
+  <!-- ============ PART 1 ============ -->
+  <rect x="40" y="80" width="94" height="26" rx="13" fill="#534AB7"/>
+  <text x="87" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PART 1</text>
+  <text x="146" y="99" font-size="15" font-weight="700" fill="#2C2C2A">Why principles matter — three scenarios</text>
+
+  <!-- scenario cards -->
+  <g>
+    <rect x="40" y="116" width="150" height="74" rx="12" fill="#ffffff" stroke="#E24B4A" stroke-width="1.6"/>
+    <circle cx="64" cy="142" r="11" fill="#E24B4A"/><text x="64" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1</text>
+    <text x="83" y="140" font-size="13.5" font-weight="700" fill="#2C2C2A">Scenario 1</text>
+    <text x="83" y="158" font-size="11" fill="#A32D2D">Legal &#183; PII leakage</text>
+  </g>
+  <g>
+    <rect x="206" y="116" width="150" height="74" rx="12" fill="#ffffff" stroke="#378ADD" stroke-width="1.6"/>
+    <circle cx="230" cy="142" r="11" fill="#378ADD"/><text x="230" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2</text>
+    <text x="249" y="140" font-size="13.5" font-weight="700" fill="#2C2C2A">Scenario 2</text>
+    <text x="249" y="158" font-size="11" fill="#185FA5">CX &#183; model drift</text>
+  </g>
+  <g>
+    <rect x="372" y="116" width="150" height="74" rx="12" fill="#ffffff" stroke="#EF9F27" stroke-width="1.6"/>
+    <circle cx="396" cy="142" r="11" fill="#EF9F27"/><text x="396" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">3</text>
+    <text x="415" y="140" font-size="13.5" font-weight="700" fill="#2C2C2A">Scenario 3</text>
+    <text x="415" y="158" font-size="11" fill="#854F0B">Cost &#183; token burn</text>
+  </g>
+
+  <line x1="528" y1="153" x2="582" y2="153" stroke="#888780" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- GenAI Lens deep-dive (the bridge) -->
+  <rect x="590" y="116" width="338" height="74" rx="12" fill="#EEEDFE" stroke="#7F77DD" stroke-width="2"/>
+  <text x="759" y="146" text-anchor="middle" font-size="17" font-weight="700" fill="#3C3489">AWS GenAI Lens — deep-dive</text>
+  <text x="759" y="166" text-anchor="middle" font-size="11.5" fill="#534AB7">how the Lens is structured &amp; read</text>
+
+  <!-- transition -->
+  <text x="490" y="216" text-anchor="middle" font-size="12.5" font-style="italic" fill="#5F5E5A">&#9660;&#9660;&#9660;   the GenAI Lens becomes the input to Part 2   &#9660;&#9660;&#9660;</text>
+  <line x1="40" y1="232" x2="940" y2="232" stroke="#D3D1C7" stroke-width="1"/>
+
+  <!-- ============ PART 2 ============ -->
+  <rect x="40" y="246" width="94" height="26" rx="13" fill="#534AB7"/>
+  <text x="87" y="264" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PART 2</text>
+  <text x="146" y="265" font-size="15" font-weight="700" fill="#2C2C2A">From an abstract principle to a defined project</text>
+
+  <!-- pipeline boxes (y 286-370) -->
+  <!-- 1 Lens input -->
+  <rect x="40" y="286" width="148" height="84" rx="12" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.8"/>
+  <circle cx="60" cy="306" r="10" fill="#534AB7"/><text x="60" y="310" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">1</text>
+  <text x="114" y="332" text-anchor="middle" font-size="13.5" font-weight="700" fill="#3C3489">AWS GenAI Lens</text>
+  <text x="114" y="356" text-anchor="middle" font-size="11" fill="#534AB7">the input</text>
+
+  <!-- 2 Selection -->
+  <rect x="226" y="286" width="148" height="84" rx="12" fill="#ffffff" stroke="#7F77DD" stroke-width="1.6"/>
+  <circle cx="246" cy="306" r="10" fill="#534AB7"/><text x="246" y="310" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">2</text>
+  <text x="300" y="332" text-anchor="middle" font-size="13.5" font-weight="700" fill="#2C2C2A">Selection</text>
+  <text x="300" y="356" text-anchor="middle" font-size="11" fill="#5F5E5A">filter principles</text>
+
+  <!-- 3 Taxonomy -->
+  <rect x="412" y="286" width="148" height="84" rx="12" fill="#ffffff" stroke="#7F77DD" stroke-width="1.6"/>
+  <circle cx="432" cy="306" r="10" fill="#534AB7"/><text x="432" y="310" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">3</text>
+  <text x="486" y="332" text-anchor="middle" font-size="13.5" font-weight="700" fill="#2C2C2A">Taxonomy</text>
+  <text x="486" y="356" text-anchor="middle" font-size="11" fill="#5F5E5A">structure &amp; classify</text>
+
+  <!-- 4 Reference Implementation -->
+  <rect x="598" y="286" width="148" height="84" rx="12" fill="#ffffff" stroke="#7F77DD" stroke-width="1.6"/>
+  <circle cx="618" cy="306" r="10" fill="#534AB7"/><text x="618" y="310" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">4</text>
+  <text x="672" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="#2C2C2A">Reference</text>
+  <text x="672" y="344" text-anchor="middle" font-size="13" font-weight="700" fill="#2C2C2A">Implementation</text>
+  <text x="672" y="362" text-anchor="middle" font-size="10.5" fill="#5F5E5A">build &#183; size the effort</text>
+
+  <!-- 5 Prioritisation -->
+  <rect x="784" y="286" width="148" height="84" rx="12" fill="#ffffff" stroke="#7F77DD" stroke-width="1.6"/>
+  <circle cx="804" cy="306" r="10" fill="#534AB7"/><text x="804" y="310" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">5</text>
+  <text x="858" y="332" text-anchor="middle" font-size="13.5" font-weight="700" fill="#2C2C2A">Prioritisation</text>
+  <text x="858" y="356" text-anchor="middle" font-size="11" fill="#5F5E5A">score &amp; sequence</text>
+
+  <!-- pipeline arrows -->
+  <g stroke="#888780" stroke-width="2" marker-end="url(#ah)">
+    <line x1="190" y1="328" x2="222" y2="328"/>
+    <line x1="376" y1="328" x2="408" y2="328"/>
+    <line x1="562" y1="328" x2="594" y2="328"/>
+    <line x1="748" y1="328" x2="780" y2="328"/>
+  </g>
+
+  <!-- effort note feeding prioritisation -->
+  <text x="672" y="388" text-anchor="middle" font-size="10" font-style="italic" fill="#5F5E5A">effort &amp; complexity now known</text>
+
+  <!-- arrow down to roadmap -->
+  <line x1="858" y1="392" x2="858" y2="420" stroke="#888780" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- ============ ROADMAP ============ -->
+  <rect x="40" y="424" width="892" height="156" rx="14" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.6"/>
+  <text x="64" y="452" font-size="14" font-weight="700" fill="#0F6E56">DELIVERY ROADMAP</text>
+  <text x="232" y="452" font-size="11.5" fill="#0F6E56">— the output of the prioritisation framework, phased by horizon</text>
+
+  <rect x="64" y="468" width="272" height="92" rx="10" fill="#ffffff" stroke="#1D9E75" stroke-width="1.4"/>
+  <text x="84" y="500" font-size="15" font-weight="700" fill="#0F6E56">0 &#8211; 6 months</text>
+  <text x="84" y="524" font-size="11.5" fill="#2C2C2A">Foundational &amp;</text>
+  <text x="84" y="540" font-size="11.5" fill="#2C2C2A">legal-critical principles</text>
+
+  <rect x="352" y="468" width="272" height="92" rx="10" fill="#ffffff" stroke="#1D9E75" stroke-width="1.4"/>
+  <text x="372" y="500" font-size="15" font-weight="700" fill="#0F6E56">6 &#8211; 12 months</text>
+  <text x="372" y="524" font-size="11.5" fill="#2C2C2A">Scale-out &amp;</text>
+  <text x="372" y="540" font-size="11.5" fill="#2C2C2A">customer-experience</text>
+
+  <rect x="640" y="468" width="268" height="92" rx="10" fill="#ffffff" stroke="#1D9E75" stroke-width="1.4"/>
+  <text x="660" y="500" font-size="15" font-weight="700" fill="#0F6E56">12 &#8211; 18 months &amp; beyond</text>
+  <text x="660" y="524" font-size="11.5" fill="#2C2C2A">Cost optimisation &amp;</text>
+  <text x="660" y="540" font-size="11.5" fill="#2C2C2A">platform maturity</text>
+</svg>

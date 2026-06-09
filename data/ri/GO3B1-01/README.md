@@ -1,7 +1,7 @@
 # Reference Implementation — GO3B1-01
 
 ## 1. principle_id
-GO3B1-01 — Route every model call through a registered, versioned prompt template via the central SDK. Every prompt lives as a registered, versioned template addressable by `template_id`; the central LLM SDK refuses inline-string prompts and accepts only `(template_id, variables)` call signatures.
+GO3B1-01 — Treat prompts as governed assets, not scattered strings. Every prompt lives as a registered, versioned template addressable by `template_id`; the central LLM SDK refuses inline-string prompts and accepts only `(template_id, variables)` call signatures.
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

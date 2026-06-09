@@ -1,7 +1,7 @@
 # Reference Implementation — GO1B1-03
 
 ## 1. principle_id
-GO1B1-03 — Implement every evaluation metric as a named, encapsulated code unit. The eval runner imports metrics by name and contains no inline scoring logic. Builds on GO1B1-01 / GO1B1-02.
+GO1B1-03 — Measure quality the same way every time. The eval runner imports metrics by name and contains no inline scoring logic. Builds on GO1B1-01 / GO1B1-02.
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

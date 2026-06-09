@@ -52,10 +52,10 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
   const [maturityLevel, setMaturityLevelState] = useState("")
 
   // Selecting a filter only affects the list view; if we're elsewhere (a detail
-  // page or the landing dashboard), jump to /principles so the result is visible.
-  // Pushing while already on /principles is a no-op, so no pathname check needed.
+  // page or the landing dashboard), jump to /standards so the result is visible.
+  // Pushing while already on /standards is a no-op, so no pathname check needed.
   const goToList = useCallback(() => {
-    router.push("/principles")
+    router.push("/standards")
   }, [router])
 
   const setPillar = useCallback((v: string) => { setPillarState(v); goToList() }, [goToList])
@@ -122,7 +122,7 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       if (maturityLevel && asString(p.maturity_level) !== maturityLevel) return false
       if (!q) return true
       const title = asString(asObject(p.statement)?.title) ?? ""
-      const id = asString(p.principle_id) ?? ""
+      const id = asString(p.standard_id) ?? ""
       return title.toLowerCase().includes(q) || id.toLowerCase().includes(q)
     })
   }, [data, query, pillar, focusArea, bestPractice, maturityLevel])

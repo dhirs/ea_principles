@@ -1,7 +1,7 @@
 # Reference Implementation — GO1B1-01
 
 ## 1. principle_id
-GO1B1-01 — Maintain a versioned ground-truth evaluation harness for agent decisions in the workload repository.
+GO1B1-01 — Prove an agent still behaves before you ship a change to it.
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

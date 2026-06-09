@@ -1,7 +1,7 @@
 # Reference Implementation — GO3B2-02
 
 ## 1. principle_id
-GO3B2-02 — Govern read access and retention on AI observability traces through a centrally-owned policy. Sibling to GO3B2-01: GO3B2-01 owns the write path (emission, header enrichment, PII pre-scrub); GO3B2-02 owns the read path (access policy keyed on `compliance_tier`, retention enforced via backend lifecycle rules, read-side audit logs).
+GO3B2-02 — Traces can hold sensitive data, so govern who reads them and how long they live. Sibling to GO3B2-01: GO3B2-01 owns the write path (emission, header enrichment, PII pre-scrub); GO3B2-02 owns the read path (access policy keyed on `compliance_tier`, retention enforced via backend lifecycle rules, read-side audit logs).
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

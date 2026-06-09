@@ -25,7 +25,9 @@ function awsBestPractices(p: Principle): string[] {
 function toIndexEntry(p: Principle) {
   const statement = asObject(p.statement)
   return {
+    standard_id: asString(p.standard_id),
     principle_id: asString(p.principle_id),
+    u_principle: asString(p.u_principle),
     pillar: asString(p.pillar),
     focus_area: asString(p.focus_area),
     maturity_level: asString(p.maturity_level),
@@ -44,7 +46,7 @@ function toIndexEntry(p: Principle) {
 export async function GET() {
   try {
     const data = await getCachedPrinciples()
-    const principles = (asArray(data?.principles) ?? []) as Principle[]
+    const principles = (asArray(data?.standards) ?? []) as Principle[]
     return NextResponse.json(
       { meta: data?.meta, principles: principles.map(toIndexEntry) },
       {

@@ -46,10 +46,10 @@ export default function ReferenceImplementationPage() {
           <h1 className="font-mono text-2xl font-semibold">{id}</h1>
         </div>
         <Link
-          href={`/principles/${encodeURIComponent(id)}`}
+          href={`/standards/${encodeURIComponent(id)}`}
           className="text-sm text-primary underline-offset-4 hover:underline whitespace-nowrap"
         >
-          ← Back to principle
+          ← Back to standard
         </Link>
       </div>
 

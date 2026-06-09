@@ -1,7 +1,7 @@
 # Reference Implementation — GO1B1-02
 
 ## 1. principle_id
-GO1B1-02 — Stratify the ground-truth harness and gate evaluation per stratum, not on the aggregate. Builds on GO1B1-01.
+GO1B1-02 — Judge an agent on its weakest group, not its average. Builds on GO1B1-01.
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

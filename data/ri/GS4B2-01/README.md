@@ -1,7 +1,7 @@
 # Reference Implementation — GS4B2-01
 
 ## 1. principle_id
-GS4B2-01 — Put every user input through a guardrail before it reaches the model. Every path that places user-influenced text into a foundation-model prompt routes it through an input guardrail (prompt-injection + prompt-extraction screening) before the call, declares prompt-size and request-rate limits, and declares an on_trip action. A pre-merge AST lint forbids passing raw user input to a model call that bypasses the input-guardrail wrapper. Input-side mirror of GS2B1-01. (Option A — declared-and-routed.)
+GS4B2-01 — Screen user input before it reaches the model. Every path that places user-influenced text into a foundation-model prompt routes it through an input guardrail (prompt-injection + prompt-extraction screening) before the call, declares prompt-size and request-rate limits, and declares an on_trip action. A pre-merge AST lint forbids passing raw user input to a model call that bypasses the input-guardrail wrapper. Input-side mirror of GS2B1-01. (Option A — declared-and-routed.)
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

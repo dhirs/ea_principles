@@ -1,7 +1,7 @@
 # Reference Implementation — GC4B1-01
 
 ## 1. principle_id
-GC4B1-01 — Use the smallest embedding vector that still retrieves well. Every vector store declares its embedding model, the vector dimension it embeds at, and the retrieval-quality result that justified that dimension; a pre-merge gate fails the build when the declaration is missing, when the deployed index dimension does not match the declared one, or when the dimension is raised without a recorded cost/quality rationale.
+GC4B1-01 — Use no more embedding dimensions than retrieval needs. Every vector store declares its embedding model, the vector dimension it embeds at, and the retrieval-quality result that justified that dimension; a pre-merge gate fails the build when the declaration is missing, when the deployed index dimension does not match the declared one, or when the dimension is raised without a recorded cost/quality rationale.
 
 This RI is built on **Option A (declared-and-verified, config-derivable)** — the principle's mandated spine. Option B (measured-from-retrieval-eval) is documented at the end as an alternative a workload may adopt **in addition to** Option A; it is not a substitute for the Option A gate.
 

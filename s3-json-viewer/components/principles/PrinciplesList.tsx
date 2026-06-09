@@ -75,7 +75,7 @@ export function PrinciplesList() {
       {view === "grid" ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((p, i) => {
-            const id = asString(p.principle_id) ?? `idx-${i}`
+            const id = asString(p.standard_id) ?? `idx-${i}`
             const statement = asObject(p.statement)
             const title = asString(statement?.title) ?? "(untitled)"
             const description = asString(statement?.description)
@@ -84,7 +84,7 @@ export function PrinciplesList() {
             return (
               <Link
                 key={id}
-                href={`/principles/${encodeURIComponent(id)}`}
+                href={`/standards/${encodeURIComponent(id)}`}
                 className="group focus-visible:outline-none"
               >
                 <Card className="h-full gap-3 py-4 transition-all hover:ring-foreground/20 hover:shadow-md group-focus-visible:ring-2 group-focus-visible:ring-ring">
@@ -121,12 +121,12 @@ export function PrinciplesList() {
       ) : (
         <ul className="divide-y rounded-lg border bg-card shadow-sm">
           {filtered.map((p, i) => {
-            const id = asString(p.principle_id) ?? `idx-${i}`
+            const id = asString(p.standard_id) ?? `idx-${i}`
             const title = asString(asObject(p.statement)?.title) ?? "(untitled)"
             return (
               <li key={id}>
                 <Link
-                  href={`/principles/${encodeURIComponent(id)}`}
+                  href={`/standards/${encodeURIComponent(id)}`}
                   className="flex items-center gap-2 px-4 py-3 hover:bg-muted transition-colors"
                 >
                   <span className="font-mono text-sm text-muted-foreground">{id}</span>

@@ -1,7 +1,7 @@
 # Reference Implementation — GC3B1-01
 
 ## 1. principle_id
-GC3B1-01 — Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it. Every registered prompt template declares a real `runtime_token_budget.input` ceiling (the field GO3B1-01 already requires); a pre-merge gate computes the template's declared-worst-case input footprint and fails the build when it exceeds the ceiling, and a second gate requires a recorded rationale when a ceiling is raised.
+GC3B1-01 — Keep the cost of every prompt under deliberate control. Every registered prompt template declares a real `runtime_token_budget.input` ceiling (the field GO3B1-01 already requires); a pre-merge gate computes the template's declared-worst-case input footprint and fails the build when it exceeds the ceiling, and a second gate requires a recorded rationale when a ceiling is raised.
 
 This RI is built on **Option A (declared-worst-case, manifest-derivable)** — the principle's mandated spine. Options B (measured-from-fixtures) and C (runtime alarm) are documented at the end as alternative implementations a workload may adopt **in addition to** Option A; they are not a substitute for the Option A gate.
 

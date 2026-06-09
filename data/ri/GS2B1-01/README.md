@@ -1,7 +1,7 @@
 # Reference Implementation — GS2B1-01
 
 ## 1. principle_id
-GS2B1-01 — Put every model response through a guardrail. Every path returning a foundation-model response to a user routes it through a guardrail (content/toxicity, denied topics, PII; grounding for RAG) and declares a fallback for when the guardrail trips. A pre-merge AST lint forbids returning a raw model response that bypasses the guardrail wrapper. (Option A — declared-and-routed.)
+GS2B1-01 — Check a model's response before it reaches a user. Every path returning a foundation-model response to a user routes it through a guardrail (content/toxicity, denied topics, PII; grounding for RAG) and declares a fallback for when the guardrail trips. A pre-merge AST lint forbids returning a raw model response that bypasses the guardrail wrapper. (Option A — declared-and-routed.)
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

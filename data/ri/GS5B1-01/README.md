@@ -1,7 +1,7 @@
 # Reference Implementation — GS5B1-01
 
 ## 1. principle_id
-GS5B1-01 — Put every consequential agent action through a gate before it runs. Every agent draws its tools from a declared manifest (each tool carries `scope` + `class` read/write, and every write declares a `gate` — human confirmation or a deterministic policy check); the agent loop executes tools only through a central wrapper, never by calling a tool directly. Three pre-merge lints enforce declaration completeness, routed execution (no tool reached except through the wrapper), and consequential-implies-gated. Action-side member of the Security guardrail family (input GS4B2-01 / output GS2B1-01 / retrieval GS1B3-01). (Option A — declared-and-routed.)
+GS5B1-01 — Check a consequential action before it happens, not after. Every agent draws its tools from a declared manifest (each tool carries `scope` + `class` read/write, and every write declares a `gate` — human confirmation or a deterministic policy check); the agent loop executes tools only through a central wrapper, never by calling a tool directly. Three pre-merge lints enforce declaration completeness, routed execution (no tool reached except through the wrapper), and consequential-implies-gated. Action-side member of the Security guardrail family (input GS4B2-01 / output GS2B1-01 / retrieval GS1B3-01). (Option A — declared-and-routed.)
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

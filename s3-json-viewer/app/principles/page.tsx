@@ -1,5 +1,5 @@
-import { PrinciplesList } from "@/components/principles/PrinciplesList"
+import { PrincipleStandardsMap } from "@/components/principles/PrincipleStandardsMap"
 
-export default function PrinciplesIndexPage() {
-  return <PrinciplesList />
+export default function PrinciplesMapPage() {
+  return <PrincipleStandardsMap />
 }

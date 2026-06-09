@@ -1,7 +1,7 @@
 # Reference Implementation — GO1B1-06
 
 ## 1. principle_id
-GO1B1-06 — Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships. Pinning + approved-model-catalog membership makes a model change detectable and reviewable; the re-eval-on-change gate makes it impossible to ship a model swap that has not cleared the workload's baseline. Catches the discrete model-substitution failure that per-PR gates (no PR fires) and the GO1B1-04 drift monitor (a clean step-change can land inside one window) both miss.
+GO1B1-06 — Know which model you're running, and re-prove behaviour before you change it. Pinning + approved-model-catalog membership makes a model change detectable and reviewable; the re-eval-on-change gate makes it impossible to ship a model swap that has not cleared the workload's baseline. Catches the discrete model-substitution failure that per-PR gates (no PR fires) and the GO1B1-04 drift monitor (a clean step-change can land inside one window) both miss.
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

@@ -1,7 +1,7 @@
 # Reference Implementation — GO1B1-04
 
 ## 1. principle_id
-GO1B1-04 — Monitor production inputs and model outputs for drift against the deployment baseline. Catches the cumulative-drift failure mode that per-PR CI gates cannot (GO1B1-01/02/03 close the PR-time loop; this closes the post-deploy loop).
+GO1B1-04 — Notice a model drifting before your users do. Catches the cumulative-drift failure mode that per-PR CI gates cannot (GO1B1-01/02/03 close the PR-time loop; this closes the post-deploy loop).
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

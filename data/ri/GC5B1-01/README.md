@@ -1,7 +1,7 @@
 # Reference Implementation — GC5B1-01
 
 ## 1. principle_id
-GC5B1-01 — Give every agent a hard stop. Every agent declares the ceilings that bound a single run (max reasoning/tool-call steps, max wall-clock duration, max per-run token/cost budget) plus the terminal action when a ceiling is hit; the agent is constructed so those ceilings are actually wired in; a pre-merge gate fails the build when the declaration is missing, when the agent entrypoint is constructed without the declared ceilings bound, or when a ceiling is raised without a recorded cost rationale.
+GC5B1-01 — Give every agent a limit it cannot run past. Every agent declares the ceilings that bound a single run (max reasoning/tool-call steps, max wall-clock duration, max per-run token/cost budget) plus the terminal action when a ceiling is hit; the agent is constructed so those ceilings are actually wired in; a pre-merge gate fails the build when the declaration is missing, when the agent entrypoint is constructed without the declared ceilings bound, or when a ceiling is raised without a recorded cost rationale.
 
 This RI is built on **Option A (declared-and-wired, config/code-derivable)** — the principle's mandated spine. Option B (runtime circuit-breaker) is documented at the end as an alternative a workload may adopt **in addition to** Option A; it is not a substitute for the Option A gate.
 

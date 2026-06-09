@@ -1,7 +1,7 @@
 # Reference Implementation — GO1B1-05
 
 ## 1. principle_id
-GO1B1-05 — Refresh the ground-truth harness on a declared cadence to reflect changes in production inputs and usage patterns. Closes the loop with GO1B1-04 (drift detection without refresh discipline produces a permanently-firing alert against a never-updated baseline).
+GO1B1-05 — Keep the yardstick current with how the system is really used. Closes the loop with GO1B1-04 (drift detection without refresh discipline produces a permanently-firing alert against a never-updated baseline).
 
 ## 2. tier_outcome
 **local** → `ownership.tier: project`

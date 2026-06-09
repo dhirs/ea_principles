@@ -35,13 +35,13 @@ export default function Home() {
       <header className="mb-10">
         <h1 className="text-4xl font-black tracking-tight text-foreground">Welcome back</h1>
         <p className="mt-2 text-muted-foreground">
-          A snapshot of the AI principles catalogue.
+          A snapshot of the standards catalogue.
         </p>
       </header>
 
       {error ? (
         <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive">
-          Failed to load principles: {error}
+          Failed to load standards: {error}
         </div>
       ) : !data ? (
         <div className="space-y-4">
@@ -56,7 +56,7 @@ export default function Home() {
         <div className="space-y-8">
           {/* Stat cards */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <StatCard label="Total Principles" value={String(summary.total)} />
+            <StatCard label="Total Standards" value={String(summary.total)} />
             <StatCard label="Pillars" value={String(summary.rows.length)} />
             <StatCard
               label="Last Updated"
@@ -68,10 +68,10 @@ export default function Home() {
           <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                Principles per Pillar
+                Standards per Pillar
               </h2>
               <Link
-                href="/principles"
+                href="/standards"
                 className="text-sm font-medium text-primary hover:underline"
               >
                 View all →
@@ -81,7 +81,7 @@ export default function Home() {
               <thead>
                 <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <th className="px-6 py-3 font-medium">Pillar</th>
-                  <th className="px-6 py-3 font-medium text-right">Principles</th>
+                  <th className="px-6 py-3 font-medium text-right">Standards</th>
                   <th className="hidden px-6 py-3 font-medium sm:table-cell">Share</th>
                 </tr>
               </thead>

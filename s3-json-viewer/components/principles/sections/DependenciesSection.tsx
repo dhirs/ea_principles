@@ -14,12 +14,16 @@ export function DependenciesSection({ node }: { node: unknown }) {
         const id = asString(o?.principle_id)
         const kind = asString(o?.kind)
         const reason = asString(o?.reason)
+        // Dependency refs still carry the bare bp_code body ("GO1B1-01"); the
+        // target node's route id is its standard_id ("ST-GO1B1-01"). Normalise
+        // to the ST- form so the link resolves.
+        const target = id ? `ST-${id.replace(/^(ST|PR)-/, "")}` : null
         return (
           <li key={i} className="rounded-md border border-border p-3 text-sm">
             <div className="flex items-center gap-2">
-              {id ? (
+              {id && target ? (
                 <Link
-                  href={`/principles/${id}`}
+                  href={`/standards/${encodeURIComponent(target)}`}
                   className="font-mono font-medium text-primary hover:underline"
                 >
                   {id}

@@ -8,7 +8,127 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-08 (latest) — GENSEC05-BP01 (Implement least privilege access and permissions boundaries for agentic workflows) PROMOTED → GS5B1-01 (agent action gate); GENSEC05 CLOSED; catalogue now 19
+## 2026-06-09 (latest) — Each node is a STANDARD: `principles` → `standards`, dual `standard_id` / `principle_id`
+
+### Context
+
+Continuing the layering work. With `u_value` / `u_principle` (aspirational), `statement` (abstract rule), and `gates` (enforcement) all in place, the remaining mismatch was the node identity: each node was still called a "principle" and keyed by `principle_id` (GO1B1-01), even though the node is really the enforceable STANDARD. The user reframed: the node is a standard; the principle is what it ladders up to; and one principle should be able to carry several standards.
+
+### Decision — data files only (user-chosen scope)
+
+- Root array `principles` → `standards`; file `principles.json` → `standards.json`.
+- Each node gains a `standard_id` (its own id, `ST-<bp_code>-NN`, e.g. ST-GO1B1-01) at the same level as `principle_id`, and the existing `principle_id` value is re-prefixed to `PR-<bp_code>-NN` (e.g. PR-GO1B1-01). This makes principle→standard one-to-many; the catalogue is currently 1:1.
+- Internal cross-references were LEFT BARE this pass (user-chosen): dependencies[].principle_id values, data/ri/<id>/ folder names, lens_mapping, and historical change_history / explain_prompt text still say `GO1B1-01`. They are now dangling and need a reconciliation pass.
+- The s3-json-viewer app and the S3 object (`ea/principles.json`) were NOT touched.
+
+### What changed
+
+- **`principles.json`** (content) — root key → `standards`; all 19 nodes got `standard_id` (ST-) + re-prefixed `principle_id` (PR-); `format_version` → 1.13 with a meta note.
+- **`principle_schema.json`** — added `standard_id` field; updated `principle_id` field (PR- format, laddering, dangling-ref caveat).
+- **`taxonomy.json`** — added `standard_id` to the field list; added `conventions.standard_id_format`; appended a v1.13 note to `conventions.principle_id_format`.
+
+### Open items (this change)
+
+- **FILE RENAME NOT DONE in-session** — the sandbox blocks shell/file-move ops on the workspace UNC path, so `principles.json` was content-converted in place but NOT physically renamed. Run `mv data/principles.json data/standards.json` (or rename in your file explorer) to finish. The file content is already on the `standards` shape.
+- JSON-parse verification still cannot run in-session — run `python3 -c "import json; json.load(open('data/standards.json'))"` (after the rename) from a terminal.
+- **Dangling references** — dependencies[].principle_id (bare `GO1B1-01`), data/ri/<id>/ folder names, lens_mapping, governance.json related_principle fields, classstrategy.md: decide whether to re-point them at `ST-` (standard) or `PR-` (principle) ids, and whether to rename the dependency field key `principle_id`→`standard_id`. Until then they don't resolve to any node's id.
+- **App / S3** — s3-json-viewer reads the `principles` root + bare ids and the S3 key `ea/principles.json`; the live site will break against the new shape until the frontend, env/key, and the S3 object are updated. Out of scope per the chosen "data files only".
+- The earlier u_value/u_principle and altitude-split open items still stand (frontend rendering, explain_prompt restating old titles, optional rubric extension).
+
+---
+
+## 2026-06-09 — Added `u_value` + `u_principle`: the aspirational value layer above the abstract rule
+
+### Context
+
+Follow-on from the altitude-split entry below. Discussion clarified that the rewritten `statement` titles, while abstract, were still phrased as directives ("Check a consequential action before it happens") — they state the rule, not the *why*. A true principle in the corporate-value sense names a value and an aspirational commitment (the worked reference: "Fairness — We are committed to building AI systems that promote equal opportunity…"). The user wanted that aspirational why-layer captured explicitly, distinct from the abstract rule.
+
+### Decision
+
+Two new optional root fields on every principle, sitting ABOVE `statement`:
+
+- **`u_value`** — the short value name the principle ladders up to (Fairness, Safety, Privacy, Confidentiality, Accountable Agency, Responsible Stewardship, …). Human-facing; deliberately may be shared across principles.
+- **`u_principle`** — the aspirational, why-first principle statement: the reason the rule exists, stated without naming any artefact, gate, or enforcement (e.g. GS5B1-01 "Acting in the world is irreversible, so nothing consequential happens on the model's say-so alone").
+
+Full three-layer model per node now: `u_value` / `u_principle` (aspirational why) → `statement` (abstract rule) → `gates` (the standard / enforcement). The `standard` root field discussed earlier was NOT added this pass — the existing `statement` + `gates` already carry the rule and its enforcement; revisit if a separate prescriptive `standard.title` is still wanted.
+
+### What changed
+
+- **`principles.json`** — `u_value` + `u_principle` added to all 19 nodes (phrasings approved interactively, deliberately non-formulaic — no shared "We are committed to…" stem). `format_version` bumped to 1.12 with a meta note.
+- **`principle_schema.json`** — both fields defined (optional, string) after `principle_id`; `statement` field description updated to "abstract rule" and to point up at `u_value`/`u_principle`.
+- **`taxonomy.json`** — both fields added to the field list; `statement` field description updated to the three-layer framing.
+
+### Open items
+
+- `principles.json` JSON-parse verification still cannot run in-session (sandbox blocks the workspace UNC path) — run `python3 -c "import json; json.load(open('data/principles.json'))"` from a terminal before pushing.
+- Frontend (`s3-json-viewer`) not yet updated — `u_value` / `u_principle` will currently render as a raw-JSON fall-through tab (humanised "U Value" / "U Principle") via the resilience pattern, not crash. Surface them properly in the header / statement area when convenient.
+- No `change_history` bump was added to the 19 nodes for THIS field addition (the abstraction pass already added a 2026-06-09 entry each) — decide whether to add a second per-node entry recording u_value/u_principle, or let the meta note + this log entry stand.
+- Statement rubric not extended to score `u_principle` for why-ness / `u_value` for value-shape — add a check if these fields are to be authored by the pipeline later.
+- `standard` root field deferred (see Decision).
+
+---
+
+## 2026-06-09 — Principle/standard altitude split: statements rewritten to abstract register, gates are the standard
+
+### Context
+
+A walkthrough of the principle-vs-standard distinction surfaced that the catalogue's `statement` titles were written at **standard altitude**, not principle altitude. They were imperative, mechanism-named directives ("Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it", "Route every model call through a registered, versioned prompt template via the central SDK") — must/shall register, naming the artefact and the CI check. By the working definition reached in discussion: a **principle** is the durable why (should/ought, survives a tool change); a **standard** is the concrete, datable, must/named-artefact spec that proves the principle is met. The old titles were standards wearing principle clothing. The old statement rubric actively enforced this — its `is_prescriptive` dimension scored abstract noun-phrase titles as FAIL and rewarded imperative mechanism-naming.
+
+### Decision — rewrite statements to the abstract principle; keep gates as the standard
+
+The user chose (over the non-breaking "add a principle line above each" alternative) to **rewrite all statements to abstract register**, accepting that this is the breaking option and forces the rubric/taxonomy/CLAUDE.md framing to move with it.
+
+Within a principle there are now two explicit altitudes: `statement` = the abstract principle (durable why, names the failure, no mechanism); `gates` = the standard (named artefacts, paths, thresholds, CI checks — the built-against enforcement). No information is lost: the artefact/enforcement detail the statements used to carry already lives in `gates` and `solution.approach`.
+
+### What changed
+
+- **All 19 `statement` titles + descriptions in `principles.json`** rewritten to should/ought register, mechanism-naming stripped. E.g. "Maintain a versioned ground-truth evaluation harness…" → "Prove an agent still behaves before you ship a change to it"; "Give every agent a hard stop" → "Give every agent a limit it cannot run past"; "Put every consequential agent action through a gate before it runs" → "Check a consequential action before it happens, not after". `gates`, `solution`, `problem`, `framework_mappings`, and all other sections are UNCHANGED.
+- **`sections/statement/rubric.json` → v2.** `is_prescriptive` replaced by `is_abstract_principle` (mechanism-naming now FAILS); `derives_from_aws_verbatim` relaxed to `derives_from_aws_intent` (verbatim term-mapping now lives in gates, so the abstract statement need only carry the step's intent); `names_artefact_and_enforcement` replaced by `names_failure_not_mechanism`. Calibration examples and output_contract keys updated; threshold rule (all ≥ 2) unchanged.
+- **`taxonomy.json`** — `statement` field description rewritten (abstract principle, not "built against"); `gates` field description now names it the standard layer.
+- **`data/CLAUDE.md`** — statement-authoring note updated to the new altitude rule; new altitude paragraph added to the "What the catalogue is — the layers" section.
+
+### Open items
+
+- `principles.json` JSON-parse verification could not be run in-session (sandbox blocks the workspace UNC path) — run `python3 -c "import json; json.load(open('data/principles.json'))"` from terminal to confirm clean parse. This is now the ONLY blocking verification gap; the edit volume this pass (19 statements + 19 current_version bumps + 19 appended change entries + rubric/taxonomy/CLAUDE.md) makes the terminal parse-check worth running before push.
+- DONE — `change_history` bumps added for all 19 principles: each got a PATCH bump (current_version .Z+1) and an appended 2026-06-09 entry recording the abstraction; scope/enforcement unchanged so PATCH (not MINOR) was used.
+- DONE — all 19 reference implementations under `data/ri/` had their line-4 title reference updated to the new abstract title (mechanism prose after the title left intact, since the RI is the standard/implementation layer).
+- NOT done (deliberately deferred) — each principle's `explain_prompt.system` still restates the prior prescriptive title and recaps the old mandate language under "THE PRINCIPLE". Left unchanged this pass (19 long compiled prompts; rewriting them is a separate, higher-risk task). Each new change_history entry flags this inline. Decide whether to recompile explain_prompts to the abstract title later.
+- Prior open items stand (GS5B1-01 JSON-parse verify + P24 frontend render; GENSEC06; GENOPS02 / GENOPS05; GENCOST03-BP02; GENREL; AIGP sweeps; GO3B1-01 context-boundary template-lint follow-up).
+
+---
+
+## 2026-06-08 — Framing correction: classify by functional-vs-NFR (the remit), not blast radius; tier is the deploy-location axis
+
+### Context
+
+Working through the Maven workshop failure slides (PII in trace logs, model drift via a floating `-latest` alias, an ungated agent action) surfaced that the "project-level vs enterprise-level" labelling on the slides — anchored on **blast radius / impact** — does not hold. "Blast radius" describes consequence reach, which comes apart from the question the catalogue actually answers. A GDPR PII leak is contained to one workload's bucket (looks project-level) yet carries enterprise-scale consequences (corporate fine) and warrants an enterprise-tier control. Blast radius is the wrong anchor.
+
+The cleaner anchor, surfaced by the user: **functional vs non-functional.** A project owns its functional requirements — it specs them, unit-tests them, and won't ship them broken. What projects systematically do NOT test is the cross-cutting NFRs (observability, model-version discipline, input/output guardrails, action authorization, retrieval authorization, cost). Those — identical across every workload and neglected until audit/incident time — are the scaffolding the enterprise architecture function owns. That is the entire remit of this catalogue.
+
+### Decision — two clarifications, no principle or rubric mechanics change
+
+1. **Remit anchor = functional vs non-functional.** The catalogue is a set of enforceable AI NFRs. Functional correctness is the project's job and is deliberately out of scope; the principles already encode this in their scope boundaries — GS2B1-01 punts backend-correctness to app-side business logic, GS5B1-01 gates the action rather than the model's reasoning. Use functional-vs-NFR to decide whether something is a principle at all.
+
+2. **Tier = deploy-location axis, subordinate to the remit.** `ownership.tier` (project vs enterprise) answers only *where* an NFR's enforcement is built — an in-repo lint the project runs, or a central platform service — per the tier rubric (D1 legal exposure / D2 repeatability). It does NOT classify the failure's severity or blast radius and must never be used as an impact label.
+
+**Deprecated:** "blast radius" / "project-level vs enterprise-level impact" as a failure classifier. It conflates consequence reach with both the remit and the tier axes.
+
+### What changes / does not change
+
+- **No change** to any principle in `principles.json` (all 19 are already NFRs by construction), to the tier-rubric mechanics, or to any scope boundary. The reframe validates the existing work rather than altering it.
+- **Added** the framing to `data/CLAUDE.md` (new "What the catalogue is — the layers" section) and a clarifying sentence to the CLAUDE.md tier paragraph. The section makes the model three layers: (1) **remit** — functional vs NFR (is it a principle at all); (2) **tier** — project vs enterprise (where the enforcement is built); (3) **priority** — what order an adopting org builds them, via the existing per-org Principle Prioritization Tool (`principle_prioritization_tool.md`), the strict lexicographic ladder **Legal/Compliance > Customer Experience > Cost**. Layers 1–2 are catalogue-intrinsic; layer 3 is a downstream per-org tool, not catalogue metadata.
+
+**Org Readiness dropped from the ladder (2026-06-08).** The prioritization ladder was reduced from four axes to three (Legal > CX > Cost). "Org Readiness" was removed: as used it conflated (a) cost-to-adopt / dev-behaviour-change, which is near-universal across EA principles and is a feasibility input not a cost-of-absence one, and (b) operational toil, which reduces to Cost. The residual sliver (strategic enablement — can't reach a committed roadmap/market) was too thin to justify a rung. The three surviving axes are three distinct harm-bearers of absence: regulator (Legal), customer (CX), the business's money (Cost). Cost-to-build / adoption effort now lives only in `ownership.tier` + `maturity_level` (feasibility/sequencing), never on the ladder. `principle_prioritization_tool.md` rewritten accordingly.
+- Workshop material is being reframed by the user at their end (drop the blast-radius slides; re-anchor on functional-vs-NFR).
+
+### Open items
+
+- Optional: mirror the two-axis note into `taxonomy.json` conventions next time that file is edited.
+- Prior open items stand (GS5B1-01 JSON-parse verify + P24 frontend render; GENSEC06; GENOPS02 / GENOPS05; GENCOST03-BP02; GENREL; AIGP sweeps; GO3B1-01 context-boundary template-lint follow-up).
+
+---
+
+## 2026-06-08 — GENSEC05-BP01 (Implement least privilege access and permissions boundaries for agentic workflows) PROMOTED → GS5B1-01 (agent action gate); GENSEC05 CLOSED; catalogue now 19
 
 ### Context
 

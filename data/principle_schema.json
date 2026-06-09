@@ -13,11 +13,30 @@
 
     "fields": [
       {
+        "name": "standard_id",
+        "type": "string",
+        "required": true,
+        "format": "ST-<bp_code>-NN",
+        "description": "The node's own stable identifier. As of schema v1.13 (2026-06-09) each node is a STANDARD, identified `ST-<bp_code>-NN` (e.g. ST-GO1B1-01). `bp_code` is a 5-character compression of the AWS pillar / question / BP triple and `NN` is a two-digit sequential counter, consecutive within a BP with no gaps. See conventions.standard_id_format in taxonomy.json."
+      },
+      {
         "name": "principle_id",
         "type": "string",
         "required": true,
-        "format": "<bp_code>-NN",
-        "description": "Stable ID anchored to an AWS BP. Format: `<bp_code>-NN` where `bp_code` is a 5-character compression of the AWS pillar / question / BP triple and `NN` is a two-digit sequential counter — the Nth principle promoted from that BP, in promotion order. IDs within a BP are consecutive with no gaps. See conventions.principle_id_format in taxonomy.json."
+        "format": "PR-<bp_code>-NN",
+        "description": "The principle this standard ladders up to: `PR-<bp_code>-NN` (e.g. PR-GO1B1-01). One principle may carry several standards (one-to-many), so multiple nodes can share a `principle_id`; the mapping is currently 1:1. Re-prefixed from the bare `<bp_code>-NN` form in schema v1.13 (2026-06-09). NOTE: dependencies[].principle_id and the data/ri/<id>/ folder names still use the bare legacy id pending a reconciliation pass. See conventions.principle_id_format in taxonomy.json."
+      },
+      {
+        "name": "u_value",
+        "type": "string",
+        "required": false,
+        "description": "The short value name this principle ladders up to — e.g. Fairness, Safety, Privacy, Confidentiality, Accountable Agency, Responsible Stewardship. The aspirational, human-facing label sitting above the rule; multiple principles may share one value. Added schema v1.12 (2026-06-09)."
+      },
+      {
+        "name": "u_principle",
+        "type": "string",
+        "required": false,
+        "description": "The aspirational, why-first principle statement — a durable value expressed as the reason the rule exists, stated WITHOUT naming any artefact, gate, or enforcement mechanism (e.g. 'Acting in the world is irreversible, so nothing consequential happens on the model's say-so alone'). Sits ABOVE `statement` (the abstract rule) and `gates` (the standard / enforcement). Added schema v1.12 (2026-06-09)."
       },
       {
         "name": "pillar",
@@ -95,7 +114,7 @@
         "type": "object",
         "required": true,
         "structure": "{ title: string, description: string }",
-        "description": "The rule itself, written to be built against, not aspirational."
+        "description": "The abstract rule — the durable 'what must hold', written at should/ought altitude without naming the enforcing artefact (that lives in `gates`). As of the 2026-06-09 altitude split this is no longer the aspirational layer: the value name and aspirational why-statement live in `u_value` / `u_principle` above it, and the concrete enforcement lives in `gates` below it."
       },
       {
         "name": "problem",

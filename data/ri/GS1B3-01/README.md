@@ -1,7 +1,7 @@
 # Reference Implementation — GS1B3-01
 
 ## 1. principle_id
-GS1B3-01 — Never retrieve what the user isn't allowed to see. Every retrieval from a shared (multi-tenant or mixed-authorization) vector store is scoped to the requesting user's permissions: documents are labelled with access-control metadata at ingestion, and all retrieval routes through a central retrieval SDK that resolves the caller's entitlements and applies an identity pre-filter. Direct vector-store client calls against a multi-tenant store are prohibited. (Option A — labelled-and-routed.)
+GS1B3-01 — Never let a user retrieve what they aren't allowed to see. Every retrieval from a shared (multi-tenant or mixed-authorization) vector store is scoped to the requesting user's permissions: documents are labelled with access-control metadata at ingestion, and all retrieval routes through a central retrieval SDK that resolves the caller's entitlements and applies an identity pre-filter. Direct vector-store client calls against a multi-tenant store are prohibited. (Option A — labelled-and-routed.)
 
 ## 2. tier_outcome
 **mandatory_centralise** → `ownership.tier: enterprise`

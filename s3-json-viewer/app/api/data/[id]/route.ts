@@ -6,8 +6,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const { id } = await params
   try {
     const data = await getCachedPrinciples()
-    const principles = (asArray(data?.principles) ?? []) as Principle[]
-    const principle = principles.find((p) => asString(p.principle_id) === id)
+    const principles = (asArray(data?.standards) ?? []) as Principle[]
+    const principle = principles.find((p) => asString(p.standard_id) === id)
     if (!principle) {
       return NextResponse.json({ error: `No principle with id ${id}` }, { status: 404 })
     }

@@ -26,15 +26,18 @@ export function SolutionSection({
   const approach = asString(o?.approach)
   const benefits = asArray(o?.key_benefits)?.filter((x): x is string => typeof x === "string") ?? []
 
-  const principleId = asString(principle?.principle_id)
+  // An RI implements a *standard*, so key the RI link off standard_id (unique
+  // even when a principle later carries several standards). The /api/ri route
+  // strips the ST- prefix to find the bare RI dir.
+  const standardId = asString(principle?.standard_id)
   const [hasRi, setHasRi] = useState(false)
 
   // Show the Reference Implementation link only when a README actually exists
-  // for this principle id (HEAD request against the RI route).
+  // for this standard id (HEAD request against the RI route).
   useEffect(() => {
-    if (!principleId) return
+    if (!standardId) return
     let active = true
-    fetch(`/api/ri/${encodeURIComponent(principleId)}`, { method: "HEAD" })
+    fetch(`/api/ri/${encodeURIComponent(standardId)}`, { method: "HEAD" })
       .then((res) => {
         if (active) setHasRi(res.ok)
       })
@@ -44,7 +47,7 @@ export function SolutionSection({
     return () => {
       active = false
     }
-  }, [principleId])
+  }, [standardId])
 
   if (!approach && benefits.length === 0 && !hasRi) return null
 
@@ -71,10 +74,10 @@ export function SolutionSection({
           </ul>
         </div>
       )}
-      {hasRi && principleId && (
+      {hasRi && standardId && (
         <div className="pt-2">
           <Link
-            href={`/principles/${encodeURIComponent(principleId)}/reference`}
+            href={`/standards/${encodeURIComponent(standardId)}/reference`}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-4 hover:opacity-80"
           >
             Reference Implementation

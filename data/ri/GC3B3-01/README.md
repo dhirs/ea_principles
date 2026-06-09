@@ -1,7 +1,7 @@
 # Reference Implementation — GC3B3-01
 
 ## 1. principle_id
-GC3B3-01 — Mark the cacheable static prefix of every reused prompt template and fail builds that leave a cache-eligible template uncached or mis-declare its prefix size. Every registered prompt template declares its static-prefix token count and a cache decision (checkpoint or opt-out) in the GO3B1-01 manifest; a pre-merge gate fails the build when the count is undeclared, when a cache-eligible template (static prefix ≥ the model's minimum cache size) is neither cached nor opted out, or when the declared prefix count diverges from the value CI recomputes with the model's own tokenizer.
+GC3B3-01 — Don't pay twice for the same prompt content. Every registered prompt template declares its static-prefix token count and a cache decision (checkpoint or opt-out) in the GO3B1-01 manifest; a pre-merge gate fails the build when the count is undeclared, when a cache-eligible template (static prefix ≥ the model's minimum cache size) is neither cached nor opted out, or when the declared prefix count diverges from the value CI recomputes with the model's own tokenizer.
 
 This RI is built on **Option A (declared-and-recomputed, manifest-derivable)** — the principle's mandated spine. **Option C (runtime telemetry alarm on cache hit-rate)** is documented at the end as an alternative implementation a workload MAY adopt **in addition to** Option A; it is not a substitute for the Option A gate.
 

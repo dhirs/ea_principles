@@ -18,7 +18,10 @@ export type SectionEntry = {
 
 // Top-level keys consumed by the HeaderBar — skipped in the tab strip.
 export const HEADER_KEYS = new Set([
+  "standard_id",
   "principle_id",
+  "u_value",
+  "u_principle",
   "pillar",
   "focus_area",
   "impact_level",

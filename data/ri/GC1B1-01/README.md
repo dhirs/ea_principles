@@ -1,7 +1,7 @@
 # Reference Implementation — GC1B1-01
 
 ## 1. principle_id
-GC1B1-01 — Maintain a versioned model-selection decision record in the workload repository declaring requirements, candidate models, chosen model, and cost-aware rationale.
+GC1B1-01 — Choose a model deliberately, and record why.
 
 ## 2. tier_outcome
 **local** → `ownership.tier: project`

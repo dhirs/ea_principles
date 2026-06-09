@@ -1,7 +1,7 @@
 # Reference Implementation — GO3B2-01
 
 ## 1. principle_id
-GO3B2-01 — Centralised Observability SDK for AI Workloads. All model calls, tool invocations, and retrieval queries emit through a single enterprise SDK with a central-owned header and a project-owned payload; direct calls to observability backends are prohibited.
+GO3B2-01 — Make every AI workload observable through one consistent channel. All model calls, tool invocations, and retrieval queries emit through a single enterprise SDK with a central-owned header and a project-owned payload; direct calls to observability backends are prohibited.
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`

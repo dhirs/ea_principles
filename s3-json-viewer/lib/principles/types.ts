@@ -1,4 +1,5 @@
 export type Principle = Record<string, unknown> & {
+  standard_id?: string
   principle_id?: string
 }
 

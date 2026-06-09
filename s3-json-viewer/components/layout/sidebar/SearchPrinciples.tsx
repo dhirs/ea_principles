@@ -18,7 +18,7 @@ export function SearchPrinciples() {
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search principles…"
+        placeholder="Search standards…"
         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
       />
     </div>

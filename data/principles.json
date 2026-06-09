@@ -2,7 +2,7 @@
   "meta": {
     "title": "Enterprise AI Architecture Principles (AWS GenAI Lens — Aligned Catalogue)",
     "description": "Concrete, enforceable principles that concretise AWS Well-Architected Generative AI Lens best practices. Each principle names who validates it, when it is checked, and what artefacts the validator inspects. Catalogue rebuilt from scratch on the v1.5 schema; mappings are fetched from the live AWS Lens, not inherited from the legacy catalogue.",
-    "format_version": "1.11",
+    "format_version": "1.13",
     "schema_reference": "taxonomy.json",
     "aws_lens_publication_date": "2025-11-19",
     "catalogue_started": "2026-05-26",
@@ -19,12 +19,17 @@
       "Principle ID rename (2026-05-27): the four principles were renamed from the legacy `PRIN_NNN` format to the new BP-anchored, sequential format `<bp_code>-NN`. PRIN_001 → GO1B1-01, PRIN_002 → GO1B1-02, PRIN_003 → GO1B1-03, PRIN_004 → GO1B1-04. Each principle received a PATCH bump on its change_history. The `bp_code` compresses the AWS pillar / question / BP triple to 5 characters (GO = GenOps, 1 = Q1, B = BP marker, 1 = BP1); the `NN` suffix is a sequential counter — the Nth principle promoted from that BP, in promotion order. IDs within a BP are consecutive (01, 02, 03, …) with no gaps, regardless of which AWS implementation steps were not_promoted. The AWS step a principle concretises is recorded in framework_mappings.aws.references[0].implementation_step.number rather than encoded in the ID suffix. The taxonomy convention is at taxonomy.json conventions.principle_id_format; the rename rationale is in the 2026-05-27 entry in decisions.md. Historical references in append-only journals (decisions.md prose, prior change_history summaries) were intentionally left under the legacy IDs; only live cross-references were updated.",
       "Schema v1.9 (2026-05-29) added a required root-level `serving_paradigm` field on every principle — a criticality map (same shape as `applicability` v1.7) keyed by foundation-model serving paradigm. Enum values: api_on_demand / api_provisioned / self_hosted_managed / self_hosted_unmanaged. Surfaced during the GENCOST02-BP02 walkthrough where the candidate GC2B2-01 principle (right-size hosting infrastructure) is intrinsically self-hosting-only — applicability could not express the narrowing because it is keyed by AI pattern (llm/rag/agentic/ml), not by hosting model. All six pre-existing principles (GO1B1-01..05 + GC1B1-01) were retrofitted with `{ api_on_demand: mandatory, api_provisioned: mandatory, self_hosted_managed: mandatory, self_hosted_unmanaged: mandatory }` — every existing principle's discipline (eval harness, stratification, metric encapsulation, drift monitor, refresh cadence, model-selection ADR) applies regardless of how the model is served. Each principle received a MINOR change_history bump. See taxonomy.json conventions.choosing_serving_paradigm and the 2026-05-29 schema v1.9 entry in decisions.md for the rationale.",
       "Schema v1.10 (2026-06-05) added a required root-level `dependencies` array on every principle (the catalogue substrate-ordering graph); see taxonomy.json conventions.dependencies and the 2026-06-05 decisions.md entry. (This note backfills the meta record, which had not been updated for v1.10.)",
-      "Schema v1.11 (2026-06-06) added a required root-level `references` array on every principle — real-world evidence links, each `{ url, title, source, note, date }`, documenting the principle's failure mode actually occurring in industry (the external, citable counterpart to the synthetic `problem.examples`). All thirteen principles were retrofitted with a MINOR change_history bump: GC3B1-01 populated with five discovered links (Adaline, Opsmeter, ProjectDiscovery, Cycles, Redis) on the unenforced-prompt-budget cost-drift failure; the other twelve were then populated in a follow-on user-vetted batch web-search the same session (1–2 links each), so all thirteen now carry at least one real-world reference (GO1B1-03's metric-as-code mapping is flagged in-entry as the one deliberately looser fit). References render as hyperlinks in the runtime UI. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+      "Schema v1.11 (2026-06-06) added a required root-level `references` array on every principle — real-world evidence links, each `{ url, title, source, note, date }`, documenting the principle's failure mode actually occurring in industry (the external, citable counterpart to the synthetic `problem.examples`). All thirteen principles were retrofitted with a MINOR change_history bump: GC3B1-01 populated with five discovered links (Adaline, Opsmeter, ProjectDiscovery, Cycles, Redis) on the unenforced-prompt-budget cost-drift failure; the other twelve were then populated in a follow-on user-vetted batch web-search the same session (1–2 links each), so all thirteen now carry at least one real-world reference (GO1B1-03's metric-as-code mapping is flagged in-entry as the one deliberately looser fit). References render as hyperlinks in the runtime UI. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md.",
+      "Schema v1.12 (2026-06-09) added two optional root-level fields on every principle: `u_value` (the short value the principle ladders up to — Fairness, Safety, Privacy, Accountable Agency, etc.) and `u_principle` (the aspirational, why-first principle statement, e.g. 'Acting in the world is irreversible, so nothing consequential happens on the model's say-so alone'). These sit ABOVE the `statement` (the abstract rule) and `gates` (the standard / enforcement): the 2026-06-09 altitude split made `statement` abstract, and this adds the value + aspirational-why layer on top. All 19 principles populated. See the 2026-06-09 u_value/u_principle entry in decisions.md.",
+      "Schema v1.13 (2026-06-09) reframed each node as a STANDARD, not a principle. The root array was renamed `principles` -> `standards`, and the file is being renamed `principles.json` -> `standards.json`. Each node now carries TWO ids at the same level: `standard_id` (the node's own identifier, `ST-<bp_code>-NN`, e.g. ST-GO1B1-01) and `principle_id` (the principle it ladders up to, now re-prefixed `PR-<bp_code>-NN`, e.g. PR-GO1B1-01). This makes the principle->standard relationship one-to-many: several standards can share one `principle_id`. The mapping is currently 1:1 (each principle has exactly one standard). DELIBERATELY NOT updated this pass (logged as follow-ups in decisions.md): internal cross-references still use the bare legacy id (dependencies[].principle_id values like 'GO1B1-01', the data/ri/<id>/ folder names, lens_mapping, and historical change_history / explain_prompt text) — these are now dangling and need a separate reconciliation pass; and the s3-json-viewer app + the S3 object key (ea/principles.json) are untouched, so the live site still expects the old shape."
     ]
   },
-  "principles": [
+  "standards": [
     {
-      "principle_id": "GO1B1-01",
+      "standard_id": "ST-GO1B1-01",
+      "principle_id": "PR-GO1B1-01",
+      "u_value": "Proven Reliability",
+      "u_principle": "A change should never reach the people who depend on a system before its behaviour is understood and tested.",
       "references": [
         { "url": "https://arxiv.org/pdf/2603.27355", "title": "LLM Readiness Harness: Evaluation, Observability, and CI Gates for LLM/RAG Applications", "source": "arXiv", "note": "Argues that without a systematic evaluation harness wired to CI gates, LLM/RAG quality checks stay ad hoc and silent regressions ship to production — the gap this principle's periodic-evaluation harness closes.", "date": "2026-06-06" }
       ],
@@ -74,8 +79,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Maintain a versioned ground-truth evaluation harness for agent decisions in the workload repository",
-        "description": "Each agent workload must establish a ground-truth evaluation harness, committed to the workload repository, with each entry structured to capture:\n\n- the input payload,\n- the expected decision, and\n- the expected evidence trace.\n\nThe harness must include diverse representation of production scenarios — personas, use cases, and input variations the workload sees in real use."
+        "title": "Prove an agent still behaves before you ship a change to it",
+        "description": "A change to an agent should not reach production until it has been checked against known-good behaviour.\n\nThe team should be able to repeat that check on every change, rather than rely on one person's memory of what good looks like."
       },
       "problem": {
         "description": "Without a version-controlled ground-truth harness that can be re-run on every code or configuration change to the agent, changes ship to production with unknown regression risk. There is no mechanical way to block a bad migration — only post-deployment discovery via customer impact.\n\nThe harness must be part of the workload repository so every developer can run it, every CI build invokes it, and no architect's local notebook becomes a single point of failure.",
@@ -113,7 +118,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.8.0",
+        "current_version": "1.8.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -186,6 +191,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with one real-world evidence link — the 'LLM Readiness Harness' arXiv paper, on ad-hoc evals/CI gates producing silent regressions. Entry is {url, title, source, note, date}; renders as a hyperlink in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.8.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -198,7 +209,10 @@
       }
     },
     {
-      "principle_id": "GO1B1-02",
+      "standard_id": "ST-GO1B1-02",
+      "principle_id": "PR-GO1B1-02",
+      "u_value": "Fairness",
+      "u_principle": "A system is judged by how it treats its weakest group, not its average user.",
       "references": [
         { "url": "https://arxiv.org/html/2605.15208", "title": "Quantization Undoes Alignment: Bias Emergence in Compressed LLMs", "source": "arXiv", "note": "Shows aggregate accuracy holding steady while fairness-critical subgroup degradation emerges — the hidden stratification that only per-stratum evaluation surfaces, exactly what this principle mandates.", "date": "2026-06-06" }
       ],
@@ -250,8 +264,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Stratify the ground-truth harness and gate evaluation per stratum, not on the aggregate",
-        "description": "The ground-truth evaluation harness established under GO1B1-01 must declare its strata as a versioned artefact in the workload repository, with a minimum example count per stratum and a per-stratum metric threshold.\n\nThe harness must emit per-stratum metrics on every run, and the CI gate must fail when any stratum is missing the minimum example count or fails its per-stratum threshold — not only when an aggregate pass-rate falls below a global threshold."
+        "title": "Judge an agent on its weakest group, not its average",
+        "description": "Aggregate quality hides failures in specific slices of users or cases.\n\nAn agent's quality should be judged per meaningful group, so a regression in one slice cannot be masked by strength elsewhere."
       },
       "problem": {
         "description": "Without stratified composition and per-stratum gating, an aggregate pass-rate can sit at green while a small but business-critical subset of agent behaviour silently regresses. The failure surfaces in production, not in CI, because the eval set was never deliberately constructed to test the minority class with statistical weight.\n\nStrata for an agentic workload are domain-specific (decision branches, tool-call paths, persona segments, policy carve-outs) and cannot be inferred mechanically — they must be declared.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -290,7 +304,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.6.0",
+        "current_version": "1.6.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -345,6 +359,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with one real-world evidence link — arXiv 'Quantization Undoes Alignment' (aggregate accuracy holds while fairness-critical subgroup degradation emerges; hidden stratification). Entry is {url, title, source, note, date}; renders as a hyperlink in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.6.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -357,7 +377,10 @@
       }
     },
     {
-      "principle_id": "GO1B1-03",
+      "standard_id": "ST-GO1B1-03",
+      "principle_id": "PR-GO1B1-03",
+      "u_value": "Sound Measurement",
+      "u_principle": "What \"good\" means is fixed and inspectable, so a passing score means the same thing every time.",
       "references": [
         { "url": "https://www.braintrust.dev/articles/llm-evaluation-metrics-guide", "title": "LLM Evaluation Metrics: Full Guide to Evals and Key Metrics", "source": "Braintrust", "note": "Notes that LLM-as-judge scorers are often inconsistent and non-reproducible unless scorer versions are tracked alongside prompts — the reproducibility gap this principle's metric-as-code encapsulation addresses. (Loose mapping — weaker evidence than the catalogue's other references.)", "date": "2026-06-06" }
       ],
@@ -409,8 +432,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Implement every evaluation metric as a named, encapsulated code unit",
-        "description": "Each evaluation metric used by the workload's harness must be implemented as a named, encapsulated unit of code — a class or function with a stable interface — in a known directory of the workload repository (convention `eval/metrics/`).\n\nThe evaluation runner imports metrics from this directory and contains no inline scoring logic. Each metric is independently unit-testable."
+        "title": "Measure quality the same way every time",
+        "description": "How an agent's quality is scored should be stable, inspectable, and testable on its own.\n\nWhen scoring is redefined ad hoc each run, a passing score means something different from one evaluation to the next."
       },
       "problem": {
         "description": "Without encapsulation, evaluation metrics live as inline expressions in eval scripts or notebooks, scattered across files, or duplicated across projects. The same metric ends up with slightly different definitions in different places.\n\nThis degrades the eval in compounding ways:\n\n- Metric changes happen invisibly because they are buried in eval-runner diffs and cannot be reviewed cleanly.\n- Metrics cannot be unit-tested on their own because they are not callable units.\n- Reuse across projects becomes copy-paste, and the copies subsequently diverge.\n\nThe team eventually cannot trust its own eval numbers — two runs of the 'same metric' produce different scores, an onboarding hire cannot tell what `tone_score` actually measures, and a senior reviewer cannot approve a metric change because the diff is hidden inside a 400-line runner-file refactor.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -450,7 +473,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "2.3.0",
+        "current_version": "2.3.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -505,6 +528,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with one real-world evidence link — Braintrust's LLM evaluation-metrics guide (LLM-as-judge scorer inconsistency / reproducibility, mitigated by versioning scorers). Flagged as a deliberately LOOSER mapping than the catalogue's other references; revisit if a tighter metric-as-code account surfaces. Entry is {url, title, source, note, date}; renders as a hyperlink in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "2.3.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -517,7 +546,10 @@
       }
     },
     {
-      "principle_id": "GO1B1-04",
+      "standard_id": "ST-GO1B1-04",
+      "principle_id": "PR-GO1B1-04",
+      "u_value": "Sustained Quality",
+      "u_principle": "Trust earned at launch has to be kept; a model's quality is watched, not assumed.",
       "references": [
         { "url": "https://www.traceloop.com/blog/catching-silent-llm-degradation-how-an-llm-reliability-platform-addresses-model-and-data-drift", "title": "Catching Silent LLM Degradation: Model and Data Drift", "source": "Traceloop", "note": "Describes production LLMs degrading silently while surface metrics stay green — the drift this principle's production-vs-baseline monitoring is built to detect before users do.", "date": "2026-06-06" },
         { "url": "https://stackpulsar.com/blog/llm-model-drift-detection/", "title": "LLM Model Drift Detection 2026", "source": "Stack Pulsar", "note": "Quantifies the failure: '91% of production LLMs experience silent behavioral drift within 90 days', with a 14–18 day lag between degradation onset and the first user complaint.", "date": "2026-06-06" }
@@ -561,8 +593,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Monitor production inputs and model outputs for drift against the deployment baseline",
-        "description": "Each deployed workload must operate a scheduled drift monitor. The monitor compares:\n\n- current model evaluation metrics against the baseline established at deployment, and\n- the distribution of production inputs against the input distribution of the ground-truth harness.\n\nIts cadence and thresholds are declared in `eval/drift/config.yaml`; the monitor emits an alert when either dimension crosses a threshold."
+        "title": "Notice a model drifting before your users do",
+        "description": "A model that passed at deployment can quietly degrade as its inputs and the world around it change.\n\nSomeone should be watching for that drift continuously, rather than learning about it from user complaints."
       },
       "problem": {
         "description": "Without a scheduled drift monitor comparing production outputs and inputs against the deployment baseline, an AI workload's performance can degrade silently over weeks or months.\n\nPer-PR CI gates (GO1B1-01 / GO1B1-02 / GO1B1-03) catch regressions a specific PR introduces, but they cannot catch drift that emerges from shifting production traffic patterns or from compounding small effects in deployed model behaviour.\n\nThe failure typically surfaces only via something external — a quarterly review, a customer escalation, an audit — by which point the model has been silently underperforming for weeks.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -601,7 +633,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.3.0",
+        "current_version": "1.3.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -638,6 +670,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with two real-world evidence links — Traceloop (silent LLM degradation while surface metrics stay green) and Stack Pulsar ('91% of production LLMs drift within 90 days', 14–18 day detection lag). Each entry is {url, title, source, note, date}; references render as hyperlinks in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.3.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -650,7 +688,10 @@
       }
     },
     {
-      "principle_id": "GO1B1-05",
+      "standard_id": "ST-GO1B1-05",
+      "principle_id": "PR-GO1B1-05",
+      "u_value": "Honest Evaluation",
+      "u_principle": "A test is only worth running if it still reflects how the system is actually used.",
       "references": [
         { "url": "https://www.braintrust.dev/articles/llm-evaluation-guide", "title": "LLM Evaluation: Evals, Metrics, and Regression Testing", "source": "Braintrust", "note": "Warns that stale test cases which no longer represent real usage create false confidence, and urges treating ground-truth changes as production risk — the staleness this principle's declared refresh cadence prevents.", "date": "2026-06-06" }
       ],
@@ -703,8 +744,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Refresh the ground-truth harness on a declared cadence to reflect changes in production inputs and usage patterns",
-        "description": "The ground-truth evaluation harness established under GO1B1-01 must be refreshed on a declared cadence so it continues to represent the inputs and usage patterns the workload sees in production. Each refresh adds, updates, or retires scenarios.\n\nThe cadence and any trigger conditions (calendar-based, drift-triggered, or both) are declared in a versioned artefact in the workload repository — the discipline is auditable, not ad-hoc."
+        "title": "Keep the yardstick current with how the system is really used",
+        "description": "An evaluation set frozen at last year's usage gives false confidence.\n\nIt should be kept current on a known cadence, so it keeps reflecting the inputs and behaviour the workload actually sees in production."
       },
       "problem": {
         "description": "Without periodic refresh of the ground-truth harness, the harness drifts from current production reality. The original harness was captured against the inputs and usage patterns the workload saw at deployment; as production shifts — customer behaviour evolves, upstream data changes, edge cases appear — the harness still passes, but it now tests against a workload state that no longer exists. CI shows green; production still breaks.\n\nGO1B1-04's drift monitor may fire, but without a refresh discipline, every new PR continues to be gated against a stale baseline that misses the failure modes current production actually produces.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -743,7 +784,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.3.0",
+        "current_version": "1.3.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -768,6 +809,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with one real-world evidence link — Braintrust's LLM evaluation guide (stale test cases create false confidence; treat ground-truth changes as production risk). Entry is {url, title, source, note, date}; renders as a hyperlink in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.3.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -780,7 +827,10 @@
       }
     },
     {
-      "principle_id": "GO1B1-06",
+      "standard_id": "ST-GO1B1-06",
+      "principle_id": "PR-GO1B1-06",
+      "u_value": "Controlled Change",
+      "u_principle": "A model never moves under a system unnoticed; every change is known and re-proven before it ships.",
       "references": [
         { "url": "https://dev.to/clawgenesis/gpt-51-was-retired-on-march-11-heres-what-broke-in-your-llm-app-1eep", "title": "GPT-5.1 Was Retired on March 11 — Here's What Broke in Your LLM App", "source": "DEV Community", "note": "A provider silently auto-falls-back a retired model alias to a different model — no error, no warning, no version bump, subtle output-format drift — the exact silent model-swap this principle's pin + re-eval-on-change gate catches.", "date": "2026-06-06" },
         { "url": "https://www.digitalocean.com/community/tutorials/model-silent-versioning-problem", "title": "The Silent Versioning Problem in AI Inference", "source": "DigitalOcean", "note": "Documents one endpoint string returning meaningfully different model behaviour over time (e.g. the GPT-4o sycophancy regimes) with no code change on the caller's side — why pinning and re-evaluation on model change are mandatory.", "date": "2026-06-06" }
@@ -829,8 +879,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Pin every model call to an immutable, catalogued version and re-run the evaluation harness before any version change ships",
-        "description": "Every model reference in a workload must resolve to an exact, immutable model version drawn from an approved model catalog — never a floating alias (e.g. a `-latest` pointer) and never a runtime-resolved default.\n\nTwo enforcement points apply:\n\n- A pre-merge gate fails any model reference that is not a catalogued pinned version.\n- Any PR that changes a pinned model identifier must re-run the workload's evaluation harness (GO1B1-01) and clear its baseline bar before it can merge.\n\nThis makes a model change impossible without a reviewed PR and impossible to ship without re-evaluation — so the foundation model cannot silently move under the agent via provider roll-forwards, deprecations, or gateway default upgrades."
+        "title": "Know which model you're running, and re-prove behaviour before you change it",
+        "description": "A model can change underneath a workload without warning, through provider roll-forwards, deprecations, or default upgrades.\n\nWhich version is in use should be a deliberate, explicit choice, and any change to it should be re-checked against known-good behaviour before it ships."
       },
       "problem": {
         "description": "Without pinning model references to immutable versions and gating model changes on re-evaluation, the foundation model can change underneath a workload without anyone deciding it should. A team that calls the model through a floating alias, a provider `-latest` pointer, or a shared-gateway default inherits whatever the provider or platform ships next — a roll-forward, a deprecation-and-migration, a quietly upgraded default.\n\nThe agent's own code, prompts, and tests are untouched, so no PR is opened and no per-PR or drift gate fires; infrastructure dashboards stay green because the model is responding, just differently. The behaviour shifts — tone, verbosity, formatting, refusal rate, a few-shot pattern the prompt relied on — and the first signal is customers, not CI.\n\nThis is distinct from the gradual cumulative drift GO1B1-04 watches for: a model swap is a discrete step-change at a single moment, which a window-to-window drift threshold can miss entirely and which has no per-PR trigger at all.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -870,7 +920,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.2.0",
+        "current_version": "1.2.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -889,6 +939,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with two real-world evidence links — DEV Community 'GPT-5.1 Was Retired on March 11' (silent provider auto-fallback, no version bump, output-format drift) and DigitalOcean 'The Silent Versioning Problem in AI Inference' (one endpoint string, multiple behavioural regimes, no caller code change). Each entry is {url, title, source, note, date}; references render as hyperlinks in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.2.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -901,7 +957,10 @@
       }
     },
     {
-      "principle_id": "GO3B1-01",
+      "standard_id": "ST-GO3B1-01",
+      "principle_id": "PR-GO3B1-01",
+      "u_value": "Traceability",
+      "u_principle": "The instructions that drive a system are owned and accountable, not scattered and forgotten.",
       "references": [
         { "url": "https://agenta.ai/blog/the-definitive-guide-to-prompt-management-systems", "title": "The Definitive Guide to Prompt Management Systems", "source": "Agenta", "note": "Describes prompts hardcoded and scattered across multiple files and repos with no way to track changes or roll back — the fragmentation and silent divergence this principle's central prompt registry eliminates.", "date": "2026-06-06" },
         { "url": "https://arxiv.org/pdf/2509.14404", "title": "A Taxonomy of Prompt Defects in LLM Systems", "source": "arXiv", "note": "Catalogues the defect classes that arise when prompts are unmanaged in production — evidence for governing prompts as registered, versioned, addressable artefacts rather than inline strings.", "date": "2026-06-06" }
@@ -959,8 +1018,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Route every model call through a registered, versioned prompt template via the central SDK",
-        "description": "Every prompt used in production lives as a registered, versioned template in the workload repository, addressable by `template_id`.\n\nThe central LLM SDK refuses inline-string prompts and accepts only `(template_id, variables)` call signatures, making the template registry the single source of truth for prompt content and the substrate every downstream cost / quality / safety gate consumes."
+        "title": "Treat prompts as governed assets, not scattered strings",
+        "description": "Prompts buried inline across the codebase cannot be tracked, reviewed, or rolled back.\n\nThey should be managed as deliberate, versioned assets — a known source of truth the rest of the system can rely on."
       },
       "problem": {
         "description": "Without registered, versioned prompt templates accessed via a central SDK that refuses inline strings, prompt content lives as f-strings scattered across the codebase — invisible as discrete artefacts, untrackable by template identity, and unauditable as anything other than git archaeology over the assembled runtime view.\n\nThe failure compounds because the path of least resistance for any deadline-pressured engineer is the inline call, and once even one workload bypasses the registry, the SDK's contract becomes voluntary across the portfolio rather than mandatory.\n\nEvery downstream gate that would key on template identity — token budgets, PII content review, safety classification, model-routing policies, prompt-drift monitoring — collapses, because there is no addressable thing for the gate to attach to. Versioning becomes git-history reconstruction across unrelated commits rather than a first-class field, making rollback after a bad model upgrade or prompt change a manual reconstruction exercise.\n\nThe central platform team cannot enforce the contract retroactively because the entry point that should refuse non-registered calls has already been permissive — within a release cycle every team builds its own pattern and drift sets in.\n\n(Examples below are illustrative narratives, not documented incidents.)",
@@ -1000,7 +1059,7 @@
         }
       ],
       "change_history": {
-        "current_version": "1.2.0",
+        "current_version": "1.2.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -1019,6 +1078,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with two real-world evidence links — Agenta's prompt-management guide (hardcoded prompts scattered across files/repos, no versioning or rollback) and arXiv 'A Taxonomy of Prompt Defects in LLM Systems'. Each entry is {url, title, source, note, date}; references render as hyperlinks in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.2.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1031,7 +1096,10 @@
       }
     },
     {
-      "principle_id": "GO3B2-01",
+      "standard_id": "ST-GO3B2-01",
+      "principle_id": "PR-GO3B2-01",
+      "u_value": "Observability",
+      "u_principle": "What a system did is never a mystery after the fact.",
       "references": [
         { "url": "https://agenta.ai/blog/the-ai-engineer-s-guide-to-llm-observability-with-opentelemetry", "title": "The AI Engineer's Guide to LLM Observability with OpenTelemetry", "source": "Agenta", "note": "Shows generic telemetry lacks AI-specific context (model, version, token counts, prompt) so agents act without inspectable traces and cannot be debugged or audited — the gap this principle's standardized trace-emission contract fills.", "date": "2026-06-06" }
       ],
@@ -1088,8 +1156,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Centralised Observability SDK for AI Workloads",
-        "description": "All AI workload observability emission — every model call, tool invocation, and retrieval query — must be routed through the enterprise observability SDK.\n\nEach call carries a central-owned header (project_id, workload_pattern, target_backend, plus central enrichment) and a project-owned payload. Direct calls from workload code to any observability backend are prohibited; backends are reached only via the SDK's adapter layer."
+        "title": "Make every AI workload observable through one consistent channel",
+        "description": "When each workload emits telemetry its own way, nothing can be debugged or audited across the estate.\n\nAI observability should flow through one shared, AI-aware path that guarantees consistent context on every call."
       },
       "problem": {
         "description": "Generative AI workloads emit observability data — traces, metrics, logs — that the enterprise needs for cost attribution, incident reconstruction, audit evidence, and cross-team correlation.\n\nWhen each project team picks its own backend, writes its own emit code, and self-defines field names, the resulting fragmentation makes portfolio-level questions unanswerable:\n\n- Cost attribution requires reconciling four price schemes by hand.\n- PII leakage becomes per-team risk rather than a single chokepoint.\n- Incidents that cross team boundaries are reconstructed by timestamp guessing instead of trace IDs.\n- Schema drift between projects silently kills any chance of a cross-project dashboard.\n\nThe failure modes only surface at multi-project scale, and by then the retrofit cost is large.",
@@ -1129,7 +1197,7 @@
         }
       ],
       "change_history": {
-        "current_version": "1.2.0",
+        "current_version": "1.2.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -1148,6 +1216,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with one real-world evidence link — Agenta's LLM-observability-with-OpenTelemetry guide (generic telemetry lacks AI context; untraceable agents can't be debugged or audited). Entry is {url, title, source, note, date}; renders as a hyperlink in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.2.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1160,7 +1234,10 @@
       }
     },
     {
-      "principle_id": "GO3B2-02",
+      "standard_id": "ST-GO3B2-02",
+      "principle_id": "PR-GO3B2-02",
+      "u_value": "Privacy",
+      "u_principle": "Data a system captures stays protected — seen by few, kept no longer than it's needed.",
       "references": [
         { "url": "https://www.gravitee.io/blog/how-to-prevent-pii-leaks-in-ai-systems-automated-data-redaction-for-llm-prompt", "title": "How to Prevent PII Leaks in AI Systems", "source": "Gravitee", "note": "Maps PII flowing into traces and log sinks, putting the trace store in scope for GDPR deletion and access control — the read-side access governance and retention this principle enforces on already-emitted traces.", "date": "2026-06-06" },
         { "url": "https://www.kiteworks.com/cybersecurity-risk-management/prevent-llm-data-leakage-controls/", "title": "Prevent Sensitive Data Leakage with LLMs: Essential Strategies", "source": "Kiteworks", "note": "Argues for WORM/immutable audit-log storage and governed, access-controlled logging of prompts, responses, and callers — the retention-policy and access-policy artefacts this principle mandates.", "date": "2026-06-06" }
@@ -1220,8 +1297,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Govern read access and retention on AI observability traces through a centrally-owned policy",
-        "description": "All AI observability traces emitted via the central SDK (sibling principle GO3B2-01) are governed at read time by a centrally-owned access policy keyed on the trace's compliance_tier, declared as code in the platform repository.\n\n- Retention windows per compliance_tier are likewise declared centrally and enforced through backend lifecycle rules.\n- Project workload IaC may not grant read access on observability backend resources directly — those grants flow exclusively from the central policy.\n- Every read of regulated- or sensitive-tier traces is captured in a read-side audit log made available to the security team."
+        "title": "Traces can hold sensitive data, so govern who reads them and how long they live",
+        "description": "Prompts and responses captured in observability traces may contain personal or confidential data.\n\nWho can read those traces, and how long they are kept, should be governed centrally rather than left to each workload to decide for itself."
       },
       "problem": {
         "description": "AI observability traces stored across multiple backends contain residual sensitive metadata, business-relevant payload contents, and compliance_tier-classified data — none of which should be readable by every engineer with platform access.\n\nWhen read-side access controls are set up per project (team-local IAM grants on each backend) and retention is decided ad-hoc by whoever owns the backend, the post-emission half of the audit trail falls apart. A regulator asking 'show me who accessed PII-tagged trace X over the last 90 days, and prove the trace was deleted within the retention window' walks an evidence path that crosses N team boundaries with no central record.\n\nPer-project access controls drift silently: contractors lose access on one backend but retain it on another; former employees' role bindings outlast their employment; cross-team incident reconstructions stall on backend-by-backend access tickets. Retention windows that should be 30 days for sensitive traces end up at 13 months (vendor default) or indefinite (no lifecycle rule) because nobody owns the lifecycle.\n\nThe failure surfaces at audit time, when retrofit cost is the highest.",
@@ -1261,7 +1338,7 @@
         }
       ],
       "change_history": {
-        "current_version": "1.2.0",
+        "current_version": "1.2.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -1280,6 +1357,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with two real-world evidence links — Gravitee (PII flowing into traces/log sinks; trace store in GDPR deletion/access scope) and Kiteworks (WORM/immutable audit logs; governed, access-controlled logging of prompts and callers). Each entry is {url, title, source, note, date}; references render as hyperlinks in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.2.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1292,7 +1375,10 @@
       }
     },
     {
-      "principle_id": "GC1B1-01",
+      "standard_id": "ST-GC1B1-01",
+      "principle_id": "PR-GC1B1-01",
+      "u_value": "Responsible Stewardship",
+      "u_principle": "What a system costs is a decision someone made on purpose, not a default no one questioned.",
       "references": [
         { "url": "https://www.stackspend.app/resources/blog/gpt-4-vs-gpt-4o-vs-smaller-models-cost-performance", "title": "GPT-5.4 vs Mini vs Smaller Models — Cost and Performance", "source": "StackSpend", "note": "Shows teams default to a premium model when a smaller one clears the quality bar, and recommends escalating only when evaluation proves the cheaper model fails — the right-sizing decision this principle requires recorded as an ADR.", "date": "2026-06-06" }
       ],
@@ -1342,8 +1428,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Maintain a versioned model-selection decision record in the workload repository declaring requirements, candidate models, chosen model, and cost-aware rationale",
-        "description": "Each foundation-model selection — initial choice or replacement — must be captured as a versioned decision record (ADR or equivalent) under the workload repository, naming:\n\n- the minimum performance requirements the model must meet,\n- the candidate models evaluated against those requirements,\n- the chosen model, and\n- the cost-aware rationale tying the choice to the prioritized cost dimensions (hosting paradigm, model size, token cost)."
+        "title": "Choose a model deliberately, and record why",
+        "description": "Model choice should be a reasoned decision against stated requirements and cost, not a default taken unquestioned.\n\nThe reasoning should be written down so the choice can be revisited as requirements and the model landscape change."
       },
       "problem": {
         "description": "Without a versioned model-selection decision record in the workload repository, the choice of foundation model lives in tribal knowledge — the senior engineer who set the workload up, a Slack thread, a notebook that was never committed.\n\nThe failure surfaces not at selection time (the workload runs fine) but at the first exposure event that demands defence of the choice: finance flagging the bill, the original architect leaving, a cheaper model arriving, an audit asking for justification.\n\nAt that point, the team cannot reconstruct what minimum bar was set, what alternatives were evaluated, or what cost-vs-quality trade-off was accepted — every comparison becomes a green-field decision instead of a revisitable one.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -1382,7 +1468,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.3.0",
+        "current_version": "1.3.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -1407,6 +1493,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with one real-world evidence link — StackSpend's GPT-4-vs-smaller-models cost/performance analysis (defaulting to a premium model when a smaller one clears the quality bar; escalate only when evaluation proves it fails). Entry is {url, title, source, note, date}; renders as a hyperlink in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.3.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1419,7 +1511,10 @@
       }
     },
     {
-      "principle_id": "GC2B2-01",
+      "standard_id": "ST-GC2B2-01",
+      "principle_id": "PR-GC2B2-01",
+      "u_value": "Right-Sizing",
+      "u_principle": "A system is built to the work it actually does, not the largest size that felt safe.",
       "references": [
         { "url": "https://venturebeat.com/infrastructure/5-gpu-utilization-the-401-billion-ai-infrastructure-problem-enterprises-cant-keep-ignoring", "title": "Enterprise GPU utilization: why 95% of AI infrastructure spend is wasted", "source": "VentureBeat", "note": "Documents inference GPUs sitting at 20–40% utilization with idle capacity billed at full rate and no signal raised — the overprovisioning this principle's right-sizing baseline and utilization alarms catch.", "date": "2026-06-06" },
         { "url": "https://leanopstech.com/blog/ai-cloud-cost-optimization-gpu-spending-guide-2026/", "title": "AI Cloud Cost Optimization: GPU Spending Guide 2026", "source": "LeanOps", "note": "Reports the average AI team wastes 35–60% of GPU cloud spend, with right-sizing GPU type and scale-to-zero as the fixes — the hosting-infrastructure discipline this principle enforces.", "date": "2026-06-06" }
@@ -1472,8 +1567,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Right-size hosting infrastructure to the workload's demand profile and commit utilization alarms as code",
-        "description": "Each workload that self-hosts a foundation model for inference (or runs on committed managed capacity such as Bedrock Provisioned Throughput) must declare a versioned right-sizing baseline and a versioned set of utilization alarms in the workload repository, both as code.\n\nThe baseline names:\n\n- the target utilization band per resource (GPU / CPU / memory),\n- the instance ceiling,\n- the scheduling and idle policy,\n- the reserved-capacity coverage target as a function of workload age, and\n- the model identifier and quantization precision.\n\nThe alarms fire when production utilization, scheduling discipline, reserved-capacity coverage, or quantization-review cadence drift from the declared baseline. The actual deployed infrastructure must match the declared baseline — divergence requires an explicit ADR, not silent drift."
+        "title": "Size AI infrastructure to real demand, not to the safe maximum",
+        "description": "Over-provisioned hosting quietly wastes large amounts of spend, because the safe default is almost always bigger than the workload needs.\n\nInfrastructure should be matched to the workload's actual demand, and sustained under-use should be visible rather than left to drift unnoticed."
       },
       "problem": {
         "description": "Without utilization alarms committed as code and a right-sizing baseline tied to the workload's observed demand profile, oversized hosting infrastructure runs invisibly — the workload performs correctly, just expensively.\n\nNo per-PR CI gate catches this because nothing in the PR is wrong; the wrong choice was made at first deploy or has drifted since. The only signal is the monthly bill, which arrives 30 days late, lands with finance not engineering, and triggers an audit that takes weeks to land an optimization PR. Meanwhile the workload continues paying the premium.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -1513,7 +1608,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.2.0",
+        "current_version": "1.2.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -1538,6 +1633,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with two real-world evidence links — VentureBeat 'why 95% of AI infrastructure spend is wasted' (inference GPUs at 20–40% utilization, idle capacity billed full rate) and LeanOps GPU-spending guide (35–60% of GPU spend wasted; right-size GPU type + scale-to-zero). Each entry is {url, title, source, note, date}; references render as hyperlinks in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.2.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1550,7 +1651,10 @@
       }
     },
     {
-      "principle_id": "GC3B1-01",
+      "standard_id": "ST-GC3B1-01",
+      "principle_id": "PR-GC3B1-01",
+      "u_value": "Cost Discipline",
+      "u_principle": "What each request costs stays under deliberate control, not left to creep unnoticed.",
       "references": [
         { "url": "https://www.adaline.ai/blog/llm-cost-optimization-token-efficiency-caching-prompt-design", "title": "LLM Cost Optimization: Token Efficiency, Caching, and Prompt Design", "source": "Adaline", "note": "Documents this principle's cumulative-drift failure almost verbatim: a system prompt ballooning from 300 to 1,800 tokens over six months of edits as engineers append edge-case instructions, with no review moment catching the per-call cost growth.", "date": "2026-06-06" },
         { "url": "https://opsmeter.io/blog/token-bloat-silent-cause-of-llm-cost-spikes", "title": "Token bloat: the silent cause of LLM cost spikes", "source": "Opsmeter", "note": "Names the invisibility this principle attacks — 'reliability can stay green while token usage doubles' — attributing spikes to prompt scaffolding, RAG context creep, and tool-output bloat that no per-PR review flags.", "date": "2026-06-06" },
@@ -1606,8 +1710,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it",
-        "description": "Every registered prompt template must declare an input-token ceiling (`runtime_token_budget.input` in the GO3B1-01 manifest) that reflects a real cap, not a placeholder.\n\nA pre-merge gate computes each template's declared-worst-case input footprint — the static scaffolding tokenised with the model's own tokenizer plus the sum of its declared per-variable ceilings (`typical_max`) — and fails the build when that footprint exceeds the declared budget, or when the budget is raised without a recorded cost rationale.\n\nThis converts AWS's aspirational 'reduce the token count' into an auditable ceiling keyed on `template_id`, so prompt-length cost growth is caught at review time instead of surfacing on the inference bill."
+        "title": "Keep the cost of every prompt under deliberate control",
+        "description": "Prompts grow silently as instructions are appended over time, inflating per-call cost with no natural review moment.\n\nEach prompt's cost should be deliberately bounded and watched, so growth is caught early instead of surfacing on the inference bill."
       },
       "problem": {
         "description": "Without an enforced input-token ceiling per prompt template, prompt scaffolding grows unreviewed — an extra few-shot exemplar here, an expanded system instruction there, a widened retrieval-context ceiling — and the cost lands only on the inference bill: thirty days late, attributed to finance rather than engineering, with no review moment that flags 'this template just got 40% more expensive per call.'\n\nGO3B1-01 already requires every template to declare a `runtime_token_budget.input`, but nothing checks that number against the template's actual footprint — it is set once at registration and never enforced, so it drifts into fiction while the prompt underneath it bloats.\n\nThe failure is cumulative: no single PR is wrong, each token addition is locally reasonable, and the aggregate cost regression is invisible to per-PR review and to every other cost gate, because model-selection and hosting right-sizing do not look at prompt length.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -1647,7 +1751,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.2.0",
+        "current_version": "1.2.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -1666,6 +1770,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with five real-world evidence links mapping published industry accounts to this principle's cumulative-drift prompt-cost failure: Adaline (system prompt drifting 300->1,800 tokens over six months of edits), Opsmeter ('reliability stays green while token usage doubles'), ProjectDiscovery (named case — 20K-token agent system prompts / ~60M tokens per task), Cycles (prompt-regression as a standard cost-spike bucket; a 200x token-rate incident), Redis (token-bloat 10x cost jump). Each entry is {url, title, source, note, date}; references render as hyperlinks in the runtime UI. Evidence surfaced during the GC3B1-01 review web search. No change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, maturity_level, dependencies, framework_mappings, evidence, or explain_prompt. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.2.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1678,7 +1788,10 @@
       }
     },
     {
-      "principle_id": "GC3B3-01",
+      "standard_id": "ST-GC3B3-01",
+      "principle_id": "PR-GC3B3-01",
+      "u_value": "No Waste",
+      "u_principle": "The same work is never paid for twice.",
       "references": [
         { "url": "https://medium.com/@mdfadil/prompt-caching-saves-money-until-it-doesnt-8519c470918d", "title": "Prompt Caching Saves Money Until It Doesn't", "source": "Medium", "note": "A bill doubles weeks after caching was 'enabled' because an injected timestamp and reordered JSON tool-schema keys silently broke the static prefix — the silent-break and false-positive cache failures this principle's declare-and-recompute gate is designed to catch.", "date": "2026-06-06" },
         { "url": "https://github.com/openclaw/openclaw/issues/40256", "title": "System prompt section ordering breaks LLM prefix caching for local models", "source": "GitHub", "note": "A concrete bug report of prompt section ordering silently invalidating the cacheable prefix — the mis-declared / broken-prefix case this principle gates against at review time.", "date": "2026-06-06" }
@@ -1732,8 +1845,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Mark the cacheable static prefix of every reused prompt template and fail builds that leave a cache-eligible template uncached or mis-declare its prefix size",
-        "description": "Every registered prompt template must declare, in the GO3B1-01 manifest, the token count of its static prefix — the contiguous fixed leading span of the prompt before the first runtime variable — together with a cache decision.\n\nAny template whose declared static-prefix token count clears its model's minimum cache-checkpoint size must mark a cache checkpoint, so the reused prefix bills at the provider's reduced cached-token rate, or carry a recorded opt-out.\n\nA pre-merge gate fails the build when the static-prefix count is undeclared, when a cache-eligible template is neither cached nor opted out, or when the declared prefix count diverges from the value CI recomputes with the model's own tokenizer.\n\nThis converts AWS's 'implement prompt caching' from an optional console toggle into an enforced, auditable property of every template, so the cheap-by-default savings on large reused prefixes are taken by construction rather than left on the inference bill."
+        "title": "Don't pay twice for the same prompt content",
+        "description": "Reused prompt content can be served from cache at a lower rate, but only when its fixed prefix is recognised as reusable.\n\nCacheable prompts should actually be cached, and broken or mis-declared caching should not slip by unnoticed onto the bill."
       },
       "problem": {
         "description": "Prompt caching bills the stable, reused leading portion of a prompt at a steeply reduced rate (often a fraction of the standard input-token price) once it is marked as a cache checkpoint. Without a discipline that forces eligible templates to be marked, caching is simply never turned on: the workload runs fine, the output is correct, and the only signal that a large fixed prefix is being re-processed and billed at full rate on every call is the inference bill — thirty days late, attributed to finance, absorbed as 'model usage.'\n\nThe discipline is also fragile in two further ways:\n\n- A cacheable prefix silently breaks when a variable is inserted ahead of it.\n- A declared prefix size drifts into fiction when the body changes underneath it or the number is hand-written to pass a review.\n\nNone of these are visible to per-PR review, and no other cost gate looks at prompt-prefix structure — model-selection and hosting right-sizing are blind to it.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -1773,7 +1886,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.1.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -1786,6 +1899,12 @@
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "MINOR. Added required root-level `references` field (schema v1.11, 2026-06-06) and populated it with two real-world evidence links — Medium 'Prompt Caching Saves Money Until It Doesn't' (injected timestamp + reordered JSON keys silently breaking the static prefix; bill doubles) and a GitHub issue on prompt section ordering breaking prefix caching. Each entry is {url, title, source, note, date}; references render as hyperlinks in the runtime UI. No change to any other field. See taxonomy.json conventions.references / references_spec and the 2026-06-06 references entry in decisions.md."
+          },
+          {
+            "version": "1.1.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1798,7 +1917,10 @@
       }
     },
     {
-      "principle_id": "GC4B1-01",
+      "standard_id": "ST-GC4B1-01",
+      "principle_id": "PR-GC4B1-01",
+      "u_value": "Lean by Design",
+      "u_principle": "A system carries no more weight than the job needs.",
       "references": [
         { "url": "https://towardsdatascience.com/649627-2/", "title": "Scaling Vector Search: Comparing Quantization and Matryoshka Embeddings for 80% Cost Reduction", "source": "Towards Data Science", "note": "Documents this principle's cost lever directly — vector-store storage and search cost are linear in embedding dimension, and truncating the dimension (alone or with quantization) cuts infrastructure cost up to 80% while retrieval quality holds, the saving an oversized default leaves on the table.", "date": "2026-06-06" },
         { "url": "https://www.mindstudio.ai/blog/what-is-gemini-embedding-2", "title": "Gemini Embedding 2: Variants, Dimensions, and Use Cases", "source": "MindStudio", "note": "Shows the default-taken-unquestioned failure is avoidable: a current production embedding model can be truncated from 3,072 down to 768 or 256 dimensions without a significant drop in retrieval quality, so taking the 3,072 default sets several times the necessary vector-store cost.", "date": "2026-06-06" }
@@ -1851,8 +1973,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Use the smallest embedding vector that still retrieves well",
-        "description": "Every vector store must declare, next to its index configuration:\n\n- the embedding model it uses,\n- the vector dimension it embeds at, and\n- the retrieval-quality result that justified that dimension.\n\nThe declared dimension must be a deliberate choice — the smallest that clears a recorded retrieval-quality bar — not the embedding model's default taken unquestioned.\n\nA pre-merge gate fails the build when the declaration is missing or incomplete, when the dimension of the actually-deployed index does not match the declared dimension, or when a later change raises the dimension without a recorded cost/quality rationale.\n\nThis turns AWS's 'embed using the smallest vector length' from advice into an enforced, auditable property of every index, so an oversized default cannot silently set vector-store storage and query cost for the life of the index — a cost that is effectively locked in once the index is built, because changing the dimension means re-embedding and re-indexing the entire corpus."
+        "title": "Use no more embedding dimensions than retrieval needs",
+        "description": "Larger embedding vectors cost more to store and query, and that cost is effectively locked in once an index is built.\n\nThe smallest vector that still retrieves well should be a deliberate choice, preferred over the embedding model's default taken unquestioned."
       },
       "problem": {
         "description": "Vector-store storage and query cost scale roughly linearly with embedding dimension, so the dimension chosen at index-build time sets a recurring cost for the life of the index.\n\nThe dominant failure is that nobody chooses it: a team takes whatever dimension the embedding model emits by default (often 1536 or 3072), embeds the whole corpus, builds the index, and ships — and the oversized default silently bills several times the necessary storage and per-query compute, with the only signal a vector-database line item that finance absorbs as infrastructure cost. The choice is then effectively irreversible: re-dimensioning means re-embedding every chunk and rebuilding the index, a multi-week migration nobody funds once the system is live, so the default is locked in.\n\nThe discipline is fragile in two further ways:\n\n- A declared dimension drifts into fiction when the index is built at a different value than the design intended (a default parameter never overridden).\n- A dimension is quietly raised 'to improve quality' with no measurement, tripling cost for a quality gain nobody verified.\n\nNone of these are visible to per-PR review, and no other cost gate looks at index dimension — model-selection and hosting right-sizing are blind to it.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -1892,13 +2014,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENCOST04-BP01 (Reduce vector length on embedded tokens), anchored on implementation step 2 (Embed data using the smallest vector length) with step 1 (Identify the smallest vector length supported by the selected embedding foundation model) absorbed as the gate's input — the smallest-supported dimension is a property the declaration records against, surfaced from the model card rather than hunted manually. First principle under GENCOST04 / GenCost Q4; first principle in the new focus area P53 — Cost-informed Vector Stores (created this session to mirror AWS GENCOST04's verified focus-area title 'Cost-informed vector stores', distinct from P51 Inference Cost Optimization / P52 Cost-aware Prompting / P41 Model Selection & Right-sizing per the one-focus-area-per-AWS-question mapping). 14th principle in the catalogue. BP title and step-2 verbatim_text verified against the live AWS Lens page (fetched 2026-06-06); GENCOST04 question stem approximated from the verified focus-area title pending a question-page verification pass. step_promotion rubric scored 3/3/3/3 (has_enforceable_artefact: declared vector-store record + pre-merge declaration/consistency lint + dimension-inflation governance lint; architecturally_distinct: a cost lever on the VECTOR STORE — storage/index/query — not on generation inference tokens, independent of model choice via Matryoshka/MRL truncatable dimensions, and largely irreversible once indexed, so not absorbed by GC1B1-01's model-selection ADR and disjoint from the P52 prompt-cost siblings; in_bp_scope: GENCOST04 is literally 'Cost-informed vector stores' and BP01 literally 'Reduce vector length on embedded tokens'; not_vendor_menu: verbatim is a generic dimension mandate, the compressed-vector-types aside stripped to a neutral input to the dimension/precision choice). Steps 3 (latency/load testing to verify response quality) and 4 (re-test with larger dimension / modified chunking / different search algorithm) not_promoted: retrieval-quality testing and chunking/search tuning — process advice overlapping the GO1B1 eval-harness family and the GENPERF04 (Vector store optimization) performance focus area, with no commitable pre-merge artefact distinct from the quality-floor number the declaration already records (see lens_mapping.md GENCOST04-BP01 ledger). SOLUTION: Option A (declared-and-verified, config-derivable) is the mandated spine — declare embedding_model + vector_dimension + quality_floor + quality_result + checked_on; a `vectorstore/dimension_check` lint enforces (1) declaration completeness, (2) deployed-index-vs-declared-dimension consistency by parsing the index IaC/config, (3) dimension-inflation governance requiring a recorded rationale for any upward change. The gate enforces that a quality number is RECORDED and the deployed dimension is real and stable; it does NOT re-run retrieval evaluation, which leans on a retrieval-eval harness (GENPERF04 territory). Option B (measured-from-retrieval-eval: gate the chosen dimension against the smallest that clears the quality_floor across a harness sweep) documented within solution.approach as an additive reference implementation a workload MAY adopt; the RI and gates are built on Option A only, keeping gate coverage clean — parallel to GC3B1-01's Option A/B/C treatment. STATEMENT TITLE deliberately kept plain ('Use the smallest embedding vector that still retrieves well') per the user's working-style rule committed to data/CLAUDE.md this session (plain spoken titles, no stacked clauses); this trades the statement rubric's names_artefact_and_enforcement dimension down in favour of the explicit user override, with the artefact + enforcement carried in statement.description instead. Hand-scored against section rubrics: statement is_prescriptive 3 / derives_from_aws_verbatim 3 (AWS step 2 'embed using the smallest vector length') / names_artefact_and_enforcement 1 (deliberately, per the plain-title override — recovered in description) / scope_match 3 / parallel_form_with_siblings 2 (plainer than the GC3xxx sibling titles by design); problem 3/3/3/3/3/3 (five examples: oversized default never chosen, unused Matryoshka truncation, declared-vs-deployed fiction, quietly-raised-for-quality, irreversibility lock-in — each a vector-store cost failure invisible to the model-selection / hosting / prompt-cost gates); solution 3/3/3/3/3/2 (Option A artefacts named with paths + gate points; Option B explicitly optional so coverage_completeness scopes to Option A); gates 3/3/3/3/3/3 (two pre_merge required-status-check gates: declaration+consistency, and dimension-inflation governance). dependencies (schema v1.10): GC1B1-01 soft (the embedding-model choice GC1B1-01's selection ADR records determines the dimension range picked within; the dimension gate operates on the vector-store config independently of that ADR) — parallel to GC2B2-01's soft dependency on GC1B1-01. references (schema v1.11): two real-world links populated at authoring — Towards Data Science (vector-store cost linear in dimension; dimension reduction cuts infra cost up to 80% with retrieval quality held) and MindStudio/Gemini Embedding 2 (3,072 truncatable to 768/256 without significant retrieval-quality drop). tier rubric D1=no (embedding dimension is cost discipline; no regulator/audit/litigation exposure) / D2=2 (a declaration+consistency lint with a multi-backend index-config parser + an inflation-governance lint, reused across projects with ongoing parser maintenance) → recommended_centralise → enterprise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check parallel to the cost siblings. maturity_level scaling — pays off at project #2: the deployed-vs-declared dimension lint amortises once a portfolio of vector stores exists, and the parser is not first-project capability; lighter than GC2B2-01 (mature) because it reads a single scalar (index dimension) from config rather than GC2B2-01's full GPU/instance/precision/deployed-alarm verification; foundational rejected because the multi-backend parser is not first-project capability. serving_paradigm all four mandatory — vector-store storage/query cost and embedding-output-token cost both exist regardless of how the generation model is served (the dimension drives cost on every paradigm), unlike GC3B3-01's managed-API-only cached-rate benefit. impact_level Medium (matches AWS BP01 risk rating Medium and the GC1B1-01/GC2B2-01/GC3B1-01/GC3B3-01 cost-pillar pattern; over-dimensioning is recoverable, if painfully, via re-embed — not a customer regression or safety event). applicability { rag: mandatory, agentic: mandatory, ml: nice_to_have }; llm OMITTED because a pure LLM-only workload with no retrieval has no vector store and the principle does not materially apply — the first cost principle to narrow applicability by omission (parallel to GC2B2-01 narrowing serving_paradigm by omission). AIGP cross-reference Domain III.B (Govern the AI Model Lifecycle — Design & Build), mapping_state unverified, with a noted III.A (Govern Data) alternative; parallel to the cost siblings. explain_prompt compiled with setup_absence failure shape (the deliberate-dimension-choice discipline was never set up; a cost review / audit makes the oversized default visible) with a secondary nod to the irreversibility lock-in — distinguished from GC3B1-01's cumulative_drift shape because the dominant failure is a discrete never-chosen default rather than gradual creep. RI README at data/ri/GC4B1-01/README.md built on Option A, following the GC3B1-01 / GC3B3-01 template. OPEN ITEMS: (1) JSON parse not run in-session — the sandbox cannot reach the WSL mount; verify with `python3 -c \"import json; json.load(open('data/principles.json'))\"` from a terminal before pushing. (2) GENCOST04 question-stem wording in framework_mappings.aws.references[0].question is approximated from the verified focus-area title pending a question-page verification pass. (3) GENCOST04-BP02+ (if any) not yet enumerated — only BP01 walked; the GENCOST04 focus-area BP list should be fetched to close the focus area."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -1911,7 +2039,10 @@
       }
     },
     {
-      "principle_id": "GC5B1-01",
+      "standard_id": "ST-GC5B1-01",
+      "principle_id": "PR-GC5B1-01",
+      "u_value": "Predictability",
+      "u_principle": "A system's cost and reach stay inside bounds set in advance.",
       "references": [
         { "url": "https://dev.to/waxell/the-47000-agent-loop-why-token-budget-alerts-arent-budget-enforcement-389i", "title": "The $47,000 Agent Loop: Why Token Budget Alerts Aren't Budget Enforcement", "source": "DEV Community (Waxell)", "note": "Documents this principle's exact failure mode and the alerts-are-not-enforcement gap it closes: four cooperating LangChain agents ping-ponged in an unterminated but otherwise-valid reasoning loop for eleven days and burned roughly $47,000 — no agent malfunction, simply no external stopping condition to halt the loop, with monitoring dashboards staying green because after-the-fact alerting is not pre-execution enforcement.", "date": "2026-06-06" },
         { "url": "https://explore.n1n.ai/blog/prevent-runaway-ai-agent-costs-token-spirals-2026-05-25", "title": "Preventing Runaway AI Agent Costs and Token Spirals", "source": "n1n.ai", "note": "Records a single misbehaving research-agent session burning roughly $48,000 of model spend in about fourteen hours, and names the root-cause pattern this principle enforces against — no per-agent run ceiling and no mechanism to terminate a session, so an iterative agent that never converges bills without bound until it is killed by hand.", "date": "2026-06-06" }
@@ -1962,8 +2093,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Give every agent a hard stop",
-        "description": "Every agent workload must declare, alongside its agent definition, the ceilings that bound a single run, together with the terminal action taken when any ceiling is reached:\n\n- `max_steps` — the maximum number of reasoning/tool-call iterations in one run.\n- `max_wallclock_seconds` — the maximum wall-clock duration of a run.\n- `max_run_token_budget` — the maximum total tokens (or cost) a single run may consume.\n\nThe declared ceilings must be a deliberate choice derived from an estimate of the agent's expected maximum runtime (model, tool, and network time), not a framework default left unexamined or no limit at all. The agent must be constructed so those ceilings are actually wired in and the run terminates when one is hit.\n\nA pre-merge gate fails the build when the declaration is missing or incomplete, when the agent entrypoint is constructed without the declared ceilings bound (so a limit that exists only on paper and stops nothing is caught), or when a ceiling is raised without a recorded cost rationale.\n\nThis turns AWS's 'create stopping conditions' from advice into an enforced property of every agent, so an unbounded loop cannot bill without limit — the maximum cost of an agent run becomes predictable from its declared ceilings rather than discovered from an invoice after a runaway."
+        "title": "Give every agent a limit it cannot run past",
+        "description": "An agent with no bound can loop, overspend, or run away, and the cost is only discovered after the fact.\n\nEvery agent should have a deliberate ceiling on how far a single run can go, so its worst case is predictable rather than found on an invoice."
       },
       "problem": {
         "description": "Agents are built to iterate — they retry, re-plan, call tools, and re-confirm — and every step costs tokens and often external calls, so an agent with no terminal condition can bill without bound.\n\nThe dominant failure is that no ceiling is ever set: a team ships an agent on the framework's default (or absent) recursion/step limit, with no wall-clock cap and no per-run token budget, and one day a normal-looking task fails to converge — two agents ping-pong, a tool returns malformed data the agent keeps retrying, a plan recurses into sub-plans — and the run loops for hours or days, billing tens of thousands of dollars before a human notices. The signal is weakest exactly when it matters: cost dashboards and budget alerts are after-the-fact telemetry, not pre-execution enforcement, so they stay green while a single session spirals.\n\nThe discipline is fragile in two further ways:\n\n- A ceiling declared in a design doc but never wired into the agent's construction is fiction — the agent loops past a limit it was supposed to have.\n- A ceiling quietly raised 'so the task finishes' with no rationale multiplies the worst-case run cost with no trail.\n\nNone of these are visible to per-PR review, and no other cost gate looks at agent run-length — model selection, hosting right-sizing, prompt-token budgets, and vector-store dimension are all blind to how many times an agent loops or how long a run lasts.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -2003,13 +2134,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-06",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENCOST05-BP01 (Create stopping conditions to control long-running workflows), anchored on implementation step 2 (Implement stopping conditions that enable an agent to run to the maximum duration) with step 1 (Estimate the maximum time needed for an agent to complete its runtime) absorbed as the gate's input — the runtime estimate is recorded in the declaration's estimated_max field, surfaced as a deliberate number rather than hunted manually. First principle under GENCOST05 / GenCost Q5; first principle in the new focus area P54 — Cost-informed Agents (created this session to mirror AWS GENCOST05's verified focus-area title 'Cost-informed agents', distinct from P41 Model Selection & Right-sizing / P51 Inference Cost Optimization / P52 Cost-aware Prompting / P53 Cost-informed Vector Stores per the one-focus-area-per-AWS-question mapping). 15th principle in the catalogue (9 GENOPS + 6 GENCOST). BP title, step-2 verbatim_text, and the GENCOST05 question stem ('How do you optimize agent workflows for cost?') all verified against the live AWS Lens pages (gencost05-bp01.html + gencost05.html fetched 2026-06-06); GENCOST05 ships exactly one BP (BP01), so the focus area is closed by this single principle. step_promotion rubric scored 3/3/3/3 (has_enforceable_artefact: declared per-agent run-limits record + pre-merge declaration/wired-in-consistency lint + ceiling-relaxation governance lint; architecturally_distinct: the cost lever is the NUMBER OF STEPS and the DURATION of an agent run, not a single response's token cap (GO3B1-01's max_tokens) nor a prompt's token footprint (GC3B1-01) nor vector-store dimension (GC4B1-01) — no catalogue principle bounds agent loop count or run duration; in_bp_scope: GENCOST05 is literally 'Cost-informed agents' and BP01 literally 'Create stopping conditions to control long-running workflows'; not_vendor_menu: step-2 verbatim names the Amazon Bedrock timeout as ONE option but explicitly offers the generic 'prompt flow layer or software abstraction layer' alternatives, so a vendor-neutral mandate survives extraction). Step 3 (Re-architect your workflows to facilitate stopping conditions) NOT_PROMOTED: its tool/Lambda/API-endpoint timeouts and 'prompts understand how to handle timeout responses' substance is reliability-error-handling belonging to a future GENREL walk (cross-pillar), and its 'set token limits on model responses' sub-bullet is already covered by GO3B1-01's per-call max_tokens cap and GC3B1-01's output budget (sibling-absorbed) — nothing architecturally distinct survives for the cost pillar (see lens_mapping.md GENCOST05-BP01 ledger). SOLUTION: Option A (declared-and-wired, config/code-derivable) is the mandated spine — declare max_steps + max_wallclock_seconds + max_run_token_budget + on_limit + estimated_max + checked_on; an `agent/stop_check` lint enforces (1) declaration completeness, (2) wired-in consistency by parsing the agent's orchestration-framework construction (LangGraph recursion_limit / CrewAI max_iter+max_execution_time / Bedrock agent timeout / custom loop guard) so a declared-but-unbound limit fails, (3) ceiling-relaxation governance requiring a recorded cost rationale for any upward change. The gate enforces ceilings are declared and structurally wired in; it does NOT prove the agent halts at the budget under live load (runtime behaviour). Option B (runtime circuit-breaker: a cost/step/duration meter that hard-stops a run when actual consumption crosses the declared ceiling and emits the event to observability) documented within solution.approach as an additive reference implementation a workload MAY adopt; the RI and gates are built on Option A only, keeping gate coverage clean — parallel to GC4B1-01's Option A/B treatment and GC3B1-01's Option A/B/C treatment. STATEMENT TITLE deliberately kept plain ('Give every agent a hard stop') per the user's working-style rule committed to data/CLAUDE.md (plain spoken titles, no stacked clauses); this trades the statement rubric's names_artefact_and_enforcement dimension down in favour of the override, with the artefact + enforcement carried in statement.description instead. Hand-scored against section rubrics: statement is_prescriptive 3 (imperative 'Give') / derives_from_aws_verbatim 3 (AWS step 2 'implement stopping conditions … run to the maximum duration', plus the BP's 'predictable maximum cost' desired outcome) / names_artefact_and_enforcement 1 (deliberately, per the plain-title override — recovered in description) / scope_match 3 / parallel_form_with_siblings 2 (plainer than the GC3xxx sibling titles by design, matches the GC4B1-01 plain-title register); problem 3/3/3/3/3/3 (five examples: never-set ceiling / four-agent ping-pong runaway, tool-retry loop, no-wall-clock multi-hop runaway, declared-vs-wired fiction, quietly-raised ceiling — each an agent-run-length cost failure invisible to the model-selection / hosting / prompt-cost / vector-dimension gates and to after-the-fact cost alerts); solution 3/3/3/3/3/2 (Option A artefacts named with paths + three gate behaviours; Option B explicitly optional so coverage_completeness scopes to Option A); gates 3/3/3/3/3/3 (two pre_merge required-status-check gates: declaration+wired-in-consistency, and ceiling-relaxation governance). dependencies (schema v1.10): [] — standalone; the per-call max_tokens substrate (GO3B1-01) is adjacent but not a substrate dependency (this principle bounds run length, not per-call output), and the run-limits declaration + construction lint operate without any other principle's artefact. references (schema v1.11): two real-world links populated at authoring from a web sweep — DEV Community/Waxell (four LangChain agents looping eleven days for ~$47,000; alerts-are-not-enforcement) and n1n.ai (~$48,000 in fourteen hours from one session; no per-agent ceiling / no termination mechanism root cause). tier rubric D1=no (agent cost discipline; no regulator/audit/litigation exposure) / D2=2 (a declaration-completeness lint plus a framework-aware wired-in-consistency parser across LangGraph / CrewAI / Bedrock / custom loop guards plus a relaxation-governance lint, reused across projects with ongoing maintenance as orchestration frameworks evolve — significant but lighter than GC2B2-01's full multi-cloud IaC parse) → recommended_centralise → enterprise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check parallel to the cost siblings. maturity_level FOUNDATIONAL — pays off at project #1: the gate reads the agent's own construction code in the workload repo (no deployed artefact, no baseline, no production telemetry), so depends_on_deployment is clean, and a single unbounded agent run can be catastrophic on its very first production session (AWS High risk; the cited incidents are five- and six-figure single events), so skipping it compounds as immediate risk/debt — matches the GO1B1-01/02/03 per-PR-repo-local-lint foundational pattern and the maturity rubric's 'per-PR repo-local lint labelled scaling = FAIL' anchor; principled outlier from the GENCOST cost siblings (GC4B1-01 scaling, GC2B2-01 mature) because those parse DEPLOYED resources (the live vector index, the cloud IaC + monitoring), whereas this parses the agent's source construction available at PR time. impact_level HIGH — matches AWS BP01's High risk rating (the first GENCOST principle at High; GC1B1-01/GC2B2-01/GC3B1-01/GC3B3-01/GC4B1-01 are all Medium matching their Medium-rated BPs) and the failure shape: a runaway agent spikes cost rapidly and unpredictably (the BP's whole desired outcome is cost PREDICTABILITY), unlike the slow recoverable over-spend of the Medium cost siblings. applicability { agentic: mandatory } only — llm / rag / ml OMITTED because a stopping condition on agent iteration only exists where an agent loops; a single-shot LLM call, a fixed retrieve-then-generate RAG pipeline, and a classical ML workload have no agent loop to bound (parallel to GO1B1-01 and GO1B1-05's agentic-only narrowing, and consistent with GC4B1-01's precedent of narrowing applicability by omission). serving_paradigm all four mandatory — a runaway agent loop bills regardless of how the generation model is served (API or self-hosted; loops cost tokens/compute either way). AIGP cross-reference Domain III.B (Govern the AI Model Lifecycle — Design & Build), mapping_state unverified, parallel to the cost siblings. explain_prompt compiled with a setup_absence failure shape (the stopping-condition discipline was never set up; a runaway run or a cost review makes the absence visible) with a runaway-spike trigger emphasis distinguishing it from GC4B1-01's slow-default-cost shape — the agent failure is a discrete, fast, potentially catastrophic loop rather than a gradual over-bill. RI README at data/ri/GC5B1-01/README.md built on Option A, following the GC4B1-01 / GC3B1-01 template. OPEN ITEMS: (1) JSON parse not run in-session — the sandbox cannot reach the WSL mount; verify with `python3 -c \"import json; json.load(open('data/principles.json'))\"` from a terminal before pushing. (2) Frontend — P54 is a new focus_area string; confirm the runtime renders it with no registry change needed (focus_area is free-text, so it should); run `npm run build` from `s3-json-viewer/` if in doubt. (3) AIGP III.B mapping_state unverified — promote to verified after a side-by-side review against the AIGP competency definition."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -2022,7 +2159,10 @@
       }
     },
     {
-      "principle_id": "GS1B3-01",
+      "standard_id": "ST-GS1B3-01",
+      "principle_id": "PR-GS1B3-01",
+      "u_value": "Confidentiality",
+      "u_principle": "No one should learn through an AI system what they couldn't learn directly.",
       "references": [
         { "url": "https://ragaboutit.com/the-permission-layer-problem-why-your-enterprise-rag-is-a-security-time-bomb/", "title": "The Permission Layer Problem: Why Your Enterprise RAG Is a Security Time Bomb", "source": "generation RAG", "note": "Documents this principle's exact failure mode: when documents from Confluence/SharePoint/wikis are embedded into a vector store they lose their source-system permissions, so the retriever has no way to distinguish a confidential contract from a public FAQ and serves whatever is nearest — the cross-authorization-boundary retrieval this principle's identity-scoped filter prevents.", "date": "2026-06-07" },
         { "url": "https://www.we45.com/post/rag-systems-are-leaking-sensitive-data", "title": "RAG Systems are Leaking Sensitive Data", "source": "we45", "note": "Maps the two dataset-leakage modes this principle addresses — sensitive data leaking to end users and confidential content reaching unauthorized internal users through a shared store with no per-query authorization.", "date": "2026-06-07" },
@@ -2083,8 +2223,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Never retrieve what the user isn't allowed to see",
-        "description": "Every retrieval from a shared (multi-tenant or mixed-authorization) vector store must be scoped to what the requesting user is authorized to see — the model is handed only chunks the user could have read directly.\n\nThis is enforced through two committed properties:\n\n- Every document is labelled with access-control metadata (`acl` — the roles, groups, or classification permitted to see it) at ingestion time, not with a list of named users.\n- All retrieval routes through a central retrieval SDK that resolves the caller's entitlements from the identity provider and applies the filter itself; the workload never builds the filter and never calls the store client directly.\n\nA pre-merge gate fails the build when an ingestion path writes to a multi-tenant store without the `acl` label, when any code retrieves from such a store outside the central SDK, or when the SDK is pinned below the required version.\n\nThis is the limit of what a static gate can do: it enforces that retrieval is identity-scoped and that documents are labelled, but it cannot verify that a label is correct — a document mislabelled `public` is faithfully served to everyone. Correct labels remain a developer-discipline responsibility, so a periodic security review samples labels against their source-system classification. The honest boundary is recorded in `enforcement_limits.md`."
+        "title": "Never let a user retrieve what they aren't allowed to see",
+        "description": "Retrieval should respect the asking user's permissions, handing the model only what that user could have read directly.\n\nA shared knowledge store must never become a way around the access controls that protect its contents."
       },
       "problem": {
         "description": "When documents are embedded into a vector store they lose the permissions they had in their source system — a confidential contract from SharePoint and a public FAQ become two vectors that look identical, and the retriever has no mathematical way to tell them apart.\n\nThe dominant failure is the shared store with no per-query authorization: several use cases or tenants are indexed into one vector database, retrieval runs an unfiltered top-k, and a user is handed — and the model answers from — chunks the user was never allowed to read. IAM does not catch this: IAM decides whether the *application* can reach the store at all, not which *chunks within* it a given end-user's query may surface. Classification at the model layer does not catch it either, because the leak happens at retrieval, before the model reasons.\n\nThe discipline is fragile in ways a naive gate misses:\n\n- A filter the developer builds by hand can be silently over-broad (an `$in` over every role), so 'a filter is present' is not 'the right rows were excluded'.\n- A retrieval call that bypasses the central path and hits the store client directly escapes filtering entirely.\n- Even with filtering wired in correctly, a document mislabelled at ingestion (a confidential file tagged `public`) is served to everyone — the filter faithfully enforces the wrong label.\n\nThe failure is invisible to per-PR review and surfaces at the worst time — a red-team test, an internal user seeing another department's data in an answer, or an auditor asking who could retrieve what.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -2138,13 +2278,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-07",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENSEC01-BP03 (Implement least privilege access permissions for foundation models accessing data stores), anchored on implementation step 4 (Create least-privilege access policies for FM/GenAI workloads with resource identifiers granting explicit access to specific data in the vector store), absorbing step 1 (classify data by usage → the acl label) and step 2 (role-based access on the store), and operationalising the BP's implementation-guidance line on vector-store metadata filtering for data segregation by user role. FIRST principle in the Security pillar (P2) and first under GENSEC; new focus area P21 — Endpoint Security created to mirror AWS GENSEC01's verified focus-area title 'Endpoint security' (question 'How do you manage access to generative AI endpoints?', verified 2026-06-07 from gensec01.html). 16th principle in the catalogue (9 GENOPS + 6 GENCOST + 1 GENSEC). Walked interactively with the user across GENSEC01 BP01/BP02 (both not_promoted as generic base-WAF IAM/network discipline) before reaching BP03; the user directed PROMOTE on the retrieval-time-authorization slice after the enforcement mechanism was worked out. step_promotion 3/3/3/3 (has_enforceable_artefact: acl-at-ingestion label + central-retrieval-SDK identity filter + pre-merge labelling/routed-retrieval/version-floor lints; architecturally_distinct: retrieval-time per-query authorization is unowned by any sibling — IAM gates store reachability not per-chunk retrieval, GO3B2-02 governs trace read access not retrieval, GO1B1-06 is model versioning, GO3B1-01 is the prompt registry — and is GenAI-specific because only RAG has a retrieval step; in_bp_scope: GENSEC01-BP03 is literally FM access to data stores; not_vendor_menu: the metadata-filtering + identity-scoped-retrieval mandate is provider-neutral, Bedrock Knowledge Bases / OpenSearch fine-grained access control / pgvector are implementations of the same rule). GENSEC01-BP01 (least-priv IAM to endpoints) and BP02 (private network) NOT_PROMOTED earlier this session as generic base-WAF Security discipline (SEC02/03/05) with the only GenAI-distinct slice (approved-models) already owned by GO1B1-06; BP04 (access monitoring) still UNMAPPED. Steps 5 (curated-prompt access testing — GO1B1 harness pointed at security) and 6 (training-data governance — minority self-train, cross-touches data-poisoning) NOT_PROMOTED; the ingestion-PII-removal half of step 3 is a future GENSEC data-protection concern, distinct from the acl-labelling half used here (see lens_mapping.md GENSEC01-BP03 ledger). ENFORCEMENT-LIMIT EMPHASIS (user-directed): the principle states plainly, in statement.description and solution.approach, that the lint enforces the plumbing (identity-scoped retrieval + labels present) but cannot verify a label is CORRECT — a mislabelled document is served faithfully to the wrong audience — so correct labels remain a developer-discipline responsibility backed by a periodic security label-audit. This is the first principle to make that boundary explicit and is recorded as a new cross-cutting catalogue note at data/enforcement_limits.md (created this session at the user's request, cataloguing the same plumbing-not-correctness boundary across GC5B1-01 wired-in-not-runtime, GC2B2-01/GC4B1-01 declared-vs-real, GO3B1-01/GO1B1-06 route-not-wisdom, and the audit_mode field). OWNERSHIP: first D1=yes principle in the catalogue — cross-tenant/PII data-access carries direct legal/regulatory exposure (GDPR, data residency, broken access control) → mandatory_centralise → tier enterprise; and the first to use audit_mode central_review_at_gate with a populated evidence block and validator enterprise_security, because the residual label-correctness gap is a security-owned human review, not pure self-attestation. arb_role dashboard_and_spot_check. GATES: three pre_merge required-status-check lints (ingestion acl labelling; routed-retrieval AST lint banning direct multi-tenant store calls / forcing the central SDK; SDK version floor) plus one quarterly_review security label-audit with binary sign-off (the human control for the part the lint cannot reach). evidence lists the three artefacts the security validator inspects. SOLUTION: Option A (labelled-and-routed, config/code-derivable) is the mandated spine; Option B (source-system permission mirroring — sync acl from Confluence/SharePoint/Drive ACLs at ingestion so labels track the source) documented as an additive RI a workload MAY adopt, parallel to the Option A/B treatment in GC4B1-01 / GC5B1-01. STATEMENT TITLE kept plain ('Never retrieve what the user isn't allowed to see') per the user's working-style rule in data/CLAUDE.md — trades the statement rubric's names_artefact_and_enforcement dimension down (artefact + enforcement carried in description). applicability { rag: mandatory, agentic: mandatory } — llm OMITTED (no retrieval step on a single-shot LLM call), ml OMITTED (no FM-over-vector-store retrieval); agentic included because agentic RAG retrieves from shared stores with the same per-query authorization risk (narrow-by-omission precedent: GC4B1-01, GC5B1-01). serving_paradigm all four mandatory — the retrieval-authorization failure is a property of the vector store and the requesting identity, independent of how the generation model is served. maturity_level SCALING — the shared-store-with-mixed-authorization failure emerges at multi-team / multi-tenant scale (roughly project #2+), and the enforcement substrate (central retrieval SDK + IdP entitlement resolution + per-source labelling) is platform work that amortises like GO3B2-01/02 (both scaling); the high-risk-regulated-single-app case that would pull to foundational is noted but the dominant shape is scaling. references (schema v1.11): three real-world links populated at authoring from a web sweep — ragaboutit 'The Permission Layer Problem' (embedding strips source permissions; retriever cannot tell confidential from public), we45 'RAG Systems are Leaking Sensitive Data' (the two dataset-leakage modes), Kiteworks 'Secure RAG Pipelines / zero-trust' (identity-scoped retrieval over multi-tenant stores). dependencies (schema v1.10): [{ GO3B2-01: soft }] — retrieval-authorization decisions emit through GO3B2-01's observability SDK for the read-side audit; the access-control gate and identity filter function without it. AIGP IV.C (Security, Access Control, Incident Management) primary + III.A (Govern Data) secondary, both unverified. explain_prompt compiled with a permission-evaporation / broken-access-control failure shape (documents lose source permissions on embedding; a shared store with no per-query filter serves cross-boundary chunks; surfaces at a red-team test / an internal user seeing another team's data / an audit). RI at data/ri/GS1B3-01/README.md built on Option A. OPEN ITEMS: (1) JSON parse not run in-session (sandbox cannot reach the WSL mount) — verify with `python3 -c \"import json; json.load(open('data/principles.json'))\"` from a terminal before pushing. (2) Frontend — P2 — Security pillar and P21 — Endpoint Security focus_area are new free-text strings; confirm the runtime renders them (focus_area/pillar are free-text, so no registry change expected); run `npm run build` from `s3-json-viewer/` if in doubt. (3) AIGP IV.C / III.A mapping_state unverified — promote after a side-by-side review. (4) GENSEC01-BP04 (access monitoring) still to walk to close GENSEC01."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -2157,7 +2303,10 @@
       }
     },
     {
-      "principle_id": "GS2B1-01",
+      "standard_id": "ST-GS2B1-01",
+      "principle_id": "PR-GS2B1-01",
+      "u_value": "Safety",
+      "u_principle": "People are never the test surface for harmful or misleading output.",
       "references": [
         { "url": "https://aibusiness.com/nlp/air-canada-held-responsible-for-chatbot-s-hallucinations-", "title": "Air Canada Held Responsible for Chatbot's Hallucinations", "source": "AI Business", "note": "A tribunal held Air Canada liable for its chatbot inventing a bereavement-fare policy and ordered a payout — the exact failure this principle prevents: an unvalidated model response reaching a user as binding, with no guardrail and no fallback.", "date": "2026-06-07" },
         { "url": "https://gizmodo.com/ai-chevy-dealership-chatgpt-bot-customer-service-fail-1851111825", "title": "I'd Buy That for a Dollar: Chevy Dealership's AI Chatbot Goes Rogue", "source": "Gizmodo", "note": "A dealership chatbot with no guardrails was manipulated into 'agreeing' to sell a $76k Tahoe for $1 and calling it legally binding — a model output shipped to a user with no content/topic guardrail and no fallback, the failure this principle gates against.", "date": "2026-06-07" }
@@ -2207,8 +2356,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Put every model response through a guardrail",
-        "description": "Every path that returns a foundation-model response to a user (or acts on it) must route the response through a guardrail before it is used, and must declare a fallback action for when the guardrail trips.\n\nThe guardrail applies output checks — content/toxicity, denied topics, sensitive-information (PII) filtering — and, for any response generated over retrieved context (RAG), a grounding/faithfulness check that flags output not supported by the retrieved documents.\n\nThe fallback is a declared, safe behaviour when a guardrail trips: block and return a canned message, prepend a disclaimer, or escalate — so the application degrades safely instead of returning raw, empty, or error output.\n\nA pre-merge gate fails the build when a model-calling path has no declared guardrail with output filters and an on_trip fallback, when a raw model response is returned to a caller without passing through the guardrail wrapper, or when a RAG path leaves the grounding filter off.\n\nThis is the limit of what the gate proves: that a guardrail is wired in and a fallback is declared — not that the guardrail actually catches a given harmful output, which is its runtime recall and is verified by a periodic red-team evaluation, not the lint. Backend-correctness (is a quoted offer real, does a balance match the ledger) is out of scope — that is app-side business-logic verification. The boundary is recorded in `enforcement_limits.md`."
+        "title": "Check a model's response before it reaches a user",
+        "description": "An unvalidated model output can mislead a user, offend, or commit the business to something it never agreed to.\n\nResponses should pass a safety check, with a safe fallback when that check trips, before they are shown to a user or acted on."
       },
       "problem": {
         "description": "A foundation model will, often enough to matter, produce output that is harmful, biased, off-policy, or confidently wrong — and if nothing inspects the response before it reaches the user, that output ships.\n\nThe dominant failure is no output validation at all: a team wires a model straight to a user surface, and a normal-looking interaction produces a response the business can be held to — invented policy, prohibited advice, a hallucinated fact, toxic or manipulated content. A second failure is subtler: a team adds a guardrail but never defines a fallback, so when it trips the app returns an empty string or a raw error and 'falters' — the exact outcome AWS's desired outcome warns against.\n\nThe discipline is fragile in ways a naive check misses:\n\n- A response returned on a path that bypasses the guardrail wrapper is never inspected, no matter how good the guardrail is.\n- A RAG answer with grounding checks off can hallucinate freely while looking validated.\n- A guardrail that is wired in but tuned to its weakest setting passes the build while still letting bad output through — wiring is not efficacy.\n\nNone of this is visible to per-PR review, and no existing control covers it: pre-merge eval (GO1B1) tests before release, observability (GO3B2) records after the fact, the prompt registry (GO3B1) governs what goes in, retrieval authorization (GS1B3-01) governs what is fetched — none inspect the model's response on its way out.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -2258,13 +2407,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-07",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENSEC02-BP01 (Implement guardrails to mitigate harmful or incorrect model responses), anchored to the whole BP (implementation_step null) because BP01's two numbered steps are pure vendor-console walkthroughs (Bedrock Guardrails console; Q Business guardrails console) — the architectural mandate (guardrail + declared fallback) lives in the implementation guidance, not the steps; same whole-BP-anchor pattern as GO1B1-06. GENSEC02 ships exactly one BP (verified gensec02.html: 'How do you stop generative AI applications from generating harmful, biased, or factually incorrect responses?'), so this principle closes the focus area. SECOND Security-pillar principle; new focus area P22 — Response Validation (mirrors AWS GENSEC02 focus-area title). 17th principle in the catalogue (9 GENOPS + 6 GENCOST + 2 GENSEC). Walked interactively with the user, who directed PROMOTE after the scope boundary and enforcement were worked out. step_promotion 3/3/3/3 (has_enforceable_artefact: declared guardrail config + on_trip fallback + three pre-merge lints; architecturally_distinct: runtime OUTPUT validation, unowned — GO1B1 pre-merge eval, GO3B2 observability, GO3B1 input prompts, GS1B3-01 retrieval input; this governs the response on its way out; in_bp_scope: GENSEC02 is literally Response validation; not_vendor_menu: the wrap-and-fallback mandate is provider-neutral — Bedrock Guardrails / Guardrails.AI / NeMo Guardrails all implement it — the two console steps stripped). SCOPE BOUNDARIES (user-driven during the HALT): (1) content/safety + grounding-against-retrieved-context only; backend-correctness validation (is a quoted offer/discount real and active, does an account balance match the ledger) is app-side business-logic verification, a different mechanism, explicitly OUT of scope — the user pressed exactly this point with a retail marketing-offer example (an agent inventing a plausible discount code a content guardrail waves through). (2) Input-side prompt-injection defence left to a future GENSEC04 (Prompt security) walk to avoid scope collision; this principle is output-side. (3) The RAG-grounding filter checks faithfulness to the RETRIEVED context only, not to the live backend — surfaced when the user noted LLM responses are usually intertwined with backend data. ENFORCEMENT LIMIT (user-emphasised, the through-line of the session): the three pre-merge lints prove the guardrail is WIRED IN, a fallback is DECLARED, and RAG grounding is ON — they cannot prove the guardrail actually CATCHES a given harmful output (recall is a runtime/model-quality property; a guardrail tuned to its weakest setting passes the build while bad output slips through). So efficacy is handed to a quarterly guardrail-efficacy red-team (adversarial fixtures through the guardrail, trip-rate vs threshold, reusing GO1B1-01's harness) — the plumbing-not-efficacy boundary recorded in data/enforcement_limits.md (created with GS1B3-01 this session). SOLUTION: Option A (declared-and-routed) is the mandated spine; no Option B authored (the central-SDK-vs-direct-ApplyGuardrail choice is noted inline rather than as a separate RI variant). GATES: three pre_merge required-status-check lints (declaration completeness; routed-output AST lint; grounding-required-for-RAG) + one quarterly_review efficacy red-team with binary sign-off. STATEMENT TITLE kept plain ('Put every model response through a guardrail') per the user's working-style rule in data/CLAUDE.md. applicability { llm: mandatory, rag: mandatory, agentic: mandatory } — any path returning FM output to a user needs it; ml OMITTED (no FM text output); rag adds the grounding filter; agentic has the most surface (user-facing output + tool-call decisions). serving_paradigm all four mandatory — output validation is needed regardless of how the model is served. maturity_level FOUNDATIONAL — harmful/binding output is a day-1 risk (the cited Air Canada and Chevy incidents were early single-chatbot deployments), and the gate reads the repo (declaration + AST lint), no deployed substrate, matching the GC5B1-01 / GO1B1-01 repo-local-lint foundational pattern; the GO3B1-01 SDK substrate is a soft (not hard) dependency because a guardrail can also be applied via a direct ApplyGuardrail call. impact_level High (matches AWS BP risk; harmful/binding output is reputational + legal). dependencies (schema v1.10): [{ GO3B1-01: soft (guardrail rides the central LLM SDK call path + reuses its no-inline AST lint; direct ApplyGuardrail call is the fallback) }, { GO1B1-01: soft (the quarterly efficacy red-team reuses the eval-harness machinery) }]. references (schema v1.11): two real incidents — Air Canada (tribunal held the airline to its chatbot's invented bereavement-fare policy; no guardrail/fallback) and Chevy of Watsonville (chatbot manipulated into a $1 'legally binding' Tahoe; no content/topic guardrail). ownership.tier enterprise via D1=no borderline (regulated industries — financial advice, healthcare — push toward yes; held at no borderline parallel to GO3B2-01/02) / D2=3 (central guardrail wrapper on the SDK + config schema + grounding integration + routed-output AST lint + per-engine adapters + efficacy-eval harness) → recommended_centralise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence (CI lints + the quarterly red-team results are the mechanical evidence), arb_role dashboard_and_spot_check. AIGP IV.C provisional unverified. explain_prompt compiled with a setup_absence / unvalidated-output failure shape (no guardrail or no fallback; a normal interaction produces harmful or binding output that ships; surfaces as a viral incident, a liability finding, or a hallucinated answer reaching a user). RI at data/ri/GS2B1-01/README.md (Option A). OPEN ITEMS: (1) JSON parse not run in-session (sandbox cannot reach the WSL mount) — verify python3 json.load(principles.json) from a terminal before pushing. (2) Frontend — P22 — Response Validation is a new free-text focus_area; confirm the runtime renders it; npm run build from s3-json-viewer/ if in doubt. (3) AIGP IV.C unverified. (4) GENSEC02 now closed; GENSEC03 (Event monitoring) / GENSEC04 (Prompt security — owns input-side injection defence) / GENSEC05 (Excessive agency) / GENSEC06 (Data poisoning) remain to walk."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -2277,7 +2432,10 @@
       }
     },
     {
-      "principle_id": "GS4B2-01",
+      "standard_id": "ST-GS4B2-01",
+      "principle_id": "PR-GS4B2-01",
+      "u_value": "Integrity",
+      "u_principle": "A system holds its purpose even when someone tries to turn it against itself.",
       "references": [
         { "url": "https://time.com/6564726/ai-chatbot-dpd-curses-criticizes-company/", "title": "AI Chatbot Curses at Customer and Criticizes Company", "source": "TIME", "note": "A DPD customer told the support chatbot to 'disregard any rules' and swear; the model abandoned its instructions and insulted its own company — an unscreened user input overriding the application's behaviour, the exact failure this principle's input guardrail prevents.", "date": "2026-06-07" },
         { "url": "https://oecd.ai/en/incidents/2023-02-10-4440", "title": "Bing Chatbot Exposes Confidential Instructions After Prompt Injection Attack", "source": "OECD.AI Incidents", "note": "A user typed 'ignore previous instructions' and made Bing Chat print its hidden system prompt (internal alias 'Sydney' and its directives) — a prompt-extraction injection through unvalidated user input, the sensitive-information-extraction outcome AWS GENSEC04-BP02 names.", "date": "2026-06-07" }
@@ -2327,8 +2485,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Put every user input through a guardrail before it reaches the model",
-        "description": "Every path that places user-influenced text into a foundation-model prompt must route that text through an input guardrail before the model is called, and must cap prompt size and request rate.\n\nThe input guardrail screens user input for prompt-injection attempts — instructions that try to override the system prompt, drive the model to an unintended task, or extract the prompt or other sensitive information — using one or more of: keyword/pattern checks, a guardrails solution, or a separate LLM-as-a-judge. The detection technique is the workload's choice; routing every user-influenced prompt through one is not.\n\nSize and rate limits are declared and enforced: a character/token ceiling on the assembled prompt and a per-caller request-rate limit, so an attacker cannot cheaply brute-force injections or inflate cost and latency.\n\nA pre-merge gate fails the build when a user-influenced path has no declared input guardrail, when raw user input reaches a model call without passing through the input-guardrail wrapper, or when size/rate limits are not declared.\n\nThis is the limit of what the gate proves: that an input guardrail is wired in and limits are declared — not that it actually catches a given injection, which is its runtime recall and is verified by a periodic injection red-team, not the lint. The untrusted-input context boundary in the prompt template (delimiting user input so the model treats it as data, not instructions) is enforced by GO3B1-01's template registry; this principle requires it and depends on it. The boundary is recorded in `enforcement_limits.md`."
+        "title": "Screen user input before it reaches the model",
+        "description": "Unscreened input can hijack or manipulate the model — overriding its instructions, redirecting it, or extracting what it should keep private.\n\nUser input should be checked, and its size and rate bounded, before the model acts on it."
       },
       "problem": {
         "description": "User input to a generative application is open and unstructured, and a model cannot reliably tell an instruction inside that input apart from the instructions its own system prompt gave it. If nothing inspects the input before it is assembled into the prompt, a crafted message can override the application's behaviour.\n\nThe dominant failure is no input validation at all: a team interpolates user text straight into a prompt, and a message like 'ignore your previous instructions and…' makes the model abandon its task — leaking the system prompt, emitting content the brand can be held to, or, for an agent, triggering an unintended tool call. A second failure is subtler: limits are never set, so an attacker can iterate injections cheaply or inflate prompt size until cost and latency blow out.\n\nThe discipline is fragile in ways a naive check misses:\n\n- A prompt assembled on a path that bypasses the input-guardrail wrapper is never screened, no matter how good the guardrail is.\n- An input guardrail wired in but tuned to its weakest setting passes the build while letting injections through — wiring is not efficacy.\n- Without a context boundary in the template, even screened input can carry instructions the model obeys, because the model sees user text and system text as one stream.\n\nNo existing control covers it: the output guardrail (GS2B1-01) inspects the model's response, not the input that shaped it; the prompt registry (GO3B1-01) governs which template is used, not the user text interpolated into it; retrieval authorization (GS1B3-01) governs what is fetched, not what the user types; pre-merge eval (GO1B1) tests before release. None screen user-influenced input on its way into the model.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -2378,13 +2536,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-07",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENSEC04-BP02 (Sanitize and validate user inputs to foundation models), anchored to the whole BP (implementation_step null) because BP02's steps 1-3 are a Bedrock Guardrails console walkthrough — the architectural mandate (input guardrail + size/rate limits) lives in the implementation guidance plus steps 4-5; same whole-BP-anchor pattern as GS2B1-01 / GO1B1-06. INPUT-side mirror of GS2B1-01 (output side); GENSEC04 was previously CLOSED with BP02 not_promoted (user-deferred 'ignore') — REVISITED this session, user directed authoring. 18th principle in the catalogue (9 GENOPS + 6 GENCOST + 3 GENSEC: GS2B1-01, GS1B3-01, and this). THIRD-and-fourth Security focus areas were Endpoint Security (P21) and Response Validation (P22); this opens new focus area P23 — Prompt Security (mirrors AWS GENSEC04 focus-area title). step_promotion 3/3/3/3 (has_enforceable_artefact: declared input-guardrail config + limits + three pre-merge lints; architecturally_distinct: runtime INPUT validation, unowned — GS2B1-01 inspects the response, GO3B1-01 governs which template, GS1B3-01 governs retrieval, GO1B1 pre-merge eval; this screens user input on its way in; in_bp_scope: GENSEC04 is literally 'secure system and user prompts' and BP02 is 'sanitize and validate user inputs'; not_vendor_menu: strip Bedrock Guardrails / Q Business / Guardrails AI / LLM-as-a-judge and the rule survives — route user input through an input guardrail before the model + size/rate limits, the detection mechanism interchangeable). DECISIONS DRIVEN BY THE HALT (user said 'suggest', then 'finish full principle'): (1) SEPARATE principle, not folded into GS2B1-01 — different AWS focus area (GENSEC04 Prompt security vs GENSEC02 Response validation), input and output guardrails declare different configs and gate independently, clean output->input mirror; folding would force one principle to claim two focus areas. (2) CONTEXT BOUNDARY SPLIT — the untrusted-input delimiter in the template is a property of the registered template (GO3B1-01's turf), so its template-lint belongs in GO3B1-01 as a follow-up; this principle REQUIRES the boundary and depends (soft) on GO3B1-01 rather than re-linting the template. Logged as a GO3B1-01 open item. (3) ENFORCEMENT LIMIT (same honesty boundary as GS2B1-01, recorded in data/enforcement_limits.md): the three pre-merge lints prove the input guardrail is WIRED IN, limits DECLARED, and input ROUTED — they cannot prove the guardrail CATCHES a given injection (recall is runtime; a guardrail on its weakest setting passes the build). Efficacy -> quarterly prompt-injection red-team (curated injection corpus through the guardrail, catch-rate vs threshold, reusing GO1B1-01's harness; AWS step 2 names exactly this curated injection list). SOLUTION: Option A (declared-and-routed) is the mandated spine; central-SDK-vs-direct-ApplyGuardrail noted inline. GATES: three pre_merge required-status-check lints (declaration completeness; routed-input AST lint; limits declared) + one quarterly_review injection red-team with binary sign-off. STATEMENT TITLE kept plain ('Put every user input through a guardrail before it reaches the model') mirroring GS2B1-01's form per data/CLAUDE.md working-style rule; scored against statement rubric, all five dims >=2. applicability { llm: mandatory, rag: mandatory, agentic: mandatory } — any path putting user-influenced text into a prompt; ml OMITTED (no FM prompt); agentic has the most surface (an injected instruction can hijack a tool call). serving_paradigm all four mandatory — input validation needed regardless of how the model is served. maturity_level FOUNDATIONAL — prompt injection is a day-1 risk (cited DPD and Bing/Sydney incidents were early single-bot deployments), and the gate reads the repo (declaration + AST lint), no deployed substrate, matching GS2B1-01 / GC5B1-01 / GO1B1-01 repo-local-lint foundational pattern; the GO3B1-01 SDK substrate is a soft (not hard) dependency because the guardrail can also be applied via a direct ApplyGuardrail call. impact_level High (matches AWS BP risk; prompt injection is reputational + data-exfiltration exposure). dependencies (schema v1.10): [{ GO3B1-01: soft (input guardrail rides the central LLM SDK + reuses its no-inline AST lint, input side; context boundary enforced by its registry; direct ApplyGuardrail is the fallback) }, { GO1B1-01: soft (quarterly injection red-team reuses the eval-harness machinery) }]. references (schema v1.11): two real incidents — DPD (Jan 2024; customer told the chatbot to 'disregard any rules' and swear, model complied) and Bing/Sydney (Feb 2023; 'ignore previous instructions' extracted the hidden system prompt). ownership.tier enterprise via D1=no borderline (regulated industries push toward yes; held at no borderline parallel to GS2B1-01) / D2=3 (central input-guardrail wrapper on the SDK + config schema + injection-detection adapters + routed-input AST lint + injection red-team corpus + per-engine adapters) -> recommended_centralise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence (CI lints + quarterly red-team results are the mechanical evidence), arb_role dashboard_and_spot_check. AIGP IV.C provisional unverified (same placement as GS2B1-01). explain_prompt compiled with a setup_absence / unvalidated-input failure shape (no input guardrail; a crafted user message overrides the model's instructions, leaks the prompt, or hijacks a tool call). RI at data/ri/GS4B2-01/README.md (Option A). OPEN ITEMS: (1) JSON parse not run in-session (sandbox cannot reach the WSL mount) — verify python3 json.load(principles.json) from a terminal before pushing. (2) Frontend — P23 — Prompt Security is a new free-text focus_area; confirm the runtime renders it; npm run build from s3-json-viewer/ if in doubt. (3) GO3B1-01 template-lint follow-up — add the untrusted-input context-boundary delimiter check to GO3B1-01's template registry (the boundary GS4B2-01 depends on). (4) AIGP IV.C unverified. (5) GENSEC04 now has one promoted principle (BP02 -> GS4B2-01); GENSEC05 (Excessive agency) / GENSEC06 (Data poisoning) remain to walk."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },
@@ -2397,7 +2561,10 @@
       }
     },
     {
-      "principle_id": "GS5B1-01",
+      "standard_id": "ST-GS5B1-01",
+      "principle_id": "PR-GS5B1-01",
+      "u_value": "Accountable Agency",
+      "u_principle": "Acting in the world is irreversible, so nothing consequential happens on the model's say-so alone.",
       "references": [
         { "url": "https://fortune.com/2025/07/23/ai-coding-tool-replit-wiped-database-called-it-a-catastrophic-failure/", "title": "AI coding tool Replit wiped a software company's database in 'catastrophic failure'", "source": "Fortune", "note": "A Replit AI agent made unauthorized changes to live infrastructure and deleted production data for 1,200+ companies despite an explicit 'code and action freeze' — an agent taking a destructive, externally-visible action beyond its intended scope with no human approval gate, the exact excessive-agency failure this principle's write-gate prevents.", "date": "2026-06-08" },
         { "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/", "title": "OWASP Top 10 for LLM Applications — LLM08:2025 Excessive Agency", "source": "OWASP Foundation", "note": "The canonical framework definition AWS GENSEC05 itself cites: excessive agency arises from excessive functionality (tools beyond task scope), excessive permissions (tools with broader privileges than needed), and excessive autonomy (high-impact actions with no human in the loop). This principle's manifest caps functionality, the per-tool execution role caps permissions, and the write-gate caps autonomy.", "date": "2026-06-08" }
@@ -2447,8 +2614,8 @@
         "arb_role": "dashboard_and_spot_check"
       },
       "statement": {
-        "title": "Put every consequential agent action through a gate before it runs",
-        "description": "Every agent draws its tools from a declared manifest, and every tool it can call is classified read or write. A write — any action that is irreversible or externally visible (moves money, deletes data, sends a message, changes system state) — must declare a gate: a human confirmation or a deterministic policy check.\n\nThe agent loop executes tools only through a central wrapper, never by calling a tool function directly. The wrapper builds the agent's toolbelt from the manifest, so a tool that is not declared is not reachable, and it runs a write tool's gate before executing it — the action runs only if the gate passes.\n\nA pre-merge gate fails the build when:\n\n- a registered tool has no manifest entry (its `scope` or `class` is missing),\n- the agent reaches a tool by any path that bypasses the wrapper,\n- a write-classed tool declares neither a confirmation step nor a policy check (and, in an unattended pipeline, a write gated only by human confirmation also fails — it must carry a policy check).\n\nThis is the limit of what the gate proves: that consequential tools are declared, routed, and wired to a gate — not that every tool is classified honestly or scoped minimally, which a lint cannot verify. That is checked by a periodic agent red-team and blast-radius review, recorded in `enforcement_limits.md`. The least-privilege execution role behind each tool's `scope` is base-WAF IAM (AWS steps 1-3), which this principle depends on rather than re-implements."
+        "title": "Check a consequential action before it happens, not after",
+        "description": "Once an agent acts in the world — moves money, deletes data, sends a message — the effect cannot be undone.\n\nAny action that is irreversible or externally visible should pass a check before it runs, rather than be reviewed after the fact."
       },
       "problem": {
         "description": "An agent decides which tool to call by reasoning over the tools' descriptions. That choice is probabilistic and prompt-influenced — the same mechanism that picks the right tool most of the time can pick a destructive one when the input pushes it there. If the agent loop executes whatever the model selects, the model's choice is the only thing standing between a user message and a consequential action.\n\nThe dominant failure is that reachable equals executable: a team hands a model a set of tools — some able to pay, delete, or email — and the loop runs whatever comes back. An ordinary request, a confused chain of reasoning, or an injected instruction drives the agent to an action beyond its scope, and nothing stops it. The action is correct-looking, not malicious — an unintended consequence of automation, the agent having little knowledge beyond the prompt of what is permitted.\n\nThe discipline is fragile in ways a naive check misses:\n\n- A consequential tool reached on a path that bypasses the wrapper executes ungated, no matter how good the gate is on every other path.\n- A write tool mislabeled read sails through the build and fires with no confirmation — declaration is not honest classification.\n- A tool whose execution role is broader than its task can act far outside its intended blast radius even when the model picks the right tool.\n\nNo existing control covers it: the output guardrail (GS2B1-01) inspects the model's response, the input guardrail (GS4B2-01) screens what goes in, and retrieval authorization (GS1B3-01) governs what is read; none govern what the agent does. Action is the fourth face of the agent's surface, and the only one that changes the world.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
@@ -2498,13 +2665,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-08",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENSEC05-BP01 (Implement least privilege access and permissions boundaries for agentic workflows), anchored to the whole BP (implementation_step null) because steps 1-3 are generic IAM least-privilege construction (scoped policies, resource ARNs, permission boundaries, trust-policy conditions — AWS's own Resources cross-ref SEC02-BP01/02/06 + SEC03-BP01/02, the same base-WAF BPs that drove the GENSEC01-BP01 not_promote); the GenAI-distinct mandate lives in the implementation guidance + step 4 (user confirmation for agent actions). 19th principle in the catalogue (9 GENOPS + 6 GENCOST + 4 GENSEC: GS1B3-01, GS2B1-01, GS4B2-01, and this). Opens new focus area P24 — Agentic Action Control (Security focus areas to date: P21 Endpoint Security, P22 Response Validation, P23 Prompt Security; P24 mirrors AWS GENSEC05 'Excessive agency', named for the control rather than the risk per the catalogue's positive-framing convention).\n\n**The action-side member of the Security guardrail family** — GS4B2-01 screens INPUT, GS2B1-01 screens OUTPUT, GS1B3-01 governs RETRIEVAL (read), this governs what the agent DOES (write); the fourth and last face of the agent surface, the only one that changes the world, unowned by any sibling.\n\n**step_promotion 3/3/3/3:**\n\n- has_enforceable_artefact: per-agent tool manifest with scope+class+gate + three pre-merge lints + the central wrapper.\n- architecturally_distinct: action-plane control, unowned — input/output/retrieval each covered by a named sibling, none govern tool execution.\n- in_bp_scope: GENSEC05 is literally 'avoid excessive agency for models' and BP01 is least-privilege/permission-boundaries for agentic workflows.\n- not_vendor_menu: strip Bedrock agent execution roles / Flows service roles / Verified Permissions / Bedrock User Confirmation and the rule survives — constrain the agent to a declared tool set, scope each tool, gate consequential actions.\n\n**Decisions driven by the HALT** (extended interactive walk: the user pressed on the normal agent paradigm — how an agent with N tools selects by description, where the agent sits in a chatbot request flow, what is enforceable, how it standardises, what the project must do, and how it holds for unattended/triggered agents with no human loop):\n\n1. PROMOTE not not_promote — unlike GENSEC01-BP01 (pure generic IAM), GENSEC05-BP01 carries a GenAI-distinct slice: agent ACTION authorization. Description-based tool selection is the model REASONING (soft, probabilistic, manipulable); the principle adds the AUTHORIZATION layer (hard boundary on what is reachable and what fires without a check). The two are different layers and conflating them is the failure.\n2. SCOPE = the OWASP excessive-agency triad (functionality + permissions + autonomy), not just step 4's human-confirmation — manifest caps functionality, execution role caps permissions, write-gate caps autonomy.\n3. IAM HALF (steps 1-3) NOT not_promoted wholesale and NOT re-linted here — it becomes the ENFORCEMENT behind the manifest's `scope` field (the per-tool least-privilege execution role), so the principle depends on base-WAF IAM rather than reinventing it; the manifest is the GenAI-distinct declaration layer on top.\n4. GATE HAS TWO FORMS so the principle holds for non-interactive agents: `confirm` (human-in-the-loop, chat) OR `policy:<name>` (deterministic code, unattended pipeline); the consequential-implies-gated lint additionally fails an unattended write gated only by `confirm`, forcing a policy gate — this resolved the user's strongest challenge (validity when there is no human loop).\n5. POLICY SIGNATURE STANDARDISED — every policy is `(ctx) -> bool` with a single context object (not unpacked tool args, which would force per-tool signatures), so the central dispatcher + lint + red-team treat all policies uniformly; logic inside is project-local.\n6. ENFORCEMENT LIMIT (same honesty boundary as GS2B1-01 / GS4B2-01, recorded in data/enforcement_limits.md): the three pre-merge lints prove consequential tools are DECLARED, ROUTED, and WIRED to a gate — they cannot prove the `class` is HONEST (a write mislabeled read passes) or the `scope` MINIMAL (an over-broad role passes). Efficacy -> quarterly agent red-team + blast-radius review (adversarial action corpus through the gated agent, escape-rate vs threshold + classification/scope honesty review, reusing GO1B1-01's harness).\n\n**Solution / gates.** Option A (declared-and-routed) is the mandated spine; central-agent-SDK-vs-standalone-wrapper noted inline. Three pre_merge required-status-check lints (declaration completeness; routed-execution AST lint; consequential-implies-gated incl. the unattended policy-gate rule) + one quarterly_review agent red-team with binary sign-off. STATEMENT TITLE kept plain ('Put every consequential agent action through a gate before it runs') mirroring GS2B1-01 / GS4B2-01 'Put every X through a guardrail' form per data/CLAUDE.md working-style rule; scored against statement rubric, all five dims >=2 (the manifest/allow-list half rides in the description, the gate is the headline mandate).\n\n**Fields:**\n\n- applicability { agentic: mandatory } ONLY — excessive agency has no action surface without tools, and a non-agentic LLM/RAG workload that calls tools IS agentic by the catalogue taxonomy; omitting llm/rag/ml is the correct not-applicable judgment (same agentic-only shape as GO1B1-01/02).\n- serving_paradigm all four mandatory — the gate lives in the agent loop, not the serving infra, so it is needed regardless of how the model is served.\n- maturity_level FOUNDATIONAL — pays off at project #1 (any agent with a write tool needs the gate from day one; skipping it locks in ungated consequential tools), and the enforcement is a per-PR repo-local lint (manifest + AST + write-gated checks) with no deployed substrate to operate against; the central agent SDK is a SOFT dependency because a standalone wrapper also satisfies the contract. The maturity rubric's FAIL example explicitly forbids labelling a per-PR repo-local lint 'scaling'.\n- impact_level High — matches AWS BP risk High; excessive agency is financial / data-loss / reputational exposure (the cited Replit incident wiped production data for 1,200+ companies during a freeze).\n- dependencies (schema v1.10): [{ GO3B1-01: soft (action gate rides a central agent SDK, the action-plane sibling of the central LLM SDK, and reuses its no-inline-call AST lint pattern; a standalone wrapper also works) }, { GO1B1-01: soft (quarterly agent red-team reuses the eval-harness machinery) }].\n- references (schema v1.11): two real items — the Replit AI agent production-database deletion during a code-and-action freeze (Fortune, Jul 2025; destructive externally-visible action beyond scope, no approval gate) and OWASP LLM08:2025 Excessive Agency (the framework definition AWS GENSEC05 itself cites; functionality/permissions/autonomy triad maps onto manifest/role/gate).\n- ownership.tier enterprise via D1=no borderline (an agent taking unauthorised financial or data actions in regulated industries could push D1 to yes; held at no-borderline parallel to GS2B1-01 / GS4B2-01 / GO1B1-04) / D2=3 (central agent SDK: the @tool decorator + tool registry + run_tool wrapper + policy dispatcher with the uniform (ctx)->bool contract + the routed-execution AST lint + the confirmation/policy gate executor + the red-team action corpus + per-runtime adapters — weeks of platform engineering plus ongoing maintenance) -> recommended_centralise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence (CI lint logs + quarterly red-team results are the mechanical evidence), arb_role dashboard_and_spot_check.\n- AIGP IV.C provisional unverified (same placement as GS2B1-01 / GS4B2-01).\n\n**Other.** explain_prompt compiled with a setup_absence / ungoverned-action failure shape (agent given reachable consequential tools with no gate; an ordinary, injected, or mis-reasoned request fires an out-of-scope action). RI at data/ri/GS5B1-01/README.md (Option A). Legacy PRIN_008 (Agent Security Framework) mapping formally ruled out — legacy PRIN_NNN are historical-only per the taxonomy convention and PRIN_008's broad 'agent security framework' framing is not the specific action-authorization contract authored here.\n\n**Open items:**\n\n- JSON parse not run in-session (sandbox cannot reach the WSL mount) — verify python3 json.load(principles.json) from a terminal before pushing.\n- Frontend — P24 — Agentic Action Control is a new free-text focus_area; confirm the runtime renders it (npm run build from s3-json-viewer/).\n- AIGP IV.C unverified.\n- GENSEC05 now CLOSED — single BP (BP01) -> GS5B1-01 promoted.\n- GENSEC06 (Data poisoning) remains to walk; GENOPS02 / GENOPS05; GENCOST03-BP02; GENREL also stand."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-09",
+            "author": "Dheeraj",
+            "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
           }
         ]
       },

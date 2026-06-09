@@ -1,7 +1,7 @@
 # Reference Implementation — GC2B2-01
 
 ## 1. principle_id
-GC2B2-01 — Right-size hosting infrastructure to the workload's demand profile and commit utilization alarms as code. Applies only to workloads that self-host a foundation model or run on committed managed capacity (Bedrock Provisioned Throughput and equivalents); pure pay-per-token API workloads have no infrastructure to right-size.
+GC2B2-01 — Size AI infrastructure to real demand, not to the safe maximum. Applies only to workloads that self-host a foundation model or run on committed managed capacity (Bedrock Provisioned Throughput and equivalents); pure pay-per-token API workloads have no infrastructure to right-size.
 
 ## 2. tier_outcome
 **recommended_centralise** → `ownership.tier: enterprise`
