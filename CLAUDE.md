@@ -4,7 +4,15 @@ you need to reduce the amount of fart you give when I ask you questions. I prefe
 ## Project Overview
 S3 JSON Viewer - A Next.js web application that fetches and displays JSON data from AWS S3 buckets with a modern, responsive UI.
 
-> **App root is `s3-json-viewer/`.** `package.json`, `node_modules`, `.env.local`, and the real `app/` (with `api/`, `layout.tsx`, `principles/`) all live there. Run `npm run dev` / `npm run build` from inside `s3-json-viewer/`, not the repo root. The root-level `app/page.tsx` is a stray leftover and is NOT what the dev server serves.
+> **App root is `s3-json-viewer/`.** `package.json`, `node_modules`, `.env.local`, and the real `app/` (with `api/`, `layout.tsx`, `standards/`, `principles/`) all live there. Run `npm run dev` / `npm run build` from inside `s3-json-viewer/`, not the repo root. The root-level `app/page.tsx` is a stray leftover and is NOT what the dev server serves.
+
+## Data model: standards vs principles (IMPORTANT — read before touching data code)
+The S3 JSON top-level key is **`standards`** (was `principles`). Each node carries BOTH `standard_id` (e.g. `ST-GO1B1-01`) and `principle_id` (e.g. `PR-GO1B1-01`) — the model is **many standards per principle**. A node's principle "title" is the `u_principle` field (aspirational statement); `statement.title` is the *standard's* title.
+- **`standard_id` is the node id** used for routing, lookup, search, and the detail-page header. Code reading the S3 object must use `data.standards` and find by `standard_id`.
+- **Routes:** `/standards` = list of all standards (cards); `/standards/<standard_id>` = detail; `/standards/<standard_id>/reference` = RI README. `/principles` = principle→standards **mapping** page (groups standards by `principle_id`).
+- **Bare-id mismatch (gotcha):** RI dirs (`data/ri/GO1B1-01/`) and `dependencies[].principle_id` (`GO1B1-01`) use the **bare** form, while node ids are prefixed (`ST-`/`PR-`). `/api/ri` strips a leading `ST-`/`PR-` before resolving the dir; `DependenciesSection` normalises bare → `ST-` form for its links.
+- **`/api/index` response key stays `principles`** (internal payload shape `{ meta, principles: [...] }`) even though it lists standards — context/dashboard read `data.principles`. Don't confuse this with the S3 `data.standards` key. Each index entry carries `standard_id`, `principle_id`, `u_principle`, `pillar`, `focus_area`, `maturity_level`, etc.
+- New top-level keys `u_value` / `u_principle` are consumed by `HeaderBar` (listed in `HEADER_KEYS` in `registry.tsx`, so they're not stray tabs).
 
 ## Tech Stack
 - **Framework:** Next.js 16.2.6 with App Router
@@ -107,8 +115,9 @@ rm -rf .next node_modules package-lock.json && npm install
 - Handles errors with appropriate status codes
 
 ### /api/ri/[id] Route
-- Serves the Reference Implementation README for a principle: reads `<repo-root>/data/ri/<id>/README.md`.
+- Serves the Reference Implementation README for a standard: reads `<repo-root>/data/ri/<bare-id>/README.md`.
 - These files live at the **repo root**, OUTSIDE the app dir, so they are not static assets. The route resolves them via `path.join(process.cwd(), '..', 'data', 'ri', id, 'README.md')` (`process.cwd()` is `s3-json-viewer/`, so `..` is the repo root).
+- **Strips a leading `ST-`/`PR-` prefix** from the incoming id first, because RI dirs are named by the bare bp_code (`GO1B1-01`) but callers pass the prefixed `standard_id` (`ST-GO1B1-01`).
 - `id` is whitelisted to `^[A-Za-z0-9_-]+$` to block path traversal → returns 400; 404 when the README is missing; 200 with `{ content }` otherwise.
 - Supports `HEAD` (Next auto-derives it from `GET`); the Solution tab uses a HEAD request as a cheap existence check.
 
@@ -134,19 +143,20 @@ rm -rf .next node_modules package-lock.json && npm install
 ```
 
 ## Component Architecture
-- **app/page.tsx**: Landing page — renders a centered "Welcome back" heading. Does NOT render principles.
-- **app/principles/page.tsx**: Index list — mounts `PrinciplesList`, which renders one row per principle as `<id>-<title>`, linking to `/principles/<id>`.
-- **app/principles/[id]/page.tsx**: Detail view — client component that reads `id` via `useParams`, looks up the principle in context, renders `PrincipleView`.
-- **app/principles/[id]/reference/page.tsx**: Reference Implementation view — client component that fetches `/api/ri/<id>` and renders the README as formatted markdown (`react-markdown` + `remark-gfm`, styled via `markdownComponents`). Loading skeleton + not-found/error states. Linked from the Solution tab.
+- **app/page.tsx**: Dashboard landing — "Welcome back" + per-pillar standards counts and stat cards. Reads `data.principles` (the `/api/index` payload). Does NOT render the catalogue.
+- **app/standards/page.tsx**: Standards list — mounts `PrinciplesList` (grid/list of standard cards), linking to `/standards/<standard_id>`.
+- **app/standards/[id]/page.tsx**: Detail view — client component; reads `id` via `useParams`, fetches `/api/data/<standard_id>`, renders `PrincipleView`.
+- **app/standards/[id]/reference/page.tsx**: Reference Implementation view — fetches `/api/ri/<standard_id>` and renders the README markdown. Linked from the Solution tab.
+- **app/principles/page.tsx**: Principle→standards **map** — mounts `PrincipleStandardsMap`. Groups standards by `principle_id`, shows principle id + `u_principle` title beside its standards (each linking to `/standards/<standard_id>`). Has its own pillar + focus-area filter panel (local state, not the sidebar's).
 - **app/api/data/route.ts**: S3 fetch wrapped in `unstable_cache` (60s TTL, tag `principles`)
 - **app/api/refresh/route.ts**: POST endpoint that calls `revalidateTag('principles')`
 - **app/layout.tsx**: Root layout — Inter (sans) + JetBrains Mono (mono) from Google Fonts; wraps Header + Sidebar + main + Footer inside `<PrinciplesProvider>` so every route shares the same fetch + search state.
 - **components/layout/**: Header, Footer, RefreshButton, and the `sidebar/` widget folder.
-- **components/layout/sidebar/**: Widget folder — `Sidebar.tsx` (shell), `SidebarMenu.tsx` (nav links, currently just "All Principles" → `/principles`), `SearchPrinciples.tsx` (search input), `index.ts` (re-exports `Sidebar`). Each widget is its own file; add new ones here and mount in `Sidebar.tsx`.
-- **components/principles/**: `PrinciplesView` (deprecated wrapper — still exists but no longer mounted on `/`), `PrincipleView` (HeaderBar + tabs, full width), `PrinciplesList` (the `<id>-<title>` row list used by `/principles`).
-- **components/principles/sections/**: One renderer per top-level principle node (StatementSection, ProblemSection, SolutionSection, GatesSection, FrameworkMappingsSection, EvidenceSection, KeyValueSection, ChangeHistorySection, HeaderBar, UnknownSection). `SolutionSection` is a client component: it HEAD-checks `/api/ri/<principle_id>` and renders a "Reference Implementation" link to `/principles/<id>/reference` only when the README exists.
+- **components/layout/sidebar/**: Widget folder — `Sidebar.tsx` (shell), `SidebarMenu.tsx` (nav: Dashboard → `/`, All Principles → `/principles`, All Standards → `/standards`, Taxonomy → `/taxonomy`), `SearchPrinciples.tsx` (search input), `PillarFilter`/`FocusAreaFilter`/`MaturityFilter`/`BestPracticeFilter` (sidebar dropdowns), `index.ts` (re-exports `Sidebar`). Each widget is its own file; add new ones here and mount in `Sidebar.tsx`.
+- **components/principles/**: `PrincipleView` (HeaderBar + tabs, full width), `PrinciplesList` (standard cards used by `/standards`), `PrincipleStandardsMap` (the `/principles` mapping view). `PrinciplesView` is a deprecated wrapper, no longer mounted.
+- **components/principles/sections/**: One renderer per top-level node (StatementSection, ProblemSection, SolutionSection, GatesSection, DependenciesSection, FrameworkMappingsSection, EvidenceSection, KeyValueSection, ChangeHistorySection, HeaderBar, MetaSection). `HeaderBar` shows `standard_id` (with `principle_id` + `u_value`/`u_principle`). `SolutionSection` HEAD-checks `/api/ri/<standard_id>` and renders a "Reference Implementation" link to `/standards/<standard_id>/reference` only when the README exists.
 - **components/principles/markdownComponents.tsx**: Tailwind styling map passed to `react-markdown` (no `@tailwindcss/typography` plugin is installed, so each element — headings, lists, code, tables, etc. — is styled explicitly here). Shared by the reference-implementation page.
-- **lib/principles/PrinciplesContext.tsx**: Client `PrinciplesProvider` + `usePrinciples()` hook. Fetches `/api/data` once on mount and exposes `{ data, error, query, setQuery, filtered }`. `filtered` is a memoized substring match (case-insensitive) against both `statement.title` and `principle_id`. Sidebar widgets and pages all read/write through this hook — do NOT refetch in components.
+- **lib/principles/PrinciplesContext.tsx**: Client `PrinciplesProvider` + `usePrinciples()` hook. Fetches **`/api/index`** once on mount; exposes `{ data, error, query, setQuery, filtered, pillar/focusArea/maturityLevel/bestPractice (+setters & option lists) }`. `data.principles` is the index payload. `filtered` matches query against `statement.title` + `standard_id` and applies the sidebar dropdown filters. Selecting a sidebar filter calls `router.push("/standards")`. Sidebar widgets and pages read/write through this hook — do NOT refetch in components.
 - **lib/principles/types.ts**: Loose `Principle = Record<string, unknown>` + `asObject/asArray/asString` defensive helpers
 - **lib/principles/registry.tsx**: Single source of truth for tab order, titles, and renderer mapping. Unknown top-level keys auto-fall-through to `UnknownSection` (labeled JSON viewer). Tab order: Statement → Problem → Solution → Gates → Ownership → Evidence → Framework Mappings → AIGP → History.
 - **components/ui/**: Shadcn/UI components (project-owned — modified in place)
@@ -158,6 +168,7 @@ All cross-route principle state lives in `PrinciplesProvider` (mounted in `app/l
 The JSON schema changes often. Section renderers are defensive: each reads its node with `asObject/asArray/asString`, returns `null` when empty, never crashes. Adding a new top-level key to the JSON shows it immediately as a raw-JSON tab with humanised title; promote to a proper renderer by adding one line to `REGISTRY` in `lib/principles/registry.tsx`.
 
 ## Known Quirks
+- **The app reads from S3, not `data/principles.json`.** The local `data/principles.json` is a working copy; the running app fetches the object at `S3_BUCKET_NAME`/`S3_JSON_KEY`. If the UI shows stale/empty data after a local edit, the S3 object hasn't been re-uploaded (or the 60s cache hasn't expired / Refresh button not hit). Verify the live shape by curling `/api/index`, not by reading the local file.
 - **Tailwind v4 + `@layer base`**: putting `font-size` (or other plain CSS properties) inside `@layer base { html { ... } }` silently fails to compile into the served CSS. Use a top-level `html { ... }` rule instead. See `app/globals.css` for the base font-size override.
 - **`AWS_PRINCIPLES_PATH` in `/home/dheeraj/ai_principles_server/.env`** is unused; the API route reads `S3_BUCKET_NAME` and `S3_JSON_KEY` from `s3-json-viewer/.env.local`. Don't waste time editing the outer `.env`.
 - **Node version**: project runs on Node 22 (set as nvm default globally). Do not `nvm use 20` — it's stale guidance from the earlier setup.
