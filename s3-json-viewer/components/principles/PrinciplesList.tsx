@@ -53,7 +53,7 @@ export function PrinciplesList() {
   return (
     <div className="w-full">
       <div className="mb-4 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight">All Principles</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">All Standards</h1>
         <div className="inline-flex rounded-lg border bg-card p-0.5 shadow-sm">
           <ViewToggle
             active={view === "grid"}

@@ -2,6 +2,34 @@
 
 5-hour paid workshop on building enforceable AI architecture principles. Maven-style, sold to senior AI architects and technical leaders moving AI past prototype into regulated production. 500-student scale possible.
 
+## Revised workshop strategy — 2026-06-10 (supersedes the block agenda below as the *delivered* structure)
+
+The five-block design further down is now a **content reservoir** (prioritisation inputs, Platform-vs-Project sheet, enforcement patterns, hands-on authoring). The **delivered agenda and framing** is the three parts below.
+
+**Scope boundary — state up front.** The workshop does NOT teach how to identify principles or derive standards. Assume a catalogue of standards + sized blueprints already exists (BAU work). The workshop *consumes* that catalogue. AWS GenAI Lens is positioned as a **source that feeds the Standards layer** — not a peer of principles/standards, and not re-derived in the room.
+
+**New catalogue artefact — RI Blueprint (L1) vs RI Build (L2):**
+
+- **RI Blueprint (L1)** — a *sized sketch* of a reference implementation: enough detail to estimate effort/complexity, but NOT a code-level build. Produced continuously in BAU, lives in the catalogue, does NOT enter the sprint.
+- **RI Build (L2)** — the full, code-level reference implementation (artefacts, repo paths, CI gates). This is what a sprint produces.
+- This resolves the prioritisation chicken-and-egg: you can't rank without effort estimates, and the blueprint is where the estimate comes from. **Prioritisation runs after blueprints exist.**
+
+**EA operating pipeline:** Principles → Standards → RI Blueprint → Prioritisation → RI Build. Catalogue/BAU = Principles + Standards + RI Blueprint (continuous). **Quarterly sprint = RI Build only.** Prioritisation is the **gate** between them and sets the fixed quarterly build agenda. Each in-scope build runs as a **funded mini-project** — its own budget, named owner, RACI chart.
+
+**The three parts:**
+
+1. **Why principles matter** — three scenarios (Legal/PII, CX/drift, Cost/token) + AWS GenAI Lens deep-dive (how the Lens is structured & read). ~45–60 min.
+2. **The prioritization framework** — ranks sized blueprints into the quarter's build agenda. The ranking *method* is paid IP — keep it out of marketing/intro material (titles only). ~60–90 min.
+3. **One build, end to end** — pull one prioritised blueprint and build it into a full enforceable RI, live: Open the blueprint → Build out → Govern → Ship. The hands-on core; weight the most time here (~2–2.5 hr).
+
+**Parked — NOT in the agenda:** a possible Part 4 on common build challenges + org structures (who leads, core team, supporting team, RACI/governance). Decision: only worth a full part if backed by real war stories + a concrete org example; otherwise fold challenges into Part 3 live and close with a short org-structure segment. Left out of the current agenda per user.
+
+**Terminology fix:** "enforceable principle" is wrong — a principle is the abstract *why* and is NOT enforceable on its own; the enforceable artefact is the **standard** (and its RI). Use "what it takes to make a principle enforceable" or "enforceable standard," never "enforceable principle."
+
+**Free intro funnel.** A free ~45-min intro session feeds the paid workshop. Its job: prove the problem + show ONE worked example, then sell. Bridge/CTA slide built — *"This Session Was the Why. The Workshop Is the How."* — listing the three workshop parts (titles only), the outcome ("a working enforceable RI in your own repo"), price ($500), date (e.g. July 10), and a sign-up CTA. The deprecated project-vs-enterprise failure-modes framing has been dropped from the intro.
+
+**Diagram assets (repo root):** `ea-catalogue-pipeline-v2.svg` (Principles→Standards→RI Blueprint→Prioritize→RI Build), `workshop_three_part.svg` (the 3-part agenda), `workshop-bridge-slide.html` (free→paid CTA).
+
 ## What students walk out with
 
 Five concrete artefacts, each populated for a workload they actually own:

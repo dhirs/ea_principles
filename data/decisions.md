@@ -8,7 +8,34 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-09 (latest) — Each node is a STANDARD: `principles` → `standards`, dual `standard_id` / `principle_id`
+## 2026-06-10 (latest) — Paid workshop re-cut to three parts; RI Blueprint (L1) vs RI Build (L2); prioritisation as the gate
+
+### Context
+
+Working the Maven workshop strategy off the free-intro deck (*Why Enterprise AI Agents Fail Beyond The Demo*). Resolved where the AWS GenAI Lens sits, how to scope the paid workshop, and a chicken-and-egg in prioritisation.
+
+### Decisions
+
+- **Paid 5-hr workshop ($500) re-cut** from the 5-block design into a **3-part agenda**: (1) Why principles matter + GenAI Lens deep-dive; (2) the prioritization framework; (3) one build end-to-end, live. The 5-block detail is retained as a content reservoir in `paid_workshop.md` (new 2026-06-10 section at the top supersedes the block agenda as the *delivered* structure).
+- **New catalogue artefact: RI Blueprint (L1) vs RI Build (L2).** Blueprint = a sized sketch (enough to estimate effort, not a code build), produced in BAU, catalogue-resident, NOT in the sprint. Build = the full code-level RI a sprint produces.
+- **EA pipeline:** Principles → Standards → RI Blueprint → Prioritisation → RI Build. BAU = principles + standards + blueprint (continuous); **quarterly sprint = RI Build only**; prioritisation is the **gate** that sets the quarter's agenda. Each build = a funded mini-project (budget, owner, RACI). Fixes the prioritise-without-estimates chicken-and-egg (the estimate comes from the blueprint).
+- **Scope boundary:** workshop does NOT teach identifying principles / deriving standards; assumes the catalogue exists; **AWS GenAI Lens is a source feeding Standards**, not re-derived in the room.
+- **Terminology:** drop "enforceable principle" — principles aren't enforceable on their own; the enforceable artefact is the **standard** (and its RI).
+- **Part 4** (common build challenges + org structures) considered and **left OUT** of the agenda (parked; only revive with real war stories + a concrete org chart).
+- Dropped the deprecated **project/enterprise failure-modes framing** from the free-intro CTA slide.
+
+### Artefacts
+
+- Repo-root diagram/CTA assets: `ea-catalogue-pipeline-v2.svg`, `workshop_three_part.svg`, `workshop-bridge-slide.html`.
+- `paid_workshop.md` — added the 2026-06-10 strategy section.
+
+### Open items (this change)
+
+- None blocking. If Part 4 is revived it needs real war stories + a concrete org example. Catalogue/data-model open items from the 2026-06-09 entries below still stand independently.
+
+---
+
+## 2026-06-09 — Each node is a STANDARD: `principles` → `standards`, dual `standard_id` / `principle_id`
 
 ### Context
 

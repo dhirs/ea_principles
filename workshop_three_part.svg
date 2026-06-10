@@ -1,0 +1,114 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 690" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc" width="980" height="690">
+  <title id="ttl">Three-part AI architecture principles workshop</title>
+  <desc id="dsc">Part 1 walks three scenarios and a GenAI Lens deep-dive. Part 2 covers the prioritization framework that ranks sized blueprints into the quarter's build agenda. Part 3 demos a single sprint that turns one prioritised blueprint into a full enforceable reference implementation.</desc>
+
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#888780"/></marker>
+    <marker id="ahp" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#7F77DD"/></marker>
+    <marker id="ahg" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#1D9E75"/></marker>
+  </defs>
+
+  <!-- ============ HEADER ============ -->
+  <text x="490" y="34" text-anchor="middle" font-size="25" font-weight="700" fill="#2C2C2A">AI Architecture Principles — A Three-Part Workshop</text>
+  <text x="490" y="58" text-anchor="middle" font-size="14" fill="#5F5E5A">From the AWS GenAI Lens to a shipped, enforceable reference implementation</text>
+
+  <!-- ============ PART 1 ============ -->
+  <rect x="40" y="80" width="94" height="26" rx="13" fill="#534AB7"/>
+  <text x="87" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PART 1</text>
+  <text x="146" y="99" font-size="15" font-weight="700" fill="#2C2C2A">Why principles matter — three scenarios</text>
+
+  <g>
+    <rect x="40" y="116" width="150" height="74" rx="12" fill="#ffffff" stroke="#E24B4A" stroke-width="1.6"/>
+    <circle cx="64" cy="142" r="11" fill="#E24B4A"/><text x="64" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1</text>
+    <text x="83" y="140" font-size="13.5" font-weight="700" fill="#2C2C2A">Scenario 1</text>
+    <text x="83" y="158" font-size="11" fill="#A32D2D">Legal · PII leakage</text>
+  </g>
+  <g>
+    <rect x="206" y="116" width="150" height="74" rx="12" fill="#ffffff" stroke="#378ADD" stroke-width="1.6"/>
+    <circle cx="230" cy="142" r="11" fill="#378ADD"/><text x="230" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2</text>
+    <text x="249" y="140" font-size="13.5" font-weight="700" fill="#2C2C2A">Scenario 2</text>
+    <text x="249" y="158" font-size="11" fill="#185FA5">CX · model drift</text>
+  </g>
+  <g>
+    <rect x="372" y="116" width="150" height="74" rx="12" fill="#ffffff" stroke="#EF9F27" stroke-width="1.6"/>
+    <circle cx="396" cy="142" r="11" fill="#EF9F27"/><text x="396" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">3</text>
+    <text x="415" y="140" font-size="13.5" font-weight="700" fill="#2C2C2A">Scenario 3</text>
+    <text x="415" y="158" font-size="11" fill="#854F0B">Cost · token burn</text>
+  </g>
+
+  <line x1="528" y1="153" x2="582" y2="153" stroke="#888780" stroke-width="2" marker-end="url(#ah)"/>
+
+  <rect x="590" y="116" width="338" height="74" rx="12" fill="#EEEDFE" stroke="#7F77DD" stroke-width="2"/>
+  <text x="759" y="146" text-anchor="middle" font-size="17" font-weight="700" fill="#3C3489">AWS GenAI Lens — deep-dive</text>
+  <text x="759" y="166" text-anchor="middle" font-size="11.5" fill="#534AB7">how the Lens is structured &amp; read</text>
+
+  <text x="490" y="214" text-anchor="middle" font-size="12" font-style="italic" fill="#5F5E5A">the catalogue (standards + sized blueprints) is produced in BAU and carries into Part 2 as the backlog</text>
+  <line x1="40" y1="228" x2="940" y2="228" stroke="#D3D1C7" stroke-width="1"/>
+
+  <!-- ============ PART 2 — Prioritization ============ -->
+  <rect x="40" y="244" width="94" height="26" rx="13" fill="#534AB7"/>
+  <text x="87" y="262" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PART 2</text>
+  <text x="146" y="263" font-size="15" font-weight="700" fill="#2C2C2A">The prioritization framework — what to build this quarter</text>
+
+  <!-- A: input -->
+  <rect x="40" y="300" width="210" height="64" rx="10" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+  <text x="145" y="337" text-anchor="middle" font-size="14" font-weight="700" fill="#5F5E5A">Sized RI Blueprints</text>
+
+  <line x1="252" y1="332" x2="286" y2="332" stroke="#888780" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- B: framework (emphasis) -->
+  <rect x="290" y="300" width="360" height="64" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+  <text x="470" y="337" text-anchor="middle" font-size="16" font-weight="700" fill="#3C3489">Prioritization Framework</text>
+
+  <line x1="652" y1="332" x2="686" y2="332" stroke="#1D9E75" stroke-width="2" marker-end="url(#ahg)"/>
+
+  <!-- C: output -->
+  <rect x="690" y="300" width="242" height="64" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.6"/>
+  <text x="811" y="337" text-anchor="middle" font-size="14" font-weight="700" fill="#0F6E56">Quarter's Build Agenda</text>
+
+  <text x="40" y="392" font-size="11" font-style="italic" fill="#8A887E">Blueprints are produced in BAU — Part 2 only ranks them.</text>
+
+  <!-- pull into Part 3 -->
+  <line x1="811" y1="404" x2="811" y2="450" stroke="#534AB7" stroke-width="2.4" marker-end="url(#ahp)"/>
+  <text x="822" y="432" font-size="10.5" font-style="italic" fill="#534AB7">pull one build</text>
+
+  <!-- ============ PART 3 — One build, end to end ============ -->
+  <rect x="40" y="416" width="94" height="26" rx="13" fill="#534AB7"/>
+  <text x="87" y="434" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PART 3</text>
+  <text x="146" y="435" font-size="15" font-weight="700" fill="#2C2C2A">One build, end to end — a blueprint becomes an enforceable RI</text>
+
+  <rect x="40" y="456" width="892" height="150" rx="14" fill="#F6F5FF" stroke="#7F77DD" stroke-width="1.8"/>
+  <text x="64" y="482" font-size="14" font-weight="700" fill="#3C3489">THE SPRINT</text>
+  <text x="150" y="482" font-size="11.5" fill="#534AB7">one prioritised blueprint → one full reference implementation · the hands-on core</text>
+
+  <!-- step 1 -->
+  <rect x="60" y="498" width="193" height="80" rx="10" fill="#ffffff" stroke="#7F77DD" stroke-width="1.5"/>
+  <circle cx="84" cy="522" r="11" fill="#534AB7"/><text x="84" y="526" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">1</text>
+  <text x="156" y="552" text-anchor="middle" font-size="14" font-weight="700" fill="#2C2C2A">Open the blueprint</text>
+
+  <line x1="253" y1="538" x2="281" y2="538" stroke="#7F77DD" stroke-width="2.2" marker-end="url(#ahp)"/>
+
+  <!-- step 2 (emphasis) -->
+  <rect x="279" y="498" width="193" height="80" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.8"/>
+  <circle cx="303" cy="522" r="11" fill="#534AB7"/><text x="303" y="526" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">2</text>
+  <text x="375" y="552" text-anchor="middle" font-size="14" font-weight="700" fill="#3C3489">Build out</text>
+
+  <line x1="472" y1="538" x2="500" y2="538" stroke="#7F77DD" stroke-width="2.2" marker-end="url(#ahp)"/>
+
+  <!-- step 3 -->
+  <rect x="498" y="498" width="193" height="80" rx="10" fill="#ffffff" stroke="#7F77DD" stroke-width="1.5"/>
+  <circle cx="522" cy="522" r="11" fill="#534AB7"/><text x="522" y="526" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">3</text>
+  <text x="594" y="552" text-anchor="middle" font-size="14" font-weight="700" fill="#2C2C2A">Govern</text>
+
+  <line x1="691" y1="538" x2="719" y2="538" stroke="#7F77DD" stroke-width="2.2" marker-end="url(#ahp)"/>
+
+  <!-- step 4 -->
+  <rect x="717" y="498" width="193" height="80" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.8"/>
+  <circle cx="741" cy="522" r="11" fill="#1D9E75"/><text x="741" y="526" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">4</text>
+  <text x="813" y="552" text-anchor="middle" font-size="14" font-weight="700" fill="#0F6E56">Ship</text>
+
+  <!-- closing caption -->
+  <text x="490" y="642" text-anchor="middle" font-size="11.5" font-style="italic" fill="#5F5E5A">Output: a shipped, enforceable reference implementation for one standard — built and governed live.</text>
+</svg>
