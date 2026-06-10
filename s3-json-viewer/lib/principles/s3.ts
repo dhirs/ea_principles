@@ -30,3 +30,16 @@ export function getCachedPrinciples() {
   const key = process.env.S3_JSON_KEY || "ea/principles.json"
   return cachedFetch(bucket, key)
 }
+
+// Same pattern for the "not promoted" ledger (S3 key `ea/not_prompted.json`).
+// Separate cache key/tag so it revalidates independently of principles.
+const cachedFetchNotPromoted = unstable_cache(fetchPrinciplesFromS3, ["not-promoted-json"], {
+  revalidate: REVALIDATE_SECONDS,
+  tags: ["not-promoted"],
+})
+
+export function getCachedNotPromoted() {
+  const bucket = process.env.S3_BUCKET_NAME || "datawhistl"
+  const key = process.env.S3_NOT_PROMOTED_KEY || "ea/not_prompted.json"
+  return cachedFetchNotPromoted(bucket, key)
+}

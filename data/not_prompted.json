@@ -1,0 +1,374 @@
+{
+  "meta": {
+    "description": "Ledger of AWS GenAI Lens best practices and implementation steps that were walked but NOT promoted to a standard in the catalogue. Compiled from lens_mapping.md. Step is null when the whole BP was not promoted. focus_area is the AWS Lens question-level focus area the BP belongs to.",
+    "source": "data/lens_mapping.md",
+    "generated": "2026-06-10",
+    "statuses": {
+      "not_promoted": "Walked and rejected via the step_promotion rubric or user direction",
+      "deferred": "Substance is real but parked; not authored yet",
+      "intentionally_unmapped": "Pillar or BP excluded from catalogue scope by design"
+    }
+  },
+  "not_promoted": [
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS01 — Model performance evaluation",
+      "bp": "GENOPS01-BP01",
+      "step": "3",
+      "title": "Establish periodic evaluation processes",
+      "status": "not_promoted",
+      "reason": "No architecturally distinct content once vendor tooling is stripped. Scheduled running is owned by the drift monitor, model re-evaluation by the model-change gate, and owner assignment is operating-model policy, not architecture.",
+      "absorbed_by": ["GO1B1-04", "GO1B1-06"]
+    },
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS01 — Model performance evaluation",
+      "bp": "GENOPS01-BP01",
+      "step": "5",
+      "title": "Perform model evaluations",
+      "status": "not_promoted",
+      "reason": "Running the evaluation is already enforced by GO1B1-01's CI gates. Tracking results over time is owned by the drift monitor.",
+      "absorbed_by": ["GO1B1-01", "GO1B1-04"]
+    },
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS01 — Model performance evaluation",
+      "bp": "GENOPS01-BP02",
+      "step": null,
+      "title": "Collect and monitor user feedback",
+      "status": "not_promoted",
+      "reason": "All four steps are vendor menus or review-process advice. The honest candidate, feedback as telemetry, adds nothing beyond an event type on the existing observability stream, and the feedback-capture UX cannot be proven by a CI gate.",
+      "absorbed_by": ["GO3B2-01", "GO1B1 family"]
+    },
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS03 — Observability in workloads",
+      "bp": "GENOPS03-BP01",
+      "step": "2-3",
+      "title": "Baseline performance evaluation and A/B variant testing",
+      "status": "not_promoted",
+      "reason": "Both are evaluation work already mandated by the eval-harness family of standards.",
+      "absorbed_by": ["GO1B1-01", "GO1B1-02", "GO1B1-03", "GO1B1-04", "GO1B1-05"]
+    },
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS03 — Observability in workloads",
+      "bp": "GENOPS03-BP01",
+      "step": "5-6",
+      "title": "Periodic prompt review and cross-team collaboration",
+      "status": "not_promoted",
+      "reason": "Step 5 is process advice with no commitable artefact. Step 6 is a mechanical consequence of the central prompt registry; style guidelines are coaching, not a gate.",
+      "absorbed_by": ["GO3B1-01"]
+    },
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS03 — Observability in workloads",
+      "bp": "GENOPS03-BP02",
+      "step": "3-12",
+      "title": "Trace consumption, dashboards, and vendor tooling steps",
+      "status": "not_promoted",
+      "reason": "Consumption advice, vendor menu items, or concerns belonging to other pillars (GENPERF, GENSEC, GENOPS02).",
+      "absorbed_by": ["GO3B2-01", "GO3B2-02"]
+    },
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS04 — Automate lifecycle management",
+      "bp": "GENOPS04-BP01",
+      "step": null,
+      "title": "Automate generative AI application lifecycle with infrastructure as code",
+      "status": "not_promoted",
+      "reason": "Generic IaC and DevOps discipline owned by the base Well-Architected Framework; AWS itself cross-references five base OPS best practices. The GenAI-distinct slice (prompt registry, model catalog, eval infra as code) is already owned by existing standards.",
+      "absorbed_by": ["GO3B1-01", "GO1B1-06", "GC2B2-01"]
+    },
+    {
+      "pillar": "GENOPS",
+      "focus_area": "GENOPS04 — Automate lifecycle management",
+      "bp": "GENOPS04-BP02",
+      "step": null,
+      "title": "Implement GenAIOps to optimize the application lifecycle",
+      "status": "not_promoted",
+      "reason": "Umbrella BP whose named concerns are each already owned by an existing standard. The remaining training-pipeline half is a vendor menu relevant only to teams fine-tuning their own models.",
+      "absorbed_by": ["GO3B1-01", "GO1B1-06", "GO1B1 family", "GO3B2-01", "GO3B2-02"]
+    },
+    {
+      "pillar": "GENSEC",
+      "focus_area": "GENSEC01 — Endpoint security",
+      "bp": "GENSEC01-BP01",
+      "step": null,
+      "title": "Grant least privilege access to foundation model endpoints",
+      "status": "not_promoted",
+      "reason": "Generic IAM least-privilege owned by the base WAF Security pillar (SEC02, SEC03). The approved-models slice is already enforced at the code layer by the model catalog and the no-inline-call lint.",
+      "absorbed_by": ["GO1B1-06", "GO3B1-01"]
+    },
+    {
+      "pillar": "GENSEC",
+      "focus_area": "GENSEC01 — Endpoint security",
+      "bp": "GENSEC01-BP02",
+      "step": null,
+      "title": "Implement private network communication between foundation models and applications",
+      "status": "not_promoted",
+      "reason": "Pure network security (PrivateLink, VPC endpoints, private subnets) owned by the base WAF Security pillar (SEC05). Identical setup for any AWS service; no GenAI-distinct artefact.",
+      "absorbed_by": []
+    },
+    {
+      "pillar": "GENSEC",
+      "focus_area": "GENSEC01 — Endpoint security",
+      "bp": "GENSEC01-BP03",
+      "step": "5-6",
+      "title": "Remaining steps of FM data-store access",
+      "status": "not_promoted",
+      "reason": "Nothing standalone survives beyond the promoted retrieval-time authorization contract.",
+      "absorbed_by": ["GS1B3-01"]
+    },
+    {
+      "pillar": "GENSEC",
+      "focus_area": "GENSEC01 — Endpoint security",
+      "bp": "GENSEC01-BP04",
+      "step": null,
+      "title": "Implement access monitoring to generative AI services and foundation models",
+      "status": "not_promoted",
+      "reason": "Generic access logging owned by the base WAF (SEC03), plus a vendor menu, plus GenAI telemetry already owned by the observability standards. End-user attribution absorbed as a recommended end_user_id field on the telemetry payload.",
+      "absorbed_by": ["GO3B2-01", "GO3B2-02"]
+    },
+    {
+      "pillar": "GENSEC",
+      "focus_area": "GENSEC03 — Event monitoring",
+      "bp": "GENSEC03-BP01",
+      "step": null,
+      "title": "Implement control plane and data access monitoring",
+      "status": "not_promoted",
+      "reason": "Broad monitoring umbrella. Generic control and data plane monitoring is owned by the base WAF (SEC04); each sub-concern is already owned elsewhere (telemetry, evaluation, cost).",
+      "absorbed_by": ["GO3B2-01", "GO3B2-02", "GO1B1 family"]
+    },
+    {
+      "pillar": "GENSEC",
+      "focus_area": "GENSEC04 — Prompt security",
+      "bp": "GENSEC04-BP01",
+      "step": null,
+      "title": "Implement a secure prompt catalog",
+      "status": "not_promoted",
+      "reason": "The catalog itself is already owned by the prompt-template registry standard. The only addition is generic IAM access control plus a Bedrock vendor walkthrough.",
+      "absorbed_by": ["GO3B1-01"]
+    },
+    {
+      "pillar": "GENPERF",
+      "focus_area": "GENPERF01 — Establish performance evaluation processes",
+      "bp": "GENPERF01-BP01",
+      "step": null,
+      "title": "Define a ground truth data set of prompts and responses",
+      "status": "not_promoted",
+      "reason": "The same golden dataset and harness the eval-harness standards already mandate; the living-artifact requirement is the refresh standard.",
+      "absorbed_by": ["GO1B1-01", "GO1B1-02", "GO1B1-03", "GO1B1-05"]
+    },
+    {
+      "pillar": "GENPERF",
+      "focus_area": "GENPERF01 — Establish performance evaluation processes",
+      "bp": "GENPERF01-BP02",
+      "step": null,
+      "title": "Collect performance metrics from generative AI workloads",
+      "status": "not_promoted",
+      "reason": "Decomposes into telemetry, evaluation and drift, generic infrastructure observability owned by the base WAF, and vendor advice. Nothing distinct survives.",
+      "absorbed_by": ["GO3B2-01", "GO1B1 family", "GO1B1-04"]
+    },
+    {
+      "pillar": "GENPERF",
+      "focus_area": "GENPERF02 — Maintaining model performance",
+      "bp": "GENPERF02-BP01",
+      "step": null,
+      "title": "Load test model endpoints",
+      "status": "not_promoted",
+      "reason": "Generic performance engineering owned by the base WAF (PERF05) and the ML Lens. Applies only to self-hosted or provisioned serving.",
+      "absorbed_by": []
+    },
+    {
+      "pillar": "GENPERF",
+      "focus_area": "GENPERF02 — Maintaining model performance",
+      "bp": "GENPERF02-BP02",
+      "step": null,
+      "title": "Optimize inference parameters to improve response quality",
+      "status": "not_promoted",
+      "reason": "Hyperparameter tuning is technique advice. The only gateable slice, pinning inference parameters per template, is absorbed by the prompt-template manifest.",
+      "absorbed_by": ["GO3B1-01"]
+    },
+    {
+      "pillar": "GENPERF",
+      "focus_area": "GENPERF02 — Maintaining model performance",
+      "bp": "GENPERF02-BP03",
+      "step": null,
+      "title": "Select and customize the appropriate model for your use case",
+      "status": "not_promoted",
+      "reason": "Performance-framed twin of the model-selection record, the eval harness, and the re-evaluate-on-model-change gate. Routing, fine-tuning, and distillation are a vendor and technique menu.",
+      "absorbed_by": ["GC1B1-01", "GO1B1 family", "GO1B1-06"]
+    },
+    {
+      "pillar": "GENPERF",
+      "focus_area": "GENPERF03 — Optimize consumption of high-performance compute",
+      "bp": "GENPERF03-BP01",
+      "step": null,
+      "title": "Use managed solutions for model hosting, customization, and data access",
+      "status": "not_promoted",
+      "reason": "Vendor service-selection menu. Only bites for the minority self-hosting inference; managed-API workloads satisfy it by default with nothing to gate.",
+      "absorbed_by": []
+    },
+    {
+      "pillar": "GENPERF",
+      "focus_area": "GENPERF04 — Vector store optimization",
+      "bp": "GENPERF04-BP02",
+      "step": null,
+      "title": "Optimize vector sizes for your use case",
+      "status": "not_promoted",
+      "reason": "Experiment-and-pick advice. The only enforceable artefact, a declared dimension with measured quality evidence, is already owned by the cost-side vector standard.",
+      "absorbed_by": ["GC4B1-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST01 — Model selection and cost optimization",
+      "bp": "GENCOST01-BP01",
+      "step": "1",
+      "title": "Identify the minimum performance requirements for a foundation model",
+      "status": "not_promoted",
+      "reason": "Decision-process advice with no commitable artefact. The requirements become content inside the model-selection record.",
+      "absorbed_by": ["GC1B1-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST01 — Model selection and cost optimization",
+      "bp": "GENCOST01-BP01",
+      "step": "2",
+      "title": "Determine the models available which meet that minimum performance bar",
+      "status": "not_promoted",
+      "reason": "Intermediate shortlist with no standalone artefact; it lives inside the model-selection record.",
+      "absorbed_by": ["GC1B1-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST01 — Model selection and cost optimization",
+      "bp": "GENCOST01-BP01",
+      "step": "4",
+      "title": "Continuously evaluate model selection",
+      "status": "deferred",
+      "reason": "Scored promote on the rubric but deferred from catalogue scope: auditable portfolio-scale re-evaluation needs central gateway, registry, and dashboard infrastructure beyond the catalogue's current depth.",
+      "absorbed_by": []
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST02 — Generative AI pricing model",
+      "bp": "GENCOST02-BP01",
+      "step": "1-4",
+      "title": "Balance cost and performance when selecting inference paradigms (all steps)",
+      "status": "not_promoted",
+      "reason": "All four steps absorbed: the model-selection record already names hosting paradigm as a prioritized cost dimension, and its PR-coupling gate fires on hosting changes.",
+      "absorbed_by": ["GC1B1-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST02 — Generative AI pricing model",
+      "bp": "GENCOST02-BP02",
+      "step": "1-3",
+      "title": "Demand identification, initial deployment, and demand profiling",
+      "status": "not_promoted",
+      "reason": "Process advice and observation work. The demand profile is the utilization-targets declaration inside the right-sizing baseline.",
+      "absorbed_by": ["GC2B2-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST03 — Cost-aware prompting",
+      "bp": "GENCOST03-BP01",
+      "step": "1",
+      "title": "Identify a verbose prompt which could be optimized",
+      "status": "not_promoted",
+      "reason": "A template breaching its declared token ceiling is the identified verbose prompt; the footprint gate surfaces it mechanically.",
+      "absorbed_by": ["GC3B1-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST03 — Cost-aware prompting",
+      "bp": "GENCOST03-BP01",
+      "step": "3",
+      "title": "Use a separate LLM to shorten the prompt",
+      "status": "not_promoted",
+      "reason": "Vendor technique suggestion. An optional authoring tool, not a gate.",
+      "absorbed_by": []
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST03 — Cost-aware prompting",
+      "bp": "GENCOST03-BP01",
+      "step": "4",
+      "title": "Continue testing and optimizing the prompt",
+      "status": "not_promoted",
+      "reason": "Prompt-engineering technique menu and process advice; no artefact distinct from the eval-harness family.",
+      "absorbed_by": ["GO1B1 family"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST03 — Cost-aware prompting",
+      "bp": "GENCOST03-BP03",
+      "step": "3-4",
+      "title": "Monitor and optimize cache usage",
+      "status": "not_promoted",
+      "reason": "Cache monitoring belongs to the observability family; cache tuning is process advice with no pre-merge artefact.",
+      "absorbed_by": ["GO3B2 family"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST03 — Cost-aware prompting",
+      "bp": "GENCOST03-BP04",
+      "step": null,
+      "title": "Annotate user input to enable cost-aware content filtering",
+      "status": "not_promoted",
+      "reason": "Bedrock-specific cost micro-optimisation. Once the vendor mechanism is stripped, the residual is too thin to survive as a durable, CI-gateable artefact.",
+      "absorbed_by": []
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST04 — Cost-informed vector stores",
+      "bp": "GENCOST04-BP01",
+      "step": "1",
+      "title": "Identify the smallest vector length supported by the embedding model",
+      "status": "not_promoted",
+      "reason": "A model-card property the vector standard's declaration records against; no standalone artefact.",
+      "absorbed_by": ["GC4B1-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST04 — Cost-informed vector stores",
+      "bp": "GENCOST04-BP01",
+      "step": "3-4",
+      "title": "Retrieval-quality testing and re-testing with larger vectors",
+      "status": "not_promoted",
+      "reason": "Process advice overlapping the eval harness and the performance pillar. The quality floor and result are captured in the vector standard's declaration.",
+      "absorbed_by": ["GC4B1-01", "GO1B1 family"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST05 — Cost-informed agents",
+      "bp": "GENCOST05-BP01",
+      "step": "1",
+      "title": "Estimate the maximum time needed for an agent run",
+      "status": "not_promoted",
+      "reason": "The estimate is the declared figure the run-limits record captures; no standalone artefact.",
+      "absorbed_by": ["GC5B1-01"]
+    },
+    {
+      "pillar": "GENCOST",
+      "focus_area": "GENCOST05 — Cost-informed agents",
+      "bp": "GENCOST05-BP01",
+      "step": "3",
+      "title": "Re-architect workflows to facilitate stopping conditions",
+      "status": "not_promoted",
+      "reason": "Tool and API timeouts are reliability error-handling belonging to a future GENREL walk. Response token limits are already covered by the per-call cap and the output budget.",
+      "absorbed_by": ["GO3B1-01", "GC3B1-01"]
+    },
+    {
+      "pillar": "GENSUS",
+      "focus_area": "GENSUS01 — Resource utilization",
+      "bp": "GENSUS01-BP01",
+      "step": null,
+      "title": "Implement auto scaling and serverless architectures",
+      "status": "intentionally_unmapped",
+      "reason": "Sustainability is omitted as a top-level catalogue pillar by design; its concerns are distributed across the cost, operational excellence, and security pillars.",
+      "absorbed_by": []
+    }
+  ]
+}

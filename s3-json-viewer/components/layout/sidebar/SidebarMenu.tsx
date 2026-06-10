@@ -2,13 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, ListChecks, Library, Network, type LucideIcon } from "lucide-react"
+import { LayoutDashboard, ListChecks, Library, Network, EyeOff, type LucideIcon } from "lucide-react"
 
 const menuItems: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "All Principles", href: "/principles", icon: Library },
   { label: "All Standards", href: "/standards", icon: ListChecks },
   { label: "Taxonomy", href: "/taxonomy", icon: Network },
+  { label: "Not promoted", href: "/not-promoted", icon: EyeOff },
 ]
 
 export function SidebarMenu() {

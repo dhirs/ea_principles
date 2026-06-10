@@ -8,7 +8,72 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-10 (latest) — Paid workshop re-cut to three parts; RI Blueprint (L1) vs RI Build (L2); prioritisation as the gate
+## 2026-06-10 (latest) — GENSEC01-BP03 step 3 → GS1B3-02 promoted; PII deferral closed; first one-BP-two-standards case
+
+### Context
+
+Re-read GENSEC01-BP03 verbatim at the user's prompt ("why did we not take this?"). The BP WAS taken (GS1B3-01, step 4, 2026-06-07) — but the re-read corrected an in-session error: the step-3 PII-removal deferral had been framed earlier today as having "no Lens home" because GENSEC lacks a data-protection focus area. Wrong — step 3 itself is the anchor. User directed promote-and-complete (HALT waived; the deferral had been discussed twice in-session).
+
+### Decisions
+
+- **GS1B3-02 promoted** (ST-GS1B3-02 / PR-GS1B3-02) — *Never ingest what the model should never process*. 21st standard; sixth Security standard; focus area P21 — Endpoint Security (same as sibling, mirrors the AWS question area). step_promotion 3/3/3/3 hand-applied.
+- **First one-BP-two-standards case:** GS1B3-01 (step 4) governs WHO retrieves — the read gate; GS1B3-02 (step 3) governs WHAT enters the store — the write gate. Access control cannot compensate for over-ingestion: a correctly ACL'd store still leaks PII to everyone authorized on the containing document. Distinct principle_ids retained (different whys: access vs minimisation); the v1.13 many-standards-per-principle model exercised in ID space.
+- **Contract:** sanitisation manifest `ingestion/sanitisation/config.yaml` (data-card-derived exclusion classes — PII, credentials, prohibited, out-of-remit per AWS's customer-service example; per-class detector/action (mask/drop/human_review)/threshold; audit destination; waivers) + sanitisation stage wired AHEAD of the store on every ingestion path (writes only through the central ingestion SDK, the write-side sibling of GS1B3-01's retrieval SDK; detectors before embedding, then ACL labelling — first whether, then who) + three pre_merge lints (declaration completeness / data-card coverage / routed-ingestion AST lint, so a later-added nightly sync cannot bypass) + quarterly seeded-PII audit on GO1B1-01's harness. Enforcement limit appended to enforcement_limits.md (lints prove declared/covered/wired/logged, not detector recall — a vacuous detector passes).
+- **Scope boundaries:** GS6B1-01 is the training-corpus twin (clean-before-the-model at the other entry point); GS2B1-01's output PII filter is a backstop, not a substitute.
+- **Fields:** applicability { rag mandatory, agentic mandatory } (no model-accessible store = not applicable by omission); serving_paradigm all four; maturity foundational; impact High; ownership enterprise / project_architect / self_attestation_with_mechanical_evidence / dashboard_and_spot_check; dependencies GS1B3-01 soft + GO1B1-01 soft; references OWASP LLM02:2025 + Wiz/Microsoft 38TB; AIGP IV.C provisional — flagged as the family's strongest candidate to move under a privacy/data-governance competency.
+- **not_prompted.json** — the deferred GENSEC01-BP03 step-3 entry removed (no longer a deferral).
+
+### Artefacts
+
+- `data/principles.json` — GS1B3-02 merged (21st node; schema-presence check passed).
+- `data/ri/GS1B3-02/README.md` — RI authored (Option A, GS-family template).
+- `data/lens_mapping.md` — BP03 row updated (deferral → promoted), GENSEC01 closure line updated (2 promoted), GENSEC06 pillar-closure note updated (residue resolved); `data/lens_mapping_authored.md` — top entry appended.
+- `data/enforcement_limits.md` — GS1B3-02 worked case prepended; `agentflow/app/anchor.json` — completed/promoted; `data/not_prompted.json` — deferred entry removed.
+
+### Open items (this change)
+
+- JSON parse from terminal: `data/principles.json` + `data/not_prompted.json` (sandbox cannot reach the WSL mount).
+- S3 re-upload for the live app; frontend renders P21 already (existing focus area).
+- AIGP side-by-side review.
+- **Security pillar now has ZERO open items** — GENSEC01–06 closed, 6 standards (GS1B3-01, GS1B3-02, GS2B1-01, GS4B2-01, GS5B1-01, GS6B1-01), no deferrals. Remaining unwalked elsewhere: GENOPS02 (3 BPs), GENOPS05, GENCOST03-BP02, GENREL pillar, GENPERF04-BP01 formal sweep.
+
+---
+
+## 2026-06-10 — GENSEC06-BP01 → GS6B1-01 promoted; GENSEC pillar fully walked; not_prompted.json ledger added
+
+### Context
+
+Walked GENSEC06 (Data poisoning), the last unwalked Security focus area. Verified from AWS docs (gensec06.html + gensec06-bp01.html, 2026-06-10): single BP — "Implement data purification filters for model training workflows", risk High, 6 steps. Standard authoring workflow: anchor loaded, statement drafted, HALT presented (candidate statement, problem sketch, four discussion points: mandate concentrated in steps 2+3; narrow-applicability tension vs the GENOPS04-BP02/GENPERF03-BP01 not_promotes; sibling check incl. the GENSEC01-BP03 PII deferral; enforcement honesty). User directed promote-and-complete end to end.
+
+### Decisions
+
+- **GS6B1-01 promoted** (ST-GS6B1-01 / PR-GS6B1-01) — *Never train a model on data no one has examined*. 20th standard; fifth Security principle; new focus area **P25 — Training Data Integrity**. Whole-BP anchor (mandate in the implementation guidance; steps 2+3 the core, 1/5 absorbed, 4/6 consider-advice absorbed as filter options). step_promotion 3/3/3/3 hand-applied. The LEARNING-side member of the guardrail family — input (GS4B2-01), retrieval (GS1B3-01), output (GS2B1-01), action (GS5B1-01), learning (this); the only face irreversible by rollback.
+- **Contract:** purification manifest `training/purification/config.yaml` (policy-derived categories per AWS step 2; per-category filter/threshold/on_flag; audit destination; explicit waivers) + purification stage wired ahead of the job (job consumes purified output only — incl. managed-API fine-tunes via gating wrapper; per-run audit record with dataset hash) + three pre_merge required-status-check lints (declaration completeness / policy coverage / source coupling + audit-hash matching) + quarterly seeded-poison audit on GO1B1-01's harness. Enforcement limit appended to enforcement_limits.md (lints prove declared/covered/wired/logged, not that filters catch poison — a vacuous filter passes).
+- **Applicability resolution:** all four patterns mandatory; the obligation binds the training/customization path and no-training-path workloads satisfy vacuously (the GS5B1-01 no-action-surface shape). The fine-tuning-is-not-an-applicability-key schema wrinkle flagged at HALT was resolved without a schema change.
+- **Kept separate:** the GENSEC01-BP03 step-3 PII-removal deferral (retrieval corpus ≠ training corpus) — confirmed by the full pillar walk that GENSEC has no data-protection focus area, so it remains an extension candidate with no Lens anchor. Post-training toxicity eval absorbed by GO1B1 family; training-env isolation left to base-WAF.
+- **GENSEC pillar CLOSED:** GENSEC01–06 all walked; 5 promoted (GS1B3-01, GS2B1-01, GS4B2-01, GS5B1-01, GS6B1-01), the rest not_promoted with receipts.
+- **New ledger file `data/not_prompted.json`** (same session, earlier): flat HTML-renderable JSON of all 36 walked-but-rejected BP/step decisions (pillar, focus_area, bp, step, title, status not_promoted/deferred/intentionally_unmapped, plain-text reason, absorbed_by). Compiled from lens_mapping.md.
+- **Methodology discussion (same session, recorded):** the catalogue's principles layer (`u_value`/`u_principle`) currently has NO source — standards trace to the Lens via lens_mapping.md, principles were back-derived in-session and have no provenance an ARB could inspect. Agreed direction: keep the layer but treat current u_principles as provisional/unanchored; future anchoring pass against (tier 1) org values / responsible-AI policy, (tier 2) regulators (EU AI Act obligations, FCA/ICO), (tier 3) frameworks (NIST AI RMF Govern, OECD, ISO/IEC 42001); record provenance in a principle_source field or a principle_mapping.md sibling. Principles deferred ≠ excluded: they carry waiver arbitration, novel-situation guidance, standards-conflict tiebreak, and executive endorsement.
+
+### Artefacts
+
+- `data/principles.json` — GS6B1-01 merged (20th node; all v1.13 fields present, schema-presence check passed against GS5B1-01).
+- `data/ri/GS6B1-01/README.md` — RI authored (Option A; matches the GS-family template).
+- `data/lens_mapping.md` — GENSEC06 section rewritten (verified, walked, CLOSED + pillar-closure note); `data/lens_mapping_authored.md` — top entry appended.
+- `data/enforcement_limits.md` — GS6B1-01 worked case prepended; `agentflow/app/anchor.json` — completed/promoted.
+- `data/not_prompted.json` — new.
+
+### Open items (this change)
+
+- **JSON parse not run in-session** (sandbox cannot reach the WSL mount) — run `python3 -c "import json; json.load(open('data/principles.json'))"` and the same for `data/not_prompted.json` from a terminal before pushing.
+- Frontend: P25 — Training Data Integrity is a new free-text focus_area — confirm rendering; the S3 object must be re-uploaded for the live app to see GS6B1-01.
+- AIGP IV.C side-by-side review (GS6B1-01 flagged: may belong under a data-governance competency).
+- Principles-layer anchoring pass (tier 1–3 sources above) — not started.
+- Remaining unwalked: GENOPS02 (3 BPs), GENOPS05, GENCOST03-BP02, GENREL pillar, GENPERF04-BP01 formal sweep.
+
+---
+
+## 2026-06-10 — Paid workshop re-cut to three parts; RI Blueprint (L1) vs RI Build (L2); prioritisation as the gate
 
 ### Context
 
