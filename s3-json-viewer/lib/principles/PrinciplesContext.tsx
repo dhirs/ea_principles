@@ -19,6 +19,18 @@ function getAwsBestPractices(p: Principle): string[] {
     .filter((s): s is string => !!s && !!s.trim())
 }
 
+// NIST AI RMF category/subcategory pairs for a standard (from /api/index).
+function getNistMappings(p: Principle): Array<{ category: string; subcategory: string }> {
+  const refs = asArray(asObject(asObject(p.framework_mappings)?.nist)?.references) ?? []
+  return refs.map((r) => {
+    const o = asObject(r)
+    return {
+      category: asString(o?.category) ?? "",
+      subcategory: asString(o?.subcategory) ?? "",
+    }
+  })
+}
+
 type PrinciplesContextValue = {
   data: PrinciplesPayload | null
   error: string | null
@@ -36,6 +48,12 @@ type PrinciplesContextValue = {
   maturityLevel: string
   setMaturityLevel: (m: string) => void
   maturityLevels: string[]
+  nistCategory: string
+  setNistCategory: (c: string) => void
+  nistCategories: string[]
+  nistSubcategory: string
+  setNistSubcategory: (s: string) => void
+  nistSubcategories: string[]
   filtered: Principle[]
 }
 
@@ -50,6 +68,8 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
   const [focusArea, setFocusAreaState] = useState("")
   const [bestPractice, setBestPracticeState] = useState("")
   const [maturityLevel, setMaturityLevelState] = useState("")
+  const [nistCategory, setNistCategoryState] = useState("")
+  const [nistSubcategory, setNistSubcategoryState] = useState("")
 
   // Selecting a filter only affects the list view; if we're elsewhere (a detail
   // page or the landing dashboard), jump to /standards so the result is visible.
@@ -62,6 +82,8 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
   const setFocusArea = useCallback((v: string) => { setFocusAreaState(v); goToList() }, [goToList])
   const setBestPractice = useCallback((v: string) => { setBestPracticeState(v); goToList() }, [goToList])
   const setMaturityLevel = useCallback((v: string) => { setMaturityLevelState(v); goToList() }, [goToList])
+  const setNistCategory = useCallback((v: string) => { setNistCategoryState(v); goToList() }, [goToList])
+  const setNistSubcategory = useCallback((v: string) => { setNistSubcategoryState(v); goToList() }, [goToList])
 
   useEffect(() => {
     // Lightweight list (id/title/pillar/focus/maturity/best-practices) for the
@@ -75,12 +97,14 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       .catch((e) => setError(e instanceof Error ? e.message : String(e)))
   }, [])
 
-  const [pillars, focusAreas, bestPractices, maturityLevels] = useMemo(() => {
+  const [pillars, focusAreas, bestPractices, maturityLevels, nistCategories, nistSubcategories] = useMemo(() => {
     const principles = data?.principles ?? []
     const pillarSet = new Set<string>()
     const focusSet = new Set<string>()
     const bpSet = new Set<string>()
     const maturitySet = new Set<string>()
+    const nistCatSet = new Set<string>()
+    const nistSubSet = new Set<string>()
     for (const p of principles) {
       const pv = asString(p.pillar)
       if (pv && pv.trim()) pillarSet.add(pv)
@@ -97,10 +121,18 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       }
       const mv = asString(p.maturity_level)
       if (mv && mv.trim()) maturitySet.add(mv)
+      // NIST categories list all of them; subcategories are scoped to the
+      // selected category so the second dropdown only offers what's reachable.
+      for (const m of getNistMappings(p)) {
+        if (m.category) nistCatSet.add(m.category)
+        if (m.subcategory && (!nistCategory || m.category === nistCategory)) {
+          nistSubSet.add(m.subcategory)
+        }
+      }
     }
     const sort = (s: Set<string>) => Array.from(s).sort((a, b) => a.localeCompare(b))
-    return [sort(pillarSet), sort(focusSet), sort(bpSet), sort(maturitySet)]
-  }, [data, pillar, focusArea])
+    return [sort(pillarSet), sort(focusSet), sort(bpSet), sort(maturitySet), sort(nistCatSet), sort(nistSubSet)]
+  }, [data, pillar, focusArea, nistCategory])
 
   // If the active focus area isn't part of the selected pillar, drop it.
   useEffect(() => {
@@ -112,6 +144,11 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
     if (bestPractice && !bestPractices.includes(bestPractice)) setBestPracticeState("")
   }, [bestPractice, bestPractices])
 
+  // If the active NIST subcategory isn't under the selected category, drop it.
+  useEffect(() => {
+    if (nistSubcategory && !nistSubcategories.includes(nistSubcategory)) setNistSubcategoryState("")
+  }, [nistSubcategory, nistSubcategories])
+
   const filtered = useMemo(() => {
     const principles = data?.principles ?? []
     const q = query.trim().toLowerCase()
@@ -120,12 +157,17 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       if (focusArea && asString(p.focus_area) !== focusArea) return false
       if (bestPractice && !getAwsBestPractices(p).includes(bestPractice)) return false
       if (maturityLevel && asString(p.maturity_level) !== maturityLevel) return false
+      if (nistCategory || nistSubcategory) {
+        const maps = getNistMappings(p)
+        if (nistCategory && !maps.some((m) => m.category === nistCategory)) return false
+        if (nistSubcategory && !maps.some((m) => m.subcategory === nistSubcategory)) return false
+      }
       if (!q) return true
       const title = asString(asObject(p.statement)?.title) ?? ""
       const id = asString(p.standard_id) ?? ""
       return title.toLowerCase().includes(q) || id.toLowerCase().includes(q)
     })
-  }, [data, query, pillar, focusArea, bestPractice, maturityLevel])
+  }, [data, query, pillar, focusArea, bestPractice, maturityLevel, nistCategory, nistSubcategory])
 
   const value = useMemo(
     () => ({
@@ -145,9 +187,15 @@ export function PrinciplesProvider({ children }: { children: ReactNode }) {
       maturityLevel,
       setMaturityLevel,
       maturityLevels,
+      nistCategory,
+      setNistCategory,
+      nistCategories,
+      nistSubcategory,
+      setNistSubcategory,
+      nistSubcategories,
       filtered,
     }),
-    [data, error, query, pillar, pillars, focusArea, focusAreas, bestPractice, bestPractices, maturityLevel, maturityLevels, filtered],
+    [data, error, query, pillar, pillars, focusArea, focusAreas, bestPractice, bestPractices, maturityLevel, maturityLevels, nistCategory, nistCategories, nistSubcategory, nistSubcategories, filtered],
   )
 
   return <PrinciplesContext.Provider value={value}>{children}</PrinciplesContext.Provider>

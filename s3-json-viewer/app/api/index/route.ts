@@ -20,6 +20,22 @@ function awsBestPractices(p: Principle): string[] {
     .filter((s): s is string => !!s && !!s.trim())
 }
 
+// NIST AI RMF category/subcategory pairs, kept so the sidebar NIST filters can
+// scope subcategories to a chosen category. Only category/subcategory ship —
+// the verbose `note` etc. stay out of the lightweight index.
+function nistMappings(p: Principle): Array<{ category: string; subcategory: string }> {
+  const refs = asArray(asObject(asObject(p.framework_mappings)?.nist)?.references) ?? []
+  return refs
+    .map((r) => {
+      const o = asObject(r)
+      return {
+        category: asString(o?.category) ?? "",
+        subcategory: asString(o?.subcategory) ?? "",
+      }
+    })
+    .filter((m) => m.category || m.subcategory)
+}
+
 // A list-page / sidebar-filter entry: only the fields those views read. Shaped
 // so existing consumers (PrinciplesList, *Filter, context) work unchanged.
 function toIndexEntry(p: Principle) {
@@ -36,9 +52,11 @@ function toIndexEntry(p: Principle) {
       title: asString(statement?.title),
       description: asString(statement?.description),
     },
-    // Kept in this nested shape so getAwsBestPractices() reads it unchanged.
+    // Kept in this nested shape so getAwsBestPractices()/getNistMappings() read
+    // it unchanged.
     framework_mappings: {
       aws: { references: awsBestPractices(p).map((bp) => ({ best_practice: bp })) },
+      nist: { references: nistMappings(p) },
     },
   }
 }
