@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc" width="980" height="540">
+  <title id="ttl">Part 2 — Building the Catalogue</title>
+  <desc id="dsc">Part 2 covers where standards come from. Every standard serves one of three dimensions (Legal and Risk, Customer Experience, Cost). There is no single source — you choose what to baseline against from frameworks, regulation, incidents, risk models, or bespoke first-principles. The brief at the bottom shows the AWS lens family: the Well-Architected Framework's six pillars are the foundation, re-applied as the ML Lens, the GenAI Lens, and the Responsible AI Lens. We baseline the catalogue on the GenAI Lens.</desc>
+
+  <!-- ============ HEADER ============ -->
+  <text x="490" y="38" text-anchor="middle" font-size="25" font-weight="700" fill="#2C2C2A">Part 2 — Building the Catalogue</text>
+  <text x="490" y="62" text-anchor="middle" font-size="14" fill="#5F5E5A">Where do the standards come from? Choosing what to baseline against.</text>
+
+  <!-- ============ BEAT 1 — THE THREE DIMENSIONS ============ -->
+  <circle cx="58" cy="96" r="13" fill="#534AB7"/><text x="58" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">1</text>
+  <text x="82" y="101" font-size="16" font-weight="700" fill="#2C2C2A">Every standard serves one of three dimensions</text>
+
+  <rect x="40" y="120" width="288" height="40" rx="10" fill="#E24B4A"/>
+  <text x="184" y="138" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Legal &amp; Risk</text>
+  <text x="184" y="153" text-anchor="middle" font-size="9.5" font-style="italic" fill="#FBEAEA">what the business is liable for</text>
+
+  <rect x="346" y="120" width="288" height="40" rx="10" fill="#378ADD"/>
+  <text x="490" y="138" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Customer Experience</text>
+  <text x="490" y="153" text-anchor="middle" font-size="9.5" font-style="italic" fill="#E5EEF7">trust in the product</text>
+
+  <rect x="652" y="120" width="288" height="40" rx="10" fill="#EF9F27"/>
+  <text x="796" y="138" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Cost</text>
+  <text x="796" y="153" text-anchor="middle" font-size="9.5" font-style="italic" fill="#FBF1DD">spend vs. value</text>
+
+  <!-- ============ BEAT 2 — THE MENU OF SOURCES ============ -->
+  <line x1="40" y1="180" x2="940" y2="180" stroke="#D3D1C7" stroke-width="1"/>
+  <circle cx="58" cy="204" r="13" fill="#534AB7"/><text x="58" y="208" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2</text>
+  <text x="82" y="209" font-size="16" font-weight="700" fill="#2C2C2A">No single source &#8212; you choose what to baseline against</text>
+
+  <g>
+    <rect x="40" y="228" width="168" height="80" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.8"/>
+    <text x="124" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#3C3489">Frameworks</text>
+    <text x="124" y="270" text-anchor="middle" font-size="9.5" fill="#534AB7">AWS GenAI Lens,</text>
+    <text x="124" y="284" text-anchor="middle" font-size="9.5" fill="#534AB7">NIST AI RMF,</text>
+    <text x="124" y="298" text-anchor="middle" font-size="9.5" fill="#534AB7">ISO 42001</text>
+  </g>
+  <g>
+    <rect x="223" y="228" width="168" height="80" rx="10" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+    <text x="307" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#2C2C2A">Regulation</text>
+    <text x="307" y="270" text-anchor="middle" font-size="9.5" fill="#5F5E5A">EU AI Act, GDPR,</text>
+    <text x="307" y="284" text-anchor="middle" font-size="9.5" fill="#5F5E5A">sector rules</text>
+  </g>
+  <g>
+    <rect x="406" y="228" width="168" height="80" rx="10" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+    <text x="490" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#2C2C2A">Incidents</text>
+    <text x="490" y="270" text-anchor="middle" font-size="9.5" fill="#5F5E5A">Post-mortems,</text>
+    <text x="490" y="284" text-anchor="middle" font-size="9.5" fill="#5F5E5A">near-misses</text>
+  </g>
+  <g>
+    <rect x="589" y="228" width="168" height="80" rx="10" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+    <text x="673" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#2C2C2A">Risk model</text>
+    <text x="673" y="270" text-anchor="middle" font-size="9.5" fill="#5F5E5A">Threat modeling,</text>
+    <text x="673" y="284" text-anchor="middle" font-size="9.5" fill="#5F5E5A">risk register</text>
+  </g>
+  <g>
+    <rect x="772" y="228" width="168" height="80" rx="10" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+    <text x="856" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#2C2C2A">Bespoke</text>
+    <text x="856" y="270" text-anchor="middle" font-size="9.5" fill="#5F5E5A">First-principles</text>
+    <text x="856" y="284" text-anchor="middle" font-size="9.5" fill="#5F5E5A">(cost, CX)</text>
+  </g>
+
+  <text x="490" y="328" text-anchor="middle" font-size="11.5" font-style="italic" fill="#5F5E5A">No source covers all three dimensions &#8212; frameworks lean operational, regulation covers legal, cost &amp; CX are usually bespoke. You compose.</text>
+
+  <!-- ============ BEAT 3 — A CLOSER LOOK AT THE AWS LENS FAMILY ============ -->
+  <line x1="40" y1="346" x2="940" y2="346" stroke="#D3D1C7" stroke-width="1"/>
+  <circle cx="58" cy="370" r="13" fill="#534AB7"/><text x="58" y="374" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">3</text>
+  <text x="82" y="375" font-size="16" font-weight="700" fill="#2C2C2A">A closer look at the framework we use: the AWS lens family</text>
+
+  <!-- three lenses -->
+  <rect x="40" y="394" width="288" height="58" rx="10" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+  <text x="184" y="417" text-anchor="middle" font-size="14" font-weight="700" fill="#2C2C2A">ML Lens</text>
+  <text x="184" y="437" text-anchor="middle" font-size="10" fill="#5F5E5A">Full ML lifecycle &#8212; broadest scope</text>
+
+  <rect x="346" y="394" width="288" height="58" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+  <text x="490" y="417" text-anchor="middle" font-size="14" font-weight="700" fill="#3C3489">GenAI Lens</text>
+  <text x="490" y="437" text-anchor="middle" font-size="10" fill="#534AB7">LLM &#183; RAG &#183; agentic &#8212; speaks our language</text>
+
+  <rect x="652" y="394" width="288" height="58" rx="10" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+  <text x="796" y="417" text-anchor="middle" font-size="14" font-weight="700" fill="#2C2C2A">Responsible AI Lens</text>
+  <text x="796" y="437" text-anchor="middle" font-size="10" fill="#5F5E5A">Fairness, safety, privacy &#8212; 8 focus areas</text>
+
+  <!-- foundation -->
+  <rect x="40" y="464" width="900" height="44" rx="10" fill="#F2F1EC" stroke="#B7B4A8" stroke-width="1.4"/>
+  <text x="490" y="483" text-anchor="middle" font-size="12" font-weight="700" fill="#5F5E5A">Well-Architected Framework &#8212; the foundation</text>
+  <text x="490" y="500" text-anchor="middle" font-size="9.5" fill="#8A887E">Operational Excellence &#183; Security &#183; Reliability &#183; Performance Efficiency &#183; Cost Optimization &#183; Sustainability</text>
+
+  <text x="490" y="528" text-anchor="middle" font-size="11" font-style="italic" fill="#5F5E5A">A lens re-applies the six pillars to one kind of workload. We baseline the catalogue on the GenAI Lens.</text>
+</svg>

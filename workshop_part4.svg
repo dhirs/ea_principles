@@ -1,0 +1,78 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 544" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc" width="980" height="544">
+  <title id="ttl">Part 4 — Hands-On Lab</title>
+  <desc id="dsc">Part 4 is the hands-on lab. Three standards, one per dimension, are walked through the full process. We hand participants a sample taxonomy — the anatomy of a standard — and they fill in every field for one standard. That produces what you walk away with: a Concrete Reference Implementation, owned by the Central AI Factory, built by the AI Engineering Platform Team, maintained by the Central AI Product Team, automatically enforced at CI/CD gates, and fully auditable.</desc>
+
+  <defs>
+    <marker id="ahg" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#1D9E75"/></marker>
+  </defs>
+
+  <!-- ============ HEADER ============ -->
+  <text x="490" y="38" text-anchor="middle" font-size="25" font-weight="700" fill="#2C2C2A">Part 4 — Hands-On Lab</text>
+  <text x="490" y="62" text-anchor="middle" font-size="14" fill="#5F5E5A">Walk the process for real — three standards, you build one.</text>
+
+  <!-- ============ SECTION 1 — THREE STANDARDS ============ -->
+  <circle cx="58" cy="96" r="13" fill="#534AB7"/><text x="58" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">1</text>
+  <text x="82" y="101" font-size="16" font-weight="700" fill="#2C2C2A">Three standards — one per dimension</text>
+
+  <rect x="40" y="116" width="270" height="56" rx="12" fill="#ffffff" stroke="#E24B4A" stroke-width="1.6"/>
+  <text x="175" y="141" text-anchor="middle" font-size="14" font-weight="700" fill="#A32D2D">Legal &amp; Risk</text>
+  <text x="175" y="159" text-anchor="middle" font-size="10" font-style="italic" fill="#8A887E">candidate standard</text>
+
+  <rect x="355" y="116" width="270" height="56" rx="12" fill="#ffffff" stroke="#378ADD" stroke-width="1.6"/>
+  <text x="490" y="141" text-anchor="middle" font-size="14" font-weight="700" fill="#185FA5">Customer Experience</text>
+  <text x="490" y="159" text-anchor="middle" font-size="10" font-style="italic" fill="#8A887E">candidate standard</text>
+
+  <rect x="670" y="116" width="270" height="56" rx="12" fill="#ffffff" stroke="#EF9F27" stroke-width="1.6"/>
+  <text x="805" y="141" text-anchor="middle" font-size="14" font-weight="700" fill="#854F0B">Cost</text>
+  <text x="805" y="159" text-anchor="middle" font-size="10" font-style="italic" fill="#8A887E">candidate standard</text>
+
+  <text x="490" y="192" text-anchor="middle" font-size="11.5" font-style="italic" fill="#5F5E5A">We walk all three through Blueprint &#8594; Prioritize &#8594; Concrete RI. You take one the whole way.</text>
+
+  <!-- ============ SECTION 2 — BUILD ONE FROM A SAMPLE TAXONOMY ============ -->
+  <line x1="40" y1="210" x2="940" y2="210" stroke="#D3D1C7" stroke-width="1"/>
+  <circle cx="58" cy="234" r="13" fill="#534AB7"/><text x="58" y="238" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2</text>
+  <text x="82" y="239" font-size="16" font-weight="700" fill="#2C2C2A">Build one from a sample taxonomy — the anatomy of a standard</text>
+  <text x="82" y="257" font-size="11.5" font-style="italic" fill="#5F5E5A">We hand you a sample taxonomy and you fill in every field to develop the concrete build.</text>
+
+  <g font-size="10" font-weight="700" fill="#3C3489">
+    <rect x="40" y="270" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="110" y="288" text-anchor="middle">Statement</text>
+    <rect x="192" y="270" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="262" y="288" text-anchor="middle">Problem</text>
+    <rect x="344" y="270" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="414" y="288" text-anchor="middle">Solution</text>
+    <rect x="496" y="270" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="566" y="288" text-anchor="middle">Maturity Level</text>
+    <rect x="648" y="270" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="718" y="288" text-anchor="middle">Applicability</text>
+    <rect x="800" y="270" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="870" y="288" text-anchor="middle">Criticality</text>
+
+    <rect x="40" y="304" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="110" y="322" text-anchor="middle">Ownership</text>
+    <rect x="192" y="304" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="262" y="322" text-anchor="middle">Enforcement Gates</text>
+    <rect x="344" y="304" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="414" y="322" text-anchor="middle">Change Control</text>
+    <rect x="496" y="304" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="566" y="322" text-anchor="middle">Framework Mappings</text>
+    <rect x="648" y="304" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="718" y="322" text-anchor="middle">ARB Evidence</text>
+    <rect x="800" y="304" width="140" height="28" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.3"/><text x="870" y="322" text-anchor="middle">Reference Impl.</text>
+  </g>
+
+  <!-- ============ ARROW DOWN TO OUTCOME ============ -->
+  <line x1="490" y1="344" x2="490" y2="392" stroke="#1D9E75" stroke-width="3" marker-end="url(#ahg)"/>
+  <text x="490" y="416" text-anchor="middle" font-size="14" font-weight="700" letter-spacing="0.8" fill="#0F6E56">WHAT YOU WALK AWAY WITH</text>
+
+  <!-- ============ OUTCOME — CONCRETE REFERENCE IMPLEMENTATION ============ -->
+  <rect x="40" y="426" width="900" height="112" rx="14" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.8"/>
+  <text x="490" y="450" text-anchor="middle" font-size="16" font-weight="700" fill="#0F6E56">Concrete Reference Implementation</text>
+
+  <!-- ownership roles -->
+  <line x1="340" y1="464" x2="340" y2="496" stroke="#9FD8C6" stroke-width="1"/>
+  <line x1="640" y1="464" x2="640" y2="496" stroke="#9FD8C6" stroke-width="1"/>
+  <text x="190" y="473" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="0.5" fill="#1D9E75">OWNED BY</text>
+  <text x="190" y="490" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0F6E56">Central AI Factory</text>
+  <text x="490" y="473" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="0.5" fill="#1D9E75">BUILT BY</text>
+  <text x="490" y="490" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0F6E56">AI Engineering Platform Team</text>
+  <text x="790" y="473" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="0.5" fill="#1D9E75">MAINTAINED BY</text>
+  <text x="790" y="490" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0F6E56">Central AI Product Team</text>
+
+  <!-- properties -->
+  <rect x="252" y="506" width="320" height="24" rx="12" fill="#ffffff" stroke="#1D9E75" stroke-width="1.3"/>
+  <text x="412" y="522" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0F6E56">&#10003; Automatically enforced at CI/CD gates</text>
+  <rect x="588" y="506" width="140" height="24" rx="12" fill="#ffffff" stroke="#1D9E75" stroke-width="1.3"/>
+  <text x="658" y="522" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0F6E56">&#10003; Fully auditable</text>
+</svg>

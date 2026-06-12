@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 476" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc" width="980" height="476">
+  <title id="ttl">Part 3 — The Process</title>
+  <desc id="dsc">Part 3 explains the process in the abstract: an RI Blueprint (cheap, produced for many) is ranked by the Prioritization Framework (the gate) into a Concrete RI (expensive, built for few). Then the operating model: the central platform team Builds, Operates and Owns; the project team Configures, Populates and Consumes, joined by an interface contract. We will also briefly touch on the operating-model org chart and the key roles — Head of AI, Lead Architect, Head of Engineering, Head of Product, Head of Governance — but the chart itself is revealed live in the session.</desc>
+
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#888780"/></marker>
+    <marker id="ahl" markerWidth="9" markerHeight="9" refX="1.5" refY="4.5" orient="auto"><path d="M9,0 L0,4.5 L9,9 z" fill="#888780"/></marker>
+  </defs>
+
+  <!-- ============ HEADER ============ -->
+  <text x="490" y="38" text-anchor="middle" font-size="25" font-weight="700" fill="#2C2C2A">Part 3 — The Process</text>
+  <text x="490" y="62" text-anchor="middle" font-size="14" fill="#5F5E5A">Turning a candidate standard into something a team can actually build.</text>
+
+  <!-- ============ THREE STAGES ============ -->
+  <rect x="40" y="110" width="270" height="84" rx="12" fill="#ffffff" stroke="#7F77DD" stroke-width="1.6"/>
+  <text x="175" y="148" text-anchor="middle" font-size="16" font-weight="700" fill="#3C3489">RI Blueprint</text>
+  <rect x="113" y="160" width="124" height="18" rx="9" fill="#EEEDFE"/>
+  <text x="175" y="172" text-anchor="middle" font-size="9.5" font-weight="700" letter-spacing="0.5" fill="#534AB7">CHEAP &#183; MANY</text>
+
+  <line x1="314" y1="152" x2="351" y2="152" stroke="#888780" stroke-width="2" marker-end="url(#ah)"/>
+
+  <rect x="355" y="110" width="270" height="84" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+  <text x="490" y="148" text-anchor="middle" font-size="16" font-weight="700" fill="#3C3489">Prioritization Framework</text>
+  <rect x="438" y="160" width="104" height="18" rx="9" fill="#534AB7"/>
+  <text x="490" y="172" text-anchor="middle" font-size="9.5" font-weight="700" letter-spacing="0.5" fill="#fff">THE GATE</text>
+
+  <line x1="629" y1="152" x2="666" y2="152" stroke="#888780" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="647" y="143" text-anchor="middle" font-size="9" font-style="italic" fill="#5F5E5A">agenda</text>
+
+  <rect x="670" y="110" width="270" height="84" rx="12" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.6"/>
+  <text x="805" y="148" text-anchor="middle" font-size="16" font-weight="700" fill="#0F6E56">Concrete RI</text>
+  <rect x="743" y="160" width="124" height="18" rx="9" fill="#1D9E75"/>
+  <text x="805" y="172" text-anchor="middle" font-size="9.5" font-weight="700" letter-spacing="0.5" fill="#fff">EXPENSIVE &#183; FEW</text>
+
+  <!-- ============ OPERATING MODEL ============ -->
+  <line x1="40" y1="222" x2="940" y2="222" stroke="#D3D1C7" stroke-width="1"/>
+  <text x="40" y="252" font-size="16" font-weight="700" fill="#2C2C2A">Then: who builds it, and who owns it?</text>
+
+  <rect x="40" y="268" width="420" height="64" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.8"/>
+  <text x="250" y="294" text-anchor="middle" font-size="14" font-weight="700" fill="#3C3489">Central Platform Team</text>
+  <text x="250" y="316" text-anchor="middle" font-size="12" fill="#534AB7">Builds &#183; Operates &#183; Owns</text>
+
+  <line x1="464" y1="300" x2="516" y2="300" stroke="#888780" stroke-width="2" marker-start="url(#ahl)" marker-end="url(#ah)"/>
+
+  <rect x="520" y="268" width="420" height="64" rx="12" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+  <text x="730" y="294" text-anchor="middle" font-size="14" font-weight="700" fill="#2C2C2A">Project Team</text>
+  <text x="730" y="316" text-anchor="middle" font-size="12" fill="#5F5E5A">Configures &#183; Populates &#183; Consumes</text>
+
+  <text x="490" y="352" text-anchor="middle" font-size="11.5" font-style="italic" fill="#5F5E5A">A standard nobody owns is a standard nobody enforces.</text>
+
+  <!-- ============ ORG CHART TEASER ============ -->
+  <rect x="40" y="372" width="900" height="84" rx="14" fill="#FAFAFF" stroke="#7F77DD" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <circle cx="92" cy="414" r="24" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.8"/>
+  <text x="92" y="425" text-anchor="middle" font-size="30" font-weight="700" fill="#534AB7">?</text>
+  <text x="134" y="400" font-size="13.5" font-weight="700" fill="#3C3489">We&#8217;ll also touch on the operating-model org chart</text>
+  <text x="134" y="421" font-size="10.5" fill="#534AB7">Head of AI &#183; Lead Architect &#183; Head of Engineering &#183; Head of Product &#183; Head of Governance</text>
+  <text x="134" y="441" font-size="10.5" font-style="italic" fill="#8A887E">How they all connect &#8212; that reveal is live in the session.</text>
+</svg>

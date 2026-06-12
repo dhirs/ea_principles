@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 496" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc" width="980" height="496">
+  <title id="ttl">Part 1 — The Problem: three categories of production failure</title>
+  <desc id="dsc">Part 1 introduces what counts as a production failure, grouped into three categories: Legal and Risk, Customer Experience, and Cost. Each category lists its sub-types. No specific scenarios or solutions are shown.</desc>
+
+  <!-- ============ HEADER ============ -->
+  <text x="490" y="40" text-anchor="middle" font-size="25" font-weight="700" fill="#2C2C2A">Part 1 — The Problem</text>
+  <text x="490" y="66" text-anchor="middle" font-size="15" fill="#5F5E5A">What counts as a production failure?</text>
+  <text x="490" y="96" text-anchor="middle" font-size="12.5" font-style="italic" fill="#8A887E">Before you can prevent failure, you have to agree on what it is. It falls into three categories.</text>
+
+  <!-- ============ CATEGORY A — LEGAL & RISK ============ -->
+  <rect x="40" y="140" width="280" height="252" rx="14" fill="#ffffff" stroke="#E24B4A" stroke-width="1.6"/>
+  <path d="M40,192 L40,154 Q40,140 54,140 L306,140 Q320,140 320,154 L320,192 Z" fill="#E24B4A"/>
+  <text x="180" y="166" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Legal &amp; Risk</text>
+  <text x="180" y="183" text-anchor="middle" font-size="10.5" font-style="italic" fill="#FBEAEA">Harm the business is liable for</text>
+  <g font-size="11.5" fill="#2C2C2A">
+    <circle cx="64" cy="226" r="4" fill="#E24B4A"/><text x="78" y="230">PII &amp; sensitive-data leakage</text>
+    <circle cx="64" cy="260" r="4" fill="#E24B4A"/><text x="78" y="264">Regulatory non-compliance</text>
+    <circle cx="64" cy="294" r="4" fill="#E24B4A"/><text x="78" y="298">Unauthorized data access</text>
+    <circle cx="64" cy="328" r="4" fill="#E24B4A"/><text x="78" y="332">Harmful or prohibited output</text>
+    <circle cx="64" cy="362" r="4" fill="#E24B4A"/><text x="78" y="366">No audit trail or traceability</text>
+  </g>
+
+  <!-- ============ CATEGORY B — CUSTOMER EXPERIENCE ============ -->
+  <rect x="350" y="140" width="280" height="252" rx="14" fill="#ffffff" stroke="#378ADD" stroke-width="1.6"/>
+  <path d="M350,192 L350,154 Q350,140 364,140 L616,140 Q630,140 630,154 L630,192 Z" fill="#378ADD"/>
+  <text x="490" y="166" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Customer Experience</text>
+  <text x="490" y="183" text-anchor="middle" font-size="10.5" font-style="italic" fill="#E5EEF7">Erosion of trust in the product</text>
+  <g font-size="11.5" fill="#2C2C2A">
+    <circle cx="374" cy="226" r="4" fill="#378ADD"/><text x="388" y="230">Accuracy &amp; quality drift</text>
+    <circle cx="374" cy="260" r="4" fill="#378ADD"/><text x="388" y="264">Hallucinated or fabricated answers</text>
+    <circle cx="374" cy="294" r="4" fill="#378ADD"/><text x="388" y="298">Inconsistent, off-brand tone</text>
+    <circle cx="374" cy="328" r="4" fill="#378ADD"/><text x="388" y="332">Failed task completion</text>
+    <circle cx="374" cy="362" r="4" fill="#378ADD"/><text x="388" y="366">Slow or unreliable responses</text>
+  </g>
+
+  <!-- ============ CATEGORY C — COST ============ -->
+  <rect x="660" y="140" width="280" height="252" rx="14" fill="#ffffff" stroke="#EF9F27" stroke-width="1.6"/>
+  <path d="M660,192 L660,154 Q660,140 674,140 L926,140 Q940,140 940,154 L940,192 Z" fill="#EF9F27"/>
+  <text x="800" y="166" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Cost</text>
+  <text x="800" y="183" text-anchor="middle" font-size="10.5" font-style="italic" fill="#FBF1DD">Spend that outruns the value</text>
+  <g font-size="11.5" fill="#2C2C2A">
+    <circle cx="684" cy="226" r="4" fill="#EF9F27"/><text x="698" y="230">Oversized-model token burn</text>
+    <circle cx="684" cy="260" r="4" fill="#EF9F27"/><text x="698" y="264">Runaway or unbounded usage</text>
+    <circle cx="684" cy="294" r="4" fill="#EF9F27"/><text x="698" y="298">Context &amp; retrieval bloat</text>
+    <circle cx="684" cy="328" r="4" fill="#EF9F27"/><text x="698" y="332">Over-provisioned infrastructure</text>
+    <circle cx="684" cy="362" r="4" fill="#EF9F27"/><text x="698" y="366">No cost visibility or attribution</text>
+  </g>
+
+  <!-- ============ BYLINE ============ -->
+  <rect x="40" y="412" width="900" height="66" rx="14" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.6"/>
+  <text x="490" y="440" text-anchor="middle" font-size="13.5" font-weight="700" fill="#3C3489">Three examples. Passing development isn&#8217;t passing production &#8212;</text>
+  <text x="490" y="462" text-anchor="middle" font-size="12" fill="#534AB7">and passing production still isn&#8217;t success for the company. That third gap is why standards exist.</text>
+</svg>

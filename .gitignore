@@ -53,3 +53,6 @@ data/lens_mapping_authored.md
 # Maven/HubSpot contact data (PII) — keep out of git
 *.csv
 hubspot/import_data_platform_signups.mjs
+
+# bare env file with secrets
+env

@@ -92,7 +92,7 @@ export function PrinciplesList() {
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-mono text-xs text-muted-foreground">{id}</span>
                       {pillar && (
-                        <Badge variant="secondary" className="max-w-[60%] truncate">
+                        <Badge variant="secondary" className="h-auto max-w-[60%] whitespace-normal text-right">
                           {pillar}
                         </Badge>
                       )}
@@ -107,7 +107,7 @@ export function PrinciplesList() {
                         </p>
                       )}
                       {focus && (
-                        <Badge variant="outline" className="w-fit">
+                        <Badge variant="outline" className="h-auto w-fit max-w-full whitespace-normal">
                           {focus}
                         </Badge>
                       )}

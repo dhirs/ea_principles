@@ -1,209 +1,111 @@
 ---
 name: ai-architecture-principles
-description: Use this skill whenever the user works on enterprise AI architecture principles — authoring a new principle, editing or reviewing existing ones, mapping production failures to architectural concerns, classifying principles into the four-area taxonomy, or anything involving the `principles.json` catalogue or `PRIN_` identifiers. Trigger this skill even when the user does not name the file explicitly but is clearly thinking about how to standardise AI agent design, ARB review criteria, AIGP alignment, prompt/context governance, or any "what does production-ready look like" question for AI systems.
+description: Use this skill whenever the user works on the enterprise AI architecture principles catalogue — authoring a new principle from an AWS Well-Architected GenAI Lens BP step, editing or reviewing existing ones, mapping production failures to architectural concerns, deciding promote / not_promote on an AWS implementation step, scoring a section against its hand-applied rubric, or anything involving `principles.json`, the per-section rubrics under `data/sections/`, the reference implementations under `data/ri/`, `lens_mapping.md`, or `{bp_code}-NN` identifiers (e.g. GO1B1-01, GC2B2-01, GO3B2-02). Trigger this skill even when the user does not name the file explicitly but is clearly thinking about how to standardise AI agent design, ARB review criteria, AIGP alignment, prompt / context governance, observability discipline, cost discipline, or any "what does production-ready look like" question for AI systems.
 ---
 
 # Enterprise AI Architecture Principles
 
-This skill carries the operating rules for a specific catalogue of enterprise AI architecture principles. The catalogue exists to give delivery teams and architecture review boards a shared, auditable definition of "production-ready" for AI systems, so that quality does not depend on individual architect heroics.
+This skill carries the operating rules for the user's enterprise AI architecture principles catalogue. The catalogue gives delivery teams and ARBs a shared, auditable definition of "production-ready" for AI systems.
 
-When this skill triggers, the user is working on principles that will be applied across many AI projects in an enterprise. Decisions made here ripple. Stay disciplined about the schema, the taxonomy, and the writing conventions below.
+Decisions here ripple across the catalogue. Read the canonical files for current state before acting — do not act from this skill's memory of what the schema, conventions, or open items used to be. This skill is procedure, not specification.
 
 ## File locations
 
-Catalogue lives at:
+Everything is consolidated under `ai_principles_server/`:
 
-- `\\wsl.localhost\ubuntu-24.04\home\dheeraj\ai_principles_server\data\principles.json` — the authoritative principle catalogue
-- `\\wsl.localhost\ubuntu-24.04\home\dheeraj\ai_principles_server\data\reusable.json` — supporting case studies on centralisation decisions (UC_NNN, not PRIN_NNN)
+- `ai_principles_server/data/` — content + schema + prompts + reference implementations. All catalogue artefacts live here.
+- `ai_principles_server/app/` — pipeline Python code (scaffold; not yet wired). Hand-authoring is the current path.
+- `ai_principles_server/agentflow/app/anchor.json` — the next-BP staging slot. The single path under the old `agentflow/` layout that is still live.
 
-Schema, prompts, and pipeline spec also live under `ai_principles_server/data/`:
+Old `agentflow/` paths in journal entries refer to the pre-2026-06-01 layout.
 
-- `taxonomy.json` — the per-principle schema specification
-- `principle_schema.json` — a derived schema-only view
-- `pipeline.md` — the LangGraph pipeline architecture spec
-- `sections/<section>/{generate,rubric,revise}.json` + `system_prompts/{generate,rubric,revise}.json` — the authoring prompts
-- `ri/<principle_id>/README.md` — per-principle reference implementations
+## Read first at session start
 
-Always read the current `principles.json` before editing — the catalogue is being actively developed and the in-context version may be stale. Never invent or overwrite a `PRIN_NNN` without checking what's there.
+Before any principle work, read in this order:
 
-## The four-area taxonomy
+1. `data/CLAUDE.md` — working-style instructions and hand-applied rubric pointers.
+2. `data/decisions.md` — top 2–3 entries. The `(latest)` marker sits on the newest. Carries recent schema evolutions, rubric versions, and open items.
+3. `data/principles.json` — meta block + the most recent principles. Confirm the live schema shape, the format_version, and field presence on the latest entry (the schema evolves; in-memory expectations may be stale).
+4. `data/principle_schema.json` and `data/taxonomy.json` — the formal schema and field conventions. This is the source of truth for what fields exist and what values are allowed. Never enumerate enums or fields from memory.
+5. `data/lens_mapping.md` and `data/lens_mapping_authored.md` — what's been mapped, what's deferred, what's pending.
 
-Every principle belongs to one primary area and optionally a secondary area. These four areas are the spine of the catalogue. If a new principle does not fit cleanly into one, the principle is probably underspecified — push back on the user rather than inventing a fifth area.
+For section-specific work (authoring, scoring, reviewing), also read the rubric at `data/sections/{section}/rubric.json` for the section in question. The rubric files are the source of truth for dimensions, thresholds, and calibration — do not score from memory.
 
-### 1. Business Value and Delivery
-Principles that ensure AI initiatives are economically justified and deliverable. Covers cost (tokens, infra, licensing), delivery predictability, vendor/tooling consolidation, reuse across projects, and avoiding duplicated effort. **Test question:** "Is this worth building, and can we ship it repeatedly without bleeding money or time?"
+## Identifier convention
 
-### 2. Reliability and Scale
-Principles that make agents trustworthy and diagnosable in production. Covers observability, traceability of decisions, resilience under load, recovery from failure, incident response standards, and performance at scale. **Test question:** "When something goes wrong, can we see what happened, fix it, and keep running?"
+Principles use the format `{bp_code}-NN` where `bp_code` compresses the AWS pillar / question / BP triple to 5 characters, and `NN` is sequential within the BP block (no gaps regardless of which steps were not_promoted). The exact convention lives at `data/taxonomy.json` under `conventions.principle_id_format`. Read it there before allocating a new ID.
 
-### 3. Operability and Change Control
-Principles that make systems supportable, transferable, and maintainable beyond the original architect. Covers prompts-as-code, version control, drift management, single source of truth, context layering, deterministic assembly, handover standards, and the non-functional definition of "production-ready." **Test question:** "Can a different team operate, change, and extend this six months from now?"
+Legacy `PRIN_NNN` IDs are retained at `data/principles_old.json` for historical reference only and must not be authored in the live catalogue.
 
-### 4. Risk, Governance, and Compliance
-Principles that make systems auditable and aligned to enterprise policy. Covers legal, privacy, security, identity and authorization for agents, guardrails, audit trails, responsible AI, explainability, and the evidence model ARBs need to approve consistently. **Test question:** "Can we prove this system is safe, compliant, and accountable?"
+## Authoring workflow — strict order
 
-### The pairing pattern
-A mature catalogue often has **paired principles** — one operability, one governance — covering the same capability from different angles. Example: prompts-as-code (operability: can engineers safely change them?) versus prompt change audit retention (governance: can we prove who approved what?). When you author a new principle, ask whether its sibling in another area is also worth writing.
+When authoring a principle from an AWS implementation step, follow this order exactly. Do not collapse steps. Do not run ahead.
 
-### Mapping rules — primary vs secondary
-- **Primary area** answers the test question that most strongly drives the principle's existence.
-- **Secondary area** is set when the principle's benefits clearly serve a second test question. Don't reach — only set a secondary when at least two of the listed `key_benefits` map to that other area.
-- **Co-primary** (both areas tagged equally) is rare and reserved for principles like PRIN_017 (Deterministic Prompt Assembly) where reliability and governance are both first-order motivations explicit in the principle's stated goals.
+1. **Fetch the AWS step.** Read the AWS verbatim text for the step (from the BP page on docs.aws.amazon.com, or from the anchor already loaded). Quote it back in chat so the user can see what's being worked from.
 
-## Principle JSON schema
+2. **Load the anchor.** Populate `agentflow/app/anchor.json` with the BP code, step number, step title, and verbatim text.
 
-Every principle is an object with this exact structure. Field order matters for diff readability — keep it consistent.
+3. **Prepare the `statement` only.** Draft the title (imperative — score against `data/sections/statement/rubric.json`) and a 1–3 sentence description. Optionally sketch the problem shape in 1–2 sentences inline in chat (not the full `problem` section yet) so the discussion has something concrete to chew on.
 
-```json
-{
-  "principle_id": "PRIN_NNN",
-  "domain": "<thematic grouping string>",
-  "impact_level": "Critical | High | Medium | Low",
-  "applicability": ["llm" | "rag" | "agentic" | "ml"],
-  "maturity_level": "foundational | scaling | mature",
-  "statement": {
-    "title": "<short imperative title>",
-    "description": "<1–3 sentences stating the rule>"
-  },
-  "problem": {
-    "description": "<the failure mode this principle prevents>",
-    "examples": ["<concrete example 1>", "..."]
-  },
-  "solution": {
-    "approach": "<how the principle is implemented>",
-    "key_benefits": ["<benefit 1>", "..."]
-  },
-  "enforcement": {
-    "mechanism": "<snake_case mechanism name>",
-    "automated": true,
-    "details": "<how the enforcement actually works>"
-  },
-  "aigp": {
-    "domain": "<AIGP domain string — see AIGP reference below>",
-    "competency": "<AIGP competency string — see AIGP reference below>"
-  }
-}
-```
+4. **HALT. Interactive discussion with the user.** Present the statement and the problem sketch. Walk the user through:
+   - What the AWS step says verbatim and what it leaves unspecified.
+   - What the candidate statement is mandating and what failure mode it prevents.
+   - Sibling principles or adjacent BPs that might absorb the substance instead.
+   - Any pillar-placement question (this BP vs cross-pillar deferral).
+   - The shape of the artefact and gate that the principle would concretise to.
 
-**Required for every new principle**: all fields above. The two recently added fields (`applicability`, `maturity_level`) are mandatory on new principles even though existing PRIN_001–PRIN_017 do not yet carry them.
+   The point of this discussion is for the user to understand the context and form a view before any promote / not_promote decision is made. Do NOT proceed past this step until the user has explicitly indicated they are ready to move on. Phrases like "let's promote it" or "score it" or "ok continue" or equivalent are the trigger — silence or implicit assent is not. If the user asks questions or pushes back, answer them and stay halted.
 
-**Optional fields**:
-- `enforcement.sample_script` — object with `trigger`, `integration_point`, and `script_path` when there's a real enforcement script to point at (see PRIN_005 for an example).
-- `area` / `secondary_area` — the four-area taxonomy. Not yet required on principles; will be added in a later schema revision.
+5. **Only after the user signals to proceed: score the candidate against `data/sections/step_promotion/rubric.json`.** Report per-dimension scores and justifications. Binary outcome: promote / not_promote.
 
-## Writing conventions
+6. **If promote:** draft the `problem` section in full (description + 4–5 concrete examples, scored against `data/sections/problem/rubric.json`), then walk each remaining section's rubric in turn (solution, gates, applicability, serving_paradigm, maturity_level, tier, framework_mappings, impact_level, focus_area, explain_prompt) — read the rubric file, score the draft, revise if it fails the threshold. Compose the full principle. Merge into `data/principles.json` at the correct numeric position. Write the RI at `data/ri/{principle_id}/README.md`. Flip the relevant row in `data/lens_mapping.md`. Append a top entry in `data/lens_mapping_authored.md`. Mark `agentflow/app/anchor.json` completed. Log the call as a `(latest)` entry in `data/decisions.md`.
 
-These conventions are not optional. They are what make the catalogue scan-able, reviewable, and consistent across authors.
+7. **If not_promote:** log the deferral in `data/lens_mapping_authored.md` (naming the absorbing principle or cross-pillar target BP), add a brief `decisions.md` entry, leave `anchor.json` in-progress until the user picks the next step.
 
-### `principle_id`
-Format `PRIN_NNN` with zero-padded three-digit number. Allocate the next free ID. **PRIN_012 is currently reserved** (see "Outstanding work" below) — do not assign it without checking the gap first.
+8. **Verify the JSON parses** — `python3 -c "import json; json.load(open('data/principles.json'))"`. If the sandbox blocks the workspace path, flag it as an open item for the user to run from their terminal before pushing.
 
-### `domain`
-A short thematic string (not the four-area taxonomy). Existing values in use:
-- "Production Environment Complexity"
-- "Governance and Control Gaps"
-- "Data Infrastructure Problems"
-- "Context Drift and Maintenance"
-- "System Integration Challenges"
+The recurring failure mode this workflow exists to prevent: running through every step in one shot — load anchor, draft everything, score, merge, write RI, log — without ever stopping for the user to form an independent view. The halt at step 4 is not a courtesy; it is the point at which the user's judgement gets folded into the decision instead of being rubber-stamped after the fact.
 
-Prefer reusing an existing `domain` string over inventing a new one. The taxonomy is the `area` field; `domain` is a finer-grained tag for grouping.
+When reviewing an existing principle: walk each section through its rubric. Surface any section that fails the threshold.
 
-### `impact_level`
-Use the four-level scale: `Critical | High | Medium | Low`. Reserve `Critical` for principles where violation creates regulatory, security, or business-continuity risk. Most principles are `High`.
+When mapping a production failure to the catalogue: identify which existing principle (if any) covers it. If none, flag as a candidate for a future BP walk and record in `lens_mapping_authored.md`.
 
-### `applicability`
-Array of strings identifying which AI system patterns the principle applies to. Required. Allowed values:
+## Field-level guidance and enums
 
-- `llm` — any LLM-based system (chatbot, summarisation, generation, classification with prompts)
-- `rag` — retrieval-augmented generation systems (LLM + vector store + retrieval pipeline)
-- `agentic` — autonomous agents with tool use, planning, multi-step reasoning, or LangGraph-style workflows
-- `ml` — traditional ML (supervised/unsupervised learning, classical models, embeddings as features)
+Do not enumerate fields, allowed values, or enum sets from this skill's memory. Read them from:
 
-A principle can apply to multiple patterns — list all that apply. If a principle is universal, list all four explicitly rather than using a shortcut value. This makes filtering reliable.
+- `data/principle_schema.json` for the field list, types, required-vs-optional, and enum values.
+- `data/taxonomy.json` for the format conventions (principle_id shape, applicability/serving_paradigm criticality-map intent, tier/maturity_level semantics, AIGP domain and competency strings).
+- The most recent principles in `data/principles.json` for the live shape — grep for any field across the catalogue to confirm whether it's present on all prior principles before declaring it optional on a new one. The miss pattern to avoid: trusting a journal entry that said a field was "deferred" instead of checking the actual file.
 
-### `maturity_level`
-Single string. Required. Identifies the organisational maturity at which this principle should be adopted. Allowed values:
+## Schema-presence check before declaring "done"
 
-- `foundational` — adopt on the first AI project. Skipping it creates debt that compounds.
-- `scaling` — adopt once running multiple AI projects (roughly 2–5) or once multiple teams are involved.
-- `mature` — adopt once running an AI portfolio (5+ projects, formal ARB, dedicated platform team).
+Before declaring any principle complete, grep `data/principles.json` for each field name and confirm presence on every prior principle. If 8 of 8 prior principles carry a field, the 9th gets it unless there is a specific written reason in the principle's own change_history justifying the omission. Schema is the source of truth; journal entries are not.
 
-Pick the strictest level that honestly applies. If a principle is foundational for high-risk use cases but only scaling-relevant for low-risk ones, pick `foundational` — it is safer to over-adopt than to under-adopt.
+This applies to every field — `pillar`, `focus_area`, `applicability`, `serving_paradigm`, `framework_mappings`, `ownership`, `gates`, `change_history`, `explain_prompt`, and any field added by a schema evolution recorded in `decisions.md` or `principles.json`'s meta block.
 
-### `statement.title`
-Short imperative or noun phrase. Examples that read well: "Single Source of Truth for AI Context", "Centralized LLM Access Through Enterprise SDK", "Co-locate Rules with the Artefacts They Govern". Avoid vague titles like "Good Logging" — name the rule, not the topic.
+## Reference implementations
 
-### `statement.description`
-One to three sentences stating the rule clearly enough that an engineer could check whether their code complies. Should read like a policy, not a recommendation.
+Each principle has an RI at `data/ri/{principle_id}/README.md`. The shape (principle_id → tier_outcome → central_team Builds/Operates/Owns → project_team Configures/Populates/Consumes via → interface_contract → acceptance_criteria) is stable across the catalogue; read an existing RI (e.g. `data/ri/GO1B1-01/README.md`, `data/ri/GO3B2-01/README.md`) as the template for a new one. Match the existing structure rather than authoring from this skill's description of it.
 
-### `problem.description`
-One paragraph explaining the failure mode. Focus on what *breaks* without this principle, especially failure modes that only surface at portfolio scale (multiple projects, multiple teams, over time).
+## Hand-applied rubrics
 
-### `problem.examples`
-**Always 4–5 concrete examples.** Each should be a specific, observable failure — code-level if possible, not abstract.
+Per-section rubrics live at `data/sections/{section}/rubric.json`. Each is a structured judge — read the file for the section's dimensions, threshold, and calibration examples before scoring. Until the LangGraph composer at `app/` is wired, every rubric is hand-applied. The current set of rubrics is whatever exists under `data/sections/` — list the directory before declaring which sections need scoring.
 
-### `solution.approach`
-One paragraph describing the implementation pattern. Should map back to the rule in `statement.description`, but expand on *how* — what gets created, what gets enforced, what the runtime/build-time behaviour looks like.
+Hand-applied rubric workflow per section: read the rubric file → draft the section → score against the rubric's dimensions → revise if any dimension fails the threshold → record the per-dimension scores in the principle's `change_history` summary.
 
-### `solution.key_benefits`
-3–5 bullets. Quantify when honest ("70-90% reduction in token costs"), name the failure mode it eliminates when not ("Drift detection becomes trivial: any non-canonical copy is a violation").
+## What "done" looks like
 
-### `enforcement.mechanism`
-A short snake_case identifier for the enforcement type. Reuse where appropriate.
+Before declaring complete:
 
-### `enforcement.automated`
-`true` if enforcement runs without human action (linters, CI gates, runtime checks). `false` for human-driven mechanisms (code review checkpoints, ARB review).
+- JSON parses cleanly (or, if the sandbox blocks parse, flag for the user's terminal).
+- Every field present on prior principles is present on this one (schema-presence check above).
+- Every section ran through its hand-applied rubric and passed.
+- The `change_history.changes[0].summary` carries the full reasoning chain — rubric scores, alternatives considered, sibling distinctions, decisions about non-default field values.
+- RI exists at `data/ri/{principle_id}/README.md` matching the existing RI template.
+- `lens_mapping.md`, `lens_mapping_authored.md`, `agentflow/app/anchor.json`, and `decisions.md` are all updated.
+- The principle would survive an ARB member reading it cold.
 
-### `enforcement.details`
-The specific checks the enforcement performs, numbered (1), (2), (3). Concrete enough that someone could implement the enforcement from the description.
+## Outstanding work
 
-### `aigp.domain` / `aigp.competency`
-Use only the existing AIGP domains and competencies listed in the AIGP reference below. Do not invent new ones.
-
-## AIGP reference
-
-### Domain I: Understanding the Foundations of AI Governance
-- `I.A: Define Core Principles and Accountability`
-- `I.B: Establish an AI Governance Framework`
-
-### Domain II: Understanding How Laws, Standards, and Frameworks Apply to AI
-- `II.C: Align with Standards and Risk Frameworks`
-
-### Domain III: Understanding How to Govern AI Development
-- `III.A: Govern Data for AI Systems`
-- `III.B: Govern the AI Model Lifecycle (Design & Build)`
-
-### Domain IV: Understanding How to Govern AI Deployment and Use
-- `IV.A: Govern AI Deployment Options and Infrastructure`
-- `IV.B: Implement Ongoing Risk Assessments and Monitoring`
-- `IV.C: Establish Security, Access Control, and Incident Management`
-
-If a new principle seems to need a competency not listed here, surface that to the user.
-
-## Authoring workflow
-
-When the user asks to add a new principle, follow this order:
-
-1. **Read `principles.json` first.** Identify the next free `PRIN_NNN`, check that the proposed principle does not duplicate an existing one, and look for related principles to cross-reference.
-2. **Confirm the four-area mapping** with the user before drafting. Primary area, and secondary if applicable.
-3. **Draft the principle** following the schema and writing conventions above.
-4. **Cross-reference related principles** in the `key_benefits` or `problem.description` where it strengthens the principle.
-5. **Append to `principles.json`** at the correct position (numeric order by `PRIN_NNN`).
-6. **Verify the JSON parses** before declaring done.
-
-When the user asks to **review** an existing principle, check it against the schema, writing conventions, the four-area test, and AIGP reference.
-
-When the user asks to **map a failure** (production incident, ARB finding, course case study) to the catalogue, identify which area the failure belongs to first, then which existing principle (or gap) it relates to.
-
-## What "done" looks like for any principle work
-
-Before declaring a piece of work complete, check:
-
-- JSON parses cleanly
-- New `PRIN_NNN` is correct
-- `applicability` array is set with at least one valid value
-- `maturity_level` is set to one of `foundational`, `scaling`, `mature`
-- `problem.examples` has 4–5 concrete entries
-- `enforcement.details` is implementable, not aspirational
-- AIGP strings exactly match the reference
-- The principle would survive being read by an ARB member who has never spoken to the author
+Read `decisions.md` "Open items" sections for the current list. Do not enumerate open items from this skill — they shift each session.
