@@ -60,3 +60,66 @@ There is **no horizontal AI law**. For banks and insurers the binding obligation
 3. **NIST is never the spine.** It is an index in the EU/UK and the common methodology in the US. Do not start the legal enumeration from it.
 4. **ISO 42001 is the portable layer.** A single 42001-aligned management system gives auditable evidence that travels across all three jurisdictions, regardless of which legal spine applies.
 5. **The destinations converge.** EU, UK and US all land on similar controls — inventory, validation, monitoring, human oversight, security, bias testing. The EU mandates them ex-ante through one law; the UK assembles them from existing regulators; the US extracts them ex-post through supervisory exams.
+
+---
+
+## From legal obligations to an *implementable* standards catalogue (EA scope)
+
+The sourcing pipeline above tells us **which obligations exist**. This section narrows from there to **what enterprise architecture actually owns and ships**: system-level, GenAI-specific, testable controls. The funnel has three gates, then a decomposition-and-coverage step.
+
+### Scoping decision: EA owns system-level, not org-level
+
+The EU AI Act's high-risk requirements split into two layers:
+
+- **Org / program-level** — Technical Documentation (Art 11), Quality Management System (Art 17), Conformity Assessment & CE marking (Art 43, 47, 48), EU-database Registration (Art 49). A model cannot *implement* these; they are legal artefacts and management process. **These are owned by the Risk / Governance team, not enterprise architecture.** They reference the system; they are not standards the system meets.
+- **System-level** — Data Governance (Art 10), Logging (Art 12), Transparency (Art 13, 50), Human Oversight (Art 14), Accuracy/Robustness/Security (Art 15), plus GPAI duties (Art 53). These translate into controls an LLM / agent / ML model can be **built to and tested against**. **This is the EA catalogue's scope.**
+
+So Gate 1 is: **drop the org-level obligations** to the Risk/Governance register and keep only the system-level ones.
+
+### Gate 2: filter system-level → GenAI-specific
+
+GenAI-specificity is a **per-control filter, not a per-category one**. Each system-level category contains both generic-ML controls and GenAI-distinctive controls. The litmus test for each individual control:
+
+> *Would this control still exist if the model were a logistic regression or a rules engine?*
+
+If yes → it is generic ML/data governance (e.g. bias testing, representativeness, drift) — real, but not GenAI-specific. If the control only exists because the system **generates free-form content, accepts free-form input, or acts autonomously** → it is GenAI-distinctive and belongs in this catalogue. Equivalent shorthand: *does it have a home in the AWS GenAI Lens but not in base Well-Architected?* — same filter, different lens.
+
+### The GenAI-distinctive control set (output of Gates 1–3)
+
+Applying both gates yields the eight controls with **no analogue in classic ML** — the implementable spine of the legal bucket:
+
+1. **Synthetic-content watermarking & labelling** — Art 50
+2. **Prompt-injection / jailbreak resistance** — Art 15 (cybersecurity)
+3. **Hallucination / grounding / factuality** — Art 15 (accuracy)
+4. **Output content-safety filtering** — toxicity / harmful generation (Art 5 prohibited-use + Art 15)
+5. **Training-corpus provenance & copyright** — GPAI Art 53
+6. **RAG / retrieval-context governance** — the GenAI slice of Art 10
+7. **Agentic action authorisation & tool-use gating** — agent-specific oversight (Art 14 applied)
+8. **Prompt / completion / token logging** — the GenAI slice of Art 12
+
+### Decomposition method — and why NOT ISO 42001 here
+
+Each of the eight controls decomposes into **best practices** (testable, enforceable statements). The decomposition source must operate at the **system layer**, so:
+
+- **Do NOT decompose through ISO 42001.** 42001 is a management-system standard; its Annex A controls are governance/process controls (policy, roles, impact assessment) — i.e. the **org-level layer we deliberately excluded at Gate 1**. Decomposing the eight through 42001 drags the work back up to the governance layer the Risk/Governance team owns. 42001 stays where the rest of this document puts it: the portable **evidence / management wrapper**, not the engineering decomposition.
+- **DO decompose through system-level technical frameworks:**
+  - **OWASP Top 10 for LLM Applications** — prompt injection, insecure output handling, training-data poisoning, excessive agency. Maps closely onto controls 2, 4, 5, 7.
+  - **MITRE ATLAS** — adversarial-ML attack/defence techniques (jailbreaks, evasion, extraction).
+  - **NIST Generative AI Profile (AI 600-1)** — GenAI-specific risk-management actions.
+
+This keeps the same *law-first, methodology-second* discipline as the sourcing pipeline — applied one layer down, at the system control.
+
+### Coverage check against the AWS GenAI Lens
+
+For each decomposed best practice, crosswalk to the **AWS GenAI Lens** (the catalogue's primary anchor):
+
+- **Covered by a Lens BP** → anchor the standard to that BP in `framework_mappings.aws` (the normal case).
+- **Not covered** → implement it as a **new standard that extends beyond AWS**, recorded with `mapping_state: 'na'` and a note explaining the GenAI obligation it discharges. This is already the catalogue's sanctioned path for principles with no AWS analogue — no new machinery required.
+
+### Tagging, not splitting
+
+Do not fork into separate catalogues per system type. Tag every standard `applies_to: {ML, LLM, agent}`. A generic data-governance control is `{ML, LLM, agent}`; watermarking is `{LLM}`; tool-use gating is `{agent}`. One catalogue, filtered by system type at implementation time.
+
+### The method in one line
+
+**All obligations → drop org-level (Risk/Governance owns it) → keep system-level → filter to GenAI-specific (the 8) → decompose into BPs via OWASP-LLM / ATLAS / NIST-GenAI (not 42001) → crosswalk to GenAI Lens (gap = new standard, `mapping_state: 'na'`) → tag `applies_to`.**
