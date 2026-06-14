@@ -25,6 +25,26 @@ The interface between them is simple: **the obligation set is the input EA recei
 
 > **Workshop framing:** EA is part of the discussion, but the obligations that *must* be met are decided by Governance and handed to EA as input. EA's job starts when the obligation set arrives.
 
+## Three layers: the Act vs our standard vs ISO 42001
+
+The single most common confusion is collapsing these three into each other. They are distinct, and each answers a different question. A concrete standard satisfies a control in the Act — but the Act is not the standard, and ISO 42001 is neither.
+
+| | **EU AI Act** | **Our standard** | **ISO 42001** |
+|---|---|---|---|
+| **Question it answers** | *What* must be true? | *How* is it built, and how do we prove it works? | *Is the control properly governed* as an org process? |
+| **Nature** | Legal obligation | Engineering control + pass/fail gate | Management-system wrapper / evidence |
+| **Owner** | external law — Governance interprets | Enterprise Architecture | Governance |
+| **Lives in** | the statute | code, CI, platform | policy, inventory, named owners, review loop, audit records |
+| **On failure, answers** | "are we liable?" | "was the gate bypassed?" | "who owned it, was it reviewed, where is the sign-off?" |
+
+**Worked example — `ST-GS1B3-01` (retrieval scoped to the asking user):**
+
+- **EU AI Act (the *what*)** — Art 10 / Control #6: retrieved data must be scoped to the user; a shared store must not bypass the access controls on its contents.
+- **Our standard (the *how* + proof it works)** — documents carry acl labels at ingestion; all retrieval routes through a central SDK that derives the caller's entitlements and applies a pre-filter; a pre-merge AST lint bans direct vector-store clients; the deploy **gate** fails on any unauthorised retrieval in the test corpus. This is the implementation. None of it comes from 42001.
+- **ISO 42001 (proof it's governed)** — is there an AI policy that says access control applies to AI retrieval systems; is this agent in the AI inventory with a **named owner**; was an impact assessment done; is there a **review loop** re-checking the control (and that the acl labels are still correct); is the sign-off recorded for an auditor to inspect.
+
+**The boundary, in one line:** the Act says *what*, the standard says *how and proves it works*, 42001 proves it is *governed*. **42001 fills the process gap *around* the standard — it never defines the standard's implementation.** That is also why decomposition never runs through 42001 (see Step 1 below): its controls are org-level process, not engineering detail.
+
 ## One way Governance might produce the obligation set (illustrative)
 
 This is **one example** of how the obligation set could be sourced. There are others (incident-driven, risk-model-driven, other jurisdictions). We are **not** going into those in this workshop — this single path is shown only to make the hand-off concrete. The important point is that **this whole exercise is driven by Governance, not EA.**

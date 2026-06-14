@@ -2214,6 +2214,26 @@
               "note": "Secondary mapping. Labelling each ingested document with its access-control metadata and segregating data by role inside the vector store is data governance for AI systems, aligning with III.A. Needs review to verify."
             }
           ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 10 — Data and data governance",
+              "risk_tier": "High-risk",
+              "control_ref": "Control #6 — RAG / retrieval-context governance (GenAI slice of Art 10)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "PRIMARY. The gate (retrieval pre-filtered to the caller's entitlements; 0 unauthorised retrievals) concretises the Art 10 obligation to segregate data by role/use inside a shared store. Asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md); not yet read side-by-side against the Article 10 text."
+            },
+            {
+              "article": "Article 15 — Accuracy, robustness and cybersecurity",
+              "risk_tier": "High-risk",
+              "control_ref": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "CROSS-REFERENCE. Preventing unauthorised retrieval improves confidentiality, but the gate runs no cybersecurity probes (no injection/poisoning tests). Coverage contribution to Art 15, not an obligation this standard discharges."
+            }
+          ]
         }
       },
       "ownership": {
@@ -2278,8 +2298,14 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.1.0",
         "changes": [
+          {
+            "version": "1.1.0",
+            "date": "2026-06-14",
+            "author": "Dheeraj",
+            "summary": "v1.1.0 (MINOR): Added framework_mappings.eu_ai_act cross-reference mapping. Primary: Article 10 — Data and data governance / Control #6 — RAG / retrieval-context governance (GenAI slice of Art 10). 2 reference(s) total. mapping_state unverified across all — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md, the eight GenAI-distinctive controls), not yet read side-by-side against the article text. New eu_ai_act framework key declared in taxonomy.json framework_specific_reference_fields (article / risk_tier / control_ref) and eu_ai_act_convention note added. AWS remains the primary anchor; EU AI Act is a cross-reference per convention."
+          },
           {
             "version": "1.0.0",
             "date": "2026-06-07",
@@ -2347,6 +2373,26 @@
               "note": "Provisional mapping. Runtime output guardrails with a defined fallback are an operational safety/incident-mitigation control over harmful or incorrect model output. Arguably also touches a responsible-AI / harm-mitigation competency; IV.C chosen provisionally. Needs side-by-side review against the AIGP competency definitions to promote to verified."
             }
           ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 15 — Accuracy, robustness and cybersecurity",
+              "risk_tier": "High-risk",
+              "control_ref": "Control #4 — Output content-safety filtering",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "PRIMARY. Output safety check with safe fallback concretises the robustness limb of Art 15. Control #4 has no dedicated EU AI Act article — it rides Art 15 robustness. The gate currently spans output safety (#4) and grounding/accuracy (#3); candidate for splitting when formalised. Asserted from the 2026-06-13 funnel; unverified against Article 15 text."
+            },
+            {
+              "article": "Article 15 — Accuracy, robustness and cybersecurity",
+              "risk_tier": "High-risk",
+              "control_ref": "Control #3 — Hallucination / grounding / factuality",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "CROSS-REFERENCE. The 'mislead a user' limb maps to the accuracy obligation in Art 15 — same article as the primary, different control objective."
+            }
+          ]
         }
       },
       "ownership": {
@@ -2407,8 +2453,14 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.1.0",
         "changes": [
+          {
+            "version": "1.1.0",
+            "date": "2026-06-14",
+            "author": "Dheeraj",
+            "summary": "v1.1.0 (MINOR): Added framework_mappings.eu_ai_act cross-reference mapping. Primary: Article 15 — Accuracy, robustness and cybersecurity / Control #4 — Output content-safety filtering. 2 reference(s) total. mapping_state unverified across all — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md, the eight GenAI-distinctive controls), not yet read side-by-side against the article text. New eu_ai_act framework key declared in taxonomy.json framework_specific_reference_fields (article / risk_tier / control_ref) and eu_ai_act_convention note added. AWS remains the primary anchor; EU AI Act is a cross-reference per convention."
+          },
           {
             "version": "1.0.0",
             "date": "2026-06-07",
@@ -2476,6 +2528,18 @@
               "note": "Provisional mapping. Input validation against prompt injection is an operational security control over the prompt attack surface. Same provisional IV.C placement as GS2B1-01 (output guardrail); needs side-by-side review against the AIGP competency definitions to promote to verified."
             }
           ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 15 — Accuracy, robustness and cybersecurity",
+              "risk_tier": "High-risk",
+              "control_ref": "Control #2 — Prompt-injection / jailbreak resistance",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "PRIMARY. Input screening plus size/rate bounding concretises the cybersecurity limb of Art 15 (resilience against attempts to manipulate the system through input, including prompt injection). Clean single-control fit. Asserted from the 2026-06-13 funnel; unverified against Article 15 text."
+            }
+          ]
         }
       },
       "ownership": {
@@ -2536,8 +2600,14 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.1.0",
         "changes": [
+          {
+            "version": "1.1.0",
+            "date": "2026-06-14",
+            "author": "Dheeraj",
+            "summary": "v1.1.0 (MINOR): Added framework_mappings.eu_ai_act cross-reference mapping. Primary: Article 15 — Accuracy, robustness and cybersecurity / Control #2 — Prompt-injection / jailbreak resistance. 1 reference(s) total. mapping_state unverified across all — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md, the eight GenAI-distinctive controls), not yet read side-by-side against the article text. New eu_ai_act framework key declared in taxonomy.json framework_specific_reference_fields (article / risk_tier / control_ref) and eu_ai_act_convention note added. AWS remains the primary anchor; EU AI Act is a cross-reference per convention."
+          },
           {
             "version": "1.0.0",
             "date": "2026-06-07",
@@ -2605,6 +2675,26 @@
               "note": "Provisional mapping. Bounding an agent's authority — which actions it may take and which require human confirmation — is an operational access-control and incident-prevention control over the agent's action surface. Same provisional IV.C placement as GS2B1-01 (output guardrail) and GS4B2-01 (input guardrail); needs side-by-side review against the AIGP competency definitions to promote to verified."
             }
           ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 14 — Human oversight",
+              "risk_tier": "High-risk",
+              "control_ref": "Control #7 — Agentic action authorisation & tool-use gating",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "PRIMARY. Pre-execution check on irreversible / externally-visible actions, with forced route-to-human above authority, concretises Art 14 human oversight applied to agentic action. Asserted from the 2026-06-13 funnel; unverified against Article 14 text."
+            },
+            {
+              "article": "Article 12 — Record-keeping",
+              "risk_tier": "High-risk",
+              "control_ref": "Control #8 — Prompt / completion / token logging",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "CROSS-REFERENCE. The action check emits a decision record contributing to Art 12 logging; logging is not the obligation this standard's gate discharges."
+            }
+          ]
         }
       },
       "ownership": {
@@ -2665,8 +2755,14 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.1.0",
         "changes": [
+          {
+            "version": "1.1.0",
+            "date": "2026-06-14",
+            "author": "Dheeraj",
+            "summary": "v1.1.0 (MINOR): Added framework_mappings.eu_ai_act cross-reference mapping. Primary: Article 14 — Human oversight / Control #7 — Agentic action authorisation & tool-use gating. 2 reference(s) total. mapping_state unverified across all — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md, the eight GenAI-distinctive controls), not yet read side-by-side against the article text. New eu_ai_act framework key declared in taxonomy.json framework_specific_reference_fields (article / risk_tier / control_ref) and eu_ai_act_convention note added. AWS remains the primary anchor; EU AI Act is a cross-reference per convention."
+          },
           {
             "version": "1.0.0",
             "date": "2026-06-08",
@@ -2734,6 +2830,34 @@
               "note": "Provisional mapping, same IV.C placement as the four sibling Security principles (GS1B3-01, GS2B1-01, GS4B2-01, GS5B1-01) — data poisoning is an OWASP-catalogued security attack on the training pipeline. Flag for the side-by-side review: this one may belong instead under a data-governance competency (training-data quality and provenance), so the IV.C placement needs explicit confirmation against the AIGP competency definitions before promotion to verified."
             }
           ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 10 — Data and data governance",
+              "risk_tier": "High-risk",
+              "control_ref": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "PRIMARY (generic). Screening training/customisation data concretises the Art 10 dataset-quality / examination obligation. IMPORTANT: by the funnel's Gate-3 litmus ('would this control exist for a logistic regression?' -> yes) this is GENERIC ML data governance, NOT one of the eight GenAI-distinctive controls — it reaches the catalogue by a different path, so no GenAI control_ref is assigned. Unverified against Article 10 text."
+            },
+            {
+              "article": "Article 15 — Accuracy, robustness and cybersecurity",
+              "risk_tier": "High-risk",
+              "control_ref": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "CROSS-REFERENCE. Art 15 names resilience to data poisoning as a cybersecurity measure; examining training data before a run contributes. Cross-touch, not the discharging gate."
+            },
+            {
+              "article": "Article 53 — Obligations for providers of general-purpose AI models",
+              "risk_tier": "GPAI",
+              "control_ref": "Control #5 — Training-corpus provenance & copyright",
+              "mapping_state": "na",
+              "last_checked": "2026-06-14",
+              "note": "NOT APPLICABLE here. Control #5 (GPAI, Art 53) binds providers of general-purpose AI models; this standard governs a deployer/customiser screening its own training data. Recorded to show the related GPAI control was considered and excluded."
+            }
+          ]
         }
       },
       "ownership": {
@@ -2794,8 +2918,14 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.1.0",
         "changes": [
+          {
+            "version": "1.1.0",
+            "date": "2026-06-14",
+            "author": "Dheeraj",
+            "summary": "v1.1.0 (MINOR): Added framework_mappings.eu_ai_act cross-reference mapping. Primary: Article 10 — Data and data governance (generic, no GenAI control_ref). 3 reference(s) total. mapping_state unverified across all — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md, the eight GenAI-distinctive controls), not yet read side-by-side against the article text. New eu_ai_act framework key declared in taxonomy.json framework_specific_reference_fields (article / risk_tier / control_ref) and eu_ai_act_convention note added. AWS remains the primary anchor; EU AI Act is a cross-reference per convention."
+          },
           {
             "version": "1.0.0",
             "date": "2026-06-10",
@@ -2858,6 +2988,18 @@
               "note": "Provisional, same IV.C placement as the five sibling Security standards. Flag for the side-by-side review: PII minimisation at ingestion is arguably a privacy / data-governance competency (data minimisation under privacy law) rather than security access control — this one is the strongest candidate of the family to move under a privacy-aligned competency when the review runs."
             }
           ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 10 — Data and data governance",
+              "risk_tier": "High-risk",
+              "control_ref": "Control #6 — RAG / retrieval-context governance (GenAI slice of Art 10)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-14",
+              "note": "PRIMARY. Ingestion-side half of Control #6: governs what may enter the retrieval corpus at all (PII, prohibited or out-of-scope content), where ST-GS1B3-01 governs who may retrieve it. Concretises Art 10 dataset-governance for the GenAI store. Where excluded data relates to an Art 5 prohibited practice there is a weak Art 5 touch, otherwise it is generic data-protection outside the Act. Asserted from the 2026-06-13 funnel; unverified against Article 10 text."
+            }
+          ]
         }
       },
       "ownership": {
@@ -2918,8 +3060,14 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.1.0",
         "changes": [
+          {
+            "version": "1.1.0",
+            "date": "2026-06-14",
+            "author": "Dheeraj",
+            "summary": "v1.1.0 (MINOR): Added framework_mappings.eu_ai_act cross-reference mapping. Primary: Article 10 — Data and data governance / Control #6 — RAG / retrieval-context governance (GenAI slice of Art 10). 1 reference(s) total. mapping_state unverified across all — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md, the eight GenAI-distinctive controls), not yet read side-by-side against the article text. New eu_ai_act framework key declared in taxonomy.json framework_specific_reference_fields (article / risk_tier / control_ref) and eu_ai_act_convention note added. AWS remains the primary anchor; EU AI Act is a cross-reference per convention."
+          },
           {
             "version": "1.0.0",
             "date": "2026-06-10",

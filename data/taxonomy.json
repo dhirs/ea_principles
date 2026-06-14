@@ -280,6 +280,23 @@
             "type": "string | null",
             "description": "The AIGP competency code and title within the domain (e.g. 'III.A: Govern Data for AI Systems'). Null for references with mapping_state: na."
           }
+        ],
+        "eu_ai_act": [
+          {
+            "name": "article",
+            "type": "string | null",
+            "description": "The EU AI Act (Reg. 2024/1689) article code and title this reference maps to (e.g. 'Article 10 — Data and data governance', 'Article 15 — Accuracy, robustness and cybersecurity'). Null for references with mapping_state: na."
+          },
+          {
+            "name": "risk_tier",
+            "type": "string | null",
+            "description": "The EU AI Act risk tier under which the obligation bites (e.g. 'High-risk', 'GPAI', 'Limited-risk / transparency'). Most system-level obligations (Art 10/12/13/14/15) apply to high-risk systems. Null when not applicable."
+          },
+          {
+            "name": "control_ref",
+            "type": "string | null",
+            "description": "The GenAI-distinctive system-level control from the 2026-06-13 EU AI Act funnel (paid_workshop/part_2.md), e.g. 'Control #6 — RAG / retrieval-context governance'. Null when the standard maps to a generic (non-GenAI-distinctive) obligation that is not one of the eight, or for a cross-reference with no dedicated control."
+          }
         ]
       },
 
@@ -289,7 +306,8 @@
         "na": "No analogue exists in this framework. The framework was checked; nothing matched. Structural fields are null; note carries the closest-fit explanation if useful. Used for native extensions and for principles AWS would cover only in a different Lens that's also not analogous."
       },
 
-      "cross_lens_placement": "Some principles cover topics AWS places in the Responsible AI Lens rather than the GenAI Lens. These appear as an entry in framework_mappings.aws.references with lens: 'Responsible AI Lens'. The note field explains the cross-lens placement. There is no separate top-level cross-reference field — the cross-lens fact is implicit in the reference's lens value. (The legacy responsible_ai_lens_crossref top-level field that existed in schema versions <= 1.4 has been retired; see decisions.md 2026-05-26 entry.)"
+      "cross_lens_placement": "Some principles cover topics AWS places in the Responsible AI Lens rather than the GenAI Lens. These appear as an entry in framework_mappings.aws.references with lens: 'Responsible AI Lens'. The note field explains the cross-lens placement. There is no separate top-level cross-reference field — the cross-lens fact is implicit in the reference's lens value. (The legacy responsible_ai_lens_crossref top-level field that existed in schema versions <= 1.4 has been retired; see decisions.md 2026-05-26 entry.)",
+      "eu_ai_act_convention": "EU AI Act references are cross-references, never the primary anchor (AWS remains primary). A standard may carry multiple eu_ai_act references; exactly one should be the PRIMARY (the obligation the standard's gate actually discharges — named in its note), the rest CROSS-REFERENCEs (coverage contribution where the gate does not fully test the obligation) or mapping_state: na (control considered and excluded). control_ref ties the reference to the eight GenAI-distinctive system-level controls derived in the 2026-06-13 funnel (paid_workshop/part_2.md); a generic (non-GenAI-distinctive) obligation maps to an article with control_ref: null. EU AI Act mappings were authored mapping_state: unverified — asserted from the funnel, pending a side-by-side read against the article text. ISO 42001 is deliberately NOT a framework_mappings key: it is the management-system wrapper (governance-owned evidence layer), not a control source a standard concretises."
     },
 
     "ownership_spec": {

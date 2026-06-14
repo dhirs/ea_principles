@@ -1,0 +1,84 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" role="img" font-family="sans-serif">
+<title>Central eval runner calling a project-owned adapter</title>
+<desc>A generic central runner on the left reads a project's manifest.yaml to locate its dataset and adapter, loads the test cases, then calls the project's run_scenario adapter for each case. The adapter calls the project's agent, maps its native output into the fixed contract shape, and returns it. The dataset, adapter, manifest and agent all sit inside a dotted box marking what the project owns.</desc>
+
+<defs>
+<marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+<path d="M0,0 L7,3 L0,6 Z" fill="#6b7280"/>
+</marker>
+<marker id="arrowInfo" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+<path d="M0,0 L7,3 L0,6 Z" fill="#2563eb"/>
+</marker>
+</defs>
+
+<style>
+.lbl{fill:#111827;font-size:15px;font-weight:600;}
+.sub{fill:#6b7280;font-size:11.5px;}
+.mono{font-family:monospace;}
+.edge{fill:#6b7280;font-size:11.5px;}
+.edgei{fill:#2563eb;font-size:11.5px;font-weight:600;}
+.line{fill:#6b7280;font-size:11px;}
+</style>
+
+<!-- Central Runner -->
+<rect x="34" y="196" width="206" height="200" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+<text x="137" y="228" text-anchor="middle" class="lbl">Central Runner</text>
+<text x="137" y="248" text-anchor="middle" class="sub">generic · owned by platform team</text>
+<line x1="58" y1="264" x2="216" y2="264" stroke="#e5e7eb" stroke-width="1"/>
+<text x="58" y="290" class="line">• read manifest, find paths</text>
+<text x="58" y="312" class="line">• load test cases</text>
+<text x="58" y="334" class="line">• call run_scenario()</text>
+<text x="58" y="356" class="line">• compare vs expected</text>
+<text x="58" y="378" class="line mono">• exit code 0 / 1</text>
+
+<!-- Project boundary (dotted) -->
+<rect x="330" y="40" width="596" height="500" rx="14" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="7 6"/>
+<text x="350" y="68" class="lbl">What the project owns</text>
+<text x="350" y="86" class="sub">project-specific · the runner never reads its meaning</text>
+
+<!-- manifest -->
+<rect x="470" y="104" width="316" height="62" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+<text x="628" y="130" text-anchor="middle" class="lbl mono">manifest.yaml</text>
+<text x="628" y="150" text-anchor="middle" class="sub">declares eval_path + adapter location</text>
+
+<!-- dataset -->
+<rect x="360" y="300" width="214" height="118" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+<text x="467" y="338" text-anchor="middle" class="lbl">Dataset</text>
+<text x="467" y="360" text-anchor="middle" class="sub mono">returns_triage.jsonl</text>
+<text x="467" y="382" text-anchor="middle" class="sub">input + expected_decision</text>
+<text x="467" y="400" text-anchor="middle" class="sub">+ expected_evidence_trace</text>
+
+<!-- adapter -->
+<rect x="640" y="232" width="250" height="116" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+<text x="765" y="270" text-anchor="middle" class="lbl mono">run_scenario(input)</text>
+<text x="765" y="292" text-anchor="middle" class="sub">the Adapter — fixed interface</text>
+<text x="765" y="314" text-anchor="middle" class="sub">maps agent output →</text>
+<text x="765" y="332" text-anchor="middle" class="sub mono">{decision, evidence_trace}</text>
+
+<!-- agent -->
+<rect x="640" y="430" width="250" height="86" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+<text x="765" y="466" text-anchor="middle" class="lbl">Returns agent / LLM</text>
+<text x="765" y="488" text-anchor="middle" class="sub">unchanged · emits its native output</text>
+
+<!-- edges -->
+<path d="M240,230 C330,200 400,160 466,140" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="300" y="180" class="edge">1 · read manifest</text>
+
+<path d="M540,166 C500,210 480,250 470,296" fill="none" stroke="#2563eb" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowInfo)"/>
+<path d="M720,166 C740,190 752,206 763,228" fill="none" stroke="#2563eb" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arrowInfo)"/>
+<text x="486" y="240" class="edgei">locates</text>
+
+<path d="M360,360 C300,372 280,352 244,332" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="262" y="392" class="edge">2 · load cases</text>
+
+<path d="M240,300 C420,300 520,292 636,290" fill="none" stroke="#6b7280" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="392" y="288" class="edge">3 · run_scenario(input) — one case</text>
+
+<path d="M636,318 C500,346 360,344 244,346" fill="none" stroke="#6b7280" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="400" y="362" class="edge">5 · returns {decision, evidence_trace} → scored</text>
+
+<path d="M738,348 L738,428" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="612" y="392" class="edge">4 · call</text>
+<path d="M792,428 L792,348" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="800" y="392" class="edge">output</text>
+</svg>

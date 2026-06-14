@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GO1B1-01 golden-set scenario record",
+  "description": "One labelled case. The golden set is a list of these (one JSON object per line in a .jsonl file).",
+  "type": "object",
+  "required": ["scenario_id", "tags", "input", "expected_decision", "expected_evidence_trace"],
+  "additionalProperties": false,
+  "properties": {
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^RT-[0-9]{3}-[a-z0-9-]+$",
+      "description": "Stable unique id. Never reuse or renumber — results are tracked by id over time."
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Routing labels. 'smoke' = runs on every PR; 'adversarial'/'edge' = full-run coverage gates."
+    },
+    "source": {"type": "string", "description": "Provenance: prod_form#, red_team#, incident#. Where this case came from."},
+    "labeled_by": {"type": "string", "description": "Who assigned the expected decision."},
+    "labeled_at": {"type": "string", "format": "date"},
+    "rationale": {"type": "string", "description": "Human justification for the label. Documentation, not asserted on."},
+    "input": {
+      "type": "object",
+      "description": "The exact payload handed to the agent adapter. Mirrors a production return form.",
+      "required": ["return_reason_text", "order", "payment", "customer", "item"],
+      "properties": {
+        "return_reason_text": {"type": "string"},
+        "order": {"type": "object"},
+        "payment": {"type": "object"},
+        "customer": {"type": "object"},
+        "item": {"type": "object"}
+      }
+    },
+    "expected_decision": {
+      "type": "object",
+      "required": ["action"],
+      "additionalProperties": false,
+      "properties": {
+        "action": {"enum": ["AUTO_APPROVE", "HUMAN_REVIEW", "REJECT"]},
+        "acceptable_alternatives": {
+          "type": "array",
+          "items": {"enum": ["AUTO_APPROVE", "HUMAN_REVIEW", "REJECT"]},
+          "description": "Other actions that also pass. A safer action (e.g. HUMAN_REVIEW instead of AUTO_APPROVE) is often acceptable; a less safe one is not."
+        }
+      }
+    },
+    "expected_evidence_trace": {
+      "type": "object",
+      "description": "Asserts HOW the agent decided, not just the label. Catches right-answer-wrong-reasons.",
+      "additionalProperties": false,
+      "properties": {
+        "must_consult": {"type": "array", "items": {"type": "string"}, "description": "Tools/data the agent must have read."},
+        "must_apply_rules": {"type": "array", "items": {"type": "string"}, "description": "Policy rules that must appear in the reasoning trace."},
+        "must_not_invoke": {"type": "array", "items": {"type": "string"}, "description": "Actions that must NOT appear (e.g. issue_refund on a REJECT, admin_override from injected text)."}
+      }
+    }
+  }
+}

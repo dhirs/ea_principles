@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 500" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc" width="980" height="500">
+  <title id="ttl">One failure, not many — the failure is fractal</title>
+  <desc id="dsc">The same root cause repeats at three scales. Demo to production: works in the demo, breaks in production (the project-level failure). Project to enterprise: every project hits its goal but cost, security and drift fall through the cracks (the cross-cutting failure). Process to rollout: the standard works on paper but the gate gets routed around in the org (the adoption failure). All three reduce to one root cause: a cross-cutting concern that nobody owns and nothing enforces, invisible until it is expensive. Fix it, or be the company it does not work in.</desc>
+
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#D9663F"/></marker>
+  </defs>
+
+  <!-- ============ HEADER ============ -->
+  <text x="40" y="40" font-size="25" font-weight="700" fill="#2C2C2A">One failure, not many</text>
+  <text x="40" y="66" font-size="14" fill="#5F5E5A">The same root cause repeats at every scale &#8212; zoom in or out, it&#8217;s the same picture.</text>
+
+  <!-- ============ BAND 1 ============ -->
+  <rect x="40" y="100" width="600" height="100" rx="12" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+  <rect x="40" y="100" width="6" height="100" rx="3" fill="#7F77DD"/>
+  <text x="72" y="134" font-size="14" font-weight="700" fill="#3C3489">1 &#183; Demo &#8594; Production</text>
+  <text x="72" y="160" font-size="13" fill="#2C2C2A">Works in the demo. Breaks in production.</text>
+  <text x="72" y="182" font-size="10.5" font-style="italic" fill="#8A887E">the project-level failure</text>
+
+  <!-- ============ BAND 2 ============ -->
+  <rect x="40" y="212" width="600" height="100" rx="12" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+  <rect x="40" y="212" width="6" height="100" rx="3" fill="#7F77DD"/>
+  <text x="72" y="246" font-size="14" font-weight="700" fill="#3C3489">2 &#183; Project &#8594; Enterprise</text>
+  <text x="72" y="272" font-size="13" fill="#2C2C2A">Every project hits its goal. Cost, security and drift fall through the cracks.</text>
+  <text x="72" y="294" font-size="10.5" font-style="italic" fill="#8A887E">the cross-cutting failure</text>
+
+  <!-- ============ BAND 3 ============ -->
+  <rect x="40" y="324" width="600" height="100" rx="12" fill="#ffffff" stroke="#B7B4A8" stroke-width="1.4"/>
+  <rect x="40" y="324" width="6" height="100" rx="3" fill="#7F77DD"/>
+  <text x="72" y="358" font-size="14" font-weight="700" fill="#3C3489">3 &#183; Process &#8594; Rollout</text>
+  <text x="72" y="384" font-size="13" fill="#2C2C2A">The standard works on paper. The gate gets routed around in the org.</text>
+  <text x="72" y="406" font-size="10.5" font-style="italic" fill="#8A887E">the adoption failure</text>
+
+  <!-- ============ CONNECTORS ============ -->
+  <line x1="642" y1="150" x2="686" y2="225" stroke="#D9663F" stroke-width="1.6" marker-end="url(#ah)"/>
+  <line x1="642" y1="262" x2="686" y2="262" stroke="#D9663F" stroke-width="1.6" marker-end="url(#ah)"/>
+  <line x1="642" y1="374" x2="686" y2="299" stroke="#D9663F" stroke-width="1.6" marker-end="url(#ah)"/>
+
+  <!-- ============ ROOT CAUSE SPINE ============ -->
+  <rect x="690" y="100" width="250" height="324" rx="14" fill="#FDEEE9" stroke="#D9663F" stroke-width="1.8"/>
+  <text x="815" y="150" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1" fill="#B14A28">SAME ROOT CAUSE</text>
+  <text x="815" y="214" text-anchor="middle" font-size="15" font-weight="700" fill="#2C2C2A">A cross-cutting concern</text>
+  <text x="815" y="238" text-anchor="middle" font-size="15" font-weight="700" fill="#2C2C2A">nobody owns and</text>
+  <text x="815" y="262" text-anchor="middle" font-size="15" font-weight="700" fill="#2C2C2A">nothing enforces.</text>
+  <text x="815" y="312" text-anchor="middle" font-size="12.5" font-style="italic" fill="#B14A28">Invisible until it&#8217;s expensive.</text>
+
+  <!-- ============ FOOTER ============ -->
+  <text x="40" y="466" font-size="13" font-weight="700" fill="#2C2C2A">Fix it &#8212; or be the company it doesn&#8217;t work in.</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg viewBox="0 0 768 576" xmlns="http://www.w3.org/2000/svg" font-family="'Helvetica Neue', Arial, sans-serif" role="img">
+<title>July 2 Workshop — What you get</title>
+<desc>Slide showing Part 1 of the workshop decomposed left to right: Part 1 is 90 minutes and contains three 30-minute scenarios — Cost, Customer Experience, and Legal and Risk — and each scenario contains two to three challenges run STAR-style as an interactive session.</desc>
+
+<defs>
+<marker id="tick" markerWidth="6" markerHeight="12" refX="3" refY="6" orient="auto">
+<line x1="3" y1="1" x2="3" y2="11" stroke="#111111" stroke-width="2"/>
+</marker>
+</defs>
+
+<style>
+.title{font-size:34px;font-weight:800;}
+.k{fill:#111111;}
+.p{fill:#7c3aed;}
+.node{fill:#111111;font-size:26px;font-weight:800;}
+.dom{fill:#111111;font-size:13px;font-weight:700;}
+.dim{fill:#111111;font-size:19px;font-weight:800;}
+.connector{stroke:#d9d9d9;stroke-width:1.5;fill:none;}
+</style>
+
+<rect x="0" y="0" width="768" height="576" fill="#ffffff"/>
+
+<!-- title -->
+<text x="384" y="58" text-anchor="middle" class="title"><tspan class="k">July 2 Workshop – </tspan><tspan class="p">What you get</tspan></text>
+
+<!-- connectors: Part1 -> scenarios -->
+<path class="connector" d="M175,292 C215,292 215,178 250,178"/>
+<path class="connector" d="M175,292 L250,292"/>
+<path class="connector" d="M175,292 C215,292 215,406 250,406"/>
+<!-- connectors: scenarios -> challenges block -->
+<path class="connector" d="M360,178 C420,178 420,210 470,210"/>
+<path class="connector" d="M360,292 C430,292 430,210 470,210"/>
+<path class="connector" d="M360,406 C420,406 420,210 470,210"/>
+
+<!-- Part 1 -->
+<text x="130" y="300" text-anchor="middle" class="node">Part 1</text>
+
+<!-- Scenarios -->
+<text x="305" y="172" text-anchor="middle" class="node">Scenario 1</text>
+<text x="305" y="196" text-anchor="middle" class="dom">Cost</text>
+
+<text x="305" y="286" text-anchor="middle" class="node">Scenario 2</text>
+<text x="305" y="310" text-anchor="middle" class="dom">Customer Experience</text>
+
+<text x="305" y="400" text-anchor="middle" class="node">Scenario 3</text>
+<text x="305" y="424" text-anchor="middle" class="dom">Legal and Risk</text>
+
+<!-- Challenges -->
+<text x="600" y="160" text-anchor="middle" class="node">Challenge 1</text>
+<text x="600" y="215" text-anchor="middle" class="node">Challenge 2</text>
+<text x="600" y="270" text-anchor="middle" class="node">Challenge 3</text>
+
+<!-- dimension marks -->
+<line x1="92" y1="495" x2="168" y2="495" stroke="#111111" stroke-width="2.5" marker-start="url(#tick)" marker-end="url(#tick)"/>
+<text x="130" y="525" text-anchor="middle" class="dim">90m</text>
+
+<line x1="255" y1="478" x2="355" y2="478" stroke="#111111" stroke-width="2.5" marker-start="url(#tick)" marker-end="url(#tick)"/>
+<text x="305" y="505" text-anchor="middle" class="dim">30m per</text>
+<text x="305" y="528" text-anchor="middle" class="dim">scenario</text>
+
+<line x1="540" y1="448" x2="660" y2="448" stroke="#111111" stroke-width="2.5" marker-start="url(#tick)" marker-end="url(#tick)"/>
+<text x="600" y="478" text-anchor="middle" class="dim">2 to 3 challenges per</text>
+<text x="600" y="501" text-anchor="middle" class="dim">scenario – STAR Style</text>
+<text x="600" y="524" text-anchor="middle" class="dim">Interactive Session</text>
+</svg>

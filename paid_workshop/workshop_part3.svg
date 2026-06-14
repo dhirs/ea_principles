@@ -48,7 +48,7 @@
   <text x="730" y="294" text-anchor="middle" font-size="14" font-weight="700" fill="#2C2C2A">Project Team</text>
   <text x="730" y="316" text-anchor="middle" font-size="12" fill="#5F5E5A">Configures &#183; Populates &#183; Consumes</text>
 
-  <text x="490" y="352" text-anchor="middle" font-size="11.5" font-style="italic" fill="#5F5E5A">A standard nobody owns is a standard nobody enforces.</text>
+  <text x="490" y="352" text-anchor="middle" font-size="11.5" font-style="italic" fill="#5F5E5A">The gate guarantees a control exists; the project owns its quality; governance owns the consequences.</text>
 
   <!-- ============ ORG CHART TEASER ============ -->
   <rect x="40" y="372" width="900" height="84" rx="14" fill="#FAFAFF" stroke="#7F77DD" stroke-width="1.6" stroke-dasharray="6 5"/>

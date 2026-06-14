@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7D2FDB"/>
+      <stop offset="1" stop-color="#9B57E8"/>
+    </linearGradient>
+    <filter id="cs" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#7D2FDB" flood-opacity="0.16"/>
+    </filter>
+    <clipPath id="c1"><rect x="70" y="430" width="360" height="210" rx="10"/></clipPath>
+    <clipPath id="c2"><rect x="460" y="350" width="360" height="290" rx="10"/></clipPath>
+    <clipPath id="c3"><rect x="850" y="250" width="360" height="390" rx="10"/></clipPath>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="2" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+
+  <!-- Header -->
+  <rect width="1280" height="150" fill="url(#hdr)"/>
+  <text x="60" y="68" fill="#FFFFFF" font-size="38" font-weight="700">Three stages of AI delivery maturity</text>
+  <text x="60" y="108" fill="#E7D8FB" font-size="19" font-style="italic">From projects that break in production to delivery governed across the entire enterprise.</text>
+
+  <!-- ===== STAGE 1 ===== -->
+  <g clip-path="url(#c1)">
+    <rect x="70" y="430" width="360" height="210" fill="#F4F6FB"/>
+    <rect x="70" y="430" width="360" height="50" fill="#64748B"/>
+  </g>
+  <rect x="70" y="430" width="360" height="210" rx="10" fill="none" stroke="#E1E6F2" stroke-width="1.5"/>
+  <text x="90" y="461" fill="#FFFFFF" font-size="14" font-weight="700" letter-spacing="1.5">STAGE 1 · STRUGGLING</text>
+  <text x="90" y="513" fill="#7D2FDB" font-size="17" font-weight="700">Works in dev, fails in production</text>
+  <text x="90" y="540" fill="#C0392B" font-size="14" font-weight="700">&#9679; Fails in production</text>
+  <text x="90" y="572" fill="#3A445C" font-size="14">Projects demo well but break under real load,</text>
+  <text x="90" y="592" fill="#3A445C" font-size="14">data and users. Production-readiness is an</text>
+  <text x="90" y="612" fill="#3A445C" font-size="14">afterthought, so launches slip or fail.</text>
+
+  <!-- ===== STAGE 2 ===== -->
+  <g clip-path="url(#c2)">
+    <rect x="460" y="350" width="360" height="290" fill="#F4F6FB"/>
+    <rect x="460" y="350" width="360" height="50" fill="#7D2FDB"/>
+  </g>
+  <rect x="460" y="350" width="360" height="290" rx="10" fill="none" stroke="#E1E6F2" stroke-width="1.5"/>
+  <text x="480" y="381" fill="#FFFFFF" font-size="14" font-weight="700" letter-spacing="1.5">STAGE 2 · MATURING</text>
+  <text x="480" y="433" fill="#7D2FDB" font-size="17" font-weight="700">Optimized for dev and production</text>
+  <text x="480" y="460" fill="#7D2FDB" font-size="14" font-weight="700">&#9679; Reliable &#8212; one project at a time</text>
+  <text x="480" y="494" fill="#3A445C" font-size="14">Each project is engineered to run reliably in</text>
+  <text x="480" y="514" fill="#3A445C" font-size="14">production &#8212; evals, guardrails, monitoring.</text>
+  <text x="480" y="534" fill="#3A445C" font-size="14">But the discipline is reinvented team by team,</text>
+  <text x="480" y="554" fill="#3A445C" font-size="14">at the individual project level.</text>
+
+  <!-- ===== STAGE 3 (FOCUS) ===== -->
+  <g clip-path="url(#c3)">
+    <rect x="850" y="250" width="360" height="390" fill="#7D2FDB"/>
+    <rect x="850" y="250" width="360" height="50" fill="#E8B23A"/>
+  </g>
+  <rect x="850" y="250" width="360" height="390" rx="10" fill="none" stroke="#E8B23A" stroke-width="2.5"/>
+  <!-- focus pill -->
+  <rect x="958" y="214" width="144" height="28" rx="14" fill="#7D2FDB" stroke="#E8B23A" stroke-width="1.5"/>
+  <text x="1030" y="233" fill="#E8B23A" font-size="13" font-weight="700" letter-spacing="1.2" text-anchor="middle">&#9733; OUR FOCUS</text>
+
+  <text x="870" y="281" fill="#7D2FDB" font-size="14" font-weight="700" letter-spacing="1.5">STAGE 3 · ENTERPRISE</text>
+  <text x="870" y="333" fill="#FFFFFF" font-size="17" font-weight="700">Optimized across the enterprise</text>
+  <text x="870" y="360" fill="#E8B23A" font-size="14" font-weight="700">&#9679; Consistent &amp; governed at scale</text>
+  <text x="870" y="394" fill="#E7D8FB" font-size="14">Production-readiness becomes an</text>
+  <text x="870" y="414" fill="#E7D8FB" font-size="14">organisational property: shared standards,</text>
+  <text x="870" y="434" fill="#E7D8FB" font-size="14">central scaffolding, enforced gates and audit</text>
+  <text x="870" y="454" fill="#E7D8FB" font-size="14">across every project &#8212; not per team.</text>
+  <line x1="870" y1="476" x2="1190" y2="476" stroke="#6B3DB0" stroke-width="1"/>
+  <text x="870" y="506" fill="#FFFFFF" font-size="14" font-weight="600">Standards · enterprise governance ·</text>
+  <text x="870" y="526" fill="#FFFFFF" font-size="14" font-weight="600">central scaffolding · portfolio audit.</text>
+
+  <!-- Maturity axis arrow -->
+  <line x1="70" y1="678" x2="1195" y2="678" stroke="#94A3B8" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="635" y="704" fill="#64748B" font-size="14" font-weight="700" letter-spacing="2" text-anchor="middle">INCREASING AI DELIVERY MATURITY</text>
+</svg>

@@ -8,7 +8,35 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-10 (latest) — GENSEC01-BP03 step 3 → GS1B3-02 promoted; PII deferral closed; first one-BP-two-standards case
+## 2026-06-14 (latest) — EU AI Act folded into framework_mappings as a new cross-reference framework; all six Security standards mapped
+
+### Context
+
+Walkthrough session on the Security pillar's framework_mappings. Working ST-GS1B3-01 back against yesterday's EU AI Act analysis (the 2026-06-13 "EU AI Act enterprise architecture" session, captured in `paid_workshop/part_2.md`) raised the question of which system-level Act control each standard satisfies. That session's funnel had already dropped the org/documentation-level obligations (Art 11 tech docs, Art 17 QMS, Art 43/47/48 conformity, Art 49 registration) and kept the system-level ones, filtered to eight GenAI-distinctive controls. A long clarification thread separated three layers that had been getting collapsed: the **Act** (the *what* — legal obligation), the **standard** (the *how* + proof it works — engineering control + gate, EA-owned), and **ISO 42001** (proof it's *governed* — management-system wrapper, Governance-owned). 42001 is deliberately NOT a control source and gets no framework_mappings key.
+
+### Decisions
+
+- **`eu_ai_act` added as a new framework key under `framework_mappings`** — same pattern as the AIGP fold-in (decisions.md 2026-05-?? / taxonomy framework_mappings_spec). Structural fields declared in `taxonomy.json` framework_specific_reference_fields.eu_ai_act: `article`, `risk_tier`, `control_ref`. Common fields (mapping_state/last_checked/note) unchanged. AWS remains the sole primary anchor; EU AI Act is a cross-reference by convention. New `eu_ai_act_convention` note added to the spec (primary-vs-cross-reference rule, control_ref ties to the eight, ISO 42001 explicitly excluded as a key).
+- **All six Security standards mapped (mapping_state: unverified):** GS1B3-01 → Art 10 / Control #6 primary (+Art 15 confidentiality cross-ref); GS1B3-02 → Art 10 / #6 primary (ingestion side); GS2B1-01 → Art 15 robustness / #4 primary (+Art 15 accuracy / #3 cross-ref; #4 has no dedicated article, rides Art 15); GS4B2-01 → Art 15 cybersecurity / #2 primary (clean single fit); GS5B1-01 → Art 14 / #7 primary (+Art 12 / #8 logging cross-ref); GS6B1-01 → Art 10 + Art 15 (poisoning), control_ref null + Art 53 GPAI #5 as `na`.
+- **GS6B1-01 flagged as outside the eight.** By the funnel's Gate-3 litmus ("would this control exist for a logistic regression?" → yes) training-data examination is generic ML data governance, not a GenAI-distinctive control. Mapped to Art 10/15 with control_ref null and an explicit note; Art 53 GPAI recorded as `na` (binds GPAI providers, not a deployer/customiser).
+- **mapping_state is unverified across the board** — asserted from the funnel, NOT yet read side-by-side against the article text. Open item: a verification pass against Reg. 2024/1689 article text to promote to verified.
+- **Each touched standard bumped MINOR** (x.y.z → x.(y+1).0) with a change_history entry recording the mapping and its provisional state.
+
+### Artefacts
+
+- `data/principles.json` — eu_ai_act blocks on GS1B3-01, GS1B3-02, GS2B1-01, GS4B2-01, GS5B1-01, GS6B1-01; versions bumped; change_history entries added. Parses clean.
+- `data/taxonomy.json` — eu_ai_act framework_specific_reference_fields + eu_ai_act_convention note. Parses clean.
+- `paid_workshop/part_2.md` — new "Three layers: the Act vs our standard vs ISO 42001" section (table + ST-GS1B3-01 worked example).
+
+### Open items
+
+- **Verify the six EU AI Act mappings** against Reg. 2024/1689 article text (currently all unverified). Single focused pass.
+- **Other pillars unmapped** — only Security standards carry eu_ai_act so far. GENOPS/GENCOST standards may map to Art 9 (risk-MS) / Art 15 (accuracy) etc.; not yet done.
+- **GS2B1-01 gate spans #3 and #4** — candidate for splitting into separate accuracy and content-safety standards when formalised.
+
+---
+
+## 2026-06-10 — GENSEC01-BP03 step 3 → GS1B3-02 promoted; PII deferral closed; first one-BP-two-standards case
 
 ### Context
 
