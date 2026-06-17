@@ -117,32 +117,86 @@ Person: name parts, `title`, `headline`, `seniority`, `departments`, `functions`
 `organization_revenue`, `founded_year`, headcount growth (6/12/24-mo), domain, SIC/NAICS, `keywords`, etc.
 
 ## Step 3 — segmentation
-Apollo returns a `seniority` enum (entry/senior/manager/head/director/vp/c_suite/owner/founder). We collapse
-to **three buckets**:
-- **Entry** ← `entry`
-- **Mid** ← `manager`, `head`
-- **Senior** ← everything above (vp, director, c_suite, owner, founder, senior)
+**Do NOT trust Apollo's `seniority` field** — it misclassifies often (it tagged "Enterprise Digital &
+Automation Transformation Leadership" and "vCIO | AI Strategy" as `entry`). Infer seniority from the
+**job title string** instead, into three buckets. Confirmed bucket rules (2026-06-17):
+- **Senior** — true leaders / budget owners only: Chief/CxO, Founder, Co-founder, Owner, President,
+  Partner, VP / Vice President, Director (incl. Senior/Managing Director), vCIO, "Leadership", Executive.
+- **Mid** — managers, **Heads** (Head of X = Mid, per decision), Leads, Principals, and **senior ICs**
+  (Senior/Staff/Principal Architect, "Engineer III") — skilled but not budget owners.
+- **Entry** — everyone else: ICs and specialists (AI Engineer, Cloud Architect, Analyst, Specialist).
+- **Unknown** — Apollo-matched but blank title.
 
-Current matched split: **Senior 26 · Mid 19 · Entry 16 · unclassified 4**. The Senior+Mid (~45) are the
-decision-maker tier — the buyers for the paid architecture workshop. Entry/ICs map to the SA Accelerator hook.
-NOTE: this 3-bucket scheme is a first cut; richer segmentation (seniority × company size × `functions` ×
-buyer-fit score) is the intended next step and the reason for the flexible data model below.
+This logic lives in the DB as a **stored generated column** (see below) so it auto-applies to every
+future import — never re-run by hand. Current enriched split: **Senior 22 · Mid 26 · Entry 13 · Unknown 4**
+(1,146 cold leads have `seg` = null until enriched).
 
-## Intended data model (Supabase / Postgres, JSONB)
-Own the data + segmentation locally; MailerLite is only the send layer. Schema-flexible via JSONB:
-```sql
-create table leads (
-  id uuid primary key default gen_random_uuid(),
-  email text unique not null,            -- stable key, 1:1 with the MailerLite subscriber
-  created_at timestamptz default now(),
-  unsubscribed boolean default false,    -- compliance: NEVER bury this in JSON
-  segment text,                          -- computed verdict pushed to the send tool
-  data jsonb default '{}'::jsonb         -- the whole Apollo blob + any future fields
-);
-create index idx_leads_data on leads using gin (data);
+## Data model (Supabase / Postgres) — AS BUILT
+Project `thnxknvcahqktpbpqvbg` (`dhirs's Project`, ap-south-1). Connect via the **Supabase MCP**
+(connector UUID `11ca66fc-1e98-49d5-ab9b-7cb4672a8f10`) — the sandbox can't reach Supabase directly
+(egress blocked; DB host is IPv6-only), so the MCP is the only live path. The CRM UI + scripts use the
+REST API with `SUPABASE_URL` + `SUPABASE_KEY` from repo-root `.env`.
+
+Live `public.leads` table:
 ```
-Query JSONB with `data->>'key'` / containment `data @> '{...}'`; segments = SQL views over `data`.
-Promote a field to a real column once it stabilises. `leads.json` already matches this shape.
+email       text  primary key          -- stable key, 1:1 with MailerLite subscriber
+fname       text                        -- import maps from leads.json first_name
+lname       text                        -- import maps from leads.json last_name
+domain      text                        -- email domain (import-derived)
+data        jsonb                       -- the ENTIRE flat leads.json record incl. apollo blob
+seg         text  GENERATED ALWAYS …    -- title-inferred Senior/Mid/Entry/Unknown (auto)
+updated_at  timestamptz default now()
+```
+
+The `seg` generated column (auto-computes on every insert/update — this is what makes re-classification
+free for future imports):
+```sql
+alter table public.leads add column seg text generated always as (
+  case
+    when (data->'apollo'->>'title') is null or btrim(data->'apollo'->>'title')='' then
+      case when data->'apollo'->>'id' is not null then 'Unknown' else null end
+    when (data->'apollo'->>'title') ~* '\m(chief|c[etopmdfsi]o|founder|owner|president|partner|vp|vice president|managing director|director|vcio|leadership|executive)\M' then 'Senior'
+    when (data->'apollo'->>'title') ~* '\m(manager|head|lead|principal|staff|senior|sr|ii+)\M' then 'Mid'
+    else 'Entry'
+  end
+) stored;
+```
+Cold (un-enriched) leads have `seg = null`. Query a segment with `select * from leads where seg='Senior'`.
+
+**Enriched-vs-cold gotcha (from the CRM UI):** un-enriched rows store `apollo: null` as **JSON null**, so
+`data->apollo=not.is.null` matches every row. Key off a sub-field that only exists on real matches:
+`data->'apollo'->>'id'` (enriched = not null).
+
+## `leads.json` shape — keep it FLAT
+`import_leads.mjs` expects a flat array and wraps the whole record into `data` itself, deriving the columns:
+```json
+{ "email": "...", "first_name": "...", "last_name": "...", "company": "...", "apollo": { ... }|null,
+  "source": { "type": "maven_lightning_session", "name": "production-ready-enterprise-ai-architecture" },
+  "signup_date": "2026-06-17T08:11:..." }
+```
+`source` is a two-node object (`type` = channel/event class, `name` = the specific event/funnel) +
+`signup_date` (when). Carries provenance per lead. Lands in `data` on import — query with
+`data->'source'->>'type'` and `data->'source'->>'name'`. Future batches set a different `source` so
+cohorts/funnels are distinguishable. (All current 1,211 = the one Lightning Lesson.)
+Do **not** pre-wrap it with `fname`/`lname`/`domain`/`data` keys — the importer does that mapping
+(`fname ← first_name`, `domain ← email domain`, `data ← whole record`). Pre-wrapping double-nests the
+blob and hides `apollo.organization` from the UI. (Learned the hard way 2026-06-17.)
+
+## Recurring pipeline — run this for EVERY new Maven download
+1. **Export** the new sign-ups from Maven → a CSV like `hs.csv` (`Name,Email,Date Added,Source`).
+2. **Derive names + company** locally (email local-part → name; domain → company; gmail/personal → blank).
+   Produces the first-pass `leads_enriched.csv`.
+3. **Enrich the corporate subset via Apollo MCP** (`apollo_people_bulk_match`, ≤10/call, key by email).
+   Skip role-accounts (`info@`) and personal domains. 1 credit/match; free tier = 75/cycle. Persisted
+   results land in `.claude/.../tool-results/*.json` — parse them, key matches back by `email`.
+4. **Build flat `leads.json`** (`email, first_name, last_name, company, apollo`), apollo = full match or null.
+5. **Import**: `node hubspot/import_leads.mjs` → upserts by email into Supabase. `seg` auto-computes; no
+   manual classification step.
+6. **(Optional) sync segments to MailerLite** for the drips.
+
+So the only per-batch work is steps 1–5; seniority/segmentation is handled by the generated column.
+Richer future segmentation (seniority × company size × `functions` × buyer-fit score) = extend the
+`seg` expression or add more generated columns.
 
 ## Outbound plan — MailerLite (preferred over HubSpot marketing & Kit)
 - **Why MailerLite**: automation/drips included on the **free** tier (HubSpot gates real workflows behind
@@ -159,5 +213,5 @@ Promote a field to a real column once it stabilises. `leads.json` already matche
   to the best ~1,000 before import.
 
 ## One-line status
-1,211 Maven leads → names/company derived locally → 65 enriched via Apollo (Senior 26 / Mid 19 / Entry 16) →
-master in `leads.json` (root fields + full `apollo` node) → next: Supabase load + richer segments + MailerLite drips.
+1,211 Maven leads in Supabase `public.leads` → 65 Apollo-enriched → title-inferred `seg` generated column
+(**Senior 22 · Mid 26 · Entry 13 · Unknown 4**; cold = null) → next: MailerLite drips per segment.

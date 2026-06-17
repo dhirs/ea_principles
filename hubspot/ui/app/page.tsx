@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { Sidebar, type Filter, type Stats } from "@/components/Sidebar";
+import { Sidebar, type Filter, type Seniority, type Stats } from "@/components/Sidebar";
 import { LeadDetail } from "@/components/LeadDetail";
 import { Button } from "@/components/ui/button";
 
@@ -23,6 +23,7 @@ export default function Page() {
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
+  const [seg, setSeg] = useState<Seniority | null>(null);
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
@@ -38,18 +39,19 @@ export default function Page() {
   }, [q]);
 
   // reset to first page when query/filter changes
-  useEffect(() => setPage(0), [debouncedQ, filter]);
+  useEffect(() => setPage(0), [debouncedQ, filter, seg]);
 
   const load = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams({ q: debouncedQ, filter, page: String(page) });
+    if (seg) params.set("seg", seg);
     const res = await fetch(`/api/leads?${params}`);
     const data = await res.json();
     setRows(data.rows ?? []);
     setTotal(data.total ?? 0);
     setPageSize(data.pageSize ?? 50);
     setLoading(false);
-  }, [debouncedQ, filter, page]);
+  }, [debouncedQ, filter, seg, page]);
 
   useEffect(() => {
     load();
@@ -67,7 +69,15 @@ export default function Page() {
 
   return (
     <div className="flex">
-      <Sidebar q={q} setQ={setQ} filter={filter} setFilter={setFilter} stats={stats} />
+      <Sidebar
+        q={q}
+        setQ={setQ}
+        filter={filter}
+        setFilter={setFilter}
+        seg={seg}
+        setSeg={setSeg}
+        stats={stats}
+      />
 
       <main className="min-w-0 flex-1 p-6">
         <div className="mb-4 flex items-center justify-between">
@@ -167,7 +177,13 @@ export default function Page() {
         </div>
       </main>
 
-      {selected && <LeadDetail email={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <LeadDetail
+          email={selected}
+          onClose={() => setSelected(null)}
+          onUpdated={load}
+        />
+      )}
     </div>
   );
 }

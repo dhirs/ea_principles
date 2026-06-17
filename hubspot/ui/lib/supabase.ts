@@ -22,14 +22,21 @@ function creds() {
   return cached;
 }
 
-/** Call the Supabase REST API (PostgREST) against `table` with a raw query string. */
+/**
+ * Call the Supabase REST API (PostgREST) against `table` with a raw query string.
+ * `init` lets callers set the HTTP method / body for writes (PATCH, POST, …);
+ * defaults to a GET.
+ */
 export async function sb(
   table: string,
   query: string,
   extraHeaders: Record<string, string> = {},
+  init: { method?: string; body?: string } = {},
 ) {
   const { url, key } = creds();
   const res = await fetch(`${url}/rest/v1/${table}?${query}`, {
+    method: init.method ?? "GET",
+    body: init.body,
     headers: {
       apikey: key,
       Authorization: `Bearer ${key}`,

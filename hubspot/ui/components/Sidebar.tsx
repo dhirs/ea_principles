@@ -1,10 +1,11 @@
 "use client";
 
-import { Search, Users, Sparkles, Snowflake } from "lucide-react";
+import { Search, Users, Sparkles, Snowflake, BarChart3, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 export type Filter = "all" | "enriched" | "cold";
+export type Seniority = "Senior" | "Mid" | "Entry";
 export type Stats = { total: number; enriched: number; cold: number };
 
 const FILTERS: { key: Filter; label: string; icon: React.ReactNode }[] = [
@@ -13,17 +14,23 @@ const FILTERS: { key: Filter; label: string; icon: React.ReactNode }[] = [
   { key: "cold", label: "Cold", icon: <Snowflake className="h-4 w-4" /> },
 ];
 
+const SENIORITY: Seniority[] = ["Senior", "Mid", "Entry"];
+
 export function Sidebar({
   q,
   setQ,
   filter,
   setFilter,
+  seg,
+  setSeg,
   stats,
 }: {
   q: string;
   setQ: (v: string) => void;
   filter: Filter;
   setFilter: (f: Filter) => void;
+  seg: Seniority | null;
+  setSeg: (s: Seniority | null) => void;
   stats: Stats | null;
 }) {
   const counts: Record<Filter, number | undefined> = {
@@ -77,6 +84,28 @@ export function Sidebar({
             </button>
           ))}
         </nav>
+      </div>
+
+      <div className="mt-6">
+        <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Seniority
+        </p>
+        <div className="relative">
+          <BarChart3 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <select
+            value={seg ?? ""}
+            onChange={(e) => setSeg((e.target.value || null) as Seniority | null)}
+            className="h-10 w-full appearance-none rounded-lg border bg-card px-9 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <option value="">All seniority</option>
+            {SENIORITY.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {stats && (

@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
 
   const res = await sb(
     "leads",
-    `select=email,fname,lname,domain,data,updated_at&email=eq.${encodeURIComponent(email)}&limit=1`,
+    `select=email,fname,lname,domain,seg,seg_override,data,updated_at&email=eq.${encodeURIComponent(email)}&limit=1`,
   );
   if (!res.ok) {
     return NextResponse.json(
