@@ -8,7 +8,278 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-14 (latest) — EU AI Act folded into framework_mappings as a new cross-reference framework; all six Security standards mapped
+## 2026-06-16 (latest) — GENCOST03-BP02 → GC3B2-01 promoted (output token cap); GENCOST03 CLOSED (prompt-cost triad)
+
+### Context
+
+Picked up GENCOST03-BP02 "Control model response length" — flagged as the most likely remaining promote candidate when GENOPS closed. The output-side mirror of GC3B1-01 (input footprint). Direct web_fetch of docs.aws.amazon.com timed out repeatedly this session; BP title + the GENCOST03 question stem are confirmed (question verified 2026-06-05 during the BP01/BP03 walks), but the live page's numbered implementation steps could not be fetched — so the BP mandate is reconstructed from search + established scope (max_tokens, stop sequences, concise-output prompt instructions), and the AWS mapping_state is recorded **unverified** pending a step-page pass.
+
+### HALT — the enforceability fight
+
+Presented the candidate ("Cap what every response can cost, not just every prompt") plus the absorption counter (GO3B1-01 already carries a `runtime_token_budget.output` field). The user pressed hard, twice, on one question: **how does a CI gate check response length?** The honest answer — **it can't; the response does not exist at build time** — became the design. My initial phrasing ("AST-checks that every model call passes max_tokens ≤ ceiling") was loose and I corrected it: you cannot statically evaluate a runtime parameter value in general. What CI *can* prove is that the cap is **declared, applied by the SDK, and un-bypassed**. The model honours `max_tokens` at runtime; actual length lives in telemetry (GO3B2-01), not the gate. User directed **PROMOTE** on that basis.
+
+### Decision — promote → GC3B2-01
+
+23rd standard; output-side mirror of GC3B1-01; fourth GENCOST principle. Anchored whole-BP. step_promotion **3/3/3/3**.
+
+Contract (Option A — declared-and-bound, manifest-derivable): every template declares a real `runtime_token_budget.output` (GO3B1-01's blank-by-default field); the central SDK applies it as the call's `max_tokens` by construction; a declaration lint fails an absent/zero ceiling; an AST no-bypass lint (extending GO3B1-01's no-inline routing lint) fails any call site passing its own output-cap parameter that bypasses the registered ceiling (variable override fails outright; literal override allowed only when ≤ ceiling); a budget-inflation governance lint requires a recorded rationale to raise a ceiling. Options B (declared stop_sequences) + C (runtime alarm on GO3B2-01's output-token signal) documented as additive alternative RIs; RI + gates built on Option A.
+
+**Enforcement limit (the distinguishing point from GC3B1-01, whose input footprint IS statically computable):** the gate proves declared + applied + un-bypassed, NOT that the model halts at the cap under live load, NOT that the ceiling is appropriate. This is the purest "wired-in, not runtime behaviour" limit in the catalogue — appended to enforcement_limits.md. Runtime length → Option C; ceiling appropriateness → Gate 2 inflation review.
+
+Per-section rubric scores: statement 3/2/3/2/3 (abstract should/ought register; artefact + mechanism live in gates); problem 3/3/3/3/3/3 (every example an output-cost failure the model-selection/hosting gates + GO3B1-01's existence-only check all miss); solution 3/3/3/3/3/2 (Option A artefacts named with paths + gate points; B/C explicitly optional; enforcement limit stated in-line); gates 3/3/3/3/3/3 (two pre_merge required-status-check gates — declaration + no-bypass routing, and budget-inflation governance). tier D1=no / D2=2 (declaration + AST + governance lints in the central llm-sdk suite; thinner than GC3B1-01 — no new tokenizer computation, just extends the no-inline AST lint with one parameter) → recommended_centralise → enterprise. maturity scaling (sits on GO3B1-01's scaling-tier registry). serving_paradigm all four mandatory (response length drives cost under per-token billing AND self-hosted compute). impact Medium. applicability { llm/rag/agentic mandatory, ml nice_to_have }. dependencies [{ GO3B1-01 hard }]. references TWO real (Bedrock inference-parameters max_tokens doc; Stackviv max-tokens/stop-sequences) — lighter than the sibling's five, flagged. AIGP III.B unverified. explain_prompt compiled with the uncapped-output cost failure shape. RI at data/ri/GC3B2-01/README.md.
+
+### GENCOST03 CLOSED — prompt-cost triad
+
+BP01 → GC3B1-01 (input footprint), BP02 → GC3B2-01 (output cap), BP03 → GC3B3-01 (cache reuse), BP04 → not_promoted (vendor tag micro-optimisation). The Cost-aware prompting focus area (P52) now yields the full prompt-cost triad. Catalogue at **23 standards** (9 GENOPS + 7 GENCOST + 6 GENSEC + 1 GENREL).
+
+### Files touched
+
+`data/principles.json` (GC3B2-01 inserted after GC3B1-01 at index 12; parses OK, count 23; schema-presence checked — all fields match GC3B1-01 and the full prior union, no missing/extra), `data/ri/GC3B2-01/README.md` (Option A), `data/lens_mapping.md` (BP02 row + GENCOST03 narrative + closure), `data/lens_mapping_authored.md` (prepended entry), `data/enforcement_limits.md` (GC3B2-01 worked case), `agentflow/app/anchor.json` (completed), this entry. format_version unchanged (1.13 — no schema change).
+
+### Open items
+
+- **mapping_state UNVERIFIED** on GC3B2-01's AWS reference — confirm the BP's numbered implementation steps from the live page (fetch timed out this session) and promote to verified.
+- references light (2 vs sibling's 5) — enrich with named-company output-cost cases.
+- JSON parse run in-session (OK). S3 re-upload (ea/principles.json) + frontend build for the live app.
+- Remaining unwalked (excl. Sustainability): **GENREL pillar** — GENREL01 (throughput quotas; also the home for GENOPS02-BP03's provider-quota slice) / GENREL02 / GENREL04 / GENREL05 / GENREL06; GENREL03-BP02 (parked). GENOPS, GENSEC, GENPERF, GENCOST all fully walked.
+- AIGP III.B sweep across the cost family.
+
+---
+
+## 2026-06-16 — GENOPS05-BP01 not_promoted; GENOPS05 + the entire GENOPS pillar CLOSED (9 standards)
+
+### Context
+
+Enumerated and walked GENOPS05 "Model customization" — the last open GENOPS focus area. Verified via search (genops05.html); direct web_fetch still timing out this session.
+
+### Enumeration
+
+GENOPS05 question: "How do you determine when to execute generative AI model customization?" Ships **exactly one BP** — GENOPS05-BP01 "Learn when to customize models." (No GENOPS05-BP02; the model-customization cost/efficiency angle lives in the Sustainability pillar as GENSUS01-BP02 "Use efficient model customization services," out of the current scope.)
+
+### AWS verbatim (BP01)
+
+Prioritize prompt engineering and RAG before model customization. Begin with prompt engineering, progress to RAG, then fine-tuning, then custom models — escalating only as task specificity, data availability, and resource constraints demand. Avoid expensive customization when a cheaper technique suffices.
+
+### HALT discussion
+
+Presented a candidate promote ("Exhaust the cheap options before you train" — justify in a recorded decision why prompt-eng + RAG are insufficient before fine-tuning) plus the absorption tension. User directed **not_promote**.
+
+### Decision — not_promote (whole BP)
+
+Scored against `data/sections/step_promotion/rubric.json`: **3/3/3/3 → not_promote**. This is decision-process advice — the same shape not_promoted at GENCOST01-BP01 step 1, GENCOST02-BP01/02 steps 1–2, and the GENCOST03/04/05 step-1 observation inputs: no commitable artefact, no CI-gateable check. The substance is rationale-content for a decision record, and **GC1B1-01** (the model-selection ADR) is the natural home — "why we are / aren't customizing" is one more axis of the same selection decision. Adjacent owned pieces: **GO1B1-06** (model-change gate, if a custom model ships) and **GS6B1-01** (training-data purification, once customization happens). The faint promote pulse — a justify-before-you-train ADR gate conditional on a training path — collapses into GC1B1-01's record (a standalone "training-path ⇒ ADR exists" check is thin ceremony, the GENCOST01-BP01-step-1 failure shape).
+
+Per-dimension: has_enforceable_artefact 3 (decision-process advice; candidate justify-ADR absorbed by GC1B1-01); architecturally_distinct 3 (GC1B1-01 + GO1B1-06 + GS6B1-01 named); in_bp_scope 3 (native GENOPS05; cost/efficiency twin GENSUS01-BP02 sits in Sustainability, out of scope); not_vendor_menu 3 (Bedrock/SageMaker customization mentioned, but the core is methodology — "prefer cheaper techniques first" is advice not a mandate).
+
+### GENOPS PILLAR FULLY WALKED + CLOSED — 9 standards
+
+- **GENOPS01** (Model performance evaluation) → GO1B1-01..06 (6 standards; BP02 not_promoted).
+- **GENOPS02** (Monitor operational health) → CLOSED, 0 (BP01/02/03 all absorbed by the GO3B2 observability family / GO1B1-04 drift / GR3B1-01-resilience + base-WAF).
+- **GENOPS03** (Observability) → GO3B1-01 + GO3B2-01 + GO3B2-02 (3 standards).
+- **GENOPS04** (Automate lifecycle) → CLOSED, 0 (generic IaC + GenAIOps umbrella).
+- **GENOPS05** (Model customization) → CLOSED, 0 (decision-process advice).
+
+Operational Excellence yields its enforceable GenAI architecture entirely through the eval (GO1B1), prompt-registry (GO3B1), and observability (GO3B2) families; its monitoring, lifecycle-automation, and customization-decision questions resolve to those families + base-WAF discipline. Two full pillars now closed this session (GENPERF, GENOPS) plus GENSEC earlier; catalogue stands at 22 standards (9 GENOPS + 6 GENCOST + 6 GENSEC + 1 GENREL).
+
+### Files touched
+
+`data/lens_mapping.md` (GENOPS05 section rebuilt — question + single-BP list verified, BP01 walked, focus area + GENOPS pillar marked CLOSED), `data/lens_mapping_authored.md` (prepended entry), `agentflow/app/anchor.json` (BP01 not_promoted), this entry. No `principles.json` edit, no RI.
+
+### Open items
+
+- **GENOPS fully walked.** Remaining unwalked (excluding Sustainability): **GENCOST03-BP02** (output-length sibling — most likely remaining promote candidate); **GENREL pillar** — GENREL03-BP02 (parked) + GENREL01 (throughput quotas — now also the home for GENOPS02-BP03's provider-quota slice) / GENREL02 / GENREL04 / GENREL05 / GENREL06.
+- AIGP III.B sweep; JSON-parse / frontend-build verifications. (No principles.json change this session.)
+
+---
+
+## 2026-06-16 — GENOPS02-BP03 not_promoted; GENOPS02 focus area CLOSED (3 BPs, zero principles)
+
+### Context
+
+Closed the GENOPS02 walk with BP03 "Implement rate limiting and throttling to mitigate the risk of system overload" (live AWS title expanded from "Implement solutions to…"). Verbatim confirmed via search (genops02-bp03.html); direct web_fetch still timing out this session.
+
+### AWS verbatim (BP03)
+
+Throttling mechanisms + Amazon API Gateway rate limiting to control request volume; exponential backoff with jitter for transient errors; AWS SDK for JavaScript built-in retry; retry logic with idempotent operations where possible; AWS Step Functions for complex retry workflows; circuit breaker patterns to fail fast on repeated failures; CloudWatch observability for continuous monitoring. Key context: "the level of parallelism may be constrained by the source system's capacity" — respect downstream limits.
+
+### HALT discussion
+
+Presented a candidate promote ("Stay within the limits of what you and your model provider can absorb") plus the absorption + cross-pillar tension. User directed **not_promote**.
+
+### Decision — not_promote (whole BP)
+
+Scored against `data/sections/step_promotion/rubric.json`: **3/3/3/3 → not_promote**. Classic resilience engineering, already placed:
+
+- **retries / exponential backoff / circuit breakers / idempotent operations → GR3B1-01** (the first Reliability standard, authored 2026-06-15 — its recovery contract specifies exactly these, incl. an idempotency key for side-effecting retries). This BP's retry half IS that contract.
+- **generic throttling / API Gateway rate limiting / Step Functions retry orchestration → base-WAF Reliability (REL05** client throttle/backoff/retry).
+- the one GenAI-distinct slice — respecting **model-provider TPM/RPM throughput quotas** under parallelism — has a dedicated, still-unwalked home at **GENREL01 (Manage throughput quotas)**, where it should anchor, not under a GENOPS Ops-monitoring focus area.
+
+Per-dimension: has_enforceable_artefact 3 (retry/backoff/CB artefact owned by GR3B1-01; generic throttling has no GenAI-distinct artefact; provider-quota slice cross-pillar); architecturally_distinct 3 (GR3B1-01 + base-WAF REL05 + GENREL01 named); in_bp_scope 3 (substance is Reliability, cross-pillar to GENREL01 + GR3B1-01 — not Operational Excellence monitoring); not_vendor_menu 3 (API Gateway / Step Functions / SDK retry / CloudWatch menu; surviving generic rule is base-WAF REL05).
+
+### GENOPS02 CLOSED — 3 BPs, ZERO principles
+
+- BP01 (monitor all layers) → not_promoted/absorbed (GO3B2-01/02 emission + base-WAF OPS04-BP02).
+- BP02 (monitor FM metrics) → not_promoted/absorbed (GO1B1-04 drift + GO3B2-01 telemetry + GENCOST + GENSEC03 security-monitoring).
+- BP03 (rate limiting + throttling) → not_promoted/absorbed+cross-pillar (GR3B1-01 retry/backoff/CB + base-WAF REL05 + GENREL01 throughput quotas).
+
+The operational-health question yields no GenAI-distinct enforceable architecture beyond what the GO3B2 observability family, GO1B1-04 drift, and the GR3B1-01 / GENREL resilience family already own — the same monitoring-BP result as GENSEC01-BP04 / GENSEC03-BP01. GENOPS now stands: GENOPS01 (6 standards), GENOPS02 (closed, 0), GENOPS03 (3 standards), GENOPS04 (closed, 0), GENOPS05 (Model customization — not yet enumerated, next).
+
+### Files touched
+
+`data/lens_mapping.md` (BP03 row walked + GENOPS02 CLOSED summary), `data/lens_mapping_authored.md` (prepended entry), `agentflow/app/anchor.json` (BP03 not_promoted), this entry. No `principles.json` edit, no RI.
+
+### Open items
+
+- **GENOPS05 (Model customization)** — needs BP enumeration from AWS docs; next. Expect overlap with GO1B1-06 (model-change gate) + GS6B1-01 (training-data purification).
+- Other unwalked: GENCOST03-BP02; GENREL pillar (GENREL03-BP02 parked + GENREL01/02/04/05/06).
+- AIGP III.B sweep; JSON-parse / frontend-build verifications. (No principles.json change this session.)
+
+---
+
+## 2026-06-16 — GENOPS02-BP02 not_promoted (absorbed by GO1B1-04 + GO3B2-01 + GENCOST); GENOPS02 two-thirds walked
+
+### Context
+
+Continued the GENOPS02 walk. BP02 "Monitor foundation model metrics" — the model-layer counterpart to BP01's all-layers monitoring. Verbatim confirmed via search (genops02-bp02.html); direct web_fetch still timing out this session.
+
+### AWS verbatim (BP02)
+
+"Set up continuous monitoring and alerting for foundation models for performance, security, and cost-efficiency... rapid identification and resolution of issues like data drift, model degradation, and security threats." Steps: (1) EventBridge for automated responses to state-change events; (2) Bedrock model-invocation logging — track InputTokenCount, OutputTokenCount, InvocationThrottles; (3) SageMaker AI Model Monitor; (4) dashboards. Desired outcome: real-time FM-performance visibility, early anomaly/degradation detection, integrated with existing observability.
+
+### HALT discussion
+
+Presented a candidate promote ("Watch the model's own signals — tokens, throttles, latency, drift — not just the app around it") plus the absorption tension. User directed **not_promote**.
+
+### Decision — not_promote (whole BP)
+
+Scored against `data/sections/step_promotion/rubric.json`: **3/3/3/3 → not_promote**. Every named concern maps to an existing owner:
+
+- **data drift / model degradation → GO1B1-04** (the drift monitor — per-dimension metrics, deployment-anchored baselines, cadence, thresholds, alert routing). This is the exact concern, already concretised.
+- **token / invocation / throttle telemetry → GO3B2-01** (one-channel emission contract) + the **GENCOST** family for the cost lens.
+- **security threats → GENSEC03-BP01** territory (already not_promoted as a monitoring umbrella).
+
+Per-dimension: has_enforceable_artefact 3 (candidate model-metric-emission/alert artefact is delivered by GO3B2-01 + GO1B1-04 — nothing new survives extraction); architecturally_distinct 3 (GO1B1-04 / GO3B2-01 / GENCOST / GENSEC03 named as owners); in_bp_scope 3 (native GENOPS02, substance lives in GENOPS01's GO1B1-04 + GENOPS03's GO3B2-01); not_vendor_menu 3 (EventBridge / Bedrock invocation logging / SageMaker Model Monitor / CloudWatch menu; the surviving generic rule is base-WAF **OPS08** analyze workload metrics). The only candidate-distinct slice — a mandate that *model-layer* signals specifically be emitted — is GO3B2-01's emission contract restated.
+
+Reinforces the standing position: across pillars, every "monitor X" BP resolves to the GO3B2 observability family (emission + governance) and/or GO1B1-04 (drift) plus base-WAF telemetry. GENOPS02 is yielding the same result as the GENSEC monitoring BPs.
+
+### Files touched
+
+`data/lens_mapping.md` (BP02 row walked; BP03 marked "next"), `data/lens_mapping_authored.md` (prepended entry), `agentflow/app/anchor.json` (BP02 not_promoted), this entry. No `principles.json` edit, no RI.
+
+### Open items
+
+- **GENOPS02 — 1 BP left:** BP03 (Implement solutions to mitigate the risk of system overload) — expected to lean toward GENREL (throughput/overload) + base-WAF resilience; next.
+- GENOPS05 (Model customization) still needs enumeration.
+- Other unwalked: GENCOST03-BP02; GENREL pillar (GENREL03-BP02 parked + GENREL01/02/04/05/06).
+- AIGP III.B sweep; JSON-parse / frontend-build verifications. (No principles.json change this session.)
+
+---
+
+## 2026-06-16 — GENOPS02-BP01 not_promoted (absorbed by GO3B2 family + base-WAF OPS04-BP02); first GENOPS02 walk
+
+### Context
+
+Opened GENOPS02 ("Monitor and manage operational health" — "How do you monitor and manage the operational health of your applications?", 3 BPs, all previously UNMAPPED). Walked BP01 "Monitor all application layers." Direct web_fetch of docs.aws.amazon.com kept timing out this session; verbatim confirmed via search extraction (genops02-bp01.html).
+
+### AWS verbatim (BP01)
+
+"Implement comprehensive monitoring and logging across all layers of your generative AI application to maintain operational health, provide reliability, and optimize performance." The service layer may interact with a prompt catalog, a vector store, or guardrails before the model; complex workloads navigate a knowledge graph, run a prompt flow, or initiate an agent — each layer requires proactive monitoring and application telemetry. Monitor invocation counts, latency, token usage, error rates, throttling; CloudWatch alarms on thresholds + dashboards; request-flow tracing via X-Ray or Bedrock Agent tracing; managed services (Bedrock / Q Business / OpenSearch Serverless) facilitate much of it via CloudWatch + CloudTrail. **AWS Resources cross-reference base-WAF OPS04-BP02 (Implement application telemetry).**
+
+### HALT discussion
+
+Presented a candidate promote ("Emit telemetry from every layer of the request path — no silent layer": every stage — service, prompt fetch, retrieval, guardrail, model call, tool/agent step — emits a span on the shared observability channel) plus the absorption tension. User directed **not_promote / absorbed**.
+
+### Decision — not_promote (whole BP)
+
+Scored against `data/sections/step_promotion/rubric.json`: **3/3/3/3 → not_promote**.
+
+- **has_enforceable_artefact (3):** the only candidate enforceable artefact — a per-layer *coverage gate* (assert no declared layer is uninstrumented) — is already delivered by GO3B2-01's single-channel emission contract; nothing CI-gateable survives extraction distinct from it.
+- **architecturally_distinct (3):** the GenAI-distinct per-layer tracing is owned by **GO3B2-01** ("Make every AI workload observable through one consistent channel" — emits on every model call / tool / retrieval, per-agent) + **GO3B2-02** (trace access/retention governance). "Monitor all layers" is GO3B2-01's emission contract restated under an Ops-monitoring heading.
+- **in_bp_scope (3):** native to GENOPS02, but the substance lives one focus area over in GENOPS03's observability family (the GO3B2 home).
+- **not_vendor_menu (3):** Bedrock / Q / OpenSearch / CloudWatch / CloudTrail / X-Ray menu; the surviving generic rule (telemetry at each layer) is base-WAF **OPS04-BP02**, not a GenAI-distinct mandate.
+
+This mirrors the GENSEC01-BP04 and GENSEC03-BP01 shape: monitoring BPs whose GenAI-distinct telemetry slice is already owned by the GO3B2 family while the generic logging/alarms/dashboards belong to the base WAF. The catalogue's standing position holds — observability is concretised once (GO3B2-01/02), and every "monitor X" BP across pillars resolves to that plus base-WAF telemetry.
+
+### Files touched
+
+`data/lens_mapping.md` (GENOPS02-BP01 row walked; BP02 marked "next"), `data/lens_mapping_authored.md` (prepended entry), `agentflow/app/anchor.json` (not_promoted), this entry. No `principles.json` edit, no RI.
+
+### Open items
+
+- **GENOPS02 still open:** BP02 (Monitor foundation model metrics — next), BP03 (mitigate system overload — likely cross-refs GENREL). GENOPS05 (Model customization) still needs enumeration.
+- Other unwalked: GENCOST03-BP02; GENREL pillar (GENREL03-BP02 parked + GENREL01/02/04/05/06).
+- AIGP III.B sweep; JSON-parse / frontend-build verifications. (No principles.json change this session.)
+
+---
+
+## 2026-06-16 — GENPERF04-BP01 not_promoted; GENPERF pillar fully walked + CLOSED (zero principles)
+
+### Context
+
+GENPERF was already effectively closed (GENPERF01/02/03 all closed; GENPERF04-BP02 not_promoted/absorbed into GC4B1-01), with one residual open item: **GENPERF04-BP01** left UNMAPPED and flagged "same-shape, formal sweep to fully close." User directed: close GENPERF — confirm the not_promote and move on (no promote pressure-test).
+
+### What was done
+
+Verified the live AWS BP. Title correction: the mapping carried "Test vector **embeddings** for latency and relevant performance"; the live page (genperf04-bp01.html) reads "Test vector **store features** for latency and relevant performance." Verbatim re-fetched 2026-06-16 (via search — direct web_fetch of docs.aws.amazon.com timed out repeatedly this session; substance confirmed from search extraction). Four technique slices: (1) ANN algorithm selection (LSH / HNSW / IVF / PQ — accuracy/speed/memory/scalability trade-offs, benchmark on your dataset); (2) hierarchical index organization; (3) embedding/chunking strategy (fixed-size / hierarchical / semantic); (4) query processing (query expansion, fuzzy → semantic similarity). Risk Medium.
+
+### Decision — not_promote (whole BP)
+
+Scored against `data/sections/step_promotion/rubric.json`: **3/3/3/3 → not_promote** (passes the rubric as a correctly-reasoned non-promotion).
+
+- **has_enforceable_artefact (3):** experiment-and-pick / benchmarking advice; no commitable pre-merge artefact survives extraction.
+- **architecturally_distinct (3):** the latency/relevance-testing substance overlaps the GO1B1 eval-harness family; the vector-store dimension + quality-floor slice is already owned by GC4B1-01 (cost) and the sibling GENPERF04-BP02; chunking quality-testing is the same shape not_promoted at GENCOST04-BP01 steps 3/4.
+- **in_bp_scope (3):** native to GENPERF04 (vector-store performance); correctly placed.
+- **not_vendor_menu (3):** notable variant — this is a generic *technique* menu (standard ANN algorithms, not AWS-vendor services), but the same conclusion holds: nothing architectural survives extraction as a CI-gateable mandate.
+
+This was the last open GENPERF BP. **GENPERF04 focus area CLOSED; the entire Performance Efficiency pillar is now FULLY WALKED + CLOSED — ZERO principles** (GENPERF01: 2 BPs; GENPERF02: 3 BPs; GENPERF03: 1 BP; GENPERF04: 2 BPs — all not_promoted). Standing interpretation reaffirmed: every GENPERF BP resolves to base-WAF infra discipline (PERF05 / ML-lens MLPER), a performance-framed restatement of an already-authored GENOPS eval (GO1B1) / observability (GO3B2) / GENCOST principle (GC1B1-01, GC4B1-01, GO1B1-06), or a technique/vendor menu. A clean worked-example result, paralleling GENOPS04 — the catalogue is honest about where a pillar yields no distinct GenAI architecture.
+
+### Files touched
+
+`data/lens_mapping.md` (GENPERF04 section rebuilt — BP01 row walked + title corrected, focus area + pillar marked CLOSED; the earlier GENPERF-closed note updated off "BP01 still UNMAPPED"), `data/lens_mapping_authored.md` (prepended whole-BP not_promote entry), `agentflow/app/anchor.json` (status not_promoted), this entry. No `principles.json` edit, no RI (nothing promoted).
+
+### Open items
+
+- Remaining unwalked: **GENOPS02** (3 BPs); **GENOPS05**; **GENCOST03-BP02** (output-length sibling — most likely remaining promote candidate); **GENREL** pillar (GENREL03-BP02 parked + GENREL01/02/04/05/06).
+- AIGP III.B sweep; JSON-parse verify `data/principles.json` from terminal; frontend build verifications. (No principles.json change this session, so no new parse risk introduced.)
+
+---
+
+## 2026-06-15 — GENREL03-BP01 → GR3B1-01 promoted; first Reliability standard; GENREL pillar opened; BP02 parked
+
+### Context
+
+Session traced the "reason about reliability and cost like a Staff engineer" best practice (handle non-determinism, retries, latency, token cost as first-class constraints) onto the catalogue. Coverage audit of all 21 standards: **token cost** fully covered (GC3 family); **non-determinism** covered only as an eval/drift discipline (GO1B1 family), not in its runtime face; **retries** and **latency** unwalked. Mapped the gaps to the AWS GenAI Lens: the runtime face of non-determinism ("Inconsistent model performance — variations in output for similar inputs", named under the Reliability pillar's common challenges) and retries both land in **GENREL03 — Prompt remediation and recovery actions**, collapsing two of the four concerns into one walk. User directed: walk GENREL03, author BP01 only, park BP02.
+
+### Decisions
+
+- **GR3B1-01 promoted** (ST-GR3B1-01 / PR-GR3B1-01) — *Recover gracefully when a model call goes wrong*. 22nd standard; **first Reliability standard**; opens pillar **P3 — Reliability** and focus area **P31 — Prompt Remediation & Recovery**. Anchored whole-BP (implementation_step null): BP steps 1-2 (error classification + recovery mechanisms — retries/backoff/fallback/circuit-breaker) are the concretised core; step 3 monitoring rides GO3B2-01's emit channel; step 4 is continuous-improvement process advice with no commitable artefact. step_promotion 3/3/3/3 hand-applied.
+- **The runtime face of non-determinism finally has a home.** The GO1B1 family handles non-determinism as eval/drift (prove behaviour, watch for drift); GR3B1-01 handles it at the request path — validate the (non-deterministic) response against an expected shape and recover. AWS's own "classify responses as actionable or not ... to reduce non-determinism" is the GenAI-distinct slice that survives base-WAF REL05-BP01 (generic graceful degradation): a normal API returns a typed contract or an error; an LLM returns plausible garbage.
+- **Structured-output / JSON mode does NOT make this redundant** (raised at the HALT). Strict provider modes satisfy the *validate* step where available but do not cover transient failures, truncation, refusals, empty retrieval, or semantic wrongness — the contract still owns those.
+- **Sibling distinction:** GS2B1-01 checks output SAFETY (not structural usability/recovery); GC5B1-01 caps agent RUN LENGTH (not single-call failure). The recover-from-a-bad-call face was unowned.
+- **Contract.** Per-call recovery spec (`output_schema` + `retry` + `fallback`, convention `prompts/<name>/recovery.yaml`) + central wrapper (`call_model` on the central LLM SDK, GO3B1-01's substrate) + two pre_merge lints (declaration completeness; routed-execution AST — the GO3B1-01 no-inline pattern on the call plane) + quarterly recovery-effectiveness review over GO3B2-01-emitted fallback/parse-failure/retry telemetry. Enforcement limit appended to enforcement_limits.md (lints prove declared+routed, not that the fallback is appropriate or the schema correct).
+- **Tier enterprise** via D1=no / D2=3 — this is literally the tier rubric's own "Centralised LLM SDK and key vault" calibration example (call wrapper, retry engine, idempotency plumbing, fallback executor, routed-execution lint, telemetry hooks). validator project_architect; audit_mode self_attestation_with_mechanical_evidence; arb_role dashboard_and_spot_check.
+- **Fields:** applicability { llm, rag, agentic } all mandatory (ml omitted — classical ML inference returns no free-form non-deterministic content that fails to parse); serving_paradigm all four (recovery lives in the call layer); maturity_level foundational (pays off at project #1; core enforcement is a per-PR repo-local lint; central SDK is a soft dep); impact_level Medium (matches AWS BP risk; broken/halted request or silent gap, workload-scoped); dependencies GO3B1-01 soft + GO3B2-01 soft; references Air Canada chatbot + the AWS BP page; aigp IV.C provisional/unverified; eu_ai_act omitted (Security-only so far).
+- **GENREL03-BP02 PARKED — not authored, not formally not_promoted** (user-directed BP01 only). Timeouts on agentic workflows overlap GC5B1-01 on a different axis (wall-clock vs iterations) and risk base-WAF absorption (cross-refs REL05-BP05 client timeouts); GENCOST05-BP01 step 3's deferred tool/Lambda timeouts also land here. Revisit on the full GENREL walk.
+
+### Artefacts
+
+- `data/principles.json` — GR3B1-01 merged (22nd node; schema-presence check passed: full field parity with prior siblings incl. evidence + framework_mappings.aigp; eu_ai_act intentionally omitted). Parses clean in-sandbox.
+- `data/ri/GR3B1-01/README.md` — RI authored (Option A, GS-family template).
+- `data/lens_mapping.md` — GENREL pillar section opened (six focus areas enumerated from reliability.html); GENREL03 table added (BP01 → GR3B1-01 promoted, BP02 parked).
+- `data/enforcement_limits.md` — GR3B1-01 worked case added (existence/shape-not-correctness on the call plane).
+- `agentflow/app/anchor.json` — GENREL03-BP01 completed/promoted.
+
+### Open items
+
+- **JSON parse from terminal** — verify `python3 -c "import json; json.load(open('data/principles.json'))"` from the WSL mount (sandbox parse passed, but confirm on the live path before pushing).
+- **S3 re-upload** — push `ea/principles.json` so the live app sees the 22nd standard.
+- **Frontend** — P3 — Reliability and P31 — Prompt Remediation & Recovery are new free-text pillar/focus_area values; confirm the runtime renders them (`npm run build` from `s3-json-viewer/`).
+- **AIGP IV.C** unverified — may belong under a dedicated reliability/operational-resilience competency.
+- ~~`lens_mapping_authored.md` absent~~ **RESOLVED same session** — the file does exist in `data/` (an earlier `find` missed it due to a mount-timing issue); the GR3B1-01 promote entry and the GENREL03-BP02 parked entry have now been prepended to it. No action needed.
+- **GENREL pillar** — only GENREL03 walked; GENREL01 (throughput quotas), GENREL02 (network), GENREL04 (prompt management — likely the reliability twin of GO3B1-01), GENREL05/06 (distributed availability/compute), and the parked GENREL03-BP02 remain.
+
+---
+
+## 2026-06-14 — EU AI Act folded into framework_mappings as a new cross-reference framework; all six Security standards mapped
 
 ### Context
 

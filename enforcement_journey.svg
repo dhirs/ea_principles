@@ -1,0 +1,158 @@
+<svg viewBox="0 0 1240 1200" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1240" height="1200" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="620" y="44" text-anchor="middle" font-size="26" font-weight="700" fill="#0f172a">The Enforcement Journey — Attest &#8594; Verify &#8594; Provide</text>
+  <text x="620" y="72" text-anchor="middle" font-size="14" fill="#64748b">Each rung is stronger, costlier, and harder to commit to. The control only gets real as you climb — and most never leave the bottom.</text>
+
+  <!-- Left progression rail -->
+  <defs>
+    <linearGradient id="rail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fcd34d"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <rect x="56" y="150" width="8" height="910" rx="4" fill="url(#rail)"/>
+
+  <!-- ===================== LEVEL 1 ===================== -->
+  <g transform="translate(110, 150)">
+    <rect x="0" y="0" width="1090" height="270" rx="14" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+    <path d="M 0 14 a 14 14 0 0 1 14 -14 h 196 v 270 h -196 a 14 14 0 0 1 -14 -14 z" fill="#f59e0b"/>
+    <text x="24" y="48" font-size="22" font-weight="800" fill="#ffffff">LEVEL 1</text>
+    <text x="24" y="76" font-size="17" font-weight="600" fill="#fff7ed">ATTEST</text>
+    <!-- strength meter -->
+    <rect x="24" y="96" width="48" height="12" rx="3" fill="#ffffff"/>
+    <rect x="78" y="96" width="48" height="12" rx="3" fill="#ffffff" opacity="0.3"/>
+    <rect x="132" y="96" width="48" height="12" rx="3" fill="#ffffff" opacity="0.3"/>
+    <text x="24" y="138" font-size="12" fill="#fff7ed">Project self-certifies.</text>
+    <text x="24" y="156" font-size="12" fill="#fff7ed">Proves it was claimed —</text>
+    <text x="24" y="172" font-size="12" fill="#fff7ed">not that it works.</text>
+    <text x="24" y="226" font-size="12.5" font-weight="700" fill="#ffffff">EFFORT: LOW</text>
+    <text x="24" y="244" font-size="11" fill="#fff7ed">Enforceable today, no tooling</text>
+
+    <!-- content -->
+    <text x="222" y="34" font-size="11" font-weight="700" fill="#94a3b8">WHAT IT IS</text>
+    <text x="222" y="55" font-size="13.5" fill="#334155">A guardrail YAML per workload: every threat dispositioned (mitigated / accepted / N-A), named owner, signed at the ARB.</text>
+    <rect x="222" y="70" width="850" height="26" rx="6" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+    <text x="234" y="87" font-size="11.5" fill="#92400e"><tspan font-weight="700">Gate:</tspan> every threat dispositioned + signed (completeness check — manual, or a 20-line CI linter). Not efficacy.</text>
+
+    <!-- RACI -->
+    <g font-size="10.5">
+      <rect x="222" y="112" width="166" height="118" rx="7" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="232" y="130" font-weight="700" fill="#6366f1">EA · Architect</text>
+      <text x="232" y="150" fill="#475569">Owns the threat</text><text x="232" y="164" fill="#475569">taxonomy + standards;</text><text x="232" y="178" fill="#475569">sets applicability</text><text x="232" y="192" fill="#475569">metadata that filters</text><text x="232" y="206" fill="#475569">the list.</text>
+
+      <rect x="396" y="112" width="166" height="118" rx="7" fill="#fef2f2" stroke="#fecaca"/>
+      <text x="406" y="130" font-weight="700" fill="#e11d48">EA · Governance</text>
+      <text x="406" y="150" fill="#475569">Runs the ARB review;</text><text x="406" y="164" fill="#475569">challenges the N-A /</text><text x="406" y="178" fill="#475569">accepted dispositions;</text><text x="406" y="192" fill="#475569">certifies; wires to</text><text x="406" y="206" fill="#475569">post-incident.</text>
+
+      <rect x="570" y="112" width="166" height="118" rx="7" fill="#f0f9ff" stroke="#bae6fd"/>
+      <text x="580" y="130" font-weight="700" fill="#0ea5e9">Engineering</text>
+      <text x="580" y="150" fill="#475569">Minimal — optionally</text><text x="580" y="164" fill="#475569">a completeness linter</text><text x="580" y="178" fill="#475569">for the YAML.</text><text x="580" y="192" fill="#94a3b8" font-style="italic">No platform needed.</text>
+
+      <rect x="744" y="112" width="166" height="118" rx="7" fill="#ecfdf5" stroke="#a7f3d0"/>
+      <text x="754" y="130" font-weight="700" fill="#059669">Product</text>
+      <text x="754" y="150" fill="#475569">Owns the attestation</text><text x="754" y="164" fill="#475569">template + submission</text><text x="754" y="178" fill="#475569">process; tracks which</text><text x="754" y="192" fill="#475569">workloads are signed.</text>
+
+      <rect x="918" y="112" width="154" height="118" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+      <text x="928" y="130" font-weight="700" fill="#475569">Project</text>
+      <text x="928" y="150" fill="#475569">Authors the YAML,</text><text x="928" y="164" fill="#475569">dispositions every</text><text x="928" y="178" fill="#475569">relevant standard,</text><text x="928" y="192" fill="#475569">names the owner,</text><text x="928" y="206" fill="#475569">signs.</text>
+    </g>
+  </g>
+
+  <!-- STALL callout between L1 and L2 -->
+  <rect x="110" y="430" width="1090" height="26" rx="6" fill="#fef2f2" stroke="#e11d48" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="655" y="447" text-anchor="middle" font-size="12" font-weight="700" fill="#be123c">&#9888; Most enterprises stop here. Commitment ends at the cheapest rung — and that is why AI fails beyond the demo.</text>
+
+  <!-- ===================== LEVEL 2 ===================== -->
+  <g transform="translate(110, 470)">
+    <rect x="0" y="0" width="1090" height="270" rx="14" fill="#ffffff" stroke="#6366f1" stroke-width="1.5"/>
+    <path d="M 0 14 a 14 14 0 0 1 14 -14 h 196 v 270 h -196 a 14 14 0 0 1 -14 -14 z" fill="#6366f1"/>
+    <text x="24" y="48" font-size="22" font-weight="800" fill="#ffffff">LEVEL 2</text>
+    <text x="24" y="76" font-size="17" font-weight="600" fill="#eef2ff">VERIFY</text>
+    <rect x="24" y="96" width="48" height="12" rx="3" fill="#ffffff"/>
+    <rect x="78" y="96" width="48" height="12" rx="3" fill="#ffffff"/>
+    <rect x="132" y="96" width="48" height="12" rx="3" fill="#ffffff" opacity="0.3"/>
+    <text x="24" y="138" font-size="12" fill="#eef2ff">EA attacks the running</text>
+    <text x="24" y="154" font-size="12" fill="#eef2ff">system. Proves it works —</text>
+    <text x="24" y="170" font-size="12" fill="#eef2ff">claim replaced by proof.</text>
+    <text x="24" y="226" font-size="12.5" font-weight="700" fill="#ffffff">EFFORT: HIGH</text>
+    <text x="24" y="244" font-size="11" fill="#eef2ff">Needs a central platform</text>
+
+    <text x="222" y="34" font-size="11" font-weight="700" fill="#94a3b8">WHAT IT IS</text>
+    <text x="222" y="55" font-size="13.5" fill="#334155">EA fires an adversarial corpus at the deployed endpoint and scores the responses. Project can't fake it — only probe-testable controls qualify.</text>
+    <rect x="222" y="70" width="850" height="26" rx="6" fill="#eef2ff" stroke="#6366f1" stroke-width="1"/>
+    <text x="234" y="87" font-size="11.5" fill="#3730a3"><tspan font-weight="700">Gate:</tspan> 0 successful overrides on the central corpus + false-positive rate under threshold.</text>
+
+    <g font-size="10.5">
+      <rect x="222" y="112" width="166" height="118" rx="7" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="232" y="130" font-weight="700" fill="#6366f1">EA · Architect</text>
+      <text x="232" y="150" fill="#475569">Defines "pass":</text><text x="232" y="164" fill="#475569">threshold (0), what</text><text x="232" y="178" fill="#475569">counts as an override,</text><text x="232" y="192" fill="#475569">which controls are</text><text x="232" y="206" fill="#475569">probe-testable.</text>
+
+      <rect x="396" y="112" width="166" height="118" rx="7" fill="#fef2f2" stroke="#fecaca"/>
+      <text x="406" y="130" font-weight="700" fill="#e11d48">EA · Governance</text>
+      <text x="406" y="150" fill="#475569">Owns the verdict +</text><text x="406" y="164" fill="#475569">gate. Consumes the</text><text x="406" y="178" fill="#475569">report, certifies,</text><text x="406" y="192" fill="#475569">blocks release.</text><text x="406" y="206" fill="#94a3b8" font-style="italic">Independent.</text>
+
+      <rect x="570" y="112" width="166" height="118" rx="7" fill="#f0f9ff" stroke="#bae6fd"/>
+      <text x="580" y="130" font-weight="700" fill="#0ea5e9">Engineering</text>
+      <text x="580" y="150" fill="#475569">BUILDS the harness,</text><text x="580" y="164" fill="#475569">corpus library +</text><text x="580" y="178" fill="#475569">generator, scoring /</text><text x="580" y="192" fill="#475569">oracle engine; keeps</text><text x="580" y="206" fill="#475569">the corpus current.</text>
+
+      <rect x="744" y="112" width="166" height="118" rx="7" fill="#ecfdf5" stroke="#a7f3d0"/>
+      <text x="754" y="130" font-weight="700" fill="#059669">Product</text>
+      <text x="754" y="150" fill="#475569">RUNS it as a service:</text><text x="754" y="164" fill="#475569">schedules runs, SLA,</text><text x="754" y="178" fill="#475569">cost pool, report,</text><text x="754" y="192" fill="#475569">tracks verification</text><text x="754" y="206" fill="#475569">coverage.</text>
+
+      <rect x="918" y="112" width="154" height="118" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+      <text x="928" y="130" font-weight="700" fill="#475569">Project</text>
+      <text x="928" y="150" fill="#475569">Staging endpoint +</text><text x="928" y="164" fill="#475569">creds, the invariants /</text><text x="928" y="178" fill="#475569">oracle, a ~15-line</text><text x="928" y="192" fill="#475569">adapter; fixes fails.</text>
+    </g>
+  </g>
+
+  <!-- ===================== LEVEL 3 ===================== -->
+  <g transform="translate(110, 790)">
+    <rect x="0" y="0" width="1090" height="270" rx="14" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+    <path d="M 0 14 a 14 14 0 0 1 14 -14 h 196 v 270 h -196 a 14 14 0 0 1 -14 -14 z" fill="#059669"/>
+    <text x="24" y="48" font-size="22" font-weight="800" fill="#ffffff">LEVEL 3</text>
+    <text x="24" y="76" font-size="17" font-weight="600" fill="#ecfdf5">PROVIDE</text>
+    <rect x="24" y="96" width="48" height="12" rx="3" fill="#ffffff"/>
+    <rect x="78" y="96" width="48" height="12" rx="3" fill="#ffffff"/>
+    <rect x="132" y="96" width="48" height="12" rx="3" fill="#ffffff"/>
+    <text x="24" y="138" font-size="12" fill="#ecfdf5">EA owns the control as</text>
+    <text x="24" y="154" font-size="12" fill="#ecfdf5">non-bypassable infra.</text>
+    <text x="24" y="170" font-size="12" fill="#ecfdf5">Compliance = "routed?"</text>
+    <text x="24" y="226" font-size="12.5" font-weight="700" fill="#ffffff">EFFORT: HIGHEST</text>
+    <text x="24" y="244" font-size="11" fill="#ecfdf5">Platform + egress control</text>
+
+    <text x="222" y="34" font-size="11" font-weight="700" fill="#94a3b8">WHAT IT IS</text>
+    <text x="222" y="55" font-size="13.5" fill="#334155">A central SDK / gateway does the filtering, scanning, tool-auth, logging. SDK alone is NOT L3 — only SDK + enforced egress routing.</text>
+    <rect x="222" y="70" width="850" height="26" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="1"/>
+    <text x="234" y="87" font-size="11.5" fill="#065f46"><tspan font-weight="700">Gate:</tspan> egress/IAM policy blocks every direct call to the model — routing proof + signed attestation + build provenance.</text>
+
+    <g font-size="10.5">
+      <rect x="222" y="112" width="166" height="118" rx="7" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="232" y="130" font-weight="700" fill="#6366f1">EA · Architect</text>
+      <text x="232" y="150" fill="#475569">Owns what the SDK /</text><text x="232" y="164" fill="#475569">gateway must enforce</text><text x="232" y="178" fill="#475569">and the routing</text><text x="232" y="192" fill="#475569">policy's required</text><text x="232" y="206" fill="#475569">behaviour.</text>
+
+      <rect x="396" y="112" width="166" height="118" rx="7" fill="#fef2f2" stroke="#fecaca"/>
+      <text x="406" y="130" font-weight="700" fill="#e11d48">EA · Governance</text>
+      <text x="406" y="150" fill="#475569">Gate = routing proof +</text><text x="406" y="164" fill="#475569">provenance + signed</text><text x="406" y="178" fill="#475569">attestation. Certifies;</text><text x="406" y="192" fill="#475569">owns waivers for</text><text x="406" y="206" fill="#475569">genuine gaps.</text>
+
+      <rect x="570" y="112" width="166" height="118" rx="7" fill="#f0f9ff" stroke="#bae6fd"/>
+      <text x="580" y="130" font-weight="700" fill="#0ea5e9">Engineering</text>
+      <text x="580" y="150" fill="#475569">BUILDS + maintains the</text><text x="580" y="164" fill="#475569">SDK, gateway, egress /</text><text x="580" y="178" fill="#475569">IAM enforcement,</text><text x="580" y="192" fill="#475569">filtering, migration</text><text x="580" y="206" fill="#475569">tooling.</text>
+
+      <rect x="744" y="112" width="166" height="118" rx="7" fill="#ecfdf5" stroke="#a7f3d0"/>
+      <text x="754" y="130" font-weight="700" fill="#059669">Product</text>
+      <text x="754" y="150" fill="#475569">OPERATES the gateway:</text><text x="754" y="164" fill="#475569">SLA, adoption + brown-</text><text x="754" y="178" fill="#475569">field migration, FinOps,</text><text x="754" y="192" fill="#475569">readiness gate, enable-</text><text x="754" y="206" fill="#475569">before-enforce.</text>
+
+      <rect x="918" y="112" width="154" height="118" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+      <text x="928" y="130" font-weight="700" fill="#475569">Project</text>
+      <text x="928" y="150" fill="#475569">Routes all model calls</text><text x="928" y="164" fill="#475569">through the sanctioned</text><text x="928" y="178" fill="#475569">client; keeps domain-</text><text x="928" y="192" fill="#475569">specific controls;</text><text x="928" y="206" fill="#475569">migrates legacy calls.</text>
+    </g>
+  </g>
+
+  <!-- Footer banner -->
+  <rect x="110" y="1090" width="1090" height="64" rx="12" fill="#0f172a"/>
+  <text x="655" y="1118" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">The catalogue isn't the hard part. This climb is.</text>
+  <text x="655" y="1140" text-anchor="middle" font-size="12.5" fill="#cbd5e1">Architecture defines the bar · Engineering builds the machine · Product runs it · Governance owns the verdict — and enterprise AI fails when no one commits past Level 1.</text>
+</svg>

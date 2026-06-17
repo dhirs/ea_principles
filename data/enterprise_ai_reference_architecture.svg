@@ -1,0 +1,182 @@
+<svg viewBox="0 0 1280 880" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" role="img" aria-labelledby="ttl dsc">
+  <title id="ttl">Enterprise AI Architecture — vendor-neutral reference map</title>
+  <desc id="dsc">A vendor-neutral capability map for enterprise AI systems, from prompt to production. Five request-path layers across the top (client, gateway, orchestration, knowledge/RAG, model), four cross-cutting layers (guardrails, execution, observability, feedback/memory), a DevSecOps and governance foundation, and the production-AI success formula.</desc>
+
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9AA0A6"/></marker>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="880" fill="#FBFAF8"/>
+
+  <!-- title -->
+  <text x="640" y="42" text-anchor="middle" font-size="27" font-weight="700" fill="#1F2933">Enterprise AI Architecture — From Prompt to Production</text>
+  <text x="640" y="68" text-anchor="middle" font-size="14.5" fill="#5F6B76">Vendor-neutral reference architecture &#8212; a capability map, not a product list</text>
+
+  <!-- ================= BAND A : REQUEST PATH ================= -->
+  <text x="44" y="94" font-size="13" font-weight="700" fill="#8A6D1B" letter-spacing="0.5">REQUEST PATH &#8212; user to answer</text>
+
+  <!-- card 1 -->
+  <rect x="44" y="102" width="224" height="258" rx="11" fill="#ffffff" stroke="#2563EB" stroke-width="1.4"/>
+  <rect x="44" y="102" width="224" height="40" rx="11" fill="#2563EB"/>
+  <circle cx="66" cy="122" r="11" fill="#ffffff"/><text x="66" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">1</text>
+  <text x="84" y="120" font-size="13" font-weight="700" fill="#ffffff">Client &amp; Channel</text>
+  <text x="84" y="136" font-size="13" font-weight="700" fill="#ffffff">Layer</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="60" y="170">&#8226; Enterprise users</text>
+    <text x="60" y="192">&#8226; Web &amp; mobile apps</text>
+    <text x="60" y="214">&#8226; Chat / copilot interface</text>
+    <text x="60" y="236">&#8226; API consumers</text>
+  </g>
+
+  <!-- card 2 -->
+  <rect x="286" y="102" width="224" height="258" rx="11" fill="#ffffff" stroke="#0E7C86" stroke-width="1.4"/>
+  <rect x="286" y="102" width="224" height="40" rx="11" fill="#0E7C86"/>
+  <circle cx="308" cy="122" r="11" fill="#ffffff"/><text x="308" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#0E7C86">2</text>
+  <text x="326" y="120" font-size="13" font-weight="700" fill="#ffffff">API Gateway &amp;</text>
+  <text x="326" y="136" font-size="13" font-weight="700" fill="#ffffff">Access Control</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="302" y="170">&#8226; Identity &amp; authentication</text>
+    <text x="302" y="192">&#8226; RBAC &amp; authorization</text>
+    <text x="302" y="214">&#8226; Rate limiting</text>
+    <text x="302" y="236">&#8226; Token governance</text>
+    <text x="302" y="258">&#8226; Threat protection</text>
+  </g>
+
+  <!-- card 3 -->
+  <rect x="528" y="102" width="224" height="258" rx="11" fill="#ffffff" stroke="#7C3AED" stroke-width="1.4"/>
+  <rect x="528" y="102" width="224" height="40" rx="11" fill="#7C3AED"/>
+  <circle cx="550" cy="122" r="11" fill="#ffffff"/><text x="550" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#7C3AED">3</text>
+  <text x="568" y="120" font-size="13" font-weight="700" fill="#ffffff">Orchestration</text>
+  <text x="568" y="136" font-size="13" font-weight="700" fill="#ffffff">Engine (the brain)</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="544" y="166">&#8226; Prompt router</text>
+    <text x="544" y="186">&#8226; Workflow / agent engine</text>
+    <text x="544" y="206">&#8226; Agent coordinator</text>
+    <text x="544" y="226">&#8226; Model selection</text>
+    <text x="544" y="246">&#8226; Tool / function calling</text>
+    <text x="544" y="266">&#8226; Patterns: ReAct &#183; RAG</text>
+    <text x="544" y="284">&#8226; Context &amp; session state</text>
+  </g>
+
+  <!-- card 4 -->
+  <rect x="770" y="102" width="224" height="258" rx="11" fill="#ffffff" stroke="#15803D" stroke-width="1.4"/>
+  <rect x="770" y="102" width="224" height="40" rx="11" fill="#15803D"/>
+  <circle cx="792" cy="122" r="11" fill="#ffffff"/><text x="792" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#15803D">4</text>
+  <text x="810" y="120" font-size="13" font-weight="700" fill="#ffffff">Enterprise</text>
+  <text x="810" y="136" font-size="13" font-weight="700" fill="#ffffff">Knowledge (RAG)</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="786" y="166">&#8226; Knowledge sources</text>
+    <text x="800" y="183" font-size="10.5" fill="#5F6B76">docs, policies, DBs, ERP/CRM</text>
+    <text x="786" y="205">&#8226; RAG pipeline:</text>
+    <text x="786" y="225">&#8226; Ingestion &#8594; chunking</text>
+    <text x="786" y="245">&#8226; Embeddings &#8594; vector search</text>
+    <text x="786" y="265">&#8226; Context retrieval</text>
+  </g>
+
+  <!-- card 5 -->
+  <rect x="1012" y="102" width="224" height="258" rx="11" fill="#ffffff" stroke="#1D4ED8" stroke-width="1.4"/>
+  <rect x="1012" y="102" width="224" height="40" rx="11" fill="#1D4ED8"/>
+  <circle cx="1034" cy="122" r="11" fill="#ffffff"/><text x="1034" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4ED8">5</text>
+  <text x="1052" y="120" font-size="13" font-weight="700" fill="#ffffff">AI Model</text>
+  <text x="1052" y="136" font-size="13" font-weight="700" fill="#ffffff">Layer</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="1028" y="170">&#8226; Frontier / large models</text>
+    <text x="1028" y="192">&#8226; Small models</text>
+    <text x="1028" y="214">&#8226; Domain-specific models</text>
+    <text x="1028" y="236">&#8226; Fine-tuned models</text>
+    <text x="1028" y="258">&#8226; Model router</text>
+  </g>
+
+  <!-- flow arrows between top cards -->
+  <g>
+    <line x1="268" y1="231" x2="286" y2="231" stroke="#9AA0A6" stroke-width="2" marker-end="url(#ah)"/>
+    <line x1="510" y1="231" x2="528" y2="231" stroke="#9AA0A6" stroke-width="2" marker-end="url(#ah)"/>
+    <line x1="752" y1="231" x2="770" y2="231" stroke="#9AA0A6" stroke-width="2" marker-end="url(#ah)"/>
+    <line x1="994" y1="231" x2="1012" y2="231" stroke="#9AA0A6" stroke-width="2" marker-end="url(#ah)"/>
+  </g>
+
+  <!-- ================= BAND B : CROSS-CUTTING ================= -->
+  <text x="44" y="392" font-size="13" font-weight="700" fill="#8A6D1B" letter-spacing="0.5">CROSS-CUTTING LAYERS &#8212; span every stage above</text>
+
+  <!-- card 6 guardrails -->
+  <rect x="44" y="402" width="286" height="190" rx="11" fill="#ffffff" stroke="#DC2626" stroke-width="1.4"/>
+  <rect x="44" y="402" width="286" height="34" rx="11" fill="#DC2626"/>
+  <circle cx="66" cy="419" r="11" fill="#ffffff"/><text x="66" y="423" text-anchor="middle" font-size="12" font-weight="700" fill="#DC2626">6</text>
+  <text x="84" y="423" font-size="13" font-weight="700" fill="#ffffff">Guardrails &amp; Responsible AI</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="60" y="460">&#8226; Prompt-injection protection</text>
+    <text x="60" y="482">&#8226; Content filtering</text>
+    <text x="60" y="504">&#8226; PII / data protection</text>
+    <text x="60" y="526">&#8226; Hallucination mitigation</text>
+    <text x="60" y="548">&#8226; Policy enforcement</text>
+    <text x="60" y="570">&#8226; Compliance &amp; audit</text>
+  </g>
+
+  <!-- card 7 execution -->
+  <rect x="346" y="402" width="286" height="190" rx="11" fill="#ffffff" stroke="#EA7317" stroke-width="1.4"/>
+  <rect x="346" y="402" width="286" height="34" rx="11" fill="#EA7317"/>
+  <circle cx="368" cy="419" r="11" fill="#ffffff"/><text x="368" y="423" text-anchor="middle" font-size="12" font-weight="700" fill="#EA7317">7</text>
+  <text x="386" y="423" font-size="13" font-weight="700" fill="#ffffff">Execution &amp; Tool Layer</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="362" y="460">&#8226; APIs &amp; microservices</text>
+    <text x="362" y="482">&#8226; Workflow functions</text>
+    <text x="362" y="504">&#8226; Message bus / events</text>
+    <text x="362" y="526">&#8226; ITSM integration</text>
+    <text x="362" y="548">&#8226; RPA / automation</text>
+    <text x="362" y="570">&#8226; External systems</text>
+  </g>
+
+  <!-- card 8 observability -->
+  <rect x="648" y="402" width="286" height="190" rx="11" fill="#ffffff" stroke="#2563EB" stroke-width="1.4"/>
+  <rect x="648" y="402" width="286" height="34" rx="11" fill="#2563EB"/>
+  <circle cx="670" cy="419" r="11" fill="#ffffff"/><text x="670" y="423" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB">8</text>
+  <text x="688" y="423" font-size="13" font-weight="700" fill="#ffffff">Observability &amp; AgentOps</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="664" y="458">&#8226; Prompt monitoring &#183; drift</text>
+    <text x="664" y="478">&#8226; Token consumption &amp; cost</text>
+    <text x="664" y="498">&#8226; Latency (P50 / P95)</text>
+    <text x="664" y="518">&#8226; Success rate &amp; errors</text>
+    <text x="664" y="538">&#8226; Hallucination tracking</text>
+    <text x="664" y="558">&#8226; Telemetry &amp; tracing</text>
+    <text x="664" y="578">&#8226; Dashboards &amp; alerts</text>
+  </g>
+
+  <!-- card 9 feedback -->
+  <rect x="950" y="402" width="286" height="190" rx="11" fill="#ffffff" stroke="#0D9488" stroke-width="1.4"/>
+  <rect x="950" y="402" width="286" height="34" rx="11" fill="#0D9488"/>
+  <circle cx="972" cy="419" r="11" fill="#ffffff"/><text x="972" y="423" text-anchor="middle" font-size="12" font-weight="700" fill="#0D9488">9</text>
+  <text x="990" y="423" font-size="13" font-weight="700" fill="#ffffff">Feedback &amp; Memory</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="966" y="460">&#8226; User feedback</text>
+    <text x="966" y="482">&#8226; Session memory</text>
+    <text x="966" y="504">&#8226; Long-term context</text>
+    <text x="966" y="526">&#8226; Learning signals</text>
+  </g>
+
+  <!-- ================= BAND C : FOUNDATION ================= -->
+  <text x="44" y="630" font-size="13" font-weight="700" fill="#8A6D1B" letter-spacing="0.5">FOUNDATION &#8212; underpins every layer</text>
+
+  <rect x="44" y="640" width="1192" height="96" rx="11" fill="#ffffff" stroke="#475569" stroke-width="1.4"/>
+  <rect x="44" y="640" width="1192" height="34" rx="11" fill="#475569"/>
+  <circle cx="66" cy="657" r="11" fill="#ffffff"/><text x="66" y="661" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">10</text>
+  <text x="84" y="661" font-size="13" font-weight="700" fill="#ffffff">DevSecOps &amp; Governance</text>
+  <g font-size="11.5" fill="#33414E">
+    <text x="64" y="697">&#8226; CI/CD pipelines</text>
+    <text x="224" y="697">&#8226; GitOps</text>
+    <text x="344" y="697">&#8226; Model registry</text>
+    <text x="504" y="697">&#8226; Prompt versioning</text>
+    <text x="664" y="697">&#8226; Security scanning</text>
+    <text x="824" y="697">&#8226; Secrets management</text>
+    <text x="1004" y="697">&#8226; Approval workflows</text>
+    <text x="64" y="719">&#8226; Audit logging</text>
+    <text x="224" y="719">&#8226; Canary / blue-green</text>
+    <text x="424" y="719">&#8226; Rollback &amp; versioning</text>
+    <text x="624" y="719" font-weight="700" fill="#475569">Secure &#183; Compliant &#183; Observable &#183; Repeatable &#183; Scalable</text>
+  </g>
+
+  <!-- ================= SUCCESS FORMULA ================= -->
+  <text x="640" y="772" text-anchor="middle" font-size="15" font-weight="700" fill="#1F2933">Enterprise AI success formula</text>
+  <text x="640" y="800" text-anchor="middle" font-size="14.5" fill="#33414E">
+    <tspan fill="#7C3AED" font-weight="700">Prompt</tspan> + <tspan fill="#15803D" font-weight="700">Trusted Data</tspan> + <tspan fill="#2563EB" font-weight="700">Orchestration</tspan> + <tspan fill="#DC2626" font-weight="700">Guardrails</tspan> + <tspan fill="#0E7C86" font-weight="700">Observability</tspan> + <tspan fill="#475569" font-weight="700">Governance</tspan> = <tspan font-weight="700" fill="#1F2933">Production AI</tspan>
+  </text>
+</svg>

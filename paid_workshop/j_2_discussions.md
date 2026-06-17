@@ -84,7 +84,12 @@ reference for the other two.
 
 ## Build status
 - [x] Harness — register written, 3 scenarios (stale set · "just testing" · slow metered gate)
-- [x] Grounding — register written (1 scenario: "gate gets routed around")
-- [ ] Caching — register to build
-- [ ] Grounding — add 2 more scenarios to reach 3
-- [ ] (3rd use case TBD — confirm whether it's caching only, or caching + a separate cost/budget case)
+- [x] Grounding — register written, 3 scenarios (routed around · wiring isn't efficacy · grounded isn't true)
+- [x] Caching — register written, 3 challenges (prefix isn't static · "just a flag" · freeze-the-wrong-thing)
+
+**All three use cases complete — Part 1 fully built (3 × 30 min = 90 min).**
+
+Spin-off flagged during the grounding role-play (Ex 3): a **retrieval-corpus / knowledge-base
+governance** standard — freshness, versioning, source-of-truth ownership of the document store —
+separate from GS2B1-01. The grounding gate proves faithful-to-source; this would own whether the source
+is true. Candidate for a future BP walk, not a Part-1 use case.

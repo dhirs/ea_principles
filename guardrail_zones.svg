@@ -1,0 +1,174 @@
+<svg viewBox="0 0 1200 1180" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1200" height="1180" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="38" text-anchor="middle" font-size="25" font-weight="700" fill="#0f172a">Guardrails by Zone — The Component Boundary Model</text>
+  <text x="600" y="64" text-anchor="middle" font-size="13.5" fill="#64748b">Every AI component (LLM &#8834; RAG &#8834; Agent) wrapped by one universal boundary &#183; existing standards mapped to each crossing</text>
+
+  <!-- Cross-cutting band -->
+  <rect x="30" y="88" width="1140" height="624" rx="18" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="52" y="116" font-size="13" font-style="italic" font-weight="700" fill="#475569">CROSS-CUTTING BAND &#183; wraps every zone</text>
+  <text x="52" y="134" font-size="11" fill="#64748b">observability &#183; eval &#183; drift &#183; model &amp; prompt governance — watches the whole component, not one crossing</text>
+
+  <!-- Legend -->
+  <rect x="812" y="106" width="14" height="14" rx="3" fill="#2563eb"/><text x="831" y="118" font-size="11.5" fill="#334155">Security (GS)</text>
+  <rect x="930" y="106" width="14" height="14" rx="3" fill="#d97706"/><text x="949" y="118" font-size="11.5" fill="#334155">Cost (GC)</text>
+  <rect x="1028" y="106" width="14" height="14" rx="3" fill="#059669"/><text x="1047" y="118" font-size="11.5" fill="#334155">Ops (GO)</text>
+
+  <!-- Flow arrows -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <text x="36" y="262" font-size="10.5" fill="#64748b">input</text>
+  <line x1="34" y1="278" x2="66" y2="278" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="327" y1="278" x2="397" y2="278" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="715" y="272" font-size="10.5" fill="#64748b">response</text>
+  <line x1="702" y1="288" x2="772" y2="288" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1032" y1="288" x2="1058" y2="288" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="1064" y="285" font-size="11.5" font-weight="700" fill="#0f172a">END</text>
+  <text x="1064" y="299" font-size="11.5" font-weight="700" fill="#0f172a">USER</text>
+
+  <!-- action to world fork -->
+  <line x1="550" y1="412" x2="550" y2="452" stroke="#e11d48" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="470" y="455" width="170" height="34" rx="17" fill="#fef2f2" stroke="#e11d48" stroke-width="1.3"/>
+  <text x="555" y="477" text-anchor="middle" font-size="11.5" font-weight="700" fill="#be123c">ACTION &#8594; WORLD</text>
+  <text x="650" y="476" font-size="10" fill="#94a3b8">(gated in Zone 2, before it runs)</text>
+  <!-- agent loop -->
+  <path d="M 470 472 C 200 472, 60 470, 60 360" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <text x="150" y="466" font-size="10" font-style="italic" fill="#94a3b8">agent loop — result re-enters as ingress</text>
+
+  <!-- ============ ZONE 1 ============ -->
+  <rect x="70" y="170" width="257" height="218" rx="12" fill="#ffffff" stroke="#6366f1" stroke-width="1.5"/>
+  <path d="M 70 182 a 12 12 0 0 1 12 -12 h 233 a 12 12 0 0 1 12 12 v 22 h -257 z" fill="#6366f1"/>
+  <text x="84" y="192" font-size="13" font-weight="700" fill="#ffffff">ZONE 1 &#183; INGRESS</text>
+  <text x="84" y="222" font-size="10.5" fill="#64748b">what is allowed in</text>
+  <!-- chips -->
+  <g font-size="11.5">
+    <rect x="84" y="230" width="229" height="30" rx="7" fill="#fff" stroke="#2563eb" stroke-width="1.2"/><text x="94" y="249"><tspan font-weight="700" fill="#2563eb">GS4B2-01</tspan><tspan fill="#334155">  Screen user input</tspan></text>
+    <rect x="84" y="266" width="229" height="30" rx="7" fill="#fff" stroke="#2563eb" stroke-width="1.2"/><text x="94" y="285"><tspan font-weight="700" fill="#2563eb">GS1B3-01</tspan><tspan fill="#334155">  Scope retrieval to user</tspan></text>
+    <rect x="84" y="302" width="229" height="30" rx="7" fill="#fff" stroke="#2563eb" stroke-width="1.2"/><text x="94" y="321"><tspan font-weight="700" fill="#2563eb">GS1B3-02</tspan><tspan fill="#334155">  Keep prohibited data out</tspan></text>
+    <rect x="84" y="338" width="229" height="30" rx="7" fill="#fff" stroke="#d97706" stroke-width="1.2"/><text x="94" y="357"><tspan font-weight="700" fill="#d97706">GC4B1-01</tspan><tspan fill="#334155">  Right-size embeddings</tspan></text>
+  </g>
+
+  <!-- ============ ZONE 2 / COMPONENT ============ -->
+  <rect x="400" y="160" width="302" height="250" rx="12" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <path d="M 400 172 a 12 12 0 0 1 12 -12 h 278 a 12 12 0 0 1 12 12 v 22 h -302 z" fill="#334155"/>
+  <text x="414" y="182" font-size="13" font-weight="700" fill="#ffffff">ZONE 2 &#183; PROCESS &amp; ACT</text>
+  <text x="414" y="212" font-size="10.5" fill="#64748b">THE COMPONENT — LLM call / RAG / agent: what it does + actions out</text>
+  <g font-size="11.5">
+    <rect x="414" y="220" width="274" height="30" rx="7" fill="#fff" stroke="#d97706" stroke-width="1.2"/><text x="424" y="239"><tspan font-weight="700" fill="#d97706">GC1B1-01</tspan><tspan fill="#334155">  Deliberate model choice</tspan></text>
+    <rect x="414" y="256" width="274" height="30" rx="7" fill="#fff" stroke="#d97706" stroke-width="1.2"/><text x="424" y="275"><tspan font-weight="700" fill="#d97706">GC3B1-01</tspan><tspan fill="#334155">  Prompt cost control</tspan></text>
+    <rect x="414" y="292" width="274" height="30" rx="7" fill="#fff" stroke="#d97706" stroke-width="1.2"/><text x="424" y="311"><tspan font-weight="700" fill="#d97706">GC3B3-01</tspan><tspan fill="#334155">  Prompt caching</tspan></text>
+    <rect x="414" y="328" width="274" height="30" rx="7" fill="#fff" stroke="#2563eb" stroke-width="1.2"/><text x="424" y="347"><tspan font-weight="700" fill="#2563eb">GS5B1-01</tspan><tspan fill="#334155">  Gate consequential action  (agent)</tspan></text>
+    <rect x="414" y="364" width="274" height="30" rx="7" fill="#fff" stroke="#d97706" stroke-width="1.2"/><text x="424" y="383"><tspan font-weight="700" fill="#d97706">GC5B1-01</tspan><tspan fill="#334155">  Agent budget cap  (agent)</tspan></text>
+  </g>
+
+  <!-- ============ ZONE 3 ============ -->
+  <rect x="775" y="232" width="257" height="116" rx="12" fill="#ffffff" stroke="#e11d48" stroke-width="1.5"/>
+  <path d="M 775 244 a 12 12 0 0 1 12 -12 h 233 a 12 12 0 0 1 12 12 v 22 h -257 z" fill="#e11d48"/>
+  <text x="789" y="254" font-size="13" font-weight="700" fill="#ffffff">ZONE 3 &#183; PRE-DELIVERY</text>
+  <text x="789" y="284" font-size="10.5" fill="#64748b">safe to hand to the user</text>
+  <rect x="789" y="294" width="229" height="40" rx="7" fill="#fff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="800" y="312" font-size="11"><tspan font-weight="700" fill="#2563eb">GS2B1-01</tspan><tspan fill="#334155">  Output + grounding check</tspan></text>
+  <text x="800" y="327" font-size="9.5" fill="#94a3b8">safety + faithfulness, safe fallback</text>
+
+  <!-- ============ CROSS-CUTTING STANDARDS ============ -->
+  <line x1="52" y1="506" x2="1148" y2="506" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="52" y="500" font-size="11.5" font-weight="700" fill="#475569">Cross-cutting standards — wrap all zones</text>
+  <g font-size="11.5">
+    <!-- row 1 -->
+    <rect x="70" y="520" width="255" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="80" y="539"><tspan font-weight="700" fill="#059669">GO3B2-01</tspan><tspan fill="#334155">  Observability channel</tspan></text>
+    <rect x="350" y="520" width="255" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="360" y="539"><tspan font-weight="700" fill="#059669">GO3B2-02</tspan><tspan fill="#334155">  Trace access governance</tspan></text>
+    <rect x="630" y="520" width="255" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="640" y="539"><tspan font-weight="700" fill="#059669">GO1B1-03</tspan><tspan fill="#334155">  Consistent eval method</tspan></text>
+    <rect x="910" y="520" width="238" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="920" y="539"><tspan font-weight="700" fill="#059669">GO1B1-04</tspan><tspan fill="#334155">  Drift detection</tspan></text>
+    <!-- row 2 -->
+    <rect x="70" y="556" width="255" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="80" y="575"><tspan font-weight="700" fill="#059669">GO1B1-06</tspan><tspan fill="#334155">  Model versioning</tspan></text>
+    <rect x="350" y="556" width="255" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="360" y="575"><tspan font-weight="700" fill="#059669">GO3B1-01</tspan><tspan fill="#334155">  Prompt governance</tspan></text>
+    <rect x="630" y="556" width="255" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="640" y="575"><tspan font-weight="700" fill="#059669">GO1B1-01</tspan><tspan fill="#334155">  Pre-ship evaluation  (agent)</tspan></text>
+    <rect x="910" y="556" width="238" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="920" y="575"><tspan font-weight="700" fill="#059669">GO1B1-02</tspan><tspan fill="#334155">  Fairness in eval  (agent)</tspan></text>
+    <!-- row 3 -->
+    <rect x="70" y="592" width="255" height="30" rx="7" fill="#fff" stroke="#059669" stroke-width="1.2"/><text x="80" y="611"><tspan font-weight="700" fill="#059669">GO1B1-05</tspan><tspan fill="#334155">  Eval-set maintenance  (agent)</tspan></text>
+    <rect x="350" y="592" width="255" height="30" rx="7" fill="#fff" stroke="#d97706" stroke-width="1.2"/><text x="360" y="611"><tspan font-weight="700" fill="#d97706">GC2B2-01</tspan><tspan fill="#334155">  Infra right-sizing</tspan></text>
+    <rect x="630" y="592" width="255" height="30" rx="7" fill="#fff" stroke="#2563eb" stroke-width="1.2"/><text x="640" y="611"><tspan font-weight="700" fill="#2563eb">GS6B1-01</tspan><tspan fill="#334155">  Training-data integrity  (build-time)</tspan></text>
+  </g>
+
+  <!-- Footer note -->
+  <text x="52" y="668" font-size="11" font-style="italic" fill="#64748b">LLM &#8834; RAG &#8834; Agent — zones are constant, the fill grows: retrieval adds Zone-1 data controls; autonomy adds the Zone-2 action gate + loop and a thicker band.</text>
+  <text x="52" y="686" font-size="10.5" fill="#94a3b8">13 mandatory for an LLM call &#183; 16 for RAG &#183; all 21 for an agent.  Source of truth: guardrail.md</text>
+
+  <!-- ===================== OWASP OVERLAY TABLE ===================== -->
+  <text x="600" y="762" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">OWASP Top 10 for LLM Apps (2025) — overlaid on the zones</text>
+  <text x="600" y="784" text-anchor="middle" font-size="12.5" fill="#64748b">OWASP is a threat taxonomy, not a zone. Each risk maps to the zone(s) whose control mitigates it — a coverage check across the model.</text>
+
+  <!-- zone colour key for the table -->
+  <g font-size="10.5">
+    <rect x="318" y="798" width="11" height="11" rx="2" fill="#6366f1"/><text x="333" y="808" fill="#475569">Zone 1</text>
+    <rect x="392" y="798" width="11" height="11" rx="2" fill="#334155"/><text x="407" y="808" fill="#475569">Zone 2</text>
+    <rect x="466" y="798" width="11" height="11" rx="2" fill="#e11d48"/><text x="481" y="808" fill="#475569">Zone 3</text>
+    <rect x="540" y="798" width="11" height="11" rx="2" fill="#94a3b8"/><text x="555" y="808" fill="#475569">Build-time / band</text>
+  </g>
+
+  <!-- table frame -->
+  <rect x="40" y="820" width="1120" height="330" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+  <!-- header -->
+  <rect x="40" y="820" width="1120" height="32" rx="8" fill="#0f172a"/>
+  <rect x="40" y="836" width="1120" height="16" fill="#0f172a"/>
+  <text x="54" y="841" font-size="12" font-weight="700" fill="#ffffff">OWASP risk</text>
+  <text x="430" y="841" font-size="12" font-weight="700" fill="#ffffff">Zone</text>
+  <text x="690" y="841" font-size="12" font-weight="700" fill="#ffffff">Mitigating standard(s)</text>
+  <!-- column dividers -->
+  <line x1="415" y1="852" x2="415" y2="1150" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="675" y1="852" x2="675" y2="1150" stroke="#e2e8f0" stroke-width="1"/>
+
+  <g font-size="11.5" fill="#334155">
+    <!-- row 1 -->
+    <rect x="41" y="852" width="1118" height="29.7" fill="#f8fafc"/>
+    <text x="54" y="871"><tspan font-weight="700" fill="#0f172a">LLM01</tspan> Prompt Injection</text>
+    <text x="430" y="871" fill="#6366f1" font-weight="600">Zone 1</text>
+    <text x="690" y="871">GS4B2-01 screen input</text>
+    <!-- row 2 -->
+    <text x="54" y="900"><tspan font-weight="700" fill="#0f172a">LLM02</tspan> Sensitive Info Disclosure</text>
+    <text x="430" y="900" font-weight="600"><tspan fill="#6366f1">Zone 1</tspan><tspan fill="#475569"> + </tspan><tspan fill="#e11d48">3</tspan></text>
+    <text x="690" y="900">GS1B3-01, GS1B3-02 &#183; GS2B1-01 (PII)</text>
+    <!-- row 3 -->
+    <rect x="41" y="911" width="1118" height="29.7" fill="#f8fafc"/>
+    <text x="54" y="930"><tspan font-weight="700" fill="#0f172a">LLM03</tspan> Supply Chain</text>
+    <text x="430" y="930" fill="#94a3b8" font-weight="600">Build-time / band</text>
+    <text x="690" y="930">GC1B1-01, GO1B1-06 — <tspan fill="#be123c" font-weight="600">thin / gap</tspan></text>
+    <!-- row 4 -->
+    <text x="54" y="959"><tspan font-weight="700" fill="#0f172a">LLM04</tspan> Data &amp; Model Poisoning</text>
+    <text x="430" y="959" font-weight="600"><tspan fill="#94a3b8">Build-time</tspan><tspan fill="#475569"> + </tspan><tspan fill="#6366f1">Zone 1</tspan></text>
+    <text x="690" y="959">GS6B1-01 &#183; GS1B3-02 (RAG store)</text>
+    <!-- row 5 -->
+    <rect x="41" y="970" width="1118" height="29.7" fill="#f8fafc"/>
+    <text x="54" y="989"><tspan font-weight="700" fill="#0f172a">LLM05</tspan> Improper Output Handling</text>
+    <text x="430" y="989" font-weight="600"><tspan fill="#e11d48">Zone 3</tspan><tspan fill="#475569"> + app-side</tspan></text>
+    <text x="690" y="989">GS2B1-01 + Layer-3 business-logic/encoding</text>
+    <!-- row 6 -->
+    <text x="54" y="1018"><tspan font-weight="700" fill="#0f172a">LLM06</tspan> Excessive Agency</text>
+    <text x="430" y="1018" fill="#334155" font-weight="600">Zone 2</text>
+    <text x="690" y="1018">GS5B1-01 action gate, GC5B1-01 budget cap</text>
+    <!-- row 7 -->
+    <rect x="41" y="1029" width="1118" height="29.7" fill="#f8fafc"/>
+    <text x="54" y="1048"><tspan font-weight="700" fill="#0f172a">LLM07</tspan> System Prompt Leakage</text>
+    <text x="430" y="1048" font-weight="600"><tspan fill="#e11d48">Zone 3</tspan><tspan fill="#475569"> + band</tspan></text>
+    <text x="690" y="1048">GS2B1-01 output &#183; GO3B1-01 prompt governance</text>
+    <!-- row 8 -->
+    <text x="54" y="1077"><tspan font-weight="700" fill="#0f172a">LLM08</tspan> Vector &amp; Embedding Weaknesses</text>
+    <text x="430" y="1077" fill="#6366f1" font-weight="600">Zone 1</text>
+    <text x="690" y="1077">GS1B3-01, GS1B3-02, GC4B1-01</text>
+    <!-- row 9 -->
+    <rect x="41" y="1088" width="1118" height="29.7" fill="#f8fafc"/>
+    <text x="54" y="1107"><tspan font-weight="700" fill="#0f172a">LLM09</tspan> Misinformation</text>
+    <text x="430" y="1107" fill="#e11d48" font-weight="600">Zone 3</text>
+    <text x="690" y="1107">GS2B1-01 grounding <tspan fill="#94a3b8">(+ corpus-accuracy gap)</tspan></text>
+    <!-- row 10 -->
+    <text x="54" y="1136"><tspan font-weight="700" fill="#0f172a">LLM10</tspan> Unbounded Consumption</text>
+    <text x="430" y="1136" font-weight="600"><tspan fill="#334155">Zone 2</tspan><tspan fill="#475569"> + </tspan><tspan fill="#6366f1">1</tspan><tspan fill="#475569"> + band</tspan></text>
+    <text x="690" y="1136">GC5B1-01, GC3B1-01 &#183; GS4B2-01 &#183; GC2B2-01</text>
+  </g>
+
+  <text x="52" y="1170" font-size="10.5" font-style="italic" fill="#94a3b8">Coverage read: every OWASP risk has a home except LLM03 Supply Chain (thinnest) — a candidate for a future standard. LLM09 needs the corpus-accuracy sibling, not just GS2B1-01.</text>
+</svg>

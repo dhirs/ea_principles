@@ -31,14 +31,27 @@
       "u_value": "Proven Reliability",
       "u_principle": "A change should never reach the people who depend on a system before its behaviour is understood and tested.",
       "references": [
-        { "url": "https://arxiv.org/pdf/2603.27355", "title": "LLM Readiness Harness: Evaluation, Observability, and CI Gates for LLM/RAG Applications", "source": "arXiv", "note": "Argues that without a systematic evaluation harness wired to CI gates, LLM/RAG quality checks stay ad hoc and silent regressions ship to production — the gap this principle's periodic-evaluation harness closes.", "date": "2026-06-06" }
+        {
+          "url": "https://arxiv.org/pdf/2603.27355",
+          "title": "LLM Readiness Harness: Evaluation, Observability, and CI Gates for LLM/RAG Applications",
+          "source": "arXiv",
+          "note": "Argues that without a systematic evaluation harness wired to CI gates, LLM/RAG quality checks stay ad hoc and silent regressions ship to production — the gap this principle's periodic-evaluation harness closes.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
-      "applicability": { "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -68,6 +81,18 @@
               "mapping_state": "unverified",
               "last_checked": "2026-05-26",
               "note": "Provisional mapping based on subject-matter proximity — the eval harness is a curated data artefact governing model evaluation, which aligns with III.A's data-governance scope. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+            }
+          ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 15 — Accuracy, robustness and cybersecurity",
+              "risk_tier": "High-risk",
+              "control_ref": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-16",
+              "note": "PRIMARY. The committed, versioned ground-truth harness is the dataset against which the agent's decisions are measured before release; it concretises the accuracy limb of Art 15 by making 'the system meets its declared accuracy' a CI-tested, regression-gated property rather than an assertion. control_ref is null: ground-truth/accuracy testing is generic ML governance (it would exist for a logistic regression too), not one of the eight GenAI-distinctive system-level controls — though this harness is also the substrate that carries the adversarial / prompt-injection cases exercising Control #2 (Art 15 cybersecurity) and the grounding cases exercising Control #3. Asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md); not yet read side-by-side against the Article 15 text."
             }
           ]
         }
@@ -118,7 +143,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.8.1",
+        "current_version": "1.9.0",
         "changes": [
           {
             "version": "1.0.0",
@@ -197,6 +222,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.9.0",
+            "date": "2026-06-16",
+            "author": "Dheeraj",
+            "summary": "MINOR. Added framework_mappings.eu_ai_act cross-reference. One PRIMARY reference: Article 15 — Accuracy, robustness and cybersecurity, risk_tier High-risk, control_ref null. The ground-truth harness is the dataset that makes the Art 15 accuracy obligation a CI-tested, regression-gated property; control_ref is null because ground-truth/accuracy testing is generic ML governance, not one of the eight GenAI-distinctive controls (though the harness also carries the adversarial cases exercising Control #2 and grounding cases exercising Control #3). mapping_state unverified — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md), not yet read side-by-side against the Article 15 text. AWS remains the primary anchor; EU AI Act is a cross-reference per taxonomy.json framework_mappings_spec.eu_ai_act_convention. No change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, dependencies, references, or evidence."
           }
         ]
       },
@@ -214,16 +245,33 @@
       "u_value": "Fairness",
       "u_principle": "A system is judged by how it treats its weakest group, not its average user.",
       "references": [
-        { "url": "https://arxiv.org/html/2605.15208", "title": "Quantization Undoes Alignment: Bias Emergence in Compressed LLMs", "source": "arXiv", "note": "Shows aggregate accuracy holding steady while fairness-critical subgroup degradation emerges — the hidden stratification that only per-stratum evaluation surfaces, exactly what this principle mandates.", "date": "2026-06-06" }
+        {
+          "url": "https://arxiv.org/html/2605.15208",
+          "title": "Quantization Undoes Alignment: Bias Emergence in Compressed LLMs",
+          "source": "arXiv",
+          "note": "Shows aggregate accuracy holding steady while fairness-critical subgroup degradation emerges — the hidden stratification that only per-stratum evaluation surfaces, exactly what this principle mandates.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Stratifies and gates GO1B1-01's ground-truth harness; there is nothing to stratify until the harness exists." }
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "hard",
+          "reason": "Stratifies and gates GO1B1-01's ground-truth harness; there is nothing to stratify until the harness exists."
+        }
       ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
-      "applicability": { "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -382,16 +430,36 @@
       "u_value": "Sound Measurement",
       "u_principle": "What \"good\" means is fixed and inspectable, so a passing score means the same thing every time.",
       "references": [
-        { "url": "https://www.braintrust.dev/articles/llm-evaluation-metrics-guide", "title": "LLM Evaluation Metrics: Full Guide to Evals and Key Metrics", "source": "Braintrust", "note": "Notes that LLM-as-judge scorers are often inconsistent and non-reproducible unless scorer versions are tracked alongside prompts — the reproducibility gap this principle's metric-as-code encapsulation addresses. (Loose mapping — weaker evidence than the catalogue's other references.)", "date": "2026-06-06" }
+        {
+          "url": "https://www.braintrust.dev/articles/llm-evaluation-metrics-guide",
+          "title": "LLM Evaluation Metrics: Full Guide to Evals and Key Metrics",
+          "source": "Braintrust",
+          "note": "Notes that LLM-as-judge scorers are often inconsistent and non-reproducible unless scorer versions are tracked alongside prompts — the reproducibility gap this principle's metric-as-code encapsulation addresses. (Loose mapping — weaker evidence than the catalogue's other references.)",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Encapsulates the evaluation metrics GO1B1-01's harness runs; the metric-as-code contract presumes the harness that invokes it." }
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "hard",
+          "reason": "Encapsulates the evaluation metrics GO1B1-01's harness runs; the metric-as-code contract presumes the harness that invokes it."
+        }
       ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
-      "applicability": { "agentic": "mandatory", "rag": "mandatory", "llm": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "agentic": "mandatory",
+        "rag": "mandatory",
+        "llm": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -551,19 +619,53 @@
       "u_value": "Sustained Quality",
       "u_principle": "Trust earned at launch has to be kept; a model's quality is watched, not assumed.",
       "references": [
-        { "url": "https://www.traceloop.com/blog/catching-silent-llm-degradation-how-an-llm-reliability-platform-addresses-model-and-data-drift", "title": "Catching Silent LLM Degradation: Model and Data Drift", "source": "Traceloop", "note": "Describes production LLMs degrading silently while surface metrics stay green — the drift this principle's production-vs-baseline monitoring is built to detect before users do.", "date": "2026-06-06" },
-        { "url": "https://stackpulsar.com/blog/llm-model-drift-detection/", "title": "LLM Model Drift Detection 2026", "source": "Stack Pulsar", "note": "Quantifies the failure: '91% of production LLMs experience silent behavioral drift within 90 days', with a 14–18 day lag between degradation onset and the first user complaint.", "date": "2026-06-06" }
+        {
+          "url": "https://www.traceloop.com/blog/catching-silent-llm-degradation-how-an-llm-reliability-platform-addresses-model-and-data-drift",
+          "title": "Catching Silent LLM Degradation: Model and Data Drift",
+          "source": "Traceloop",
+          "note": "Describes production LLMs degrading silently while surface metrics stay green — the drift this principle's production-vs-baseline monitoring is built to detect before users do.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://stackpulsar.com/blog/llm-model-drift-detection/",
+          "title": "LLM Model Drift Detection 2026",
+          "source": "Stack Pulsar",
+          "note": "Quantifies the failure: '91% of production LLMs experience silent behavioral drift within 90 days', with a 14–18 day lag between degradation onset and the first user complaint.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Compares production metrics against the deployment baseline GO1B1-01's harness produces — no baseline, nothing to detect drift against." },
-        { "principle_id": "GO1B1-02", "kind": "soft", "reason": "Per-stratum drift detection reuses GO1B1-02's declared strata when present, but drift can be watched on the aggregate harness without them." },
-        { "principle_id": "GO1B1-03", "kind": "soft", "reason": "Runs GO1B1-03's encapsulated metric units on a cadence rather than re-implementing scoring logic." }
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "hard",
+          "reason": "Compares production metrics against the deployment baseline GO1B1-01's harness produces — no baseline, nothing to detect drift against."
+        },
+        {
+          "principle_id": "GO1B1-02",
+          "kind": "soft",
+          "reason": "Per-stratum drift detection reuses GO1B1-02's declared strata when present, but drift can be watched on the aggregate harness without them."
+        },
+        {
+          "principle_id": "GO1B1-03",
+          "kind": "soft",
+          "reason": "Runs GO1B1-03's encapsulated metric units on a cadence rather than re-implementing scoring logic."
+        }
       ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
-      "applicability": { "agentic": "mandatory", "rag": "mandatory", "llm": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "agentic": "mandatory",
+        "rag": "mandatory",
+        "llm": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -693,17 +795,38 @@
       "u_value": "Honest Evaluation",
       "u_principle": "A test is only worth running if it still reflects how the system is actually used.",
       "references": [
-        { "url": "https://www.braintrust.dev/articles/llm-evaluation-guide", "title": "LLM Evaluation: Evals, Metrics, and Regression Testing", "source": "Braintrust", "note": "Warns that stale test cases which no longer represent real usage create false confidence, and urges treating ground-truth changes as production risk — the staleness this principle's declared refresh cadence prevents.", "date": "2026-06-06" }
+        {
+          "url": "https://www.braintrust.dev/articles/llm-evaluation-guide",
+          "title": "LLM Evaluation: Evals, Metrics, and Regression Testing",
+          "source": "Braintrust",
+          "note": "Warns that stale test cases which no longer represent real usage create false confidence, and urges treating ground-truth changes as production risk — the staleness this principle's declared refresh cadence prevents.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "Refreshes the `eval/scenarios/` harness GO1B1-01 mandates; the refresh discipline has no artefact to refresh without it." },
-        { "principle_id": "GO1B1-04", "kind": "soft", "reason": "The drift-alert-coupling gate fires on GO1B1-04 alerts; the calendar-cadence gate functions without GO1B1-04." }
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "hard",
+          "reason": "Refreshes the `eval/scenarios/` harness GO1B1-01 mandates; the refresh discipline has no artefact to refresh without it."
+        },
+        {
+          "principle_id": "GO1B1-04",
+          "kind": "soft",
+          "reason": "The drift-alert-coupling gate fires on GO1B1-04 alerts; the calendar-cadence gate functions without GO1B1-04."
+        }
       ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
-      "applicability": { "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -832,17 +955,43 @@
       "u_value": "Controlled Change",
       "u_principle": "A model never moves under a system unnoticed; every change is known and re-proven before it ships.",
       "references": [
-        { "url": "https://dev.to/clawgenesis/gpt-51-was-retired-on-march-11-heres-what-broke-in-your-llm-app-1eep", "title": "GPT-5.1 Was Retired on March 11 — Here's What Broke in Your LLM App", "source": "DEV Community", "note": "A provider silently auto-falls-back a retired model alias to a different model — no error, no warning, no version bump, subtle output-format drift — the exact silent model-swap this principle's pin + re-eval-on-change gate catches.", "date": "2026-06-06" },
-        { "url": "https://www.digitalocean.com/community/tutorials/model-silent-versioning-problem", "title": "The Silent Versioning Problem in AI Inference", "source": "DigitalOcean", "note": "Documents one endpoint string returning meaningfully different model behaviour over time (e.g. the GPT-4o sycophancy regimes) with no code change on the caller's side — why pinning and re-evaluation on model change are mandatory.", "date": "2026-06-06" }
+        {
+          "url": "https://dev.to/clawgenesis/gpt-51-was-retired-on-march-11-heres-what-broke-in-your-llm-app-1eep",
+          "title": "GPT-5.1 Was Retired on March 11 — Here's What Broke in Your LLM App",
+          "source": "DEV Community",
+          "note": "A provider silently auto-falls-back a retired model alias to a different model — no error, no warning, no version bump, subtle output-format drift — the exact silent model-swap this principle's pin + re-eval-on-change gate catches.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://www.digitalocean.com/community/tutorials/model-silent-versioning-problem",
+          "title": "The Silent Versioning Problem in AI Inference",
+          "source": "DigitalOcean",
+          "note": "Documents one endpoint string returning meaningfully different model behaviour over time (e.g. the GPT-4o sycophancy regimes) with no code change on the caller's side — why pinning and re-evaluation on model change are mandatory.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO1B1-01", "kind": "hard", "reason": "The re-eval-on-model-change gate re-runs GO1B1-01's harness against the new model version and gates on its baseline." }
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "hard",
+          "reason": "The re-eval-on-model-change gate re-runs GO1B1-01's harness against the new model version and gates on its baseline."
+        }
       ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P11 — Model Performance Evaluation",
       "impact_level": "High",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -962,15 +1111,37 @@
       "u_value": "Traceability",
       "u_principle": "The instructions that drive a system are owned and accountable, not scattered and forgotten.",
       "references": [
-        { "url": "https://agenta.ai/blog/the-definitive-guide-to-prompt-management-systems", "title": "The Definitive Guide to Prompt Management Systems", "source": "Agenta", "note": "Describes prompts hardcoded and scattered across multiple files and repos with no way to track changes or roll back — the fragmentation and silent divergence this principle's central prompt registry eliminates.", "date": "2026-06-06" },
-        { "url": "https://arxiv.org/pdf/2509.14404", "title": "A Taxonomy of Prompt Defects in LLM Systems", "source": "arXiv", "note": "Catalogues the defect classes that arise when prompts are unmanaged in production — evidence for governing prompts as registered, versioned, addressable artefacts rather than inline strings.", "date": "2026-06-06" }
+        {
+          "url": "https://agenta.ai/blog/the-definitive-guide-to-prompt-management-systems",
+          "title": "The Definitive Guide to Prompt Management Systems",
+          "source": "Agenta",
+          "note": "Describes prompts hardcoded and scattered across multiple files and repos with no way to track changes or roll back — the fragmentation and silent divergence this principle's central prompt registry eliminates.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://arxiv.org/pdf/2509.14404",
+          "title": "A Taxonomy of Prompt Defects in LLM Systems",
+          "source": "arXiv",
+          "note": "Catalogues the defect classes that arise when prompts are unmanaged in production — evidence for governing prompts as registered, versioned, addressable artefacts rather than inline strings.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P13 — Traceability",
       "impact_level": "High",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -1101,14 +1272,30 @@
       "u_value": "Observability",
       "u_principle": "What a system did is never a mystery after the fact.",
       "references": [
-        { "url": "https://agenta.ai/blog/the-ai-engineer-s-guide-to-llm-observability-with-opentelemetry", "title": "The AI Engineer's Guide to LLM Observability with OpenTelemetry", "source": "Agenta", "note": "Shows generic telemetry lacks AI-specific context (model, version, token counts, prompt) so agents act without inspectable traces and cannot be debugged or audited — the gap this principle's standardized trace-emission contract fills.", "date": "2026-06-06" }
+        {
+          "url": "https://agenta.ai/blog/the-ai-engineer-s-guide-to-llm-observability-with-opentelemetry",
+          "title": "The AI Engineer's Guide to LLM Observability with OpenTelemetry",
+          "source": "Agenta",
+          "note": "Shows generic telemetry lacks AI-specific context (model, version, token counts, prompt) so agents act without inspectable traces and cannot be debugged or audited — the gap this principle's standardized trace-emission contract fills.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P13 — Traceability",
       "impact_level": "High",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -1239,17 +1426,43 @@
       "u_value": "Privacy",
       "u_principle": "Data a system captures stays protected — seen by few, kept no longer than it's needed.",
       "references": [
-        { "url": "https://www.gravitee.io/blog/how-to-prevent-pii-leaks-in-ai-systems-automated-data-redaction-for-llm-prompt", "title": "How to Prevent PII Leaks in AI Systems", "source": "Gravitee", "note": "Maps PII flowing into traces and log sinks, putting the trace store in scope for GDPR deletion and access control — the read-side access governance and retention this principle enforces on already-emitted traces.", "date": "2026-06-06" },
-        { "url": "https://www.kiteworks.com/cybersecurity-risk-management/prevent-llm-data-leakage-controls/", "title": "Prevent Sensitive Data Leakage with LLMs: Essential Strategies", "source": "Kiteworks", "note": "Argues for WORM/immutable audit-log storage and governed, access-controlled logging of prompts, responses, and callers — the retention-policy and access-policy artefacts this principle mandates.", "date": "2026-06-06" }
+        {
+          "url": "https://www.gravitee.io/blog/how-to-prevent-pii-leaks-in-ai-systems-automated-data-redaction-for-llm-prompt",
+          "title": "How to Prevent PII Leaks in AI Systems",
+          "source": "Gravitee",
+          "note": "Maps PII flowing into traces and log sinks, putting the trace store in scope for GDPR deletion and access control — the read-side access governance and retention this principle enforces on already-emitted traces.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://www.kiteworks.com/cybersecurity-risk-management/prevent-llm-data-leakage-controls/",
+          "title": "Prevent Sensitive Data Leakage with LLMs: Essential Strategies",
+          "source": "Kiteworks",
+          "note": "Argues for WORM/immutable audit-log storage and governed, access-controlled logging of prompts, responses, and callers — the retention-policy and access-policy artefacts this principle mandates.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO3B2-01", "kind": "hard", "reason": "Governs read access and retention on the traces GO3B2-01 emits, keyed on the `compliance_tier` header GO3B2-01 sets; without the emit contract there is no classified trace to govern." }
+        {
+          "principle_id": "GO3B2-01",
+          "kind": "hard",
+          "reason": "Governs read access and retention on the traces GO3B2-01 emits, keyed on the `compliance_tier` header GO3B2-01 sets; without the emit contract there is no classified trace to govern."
+        }
       ],
       "pillar": "P1 — Operational Excellence",
       "focus_area": "P13 — Traceability",
       "impact_level": "High",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -1380,14 +1593,30 @@
       "u_value": "Responsible Stewardship",
       "u_principle": "What a system costs is a decision someone made on purpose, not a default no one questioned.",
       "references": [
-        { "url": "https://www.stackspend.app/resources/blog/gpt-4-vs-gpt-4o-vs-smaller-models-cost-performance", "title": "GPT-5.4 vs Mini vs Smaller Models — Cost and Performance", "source": "StackSpend", "note": "Shows teams default to a premium model when a smaller one clears the quality bar, and recommends escalating only when evaluation proves the cheaper model fails — the right-sizing decision this principle requires recorded as an ADR.", "date": "2026-06-06" }
+        {
+          "url": "https://www.stackspend.app/resources/blog/gpt-4-vs-gpt-4o-vs-smaller-models-cost-performance",
+          "title": "GPT-5.4 vs Mini vs Smaller Models — Cost and Performance",
+          "source": "StackSpend",
+          "note": "Shows teams default to a premium model when a smaller one clears the quality bar, and recommends escalating only when evaluation proves the cheaper model fails — the right-sizing decision this principle requires recorded as an ADR.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P41 — Model Selection & Right-sizing",
       "impact_level": "Medium",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -1516,17 +1745,42 @@
       "u_value": "Right-Sizing",
       "u_principle": "A system is built to the work it actually does, not the largest size that felt safe.",
       "references": [
-        { "url": "https://venturebeat.com/infrastructure/5-gpu-utilization-the-401-billion-ai-infrastructure-problem-enterprises-cant-keep-ignoring", "title": "Enterprise GPU utilization: why 95% of AI infrastructure spend is wasted", "source": "VentureBeat", "note": "Documents inference GPUs sitting at 20–40% utilization with idle capacity billed at full rate and no signal raised — the overprovisioning this principle's right-sizing baseline and utilization alarms catch.", "date": "2026-06-06" },
-        { "url": "https://leanopstech.com/blog/ai-cloud-cost-optimization-gpu-spending-guide-2026/", "title": "AI Cloud Cost Optimization: GPU Spending Guide 2026", "source": "LeanOps", "note": "Reports the average AI team wastes 35–60% of GPU cloud spend, with right-sizing GPU type and scale-to-zero as the fixes — the hosting-infrastructure discipline this principle enforces.", "date": "2026-06-06" }
+        {
+          "url": "https://venturebeat.com/infrastructure/5-gpu-utilization-the-401-billion-ai-infrastructure-problem-enterprises-cant-keep-ignoring",
+          "title": "Enterprise GPU utilization: why 95% of AI infrastructure spend is wasted",
+          "source": "VentureBeat",
+          "note": "Documents inference GPUs sitting at 20–40% utilization with idle capacity billed at full rate and no signal raised — the overprovisioning this principle's right-sizing baseline and utilization alarms catch.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://leanopstech.com/blog/ai-cloud-cost-optimization-gpu-spending-guide-2026/",
+          "title": "AI Cloud Cost Optimization: GPU Spending Guide 2026",
+          "source": "LeanOps",
+          "note": "Reports the average AI team wastes 35–60% of GPU cloud spend, with right-sizing GPU type and scale-to-zero as the fixes — the hosting-infrastructure discipline this principle enforces.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GC1B1-01", "kind": "soft", "reason": "The serving-paradigm choice GC1B1-01 records determines whether there is hosting infrastructure to right-size; GC2B2-01 gates on `infra/` independently of that ADR." }
+        {
+          "principle_id": "GC1B1-01",
+          "kind": "soft",
+          "reason": "The serving-paradigm choice GC1B1-01 records determines whether there is hosting infrastructure to right-size; GC2B2-01 gates on `infra/` independently of that ADR."
+        }
       ],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P51 — Inference Cost Optimization",
       "impact_level": "Medium",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory", "api_provisioned": "nice_to_have" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory",
+        "api_provisioned": "nice_to_have"
+      },
       "maturity_level": "mature",
       "framework_mappings": {
         "aws": {
@@ -1656,20 +1910,64 @@
       "u_value": "Cost Discipline",
       "u_principle": "What each request costs stays under deliberate control, not left to creep unnoticed.",
       "references": [
-        { "url": "https://www.adaline.ai/blog/llm-cost-optimization-token-efficiency-caching-prompt-design", "title": "LLM Cost Optimization: Token Efficiency, Caching, and Prompt Design", "source": "Adaline", "note": "Documents this principle's cumulative-drift failure almost verbatim: a system prompt ballooning from 300 to 1,800 tokens over six months of edits as engineers append edge-case instructions, with no review moment catching the per-call cost growth.", "date": "2026-06-06" },
-        { "url": "https://opsmeter.io/blog/token-bloat-silent-cause-of-llm-cost-spikes", "title": "Token bloat: the silent cause of LLM cost spikes", "source": "Opsmeter", "note": "Names the invisibility this principle attacks — 'reliability can stay green while token usage doubles' — attributing spikes to prompt scaffolding, RAG context creep, and tool-output bloat that no per-PR review flags.", "date": "2026-06-06" },
-        { "url": "https://projectdiscovery.io/blog/how-we-cut-llm-cost-with-prompt-caching", "title": "How We Cut LLM Costs by 59% With Prompt Caching", "source": "ProjectDiscovery", "note": "Named-company case of uncapped prompt-scaffolding footprint: agent system prompts grown to 2,500+ lines of YAML / 20K+ tokens per agent, a single task burning ~60M tokens — the unbounded-template-size failure this principle's ceiling prevents.", "date": "2026-06-06" },
-        { "url": "https://runcycles.io/troubleshoot/llm-cost-spike-debugging", "title": "Debugging Sudden LLM Cost Spikes: A Diagnostic Guide", "source": "Cycles", "note": "Lists 'a prompt regression that ballooned token counts' as one of the six standard cost-spike buckets, and records an API-format change driving 200x baseline token rate before anyone noticed — the no-pre-merge-gate failure.", "date": "2026-06-06" },
-        { "url": "https://redis.io/blog/prompt-bloat-llm-apps/", "title": "Prompt Bloat: Causes, Costs & Fixes for LLM Apps", "source": "Redis", "note": "Quantifies the waste this principle's declared ceiling prevents: a 1,200-token system prompt trimmable to 400 wastes 800 tokens per request, with token bloat causing a 10x cost jump for identical results.", "date": "2026-06-06" }
+        {
+          "url": "https://www.adaline.ai/blog/llm-cost-optimization-token-efficiency-caching-prompt-design",
+          "title": "LLM Cost Optimization: Token Efficiency, Caching, and Prompt Design",
+          "source": "Adaline",
+          "note": "Documents this principle's cumulative-drift failure almost verbatim: a system prompt ballooning from 300 to 1,800 tokens over six months of edits as engineers append edge-case instructions, with no review moment catching the per-call cost growth.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://opsmeter.io/blog/token-bloat-silent-cause-of-llm-cost-spikes",
+          "title": "Token bloat: the silent cause of LLM cost spikes",
+          "source": "Opsmeter",
+          "note": "Names the invisibility this principle attacks — 'reliability can stay green while token usage doubles' — attributing spikes to prompt scaffolding, RAG context creep, and tool-output bloat that no per-PR review flags.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://projectdiscovery.io/blog/how-we-cut-llm-cost-with-prompt-caching",
+          "title": "How We Cut LLM Costs by 59% With Prompt Caching",
+          "source": "ProjectDiscovery",
+          "note": "Named-company case of uncapped prompt-scaffolding footprint: agent system prompts grown to 2,500+ lines of YAML / 20K+ tokens per agent, a single task burning ~60M tokens — the unbounded-template-size failure this principle's ceiling prevents.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://runcycles.io/troubleshoot/llm-cost-spike-debugging",
+          "title": "Debugging Sudden LLM Cost Spikes: A Diagnostic Guide",
+          "source": "Cycles",
+          "note": "Lists 'a prompt regression that ballooned token counts' as one of the six standard cost-spike buckets, and records an API-format change driving 200x baseline token rate before anyone noticed — the no-pre-merge-gate failure.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://redis.io/blog/prompt-bloat-llm-apps/",
+          "title": "Prompt Bloat: Causes, Costs & Fixes for LLM Apps",
+          "source": "Redis",
+          "note": "Quantifies the waste this principle's declared ceiling prevents: a 1,200-token system prompt trimmable to 400 wastes 800 tokens per request, with token bloat causing a 10x cost jump for identical results.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO3B1-01", "kind": "hard", "reason": "Reuses GO3B1-01's per-template manifest row, `runtime_token_budget.input` field, and tokenizer adapters; the budget gate needs an addressable `template_id` to bite on." }
+        {
+          "principle_id": "GO3B1-01",
+          "kind": "hard",
+          "reason": "Reuses GO3B1-01's per-template manifest row, `runtime_token_budget.input` field, and tokenizer adapters; the budget gate needs an addressable `template_id` to bite on."
+        }
       ],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P52 — Cost-aware Prompting",
       "impact_level": "Medium",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -1788,23 +2086,191 @@
       }
     },
     {
+      "standard_id": "ST-GC3B2-01",
+      "principle_id": "PR-GC3B2-01",
+      "u_value": "Cost Discipline",
+      "u_principle": "What a system spends on each answer stays bounded by intent, not left to run unchecked.",
+      "references": [
+        {
+          "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html",
+          "title": "Influence response generation with inference parameters",
+          "source": "Amazon Bedrock documentation",
+          "note": "Documents max_tokens (max completion length) as the parameter that caps the number of tokens a model may generate in a single response — the runtime lever this principle binds into every call. Output length is left to the model unless this cap is set.",
+          "date": "2026-06-16"
+        },
+        {
+          "url": "https://stackviv.ai/blog/max-tokens-stop-sequences-llm",
+          "title": "Max Tokens and Stop Sequences: Control AI Response Length",
+          "source": "Stackviv",
+          "note": "Names the two response-length controls this principle declares — a numeric max_tokens ceiling and stop sequences — and the failure they prevent: output running on unbounded, with output tokens the more expensive half of the per-call bill.",
+          "date": "2026-06-16"
+        }
+      ],
+      "dependencies": [
+        {
+          "principle_id": "GO3B1-01",
+          "kind": "hard",
+          "reason": "Reuses GO3B1-01's per-template manifest row, the `runtime_token_budget.output` field, the central-SDK call boundary that applies the cap, and the no-inline AST lint machinery; the output-cap gate needs an addressable `template_id` and the SDK call site to bite on."
+        }
+      ],
+      "pillar": "P5 — Cost Optimization",
+      "focus_area": "P52 — Cost-aware Prompting",
+      "impact_level": "Medium",
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
+      "maturity_level": "scaling",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENCOST — Cost Optimization",
+              "focus_area": "Cost-aware prompting",
+              "question": "GENCOST03 — How do you engineer prompts to optimize cost?",
+              "best_practice": "GENCOST03-BP02 — Control model response length",
+              "implementation_step": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-16",
+              "note": "Anchored whole-BP. GENCOST03-BP02 'Control model response length' is the output-side member of the Cost-aware prompting (GENCOST03) focus area, sibling to BP01 'Optimize prompt token length' (→ GC3B1-01, input side) and BP03 'Implement prompt caching' (→ GC3B3-01). The BP title and the GENCOST03 question-stem are confirmed (the question stem 'How do you engineer prompts to optimize cost?' was verified 2026-06-05 during the BP01/BP03 walks). The live BP page's numbered implementation steps could NOT be fetched this session — docs.aws.amazon.com timed out repeatedly — so the BP's mandate is reconstructed from search extraction and its established scope: bound response length via max_tokens, stop sequences, and concise-output prompt instructions to reduce output-token cost. mapping_state is therefore 'unverified' pending a step-page verification pass to confirm the step decomposition and promote to 'verified'. This principle concretises the output-cost lever as the mirror of GC3B1-01: GO3B1-01 already carries a `runtime_token_budget.output` field but mandates neither that it be set nor that it be wired into the call, so most templates leave it blank and every call runs uncapped. Vendor specifics (Amazon Bedrock inference parameters / stop sequences) are kept here rather than in solution.approach."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-16",
+              "note": "Provisional mapping by subject-matter proximity — a declared, enforced response-token cap is a design-and-build-time governance control over the model-call cost surface, the same III.B anchor as cost siblings GC1B1-01, GC2B2-01, and GC3B1-01. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Keep the cost of every response under deliberate control",
+        "description": "A model generates as many tokens as it decides to unless a ceiling is set, and unbounded output is typically the more expensive half of the per-call bill.\n\nEach response's cost should be deliberately capped, so a verbose or runaway generation is bounded by intent rather than discovered on the inference bill."
+      },
+      "problem": {
+        "description": "Without an enforced output-token ceiling per prompt template, response length is left to the model's discretion — and output tokens typically price several times higher than input tokens. GO3B1-01's manifest carries a `runtime_token_budget.output` field, but nothing requires it to be set or wired into the call, so most templates leave it blank and every call runs uncapped.\n\nUnlike input footprint, output length cannot be computed from the template at build time — it is a runtime quantity — so the only pre-merge lever is forcing a declared cap to be bound into the call and refusing call-site overrides that bypass it. A `max_tokens` left unset, a 'be concise' instruction the model ignores, or a call that smuggles in its own higher cap all leak cost that lands only on the inference bill: thirty days late, attributed to 'usage growth' rather than to a missing ceiling.\n\nThe failure is invisible to every other cost gate — model-selection (GC1B1-01) and hosting right-sizing (GC2B2-01) never look at response length, and GO3B1-01's registry check only proves the field exists, not that it holds a real cap or reaches the call.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A summarisation template never sets `runtime_token_budget.output`; the model routinely emits ~1,500-token answers where 300 would meet the bar; no cap is bound into the call, so per-response output cost runs several times intended until a quarterly cost review flags the workload.",
+          "A chatbot call passes no `max_tokens` and relies on a 'respond in two sentences' instruction the model frequently overruns; verbose completions inflate output cost every call; nothing fails the PR because no ceiling is declared or wired — the prompt instruction is coaching, not a gate.",
+          "An agent tool-synthesis step declares `runtime_token_budget.output: 512` in the manifest, but the call site passes `max_tokens=4096` directly to the provider SDK, silently overriding the registry; the override ships uncontested because no gate checks for a call-site bypass of the declared ceiling.",
+          "A team raises a template's `runtime_token_budget.output` from 512 to 8192 in the same PR that introduces a verbose new response format, with no recorded rationale; the ceiling tracks the bloat instead of constraining it, and the change passes review as a routine manifest edit.",
+          "Finance attributes a 25% inference-cost rise to 'model usage growth'; the real driver is uncapped output across four templates; the workload's GC1B1-01 model-selection ADR and GC2B2-01 hosting right-sizing both pass cleanly — neither looks at response length — and GO3B1-01's existence-only check never required the output budget to be set or reached."
+        ]
+      },
+      "solution": {
+        "approach": "The baseline mandate (Option A — declared-and-bound, manifest-derivable) reuses the prompt registry GO3B1-01 already requires: every template's output ceiling lives in the existing `runtime_token_budget.output` field of `prompts/manifest.yaml` (Mode A) or the TMS metadata (Mode B), and it must hold a real cap rather than being absent or zero.\n\nThe central llm-sdk applies that declared ceiling as the model call's `max_tokens` (or the provider's equivalent output-cap parameter) by construction — the call site does not choose the cap. A central lint (shipped in the GO3B1-01 llm-sdk lint suite; convention `prompts/output_budget_check`) fails the PR when a template's `runtime_token_budget.output` is absent or zero. An AST lint (extending GO3B1-01's existing no-inline routing lint) fails any model call site that passes its own output-cap parameter directly to the model, bypassing the SDK's application of the registered ceiling: a non-literal (variable or computed) override fails outright, and a literal override is permitted only when it is ≤ the template's declared `runtime_token_budget.output`.\n\nA second lint governs budget inflation: any PR raising a template's `runtime_token_budget.output` above its previous committed value must carry a recorded cost rationale (a manifest `change_history` entry or a linked ADR under `docs/adrs/`), so a ceiling cannot be silently widened to absorb a more verbose response format. All three checks are manifest-derivable and call-graph-static — no fixtures, no deployed baseline, no runtime — so they fire at review time.\n\nHONEST ENFORCEMENT LIMIT: unlike GC3B1-01's input-footprint gate, the output gate cannot compute a token number at build time — output length is a runtime quantity. The gate proves the cap is declared, applied by the SDK, and un-bypassed; it does NOT prove the model actually halts at that many tokens under live load, nor that the chosen ceiling is the right one. Runtime truncation behaviour and ceiling appropriateness are handled by Option C and by the budget-inflation review respectively. Recorded in `enforcement_limits.md`.\n\nTwo alternative reference implementations are documented for workloads that want more, and MAY be adopted in addition to (not instead of) the Option A baseline:\n\n- **Option B (stop sequences)** declares optional `stop_sequences` per template in the manifest and has the SDK pass them, so the model halts on a recognised pattern as well as at the hard `max_tokens` cap — useful for structured outputs with a natural terminator.\n- **Option C (runtime alarm)** wires GO3B2-01's existing per-call actual-output-token signal into an alarm that pages or dashboard-flags when production output tokens hit the declared ceiling on most calls (a sign the cap is masking a too-verbose prompt) or when uncapped paths exceed it — post-deploy observability rather than a pre-merge gate, so it complements the CI gate rather than replacing it.\n\nThe reference implementation at `data/ri/GC3B2-01/README.md` is built on Option A.",
+        "key_benefits": [
+          "Turns GO3B1-01's blank-by-default `runtime_token_budget.output` into a binding cap bound into every call — unbounded output that today surfaces only on the inference bill now fails the PR that leaves it uncapped.",
+          "Caps the more expensive half: output tokens typically price several times input and are unbounded by default, so this is the only pre-merge control on the runtime output-cost lever.",
+          "The AST no-bypass lint (reusing GO3B1-01's routing machinery) closes the call-site override hole — a call cannot smuggle in a higher cap than the registry declares.",
+          "The budget-inflation governance gate stops a ceiling being quietly widened to absorb a verbose new response format, because every upward change leaves an auditable cost-rationale trail.",
+          "Distinct lever from its siblings and covers a blind spot — GC3B1-01 caps input footprint (static, build-time), GC5B1-01 caps a whole agent run, GO3B1-01 only mandates the field exists; none caps a single call's output. Paradigm-neutral, because response length drives cost under per-token billing and self-hosted compute time alike."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR, a lint fails the build for any registered prompt template whose `runtime_token_budget.output` is absent or zero — a real output ceiling rather than a placeholder is required. In addition, an AST lint (extending GO3B1-01's no-inline routing lint) fails any model call site that passes its own output-cap parameter (`max_tokens` / `max_output_tokens` / provider equivalent) directly to the model, bypassing the SDK's application of the registered ceiling: a non-literal (variable or computed) override fails outright, and a literal override is permitted only when it is ≤ the template's declared `runtime_token_budget.output`. When no override is present, the central SDK applies the declared ceiling by construction. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "On any PR that raises a template's `runtime_token_budget.output` above its previous committed value (diffed against the merge base), the PR must also add a budget-change rationale — either an entry in the template's `change_history` within the manifest row, or a linked ADR under `docs/adrs/` — recording why the ceiling was raised and the per-call output-token cost delta. A lint detects any upward output-budget change without an accompanying rationale entry and fails the PR. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-06-16",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENCOST03-BP02 (Control model response length), anchored whole-BP (implementation_step null). The output-side mirror of GC3B1-01 (input footprint) and the fourth GENCOST principle; 23rd in the catalogue. Resumed as the flagged 'most likely remaining promote candidate' after the GENOPS pillar closed 2026-06-16. step_promotion rubric 3/3/3/3 (has_enforceable_artefact: declared `runtime_token_budget.output` ceiling + pre-merge declaration lint + AST no-bypass routing lint + budget-inflation governance lint; architecturally_distinct: GO3B1-01 mandates the output field EXISTS while this makes it a binding, SDK-applied, un-bypassable cap — different failure mode, sibling named with disjoint artefacts; in_bp_scope: BP literally 'Control model response length'; not_vendor_menu: Bedrock inference-parameters / stop sequences stripped to framework_mappings + Option B, generic declared-cap-bound-into-the-call mandate survives). HALT: presented the candidate plus the absorption counter (GO3B1-01 already models the output budget field); user pressed hard on enforceability — specifically how a CI gate checks response length when the response does not exist at build time. RESOLVED in discussion: the gate canNOT check actual output length (a runtime quantity); it proves the cap is DECLARED + APPLIED BY THE SDK + UN-BYPASSED, and the model honours max_tokens at runtime. This is the 'wired-in, not runtime behaviour' enforcement limit, recorded in enforcement_limits.md — the distinguishing point from GC3B1-01, whose input footprint IS statically computable. User directed PROMOTE. SOLUTION: Option A (declared-and-bound, manifest-derivable) is the mandated spine — a real `runtime_token_budget.output`, the SDK applying it as max_tokens by construction, a declaration lint, an AST no-bypass lint extending GO3B1-01's routing lint, and a budget-inflation governance lint. Options B (declared stop_sequences) and C (runtime alarm on GO3B2-01's per-call output-token signal) documented as additive alternative RIs; the RI and gates are built on Option A only. focus_area P52 — Cost-aware Prompting (shared with GC3B1-01/GC3B3-01, mirroring AWS GENCOST03). Hand-scored against section rubrics: statement 3/2/3/2/3 (abstract should/ought register, artefact + mechanism live in gates); problem 3/3/3/3/3/3 (every example is an output-cost failure the model-selection / hosting gates and GO3B1-01's existence-only check all miss); solution 3/3/3/3/3/2 (Option A artefacts named with paths + gate points; B/C explicitly optional so coverage scopes to Option A; the enforcement limit stated in-line); gates 3/3/3/3/3/3 (two pre_merge required-status-check gates — declaration + no-bypass routing, and budget-inflation governance). tier rubric D1=no (capping output tokens is cost discipline; no regulator / audit / litigation exposure) / D2=2 (a declaration lint + an AST no-bypass lint + a budget-governance lint shipped in the central llm-sdk suite, reused across projects; thinner than GC3B1-01 because it adds no new tokenizer computation — it extends GO3B1-01's existing no-inline AST lint with one parameter) → recommended_centralise → enterprise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check, parallel to GC3B1-01 / GC2B2-01 / GO3B1-01. maturity_level scaling — pays off at project #2: the gate sits on GO3B1-01's scaling-tier registry substrate and amortises once a portfolio of prompt templates exists; foundational rejected because a principle cannot pay off before its scaling-tier substrate is adopted. depends_on_deployment: no — Option A is manifest-derivable + call-graph-static. serving_paradigm all four mandatory — response length drives cost in BOTH managed per-token billing AND self-hosted/provisioned compute time. impact_level Medium (matches the GENCOST03 BP risk rating and the cost-pillar pattern; output-cost failures are recoverable via capping, not customer regressions or safety events). applicability { llm/rag/agentic: mandatory, ml: nice_to_have } matching the cost siblings (classical ML has no prompt-shaped artefact). dependencies [{ GO3B1-01: hard }] — reuses the manifest row, the runtime_token_budget.output field, the SDK call boundary that applies the cap, and the no-inline AST lint machinery. AIGP III.B unverified, parallel to the cost siblings. references: two real links surfaced during the BP02 walk (Amazon Bedrock inference-parameters doc for max_tokens; Stackviv max-tokens/stop-sequences article) — a LIGHTER set than GC3B1-01's five, recorded as an open item to enrich in a review pass. explain_prompt compiled with the uncapped-output cost failure shape (output budget blank-by-default, every call uncapped, the more-expensive half left to the model's discretion), distinguished from GC3B1-01's input-side cumulative-drift framing. RI README at data/ri/GC3B2-01/README.md built on Option A. OPEN ITEMS: (1) JSON parse run in-session after merge (see decisions.md). (2) framework_mappings.aws mapping_state is 'unverified' — the BP title + GENCOST03 question are confirmed but the live page's numbered implementation steps could not be fetched this session (docs.aws.amazon.com timeouts); confirm the step decomposition and promote to 'verified' in a follow-up pass. (3) references set is light (2 vs the sibling's 5) — enrich with named-company output-cost cases in review. (4) S3 re-upload (ea/principles.json) + frontend build for the live app."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GC3B2-01 — Keep the cost of every response under deliberate control — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery registered prompt template declares a real output-token ceiling (the `runtime_token_budget.output` field GO3B1-01 already carries in the prompt manifest), not a blank or placeholder. The central LLM SDK applies that ceiling as the model call's max_tokens by construction, so the call site does not choose the cap. A pre-merge gate fails the build when a template leaves the output budget unset or zero, and an AST lint fails any call site that passes its own output-cap parameter that bypasses the registered ceiling (a variable override fails outright; a literal override is allowed only when it is at or below the declared ceiling). A second gate requires a recorded cost rationale whenever an output ceiling is raised. Crucially, the gate proves the cap is declared, applied, and un-bypassed — it canNOT check the actual length of a response, because the response does not exist at build time; the model honours max_tokens at runtime.\n\nTHE FAILURE SHAPE\n\nThis is an uncapped-output cost failure: response length is left to the model's discretion, and output tokens are the more expensive half of the per-call bill. A team has prompt templates registered (the GO3B1-01 registry is in place — templates are addressable, each could carry a `runtime_token_budget.output`), but the output budgets were never set, or were set once and never wired into the call, or are quietly overridden at the call site. Day to day, nobody watches response length: a summariser emits far longer answers than the task needs, a chatbot overruns a 'be brief' instruction the model treats as a suggestion, an agent step pastes a verbose tool result into its completion, a call site hard-codes a generous max_tokens to avoid truncation. Each is locally reasonable; none fails any check, because no ceiling is declared or bound; and the cost compounds across templates and calls.\n\nThe waste is invisible until a triggering moment forces it into view: a quarterly cost review flags the workload as a top spender; finance attributes a double-digit inference-cost rise to 'model usage growth' and asks engineering to explain it; a per-template token dashboard finally splits input from output and the output column dwarfs the input; a migration audit finds templates with blank output budgets running multi-thousand-token completions. At that moment the team finds there was never a cap to begin with — the budget field sat blank, or a call quietly overrode it — and no review gate ever required the ceiling to be set or honoured. Model-selection and hosting-cost gates pass clean because neither looks at response length.\n\nThe principle's value is forcing a real output ceiling to be declared and bound into every call at review time, so uncapped output fails the PR rather than accumulating silently onto the inference bill — while being honest that the gate guarantees the cap is wired, not that the model stops at exactly that length under live load.\n\nAPPLICABILITY\n\nGC3B2-01 is mandatory for LLM Only, RAG, and Agent workloads — anywhere prompts exist as registered templates whose responses cost output tokens. It is nice_to_have for traditional ML workloads, which have no prompt-shaped artefact. If the chosen Implementation type is ML, open use_case_background with one italicised sentence noting the principle is most acute for LLM-based and agentic workloads where response length is a direct cost driver, and that the example below is illustrative of how the same uncapped-output cost failure would manifest in the closest analogue.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GC3B2-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150–250 words. Describe an enterprise with one or more AI workloads in production whose prompts are registered as versioned templates (assume the GO3B1-01 registry is in place; do not labour it). Be specific about the industry and the implementation type. Name two or three templates owned by a team, the integrating systems (with plausible invented names), and the kind of response each produces (a summary, a chat reply, an agent tool-synthesis step). Crucially: hint offhandedly at the absent cap — note that output budgets were left blank at registration, that teams rely on prompt instructions like 'be concise' to keep answers short, that nobody watches per-template output tokens. The reader should picture a confident team where the registry exists and response cost has never been a review-time concern. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200–350 words. Describe the moment the accumulated output-cost waste surfaces. Walk through chronologically: name the trigger (a quarterly cost review; finance attributing an inference-cost rise to 'usage growth'; a per-template dashboard splitting input from output tokens; a model-migration audit). Then describe what the team tries to do and where it falls apart — they find output budgets that were never set, a call site that hard-coded a generous max_tokens, a summariser emitting several times the tokens the task needs; they realise no gate ever required a cap or caught the override. Name roles (the platform engineer building the cost dashboard; the finance partner asking for attribution; the engineer who hard-coded max_tokens). Make the consequence concrete — months of accumulated per-call output overspend across the portfolio, a scramble to retro-fit caps, a budget field that turned out to be blank. The failure must demonstrate something a declared-and-bound output-cap gate would have caught at the PR that left the ceiling unset or allowed the bypass — not a generic 'our bill was high' regression.\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name systems, roles, templates. 'The claims-summary template' not 'the AI prompt'.\n- Match the implementation type honestly: RAG retrieves before generating; Agent reasons over steps and calls tools; LLM Only is single-turn or prompt-chained; ML is classical with no LLM in the loop.\n- Match the industry honestly. Use vocabulary the industry actually uses.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly ('roughly 1,500 tokens per response', 'about a quarter before the pattern surfaced').\n- Do not invent regulatory specifics. Generic framing only ('the firm's quarterly cost review').\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-06-16",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
       "standard_id": "ST-GC3B3-01",
       "principle_id": "PR-GC3B3-01",
       "u_value": "No Waste",
       "u_principle": "The same work is never paid for twice.",
       "references": [
-        { "url": "https://medium.com/@mdfadil/prompt-caching-saves-money-until-it-doesnt-8519c470918d", "title": "Prompt Caching Saves Money Until It Doesn't", "source": "Medium", "note": "A bill doubles weeks after caching was 'enabled' because an injected timestamp and reordered JSON tool-schema keys silently broke the static prefix — the silent-break and false-positive cache failures this principle's declare-and-recompute gate is designed to catch.", "date": "2026-06-06" },
-        { "url": "https://github.com/openclaw/openclaw/issues/40256", "title": "System prompt section ordering breaks LLM prefix caching for local models", "source": "GitHub", "note": "A concrete bug report of prompt section ordering silently invalidating the cacheable prefix — the mis-declared / broken-prefix case this principle gates against at review time.", "date": "2026-06-06" }
+        {
+          "url": "https://medium.com/@mdfadil/prompt-caching-saves-money-until-it-doesnt-8519c470918d",
+          "title": "Prompt Caching Saves Money Until It Doesn't",
+          "source": "Medium",
+          "note": "A bill doubles weeks after caching was 'enabled' because an injected timestamp and reordered JSON tool-schema keys silently broke the static prefix — the silent-break and false-positive cache failures this principle's declare-and-recompute gate is designed to catch.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://github.com/openclaw/openclaw/issues/40256",
+          "title": "System prompt section ordering breaks LLM prefix caching for local models",
+          "source": "GitHub",
+          "note": "A concrete bug report of prompt section ordering silently invalidating the cacheable prefix — the mis-declared / broken-prefix case this principle gates against at review time.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO3B1-01", "kind": "hard", "reason": "Needs GO3B1-01's registered, addressable prompt templates, the manifest the cache fields live in, and its per-provider tokenizer adapters; there is no template body or `template_id` to mark a cache checkpoint on without the registry." },
-        { "principle_id": "GC3B1-01", "kind": "soft", "reason": "Reuses GC3B1-01's tokenizer-integration pattern for static-token counting; GC3B3-01 computes the contiguous cache-prefix specifically (the fixed run before the first variable) rather than total scaffolding tokens, so it extends rather than strictly requires GC3B1-01." }
+        {
+          "principle_id": "GO3B1-01",
+          "kind": "hard",
+          "reason": "Needs GO3B1-01's registered, addressable prompt templates, the manifest the cache fields live in, and its per-provider tokenizer adapters; there is no template body or `template_id` to mark a cache checkpoint on without the registry."
+        },
+        {
+          "principle_id": "GC3B1-01",
+          "kind": "soft",
+          "reason": "Reuses GC3B1-01's tokenizer-integration pattern for static-token counting; GC3B3-01 computes the contiguous cache-prefix specifically (the fixed run before the first variable) rather than total scaffolding tokens, so it extends rather than strictly requires GC3B1-01."
+        }
       ],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P52 — Cost-aware Prompting",
       "impact_level": "Medium",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "nice_to_have", "self_hosted_unmanaged": "nice_to_have" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "nice_to_have",
+        "self_hosted_unmanaged": "nice_to_have"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -1922,17 +2388,42 @@
       "u_value": "Lean by Design",
       "u_principle": "A system carries no more weight than the job needs.",
       "references": [
-        { "url": "https://towardsdatascience.com/649627-2/", "title": "Scaling Vector Search: Comparing Quantization and Matryoshka Embeddings for 80% Cost Reduction", "source": "Towards Data Science", "note": "Documents this principle's cost lever directly — vector-store storage and search cost are linear in embedding dimension, and truncating the dimension (alone or with quantization) cuts infrastructure cost up to 80% while retrieval quality holds, the saving an oversized default leaves on the table.", "date": "2026-06-06" },
-        { "url": "https://www.mindstudio.ai/blog/what-is-gemini-embedding-2", "title": "Gemini Embedding 2: Variants, Dimensions, and Use Cases", "source": "MindStudio", "note": "Shows the default-taken-unquestioned failure is avoidable: a current production embedding model can be truncated from 3,072 down to 768 or 256 dimensions without a significant drop in retrieval quality, so taking the 3,072 default sets several times the necessary vector-store cost.", "date": "2026-06-06" }
+        {
+          "url": "https://towardsdatascience.com/649627-2/",
+          "title": "Scaling Vector Search: Comparing Quantization and Matryoshka Embeddings for 80% Cost Reduction",
+          "source": "Towards Data Science",
+          "note": "Documents this principle's cost lever directly — vector-store storage and search cost are linear in embedding dimension, and truncating the dimension (alone or with quantization) cuts infrastructure cost up to 80% while retrieval quality holds, the saving an oversized default leaves on the table.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://www.mindstudio.ai/blog/what-is-gemini-embedding-2",
+          "title": "Gemini Embedding 2: Variants, Dimensions, and Use Cases",
+          "source": "MindStudio",
+          "note": "Shows the default-taken-unquestioned failure is avoidable: a current production embedding model can be truncated from 3,072 down to 768 or 256 dimensions without a significant drop in retrieval quality, so taking the 3,072 default sets several times the necessary vector-store cost.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GC1B1-01", "kind": "soft", "reason": "The embedding-model choice recorded in GC1B1-01's model-selection ADR determines the vector dimensions available to pick within; GC4B1-01 gates the declared dimension against the deployed index independently of that ADR, so it composes with but does not require it." }
+        {
+          "principle_id": "GC1B1-01",
+          "kind": "soft",
+          "reason": "The embedding-model choice recorded in GC1B1-01's model-selection ADR determines the vector dimensions available to pick within; GC4B1-01 gates the declared dimension against the deployed index independently of that ADR, so it composes with but does not require it."
+        }
       ],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P53 — Cost-informed Vector Stores",
       "impact_level": "Medium",
-      "applicability": { "rag": "mandatory", "agentic": "mandatory", "ml": "nice_to_have" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "nice_to_have"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -2044,15 +2535,34 @@
       "u_value": "Predictability",
       "u_principle": "A system's cost and reach stay inside bounds set in advance.",
       "references": [
-        { "url": "https://dev.to/waxell/the-47000-agent-loop-why-token-budget-alerts-arent-budget-enforcement-389i", "title": "The $47,000 Agent Loop: Why Token Budget Alerts Aren't Budget Enforcement", "source": "DEV Community (Waxell)", "note": "Documents this principle's exact failure mode and the alerts-are-not-enforcement gap it closes: four cooperating LangChain agents ping-ponged in an unterminated but otherwise-valid reasoning loop for eleven days and burned roughly $47,000 — no agent malfunction, simply no external stopping condition to halt the loop, with monitoring dashboards staying green because after-the-fact alerting is not pre-execution enforcement.", "date": "2026-06-06" },
-        { "url": "https://explore.n1n.ai/blog/prevent-runaway-ai-agent-costs-token-spirals-2026-05-25", "title": "Preventing Runaway AI Agent Costs and Token Spirals", "source": "n1n.ai", "note": "Records a single misbehaving research-agent session burning roughly $48,000 of model spend in about fourteen hours, and names the root-cause pattern this principle enforces against — no per-agent run ceiling and no mechanism to terminate a session, so an iterative agent that never converges bills without bound until it is killed by hand.", "date": "2026-06-06" }
+        {
+          "url": "https://dev.to/waxell/the-47000-agent-loop-why-token-budget-alerts-arent-budget-enforcement-389i",
+          "title": "The $47,000 Agent Loop: Why Token Budget Alerts Aren't Budget Enforcement",
+          "source": "DEV Community (Waxell)",
+          "note": "Documents this principle's exact failure mode and the alerts-are-not-enforcement gap it closes: four cooperating LangChain agents ping-ponged in an unterminated but otherwise-valid reasoning loop for eleven days and burned roughly $47,000 — no agent malfunction, simply no external stopping condition to halt the loop, with monitoring dashboards staying green because after-the-fact alerting is not pre-execution enforcement.",
+          "date": "2026-06-06"
+        },
+        {
+          "url": "https://explore.n1n.ai/blog/prevent-runaway-ai-agent-costs-token-spirals-2026-05-25",
+          "title": "Preventing Runaway AI Agent Costs and Token Spirals",
+          "source": "n1n.ai",
+          "note": "Records a single misbehaving research-agent session burning roughly $48,000 of model spend in about fourteen hours, and names the root-cause pattern this principle enforces against — no per-agent run ceiling and no mechanism to terminate a session, so an iterative agent that never converges bills without bound until it is killed by hand.",
+          "date": "2026-06-06"
+        }
       ],
       "dependencies": [],
       "pillar": "P5 — Cost Optimization",
       "focus_area": "P54 — Cost-informed Agents",
       "impact_level": "High",
-      "applicability": { "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -2164,18 +2674,48 @@
       "u_value": "Confidentiality",
       "u_principle": "No one should learn through an AI system what they couldn't learn directly.",
       "references": [
-        { "url": "https://ragaboutit.com/the-permission-layer-problem-why-your-enterprise-rag-is-a-security-time-bomb/", "title": "The Permission Layer Problem: Why Your Enterprise RAG Is a Security Time Bomb", "source": "generation RAG", "note": "Documents this principle's exact failure mode: when documents from Confluence/SharePoint/wikis are embedded into a vector store they lose their source-system permissions, so the retriever has no way to distinguish a confidential contract from a public FAQ and serves whatever is nearest — the cross-authorization-boundary retrieval this principle's identity-scoped filter prevents.", "date": "2026-06-07" },
-        { "url": "https://www.we45.com/post/rag-systems-are-leaking-sensitive-data", "title": "RAG Systems are Leaking Sensitive Data", "source": "we45", "note": "Maps the two dataset-leakage modes this principle addresses — sensitive data leaking to end users and confidential content reaching unauthorized internal users through a shared store with no per-query authorization.", "date": "2026-06-07" },
-        { "url": "https://www.kiteworks.com/cybersecurity-risk-management/prevent-data-leakage-rag-pipelines/", "title": "Secure RAG Pipelines: Prevent Data Leakage with Zero-Trust", "source": "Kiteworks", "note": "Argues for zero-trust, identity-scoped retrieval over a multi-tenant vector store — the access-controlled namespace / per-query permission filter (OWASP LLM cross-tenant leakage) this principle mandates.", "date": "2026-06-07" }
+        {
+          "url": "https://ragaboutit.com/the-permission-layer-problem-why-your-enterprise-rag-is-a-security-time-bomb/",
+          "title": "The Permission Layer Problem: Why Your Enterprise RAG Is a Security Time Bomb",
+          "source": "generation RAG",
+          "note": "Documents this principle's exact failure mode: when documents from Confluence/SharePoint/wikis are embedded into a vector store they lose their source-system permissions, so the retriever has no way to distinguish a confidential contract from a public FAQ and serves whatever is nearest — the cross-authorization-boundary retrieval this principle's identity-scoped filter prevents.",
+          "date": "2026-06-07"
+        },
+        {
+          "url": "https://www.we45.com/post/rag-systems-are-leaking-sensitive-data",
+          "title": "RAG Systems are Leaking Sensitive Data",
+          "source": "we45",
+          "note": "Maps the two dataset-leakage modes this principle addresses — sensitive data leaking to end users and confidential content reaching unauthorized internal users through a shared store with no per-query authorization.",
+          "date": "2026-06-07"
+        },
+        {
+          "url": "https://www.kiteworks.com/cybersecurity-risk-management/prevent-data-leakage-rag-pipelines/",
+          "title": "Secure RAG Pipelines: Prevent Data Leakage with Zero-Trust",
+          "source": "Kiteworks",
+          "note": "Argues for zero-trust, identity-scoped retrieval over a multi-tenant vector store — the access-controlled namespace / per-query permission filter (OWASP LLM cross-tenant leakage) this principle mandates.",
+          "date": "2026-06-07"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO3B2-01", "kind": "soft", "reason": "Retrieval-authorization decisions (the allowed/denied chunk sets per query) are emitted through GO3B2-01's observability SDK to give the read-side audit trail; the access-control gate and the identity-scoped filter function without it, so the dependency strengthens rather than enables." }
+        {
+          "principle_id": "GO3B2-01",
+          "kind": "soft",
+          "reason": "Retrieval-authorization decisions (the allowed/denied chunk sets per query) are emitted through GO3B2-01's observability SDK to give the read-side audit trail; the access-control gate and the identity-scoped filter function without it, so the dependency strengthens rather than enables."
+        }
       ],
       "pillar": "P2 — Security",
       "focus_area": "P21 — Endpoint Security",
       "impact_level": "High",
-      "applicability": { "rag": "mandatory", "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "rag": "mandatory",
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "scaling",
       "framework_mappings": {
         "aws": {
@@ -2290,9 +2830,21 @@
       ],
       "evidence": {
         "artefacts": [
-          { "name": "Per-store multi-tenancy + acl-label coverage report", "location": "CI artefact from the `retrieval/access_check` lint, per workload repo", "check": "Every multi-tenant store's ingestion paths write the acl block; coverage is 100% with no unlabelled write path." },
-          { "name": "Routed-retrieval lint log", "location": "CI artefact on the integration branch", "check": "No direct vector-store client call against a multi-tenant store; all retrieval goes through the central retrieval SDK at or above the version floor." },
-          { "name": "Quarterly acl label-audit sample", "location": "Security team review record (ticket/sign-off log)", "check": "Sampled document acl labels match their source-system classification; mislabelling findings are tracked to closure." }
+          {
+            "name": "Per-store multi-tenancy + acl-label coverage report",
+            "location": "CI artefact from the `retrieval/access_check` lint, per workload repo",
+            "check": "Every multi-tenant store's ingestion paths write the acl block; coverage is 100% with no unlabelled write path."
+          },
+          {
+            "name": "Routed-retrieval lint log",
+            "location": "CI artefact on the integration branch",
+            "check": "No direct vector-store client call against a multi-tenant store; all retrieval goes through the central retrieval SDK at or above the version floor."
+          },
+          {
+            "name": "Quarterly acl label-audit sample",
+            "location": "Security team review record (ticket/sign-off log)",
+            "check": "Sampled document acl labels match their source-system classification; mislabelling findings are tracked to closure."
+          }
         ],
         "review_mode": "central_review_at_gate",
         "sign_off": "binary"
@@ -2334,18 +2886,47 @@
       "u_value": "Safety",
       "u_principle": "People are never the test surface for harmful or misleading output.",
       "references": [
-        { "url": "https://aibusiness.com/nlp/air-canada-held-responsible-for-chatbot-s-hallucinations-", "title": "Air Canada Held Responsible for Chatbot's Hallucinations", "source": "AI Business", "note": "A tribunal held Air Canada liable for its chatbot inventing a bereavement-fare policy and ordered a payout — the exact failure this principle prevents: an unvalidated model response reaching a user as binding, with no guardrail and no fallback.", "date": "2026-06-07" },
-        { "url": "https://gizmodo.com/ai-chevy-dealership-chatgpt-bot-customer-service-fail-1851111825", "title": "I'd Buy That for a Dollar: Chevy Dealership's AI Chatbot Goes Rogue", "source": "Gizmodo", "note": "A dealership chatbot with no guardrails was manipulated into 'agreeing' to sell a $76k Tahoe for $1 and calling it legally binding — a model output shipped to a user with no content/topic guardrail and no fallback, the failure this principle gates against.", "date": "2026-06-07" }
+        {
+          "url": "https://aibusiness.com/nlp/air-canada-held-responsible-for-chatbot-s-hallucinations-",
+          "title": "Air Canada Held Responsible for Chatbot's Hallucinations",
+          "source": "AI Business",
+          "note": "A tribunal held Air Canada liable for its chatbot inventing a bereavement-fare policy and ordered a payout — the exact failure this principle prevents: an unvalidated model response reaching a user as binding, with no guardrail and no fallback.",
+          "date": "2026-06-07"
+        },
+        {
+          "url": "https://gizmodo.com/ai-chevy-dealership-chatgpt-bot-customer-service-fail-1851111825",
+          "title": "I'd Buy That for a Dollar: Chevy Dealership's AI Chatbot Goes Rogue",
+          "source": "Gizmodo",
+          "note": "A dealership chatbot with no guardrails was manipulated into 'agreeing' to sell a $76k Tahoe for $1 and calling it legally binding — a model output shipped to a user with no content/topic guardrail and no fallback, the failure this principle gates against.",
+          "date": "2026-06-07"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO3B1-01", "kind": "soft", "reason": "The guardrail wrapper rides GO3B1-01's central LLM SDK call path and reuses its no-inline-call AST lint to prove no raw model response bypasses the guardrail; guardrails can also be applied via a direct ApplyGuardrail call, so it composes with rather than strictly requires the registry." },
-        { "principle_id": "GO1B1-01", "kind": "soft", "reason": "The periodic guardrail-efficacy red-team runs an adversarial fixture set through the guardrail using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it." }
+        {
+          "principle_id": "GO3B1-01",
+          "kind": "soft",
+          "reason": "The guardrail wrapper rides GO3B1-01's central LLM SDK call path and reuses its no-inline-call AST lint to prove no raw model response bypasses the guardrail; guardrails can also be applied via a direct ApplyGuardrail call, so it composes with rather than strictly requires the registry."
+        },
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "soft",
+          "reason": "The periodic guardrail-efficacy red-team runs an adversarial fixture set through the guardrail using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it."
+        }
       ],
       "pillar": "P2 — Security",
       "focus_area": "P22 — Response Validation",
       "impact_level": "High",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -2489,18 +3070,47 @@
       "u_value": "Integrity",
       "u_principle": "A system holds its purpose even when someone tries to turn it against itself.",
       "references": [
-        { "url": "https://time.com/6564726/ai-chatbot-dpd-curses-criticizes-company/", "title": "AI Chatbot Curses at Customer and Criticizes Company", "source": "TIME", "note": "A DPD customer told the support chatbot to 'disregard any rules' and swear; the model abandoned its instructions and insulted its own company — an unscreened user input overriding the application's behaviour, the exact failure this principle's input guardrail prevents.", "date": "2026-06-07" },
-        { "url": "https://oecd.ai/en/incidents/2023-02-10-4440", "title": "Bing Chatbot Exposes Confidential Instructions After Prompt Injection Attack", "source": "OECD.AI Incidents", "note": "A user typed 'ignore previous instructions' and made Bing Chat print its hidden system prompt (internal alias 'Sydney' and its directives) — a prompt-extraction injection through unvalidated user input, the sensitive-information-extraction outcome AWS GENSEC04-BP02 names.", "date": "2026-06-07" }
+        {
+          "url": "https://time.com/6564726/ai-chatbot-dpd-curses-criticizes-company/",
+          "title": "AI Chatbot Curses at Customer and Criticizes Company",
+          "source": "TIME",
+          "note": "A DPD customer told the support chatbot to 'disregard any rules' and swear; the model abandoned its instructions and insulted its own company — an unscreened user input overriding the application's behaviour, the exact failure this principle's input guardrail prevents.",
+          "date": "2026-06-07"
+        },
+        {
+          "url": "https://oecd.ai/en/incidents/2023-02-10-4440",
+          "title": "Bing Chatbot Exposes Confidential Instructions After Prompt Injection Attack",
+          "source": "OECD.AI Incidents",
+          "note": "A user typed 'ignore previous instructions' and made Bing Chat print its hidden system prompt (internal alias 'Sydney' and its directives) — a prompt-extraction injection through unvalidated user input, the sensitive-information-extraction outcome AWS GENSEC04-BP02 names.",
+          "date": "2026-06-07"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO3B1-01", "kind": "soft", "reason": "The input guardrail rides GO3B1-01's central LLM SDK call path and reuses its no-inline-call AST lint (input side) to prove no user-influenced text reaches the model un-screened; the untrusted-input context boundary in the prompt template is also enforced by GO3B1-01's registry. Guardrails can also be applied via a direct ApplyGuardrail call, so it composes with rather than strictly requires the registry." },
-        { "principle_id": "GO1B1-01", "kind": "soft", "reason": "The periodic prompt-injection red-team runs a curated injection corpus through the input guardrail using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it." }
+        {
+          "principle_id": "GO3B1-01",
+          "kind": "soft",
+          "reason": "The input guardrail rides GO3B1-01's central LLM SDK call path and reuses its no-inline-call AST lint (input side) to prove no user-influenced text reaches the model un-screened; the untrusted-input context boundary in the prompt template is also enforced by GO3B1-01's registry. Guardrails can also be applied via a direct ApplyGuardrail call, so it composes with rather than strictly requires the registry."
+        },
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "soft",
+          "reason": "The periodic prompt-injection red-team runs a curated injection corpus through the input guardrail using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it."
+        }
       ],
       "pillar": "P2 — Security",
       "focus_area": "P23 — Prompt Security",
       "impact_level": "High",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -2636,18 +3246,45 @@
       "u_value": "Accountable Agency",
       "u_principle": "Acting in the world is irreversible, so nothing consequential happens on the model's say-so alone.",
       "references": [
-        { "url": "https://fortune.com/2025/07/23/ai-coding-tool-replit-wiped-database-called-it-a-catastrophic-failure/", "title": "AI coding tool Replit wiped a software company's database in 'catastrophic failure'", "source": "Fortune", "note": "A Replit AI agent made unauthorized changes to live infrastructure and deleted production data for 1,200+ companies despite an explicit 'code and action freeze' — an agent taking a destructive, externally-visible action beyond its intended scope with no human approval gate, the exact excessive-agency failure this principle's write-gate prevents.", "date": "2026-06-08" },
-        { "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/", "title": "OWASP Top 10 for LLM Applications — LLM08:2025 Excessive Agency", "source": "OWASP Foundation", "note": "The canonical framework definition AWS GENSEC05 itself cites: excessive agency arises from excessive functionality (tools beyond task scope), excessive permissions (tools with broader privileges than needed), and excessive autonomy (high-impact actions with no human in the loop). This principle's manifest caps functionality, the per-tool execution role caps permissions, and the write-gate caps autonomy.", "date": "2026-06-08" }
+        {
+          "url": "https://fortune.com/2025/07/23/ai-coding-tool-replit-wiped-database-called-it-a-catastrophic-failure/",
+          "title": "AI coding tool Replit wiped a software company's database in 'catastrophic failure'",
+          "source": "Fortune",
+          "note": "A Replit AI agent made unauthorized changes to live infrastructure and deleted production data for 1,200+ companies despite an explicit 'code and action freeze' — an agent taking a destructive, externally-visible action beyond its intended scope with no human approval gate, the exact excessive-agency failure this principle's write-gate prevents.",
+          "date": "2026-06-08"
+        },
+        {
+          "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+          "title": "OWASP Top 10 for LLM Applications — LLM08:2025 Excessive Agency",
+          "source": "OWASP Foundation",
+          "note": "The canonical framework definition AWS GENSEC05 itself cites: excessive agency arises from excessive functionality (tools beyond task scope), excessive permissions (tools with broader privileges than needed), and excessive autonomy (high-impact actions with no human in the loop). This principle's manifest caps functionality, the per-tool execution role caps permissions, and the write-gate caps autonomy.",
+          "date": "2026-06-08"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO3B1-01", "kind": "soft", "reason": "The action gate rides a central agent SDK — the action-plane sibling of GO3B1-01's central LLM SDK — and reuses GO3B1-01's no-inline-call AST lint pattern (applied to tool execution) to prove no tool is reached except through the wrapper. The wrapper can also be a standalone library, so it composes with rather than strictly requires GO3B1-01's registry." },
-        { "principle_id": "GO1B1-01", "kind": "soft", "reason": "The quarterly agent red-team / blast-radius review runs an adversarial action corpus through the gated agent using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it." }
+        {
+          "principle_id": "GO3B1-01",
+          "kind": "soft",
+          "reason": "The action gate rides a central agent SDK — the action-plane sibling of GO3B1-01's central LLM SDK — and reuses GO3B1-01's no-inline-call AST lint pattern (applied to tool execution) to prove no tool is reached except through the wrapper. The wrapper can also be a standalone library, so it composes with rather than strictly requires GO3B1-01's registry."
+        },
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "soft",
+          "reason": "The quarterly agent red-team / blast-radius review runs an adversarial action corpus through the gated agent using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it."
+        }
       ],
       "pillar": "P2 — Security",
       "focus_area": "P24 — Agentic Action Control",
       "impact_level": "High",
-      "applicability": { "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -2791,18 +3428,48 @@
       "u_value": "Integrity",
       "u_principle": "A model becomes what it learns, and learning cannot be undone — so nothing reaches a training run until it has been examined.",
       "references": [
-        { "url": "https://owasp.org/www-project-machine-learning-security-top-10/docs/ML02_2023-Data_Poisoning_Attack.html", "title": "OWASP Machine Learning Security Top 10 — ML02:2023 Data Poisoning Attack", "source": "OWASP Foundation", "note": "The canonical framework definition AWS GENSEC06 itself cites in its Resources: an attacker (or accident) introduces manipulated data into the training corpus so the model learns undesirable behaviour; the attack succeeds at training time and is detected, if at all, in production. This principle's purification gate is the data-layer control OWASP prescribes.", "date": "2026-06-10" },
-        { "url": "https://www.theverge.com/2016/3/24/11297050/tay-microsoft-chatbot-racist", "title": "Microsoft's Tay chatbot taken offline within 24 hours after coordinated users taught it abusive content", "source": "The Verge", "note": "The most public example of a model learning from unscreened data: coordinated users fed Tay poisonous interactions, the system learned from them with no purification layer in between, and the model had to be withdrawn — learning could not be selectively undone, only retired. Online-learning variant of the same training-time poisoning failure this principle gates.", "date": "2026-06-10" }
+        {
+          "url": "https://owasp.org/www-project-machine-learning-security-top-10/docs/ML02_2023-Data_Poisoning_Attack.html",
+          "title": "OWASP Machine Learning Security Top 10 — ML02:2023 Data Poisoning Attack",
+          "source": "OWASP Foundation",
+          "note": "The canonical framework definition AWS GENSEC06 itself cites in its Resources: an attacker (or accident) introduces manipulated data into the training corpus so the model learns undesirable behaviour; the attack succeeds at training time and is detected, if at all, in production. This principle's purification gate is the data-layer control OWASP prescribes.",
+          "date": "2026-06-10"
+        },
+        {
+          "url": "https://www.theverge.com/2016/3/24/11297050/tay-microsoft-chatbot-racist",
+          "title": "Microsoft's Tay chatbot taken offline within 24 hours after coordinated users taught it abusive content",
+          "source": "The Verge",
+          "note": "The most public example of a model learning from unscreened data: coordinated users fed Tay poisonous interactions, the system learned from them with no purification layer in between, and the model had to be withdrawn — learning could not be selectively undone, only retired. Online-learning variant of the same training-time poisoning failure this principle gates.",
+          "date": "2026-06-10"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GO1B1-01", "kind": "soft", "reason": "The quarterly seeded-poison audit runs a canary corpus of known-poisonous samples through the purification stage using GO1B1-01's eval-harness machinery and measures catch-rate against the declared threshold; the pre-merge wiring gates function without it." },
-        { "principle_id": "GS2B1-01", "kind": "soft", "reason": "Filter implementations may reuse the centrally-owned guardrail configurations (the same content/toxicity/denied-topic categories applied at the data layer, per AWS step 4's guardrail suggestion); the purification contract is satisfiable with any filter engine, so the dependency is compositional, not required." }
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "soft",
+          "reason": "The quarterly seeded-poison audit runs a canary corpus of known-poisonous samples through the purification stage using GO1B1-01's eval-harness machinery and measures catch-rate against the declared threshold; the pre-merge wiring gates function without it."
+        },
+        {
+          "principle_id": "GS2B1-01",
+          "kind": "soft",
+          "reason": "Filter implementations may reuse the centrally-owned guardrail configurations (the same content/toxicity/denied-topic categories applied at the data layer, per AWS step 4's guardrail suggestion); the purification contract is satisfiable with any filter engine, so the dependency is compositional, not required."
+        }
       ],
       "pillar": "P2 — Security",
       "focus_area": "P25 — Training Data Integrity",
       "impact_level": "High",
-      "applicability": { "llm": "mandatory", "rag": "mandatory", "agentic": "mandatory", "ml": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory",
+        "ml": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -2948,18 +3615,46 @@
       "u_value": "Privacy",
       "u_principle": "Some data has no business being near a model — protection starts before storage, not after exposure.",
       "references": [
-        { "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/", "title": "OWASP Top 10 for LLM Applications — LLM02:2025 Sensitive Information Disclosure", "source": "OWASP Foundation", "note": "The canonical framework entry for the failure this standard prevents: sensitive data (PII, financials, credentials) present in the model's accessible corpus surfaces in responses. OWASP's first listed mitigation is exactly this contract — sanitize and scrub sensitive content before it enters the data the model can reach.", "date": "2026-06-10" },
-        { "url": "https://www.wiz.io/blog/38-terabytes-of-private-data-accidentally-exposed-by-microsoft-ai-researchers", "title": "38TB of private data accidentally exposed by Microsoft AI researchers", "source": "Wiz Research", "note": "A real instance of AI-pipeline data discipline failing at the ingestion/storage layer: data destined for AI workloads was published with secrets, keys, and internal messages included because nothing screened what entered the shared store. The control point is the same one this standard gates — what goes into the corpus, not what comes out of the model.", "date": "2026-06-10" }
+        {
+          "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+          "title": "OWASP Top 10 for LLM Applications — LLM02:2025 Sensitive Information Disclosure",
+          "source": "OWASP Foundation",
+          "note": "The canonical framework entry for the failure this standard prevents: sensitive data (PII, financials, credentials) present in the model's accessible corpus surfaces in responses. OWASP's first listed mitigation is exactly this contract — sanitize and scrub sensitive content before it enters the data the model can reach.",
+          "date": "2026-06-10"
+        },
+        {
+          "url": "https://www.wiz.io/blog/38-terabytes-of-private-data-accidentally-exposed-by-microsoft-ai-researchers",
+          "title": "38TB of private data accidentally exposed by Microsoft AI researchers",
+          "source": "Wiz Research",
+          "note": "A real instance of AI-pipeline data discipline failing at the ingestion/storage layer: data destined for AI workloads was published with secrets, keys, and internal messages included because nothing screened what entered the shared store. The control point is the same one this standard gates — what goes into the corpus, not what comes out of the model.",
+          "date": "2026-06-10"
+        }
       ],
       "dependencies": [
-        { "principle_id": "GS1B3-01", "kind": "soft", "reason": "The sanitisation stage slots into the same ingestion pipeline ahead of GS1B3-01's ACL labelling, and the no-direct-store-write lint extends GS1B3-01's central-SDK AST-lint family; the sanitisation contract is independently satisfiable, so the dependency is compositional." },
-        { "principle_id": "GO1B1-01", "kind": "soft", "reason": "The quarterly seeded-PII audit runs canary documents with planted sensitive content through a test ingestion using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it." }
+        {
+          "principle_id": "GS1B3-01",
+          "kind": "soft",
+          "reason": "The sanitisation stage slots into the same ingestion pipeline ahead of GS1B3-01's ACL labelling, and the no-direct-store-write lint extends GS1B3-01's central-SDK AST-lint family; the sanitisation contract is independently satisfiable, so the dependency is compositional."
+        },
+        {
+          "principle_id": "GO1B1-01",
+          "kind": "soft",
+          "reason": "The quarterly seeded-PII audit runs canary documents with planted sensitive content through a test ingestion using GO1B1-01's eval-harness machinery; the pre-merge wiring gates function without it."
+        }
       ],
       "pillar": "P2 — Security",
       "focus_area": "P21 — Endpoint Security",
       "impact_level": "High",
-      "applicability": { "rag": "mandatory", "agentic": "mandatory" },
-      "serving_paradigm": { "api_on_demand": "mandatory", "api_provisioned": "mandatory", "self_hosted_managed": "mandatory", "self_hosted_unmanaged": "mandatory" },
+      "applicability": {
+        "rag": "mandatory",
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
       "maturity_level": "foundational",
       "framework_mappings": {
         "aws": {
@@ -2970,7 +3665,10 @@
               "focus_area": "Endpoint security",
               "question": "GENSEC01 — How do you manage access to generative AI endpoints?",
               "best_practice": "GENSEC01-BP03 — Implement least privilege access permissions for foundation models accessing data stores",
-              "implementation_step": { "number": 3, "title": "Develop a data ingestion pipeline which obfuscates or removes data that should not be processed by a foundation model" },
+              "implementation_step": {
+                "number": 3,
+                "title": "Develop a data ingestion pipeline which obfuscates or removes data that should not be processed by a foundation model"
+              },
               "mapping_state": "verified",
               "last_checked": "2026-06-10",
               "note": "Second standard promoted from GENSEC01-BP03 — the first one-BP-two-standards case in the catalogue, and the resolution of the PII-removal deferral recorded in the 2026-06-07 GS1B3-01 walk. AWS step 3 verbatim: 'Develop a data ingestion pipeline which obfuscates or removes data that should not be processed by a foundation model. Examples of this data might be personal information. The scope of this data is informed largely by the workload use case. Ingest this data from your data lake into the vector store lake house.' Sub-bullets: the customer-service example (handbooks and documentation, not company financials, staff information or HR policies) and 'Sanitizing for prohibited material should happen before the model accesses the data, at time of ingestion.' The step carries its own GenAI-distinct mandate, separate from the step-4 access-control slice GS1B3-01 took: GS1B3-01 governs WHO may retrieve a stored document (per-query authorization); this governs WHAT is allowed into the store at all (content sanitisation). Access control cannot compensate for over-ingestion — a correctly ACL'd store still leaks PII to every user authorized on the document containing it, and a single shared vector store serving several use cases (AWS's own framing) multiplies the exposure. Stripped of vendor specifics (Bedrock/SageMaker guardrails, OpenSearch, Knowledge Bases), the surviving rule: no document enters a model-accessible store until a declared sanitisation stage has masked or removed the content the workload's use case prohibits, and every ingestion run leaves an audit record. SCOPE BOUNDARIES: per-query retrieval authorization is GS1B3-01; the training-corpus twin (poison screening before a training job) is GS6B1-01 — same clean-before-the-model-touches-it idea at the two different entry points; runtime PII filters on responses are GS2B1-01's output guardrail, a backstop not a substitute (defence assumes the data should not have been retrievable in the first place). ENFORCEMENT LIMIT (data/enforcement_limits.md): the lints prove the sanitisation stage is declared, wired, and logged — not that the detectors catch real PII (a vacuous detector passes); efficacy is handed to the quarterly seeded-PII audit. Risk High (BP-level AWS rating).",
@@ -3081,6 +3779,153 @@
         "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
         "compiled_for_principle_version": "1.0.0",
         "compiled_at": "2026-06-10",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
+      "standard_id": "ST-GR3B1-01",
+      "principle_id": "PR-GR3B1-01",
+      "u_value": "Resilience",
+      "u_principle": "A model's answer can never be assumed, so the workload must be built to carry on when one call fails.",
+      "references": [
+        {
+          "url": "https://www.theregister.com/2024/02/16/air_canada_chatbot/",
+          "title": "Air Canada must honour refund policy its chatbot made up",
+          "source": "The Register",
+          "note": "An airline support chatbot returned a confident answer that did not correspond to any real policy and the customer acted on it; a recovery contract that checked the model's response against an expected shape / known-good source and fell back when it did not match is the class of control that turns an unreliable model answer into a safe outcome rather than letting it flow straight to the user.",
+          "date": "2026-06-15"
+        },
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/genrel03-bp01.html",
+          "title": "AWS Well-Architected Generative AI Lens — GENREL03-BP01: Use logic to manage prompt flows and gracefully recover from failure",
+          "source": "Amazon Web Services",
+          "note": "The anchoring AWS best practice. Names the architectural mandate directly: 'Create layers of abstraction between users and models to facilitate retries, error handling, and graceful failures', verify the model responds with expected content, define a fallback action in the absence of relevant data, and have agents classify external responses as actionable or not — a method AWS itself says 'may serve to reduce non-determinism and increase reliability'.",
+          "date": "2026-06-15"
+        }
+      ],
+      "dependencies": [
+        {
+          "principle_id": "GO3B1-01",
+          "kind": "soft",
+          "reason": "The recovery wrapper rides the central LLM SDK — the same call-plane substrate as GO3B1-01's prompt registry — and reuses GO3B1-01's no-inline-call AST lint pattern (applied to model invocation) to prove no call is made except through the wrapper. A standalone wrapper library also satisfies the contract, so it composes with rather than strictly requires GO3B1-01."
+        },
+        {
+          "principle_id": "GO3B2-01",
+          "kind": "soft",
+          "reason": "Recovery telemetry — parse-failure, retry, and fallback-trigger rates — is emitted through GO3B2-01's observability channel so a degrading workload surfaces on a dashboard; the pre-merge wiring gates function without it, so the dependency is soft."
+        }
+      ],
+      "pillar": "P3 — Reliability",
+      "focus_area": "P31 — Prompt Remediation & Recovery",
+      "impact_level": "Medium",
+      "applicability": {
+        "llm": "mandatory",
+        "rag": "mandatory",
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENREL — Reliability",
+              "focus_area": "Prompt remediation and recovery actions",
+              "question": "GENREL03 — How do you implement remediation actions for generative AI workload loops, retries, and failures?",
+              "best_practice": "GENREL03-BP01 — Use logic to manage prompt flows and gracefully recover from failure",
+              "implementation_step": null,
+              "mapping_state": "verified",
+              "last_checked": "2026-06-15",
+              "note": "First Reliability standard in the catalogue; opens the GENREL pillar (P3) and focus area P31. Anchored to the whole BP (implementation_step null): the BP's four steps are (1) error classification, (2) recovery mechanisms — retries with exponential backoff, fallback templates, circuit breakers, (3) monitoring recovery rates, (4) continuous improvement. This standard concretises the steps 1-2 core (classify the failure, then recover from it); step 3's monitoring rides GO3B2-01's emit channel rather than being re-built here, and step 4 is improvement-process advice with no commitable pre-merge artefact. Stripped of the Bedrock Flows vendor menu (iterator/condition nodes, Bedrock Flows orchestration), the surviving architectural rule is provider-neutral: every model call sits behind a layer that validates the response against an expected shape, retries retryable failures with backoff, and returns a declared fallback on exhaustion. AWS's own 'classify responses from external systems as actionable or not ... may serve to reduce non-determinism' is the GenAI-distinct slice that separates this from base-WAF REL05-BP01 (graceful degradation), which is generic resilience engineering: a normal API returns a typed contract or an error, whereas a foundation model returns plausible-looking content that may not parse, so validating non-deterministic output is the part the base framework does not cover. SIBLING DISTINCTION: GS2B1-01 checks whether a response is SAFE to release (semantic/policy), not whether it is STRUCTURALLY usable or how to recover when it is not; GC5B1-01 caps how FAR an agent runs (loop/cost ceiling), not what happens when a single call fails. This is the recover-from-a-bad-call face, unowned by any sibling. SCOPE BOUNDARY: functional correctness of the model's answer is the project's own job; this standard governs the cross-cutting recovery path, not whether the answer is right. ENFORCEMENT LIMIT (data/enforcement_limits.md): the lints prove a schema and fallback are declared and the call is routed — they cannot prove the fallback is the right one for the workflow or that the schema matches what the next step truly needs; efficacy is watched via emitted fallback-rate telemetry, not asserted by CI. NOTE: GENREL03-BP02 (Implement timeout mechanisms on agentic workflows) was walked in the same session and PARKED (not authored) — overlaps GC5B1-01's run ceiling on a different axis (wall-clock vs iterations) and risks base-WAF absorption (cross-refs REL05-BP05 client timeouts); user-directed to do BP01 only. Risk Medium."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-15",
+              "note": "Provisional mapping. A defined detect-retry-fallback path for failed or malformed model calls is an operational incident-prevention control over the model's failure surface — it keeps a single failure from cascading into an outage. Closest existing AIGP placement (same Domain IV operational-governance family as the Security guardrails); needs side-by-side review against the AIGP competency definitions to promote to verified, and may instead belong under a dedicated reliability/operational-resilience competency if one exists."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Recover gracefully when a model call goes wrong",
+        "description": "A model call can time out, hit a rate limit, get cut off at the token ceiling, refuse, or hand back content that does not fit what the next step needs — rarely on any single call, but often enough to matter once a workload runs at scale.\n\nIf nothing sits between the model and the step that consumes its answer, one of those bad calls flows straight through and breaks the request. The workload should expect this and recover predictably, rather than fail in place."
+      },
+      "problem": {
+        "description": "A foundation model call is not a function that either returns a typed result or throws. It can time out, hit a rate limit, get cut off at the token ceiling, refuse, or return plausible-looking content that does not parse into what the next step expects — and which of these happens varies run to run on the same input.\n\nThe dominant failure is that nothing sits between the model and the code that consumes its answer. A team wires the model straight into the next step because it worked in testing, and the one call in many hundreds that errors or comes back malformed flows straight through: the request crashes, hangs, or silently does the wrong thing.\n\nThe discipline is easy to get wrong in ways a naive try/catch misses:\n\n- A transient error (timeout, rate-limit) retried with no backoff or idempotency hammers the provider, or repeats a side effect that already happened.\n- A response that is valid JSON but the wrong shape passes the parse and breaks the step that trusted it.\n- A call that fails every retry with no defined fallback leaves the workflow with no safe way to proceed.\n\nNo sibling covers it: GS2B1-01 checks whether a response is safe to release, not whether it is structurally usable or how to recover when it is not; GC5B1-01 caps how far an agent can run, not what happens when a single call fails. This is the recover-from-a-bad-call face, and nothing else owns it.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A refund-triage step expects a {action, amount} object; one call returns a polite prose sentence instead, the parser throws, and the customer's request dies with a 500 rather than routing anywhere.",
+          "A nightly enrichment job calls the model 50,000 times; around thirty calls hit a rate-limit, and with no backoff-and-retry they are dropped, leaving silent gaps in the output that nobody notices for a week.",
+          "A summarisation step hits the token ceiling mid-response; the truncated JSON fails to parse, and because there is no fallback the whole document pipeline halts on a single oversized input.",
+          "A RAG answer step gets an empty result from the vector search; with no check for 'no data returned', the model confabulates an answer from nothing and it ships as fact.",
+          "A payment-status call is retried after a timeout but is not idempotent, so the downstream action fires twice."
+        ]
+      },
+      "solution": {
+        "approach": "The baseline mandate (Option A — declared-and-routed) puts a recovery contract in front of every model call, with production monitoring for the part no lint can reach.\n\nEvery model call site declares, alongside its prompt template, a recovery spec (convention `prompts/<name>/recovery.yaml`, or metadata on the registered template) carrying:\n\n- `output_schema` — the shape the next step requires (a JSON schema, or `freeform` where genuinely no structure is expected).\n- `retry` — which failures are retryable (timeout, rate-limit, parse-failure) and the backoff policy; defaults applied when omitted.\n- `fallback` — what the call returns when every retry is exhausted: a default value, a degraded response, or route-to-human / escalate.\n\nSecond, the model is called only through the central wrapper (`call_model(...)` on the central LLM SDK, the same substrate as GO3B1-01's prompt registry). The wrapper validates the response against `output_schema`, retries retryable failures with backoff, and on exhaustion returns the declared `fallback` instead of letting the failure propagate. A retried call that carries a side effect must be idempotent; the wrapper passes an idempotency key the caller honours.\n\nA central lint (convention `reliability/recovery_check`) enforces at pre-merge, as required status checks:\n\n- **Declaration completeness** — every registered call site declares an `output_schema` and a `fallback`; missing either fails the build.\n- **Routed execution** — an AST lint forbids calling the model except through the wrapper (the GO3B1-01 no-inline-call pattern, applied to the call plane), so no call ships without the recovery path.\n\nThe honest boundary (see `enforcement_limits.md`): the lints prove a schema and fallback are declared and the call is routed — they cannot prove the fallback is the right one for the workflow, or that the schema matches what the next step truly needs. Recovery efficacy is watched in production: the wrapper emits parse-failure, retry, and fallback-trigger rates through GO3B2-01's channel, and a workload whose fallback rate crosses a declared threshold is reviewed. Wiring is gated at PR time; effectiveness is monitored, not asserted by CI.",
+        "key_benefits": [
+          "Closes the recover-from-a-bad-call gap no sibling covers — GS2B1-01 checks output safety and GC5B1-01 caps agent runs, but only this turns a failed or malformed call into a predictable outcome.",
+          "Enforcement is structural — the routed-execution AST lint makes every model call carry a recovery path by construction, the same proven mechanism GO3B1-01 uses for inline calls, so one un-wrapped call cannot quietly ship.",
+          "Monitoring falls out for free — the wrapper emits parse-failure, retry, and fallback rates through GO3B2-01, so a degrading workload surfaces on a dashboard without anyone reading outputs.",
+          "Works whether or not there is structured-output support — strict provider JSON modes satisfy the validate step where available, but the contract still covers the transient failures, truncation, refusals, and empty-retrieval cases those modes do not.",
+          "Honest about its boundary — CI proves the schema and fallback are declared and routed, and the standard states plainly it does not prove the fallback is correct, handing that to production monitoring rather than implying CI made the workload reliable."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR touching a model call site, a lint verifies the site declares a recovery spec (convention `prompts/<name>/recovery.yaml` or registered-template metadata) populating `output_schema` (the shape the next step requires, or `freeform`) and `fallback` (the value or route returned when retries are exhausted), and fails when either is absent. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "An AST lint forbids invoking the model except through the central wrapper (e.g. `call_model(...)` on the central LLM SDK); a model call made inline, bypassing the wrapper, fails the PR. Same mechanism as GO3B1-01's no-inline-call lint, applied to the call plane, so every shipped call carries the validate-retry-fallback path by construction. Configured as a required status check on the integration branch via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "quarterly_review",
+          "check": "A recovery-effectiveness review is run for each workload: the parse-failure, retry, and fallback-trigger rates emitted through GO3B2-01's channel are checked against a declared threshold, and a sample of fallback paths is confirmed to leave the workflow in a safe state (not a silent wrong answer). Binary sign-off; a fallback rate above threshold or an unsafe fallback blocks continued operation until corrected. This is the named control for the recovery efficacy the pre-merge lints cannot verify (see enforcement_limits.md).",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-06-15",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENREL03-BP01 (Use logic to manage prompt flows and gracefully recover from failure). 22nd standard in the catalogue and the FIRST Reliability standard — opens the GENREL pillar (P3 — Reliability) and new focus area P31 — Prompt Remediation & Recovery. Anchored whole-BP (implementation_step null): the BP's steps 1-2 (error classification + recovery mechanisms — retries/backoff/fallback/circuit-breaker) are the concretised core; step 3 monitoring rides GO3B2-01's emit channel; step 4 is continuous-improvement process advice with no commitable artefact.\n\nORIGIN: surfaced from a session mapping the 'reason about reliability and cost like a Staff engineer' best practice onto the catalogue. Of the four concerns (non-determinism, retries, latency, token cost): token cost is fully covered (GC3 family), non-determinism is covered as an eval/drift discipline (GO1B1 family) but NOT in its runtime face, and retries + latency were unwalked. AWS distributes non-determinism across the lens; its runtime face ('variations in model outputs for similar inputs' under Reliability's common challenges) and retries both land in GENREL03 — collapsing two of the four concerns into one walk. This standard is that runtime recovery contract.\n\nstep_promotion 3/3/3/3 (hand-applied):\n- has_enforceable_artefact: per-call recovery spec (output_schema + retry + fallback) + the central wrapper + two pre-merge lints (declaration completeness, routed-execution AST). Path-shaped, binary gates.\n- architecturally_distinct: the recover-from-a-bad-call face is unowned — GS2B1-01 governs output SAFETY, GC5B1-01 governs agent RUN LENGTH; neither validates structural usability or defines recovery on failure.\n- in_bp_scope: GENREL03 is literally 'remediation actions for loops, retries, and failures' and BP01 is 'gracefully recover from failure'.\n- not_vendor_menu: strip Bedrock Flows (iterator/condition nodes, Flows orchestration) and the rule survives — validate the response, retry retryable failures with backoff, return a declared fallback; AWS's own 'classify responses as actionable or not to reduce non-determinism' is the vendor-neutral GenAI-distinct core.\n\nDecisions driven by the HALT (interactive walk where the user pressed on: whether structured-output/JSON mode already solves this — it does not, it is one half of the validate step and does not cover transient failures, truncation, refusals, empty retrieval, or semantic wrongness; and how a central team can monitor this — it owns the wrapper, enforces routing with an AST lint, and reads the emitted fallback-rate telemetry rather than policing outputs):\n1. PROMOTE BP01 only; PARK BP02 (timeouts on agentic workflows) — user-directed. BP02 overlaps GC5B1-01 on a different axis (wall-clock vs iteration ceiling) and risks base-WAF absorption (cross-refs REL05-BP05 client timeouts); recorded in lens_mapping.md as parked, not not_promoted.\n2. The GenAI-distinct slice that survives base-WAF REL05-BP01 (generic graceful degradation) is validating NON-DETERMINISTIC model output — a normal API returns a typed contract or an error; an LLM returns plausible garbage. This is the runtime face of non-determinism the catalogue lacked.\n3. SCOPE BOUNDARY: functional correctness of the answer is the project's job; this governs the cross-cutting recovery path only (consistent with the catalogue's functional-vs-NFR remit rule in data/CLAUDE.md).\n4. ENFORCEMENT LIMIT (same honesty boundary as the guardrail family): lints prove DECLARED + ROUTED; they cannot prove the fallback is appropriate or the schema correct. Efficacy → quarterly recovery-effectiveness review over GO3B2-01-emitted fallback-rate telemetry. Append to data/enforcement_limits.md.\n\nFields:\n- applicability { llm, rag, agentic } all mandatory; ml omitted — classical ML inference does not return free-form, non-deterministic content that fails to parse, so the dominant failure does not materially apply.\n- serving_paradigm all four mandatory — the recovery contract lives in the application/call layer, not the serving infra, so it holds regardless of how the model is served.\n- maturity_level foundational — pays off at project #1 (any workload with a production model call needs a recovery path from day one; skipping it bakes in unguarded calls), and the core enforcement is a per-PR repo-local lint (declaration + routed-execution AST); the central LLM SDK is a SOFT dependency because a standalone wrapper also satisfies the contract. The maturity rubric's FAIL example forbids labelling a per-PR repo-local lint 'scaling'.\n- impact_level Medium — matches AWS BP risk Medium; the consequence is a broken/halted request or silent data gap, serious but workload-scoped, not the financial/data-loss class that drives High.\n- ownership.tier enterprise via D1=no / D2=3 (central LLM SDK call wrapper: schema validator, backoff/retry engine, idempotency-key plumbing, fallback executor, routed-execution AST lint, telemetry hooks — weeks of platform engineering plus ongoing maintenance) → recommended_centralise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence (CI lint logs + quarterly review), arb_role dashboard_and_spot_check. This is literally the tier rubric's 'Centralised LLM SDK' calibration example.\n- dependencies: GO3B1-01 soft (recovery wrapper rides the central LLM SDK and reuses its no-inline-call AST lint pattern; standalone wrapper also works), GO3B2-01 soft (recovery telemetry emitted through the observability channel).\n- references: Air Canada chatbot (unreliable model answer flowed to a user with no recovery check) + the anchoring AWS BP page.\n- framework_mappings.aigp IV.C provisional/unverified (closest operational-incident-prevention placement; may belong under a reliability competency).\n- eu_ai_act intentionally omitted — only the six Security standards carry it so far (decisions.md 2026-06-14); a Reliability mapping is a later pass.\n\nexplain_prompt compiled with a setup-absence / unguarded-call failure shape. RI at data/ri/GR3B1-01/README.md (Option A, matching the existing RI template).\n\nOpen items: JSON parse verify from terminal (sandbox cannot reach the live mount reliably); S3 re-upload for the live app; new pillar P3 + focus_area P31 are free-text — confirm the runtime renders them (npm run build from s3-json-viewer/); AIGP IV.C unverified; GENREL03-BP02 parked (revisit when the GENREL pillar is walked properly); GENREL01/02/04/05/06 still unwalked."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GR3B1-01 — Recover gracefully when a model call goes wrong — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery model call sits behind a recovery contract. Each call site declares the output shape the next step requires, which failures are retryable and with what backoff, and a fallback to return when retries are exhausted (a default value, a degraded response, or route-to-human). The model is called only through a central wrapper that validates the response against the declared shape, retries retryable failures (timeout, rate-limit, parse-failure) with backoff, and on exhaustion returns the declared fallback instead of letting the failure propagate; retried calls that carry side effects are made idempotent. Pre-merge lints enforce that every call site declares a schema and a fallback and that no call is made except through the wrapper. Because no static lint can prove the fallback is appropriate or the schema correct, the wrapper emits parse-failure, retry, and fallback rates and a periodic review checks them against a threshold.\n\nTHE FAILURE SHAPE\n\nThis is a setup-absence / unguarded-call failure. A team wires a model straight into the step that consumes its answer because it behaved in testing, with nothing between the model's output and the code that trusts it. Then a single call goes wrong — it times out, hits a rate-limit, is cut off at the token ceiling, refuses, or returns plausible-looking content that does not parse into the expected shape — and the bad result flows straight through: the request crashes, hangs, retries a side effect twice, or silently ships a wrong answer. The absence is forced into view by a discrete incident: a customer-facing request that 500s, a batch job with silent gaps, a pipeline halted by one oversized input, a confabulated answer shipped as fact. The principle's value is forcing every call to declare a validated shape and a fallback and to run through a wrapper that recovers, so an unguarded call fails the PR — while being honest that whether the fallback is the right one is judged by a periodic review of emitted telemetry, not the lint.\n\nAPPLICABILITY\n\nGR3B1-01 is mandatory for LLM, RAG, and Agent workloads — any workload that calls a foundation model and consumes its output. It does not apply to classical ML. If the chosen Implementation type is ML, open use_case_background with one italicised sentence noting the principle applies to workloads that call a generative model and the example is illustrative of the closest analogue.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GR3B1-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150-250 words. Describe an enterprise with a workload that calls a foundation model and feeds its answer into a next step. Be specific about the industry and implementation type. Name the workload, the team, the model, and the step that consumes the model's output. Crucially, hint offhandedly at the gap — the model is wired straight into the next step with nothing validating or recovering its output. The reader should picture a confident team whose workload 'works' in testing and who never imagined a single call could come back unusable. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200-350 words. Describe the moment a call goes wrong. Walk through chronologically: the trigger (a timeout, a rate-limit under load, a response cut off at the token ceiling, a refusal, an empty retrieval, or content that does not parse into the expected shape). Then the consequence — a customer request that crashes, a batch job with silent gaps, a pipeline halted, a side effect fired twice on a naive retry, or a confabulated answer shipped as fact. Name roles (the on-call engineer, the support lead, the data engineer). Make the consequence concrete. The failure must demonstrate something a declared-schema-and-fallback recovery contract would have caught — an unguarded or unrecovered call, not a model-quality complaint, and not an output-safety problem (which GS2B1-01 covers) or an agent running too long (which GC5B1-01 covers).\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name the workload, the model, the consuming step, the roles. 'The claims-triage step that parses the model into a {action, amount} object' not 'the AI system'.\n- Match the implementation type honestly. For ML, use the italicised opening sentence and describe the closest generative analogue.\n- Match the industry honestly.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly.\n- Do not invent regulatory specifics. Generic framing only.\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-06-15",
         "compiled_by": "manual_authoring"
       }
     }
