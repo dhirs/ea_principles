@@ -1,81 +1,79 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
   <defs>
-    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="node" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#7D2FDB"/>
       <stop offset="1" stop-color="#9B57E8"/>
     </linearGradient>
-    <filter id="cardShadow" x="-5%" y="-20%" width="110%" height="150%">
-      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#7D2FDB" flood-opacity="0.12"/>
-    </filter>
+    <radialGradient id="hub" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#6D28D9"/>
+      <stop offset="1" stop-color="#3A1170"/>
+    </radialGradient>
   </defs>
 
   <rect width="1280" height="720" fill="#FFFFFF"/>
+  <circle cx="1190" cy="70" r="180" fill="#7D03E0" opacity="0.05"/>
+  <circle cx="90" cy="660" r="170" fill="#2E1065" opacity="0.04"/>
 
-  <!-- Header -->
-  <rect width="1280" height="150" fill="url(#hdr)"/>
-  <text x="60" y="68" fill="#FFFFFF" font-size="38" font-weight="700">Project-level excellence still fails the enterprise</text>
-  <text x="60" y="108" fill="#E7D8FB" font-size="19" font-style="italic">Even if every team adopts best-of-breed practices, four things break at portfolio scale.</text>
+  <!-- title -->
+  <text x="640" y="56" fill="#2E1065" font-size="34" font-weight="700" text-anchor="middle">Project-level excellence still fails the enterprise</text>
+  <text x="640" y="86" fill="#6B6480" font-size="18" font-style="italic" text-anchor="middle">Five things break at portfolio scale — only central control holds them.</text>
 
-  <!-- Reason cards -->
-  <!-- card template: x=60 w=1160 h=96 -->
-  <!-- ROW 1 -->
-  <g>
-    <rect x="60" y="170" width="1160" height="96" rx="10" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1" filter="url(#cardShadow)"/>
-    <circle cx="120" cy="218" r="33" fill="#7D2FDB"/>
-    <text x="120" y="230" fill="#FFFFFF" font-size="32" font-weight="700" text-anchor="middle">1</text>
-    <text x="178" y="206" fill="#7D2FDB" font-size="22" font-weight="700">You can't audit what isn't consistent</text>
-    <text x="178" y="232" fill="#3A445C" font-size="15">Tens of projects, each built its own way, means tens of bespoke audits and no portfolio view.</text>
-    <text x="178" y="253" fill="#3A445C" font-size="15">Ask &#8220;are we all compliant?&#8221; and you get thirty different answers &#8212; or none.</text>
-    <!-- magnifier icon -->
-    <g stroke="#7D2FDB" stroke-width="3.5" fill="none" stroke-linecap="round">
-      <circle cx="1150" cy="210" r="16"/>
-      <line x1="1162" y1="222" x2="1176" y2="236"/>
-    </g>
+  <!-- spokes -->
+  <g stroke="#D9C6F2" stroke-width="3">
+    <line x1="640" y1="425" x2="640" y2="220"/>
+    <line x1="640" y1="425" x2="835" y2="362"/>
+    <line x1="640" y1="425" x2="760" y2="591"/>
+    <line x1="640" y1="425" x2="520" y2="591"/>
+    <line x1="640" y1="425" x2="445" y2="362"/>
   </g>
 
-  <!-- ROW 2 -->
-  <g>
-    <rect x="60" y="278" width="1160" height="96" rx="10" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1" filter="url(#cardShadow)"/>
-    <circle cx="120" cy="326" r="33" fill="#7D2FDB"/>
-    <text x="120" y="338" fill="#FFFFFF" font-size="32" font-weight="700" text-anchor="middle">2</text>
-    <text x="178" y="314" fill="#7D2FDB" font-size="22" font-weight="700">The risk sits with a sponsor who can't see the decisions</text>
-    <text x="178" y="340" fill="#3A445C" font-size="15">When a system fails, the fallout hits the sponsor and leadership &#8212; not the developer who made the call.</text>
-    <text x="178" y="361" fill="#3A445C" font-size="15">No leader will accept accountability for risk they can't observe or enforce.</text>
-    <!-- shield icon -->
-    <path d="M1150 300 l18 7 v14 c0 13 -9 22 -18 27 c-9 -5 -18 -14 -18 -27 v-14 z" fill="none" stroke="#7D2FDB" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M1142 330 l6 6 l11 -13" fill="none" stroke="#7D2FDB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- manual shadows -->
+  <g fill="#2E1065" opacity="0.16">
+    <circle cx="640" cy="224" r="46"/>
+    <circle cx="835" cy="366" r="46"/>
+    <circle cx="760" cy="595" r="46"/>
+    <circle cx="520" cy="595" r="46"/>
+    <circle cx="445" cy="366" r="46"/>
+    <circle cx="640" cy="430" r="86"/>
   </g>
 
-  <!-- ROW 3 -->
-  <g>
-    <rect x="60" y="386" width="1160" height="96" rx="10" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1" filter="url(#cardShadow)"/>
-    <circle cx="120" cy="434" r="33" fill="#7D2FDB"/>
-    <text x="120" y="446" fill="#FFFFFF" font-size="32" font-weight="700" text-anchor="middle">3</text>
-    <text x="178" y="422" fill="#7D2FDB" font-size="22" font-weight="700">Best practice you can't enforce is just a suggestion</text>
-    <text x="178" y="448" fill="#3A445C" font-size="15">Trusting every team to &#8220;build it right&#8221; assumes all are skilled, unhurried and stable over time.</text>
-    <text x="178" y="469" fill="#3A445C" font-size="15">Only hard controls &#8212; gates, not guidance &#8212; keep the floor in place across every team.</text>
-    <!-- padlock icon -->
-    <g stroke="#7D2FDB" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="1135" y="430" width="30" height="22" rx="3"/>
-      <path d="M1141 430 v-7 a9 9 0 0 1 18 0 v7"/>
-    </g>
-    <circle cx="1150" cy="441" r="3" fill="#7D2FDB"/>
-  </g>
+  <!-- hub -->
+  <circle cx="640" cy="425" r="86" fill="url(#hub)" stroke="#9F5BF0" stroke-width="3"/>
+  <text x="640" y="416" fill="#FFFFFF" font-size="21" font-weight="700" text-anchor="middle" letter-spacing="0.5">CENTRAL</text>
+  <text x="640" y="441" fill="#FFFFFF" font-size="21" font-weight="700" text-anchor="middle" letter-spacing="0.5">CONTROL</text>
+  <text x="640" y="463" fill="#C9A6F7" font-size="11.5" text-anchor="middle">holds all five</text>
 
-  <!-- ROW 4 -->
-  <g>
-    <rect x="60" y="494" width="1160" height="96" rx="10" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1" filter="url(#cardShadow)"/>
-    <circle cx="120" cy="542" r="33" fill="#7D2FDB"/>
-    <text x="120" y="554" fill="#FFFFFF" font-size="32" font-weight="700" text-anchor="middle">4</text>
-    <text x="178" y="530" fill="#7D2FDB" font-size="22" font-weight="700">Inconsistency becomes IT's nightmare at go-live</text>
-    <text x="178" y="556" fill="#3A445C" font-size="15">Operations and maintenance roll up to one platform team after launch.</text>
-    <text x="178" y="577" fill="#3A445C" font-size="15">Thirty differently-scaffolded agents means thirty ways to debug, patch and monitor &#8212; unsupportable sprawl.</text>
-    <!-- wrench icon -->
-    <path d="M1167 526 a12 12 0 0 0 -16 14 l-18 18 a4 4 0 0 0 6 6 l18 -18 a12 12 0 0 0 14 -16 l-8 8 l-6 -6 z" fill="none" stroke="#7D2FDB" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
-  </g>
+  <!-- NODE 1 · AUDITABILITY (top) -->
+  <circle cx="640" cy="220" r="46" fill="url(#node)"/>
+  <g transform="translate(640,220)" stroke="#FFFFFF" stroke-width="3.4" fill="none" stroke-linecap="round"><circle cx="-4" cy="-4" r="12"/><line x1="5" y1="5" x2="15" y2="15"/></g>
+  <text x="640" y="145" fill="#2E1065" font-size="22" font-weight="700" text-anchor="middle">AUDITABILITY</text>
+  <text x="640" y="164" fill="#6B6480" font-size="15.5" text-anchor="middle">Can't audit inconsistency</text>
 
-  <!-- Footer takeaway -->
-  <rect x="0" y="606" width="1280" height="114" fill="#7D2FDB"/>
-  <text x="60" y="652" fill="#FFFFFF" font-size="17" font-weight="600">Projects optimise for launch. The enterprise has to survive audit, accountability, enforcement and</text>
-  <text x="60" y="680" fill="#FFFFFF" font-size="17" font-weight="600">maintenance across <tspan fill="#E7D8FB">all</tspan> of them &#8212; which only a centralised production scaffolding can deliver.</text>
+  <!-- NODE 2 · ACCOUNTABILITY (upper right) -->
+  <circle cx="835" cy="362" r="46" fill="url(#node)"/>
+  <g transform="translate(835,362)" stroke="#FFFFFF" stroke-width="3.4" fill="none" stroke-linejoin="round" stroke-linecap="round"><path d="M0 -15 l15 6 v11 c0 11 -7 18 -15 22 c-8 -4 -15 -11 -15 -22 v-11 z"/><path d="M-7 1 l5 5 l9 -11"/></g>
+  <text x="891" y="356" fill="#2E1065" font-size="22" font-weight="700" text-anchor="start">ACCOUNTABILITY</text>
+  <text x="891" y="375" fill="#6B6480" font-size="15.5" text-anchor="start">Risk on a blind sponsor</text>
+
+  <!-- NODE 3 · ENFORCEMENT (lower right) -->
+  <circle cx="760" cy="591" r="46" fill="url(#node)"/>
+  <g transform="translate(760,591)" stroke="#FFFFFF" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="-13" y="-1" width="26" height="20" rx="3"/><path d="M-8 -1 v-7 a8 8 0 0 1 16 0 v7"/></g>
+  <text x="760" y="657" fill="#2E1065" font-size="22" font-weight="700" text-anchor="middle">ENFORCEMENT</text>
+  <text x="760" y="676" fill="#6B6480" font-size="15.5" text-anchor="middle">Unenforced is optional</text>
+
+  <!-- NODE 4 · MAINTAINABILITY (lower left) -->
+  <circle cx="520" cy="591" r="46" fill="url(#node)"/>
+  <g transform="translate(520,591)" stroke="#FFFFFF" stroke-width="3.4" fill="none" stroke-linejoin="round" stroke-linecap="round"><path d="M14 -14 a12 12 0 0 0 -16 14 l-15 15 a4 4 0 0 0 6 6 l15 -15 a12 12 0 0 0 14 -16 l-7 7 l-6 -6 z"/></g>
+  <text x="520" y="657" fill="#2E1065" font-size="22" font-weight="700" text-anchor="middle">MAINTAINABILITY</text>
+  <text x="520" y="676" fill="#6B6480" font-size="15.5" text-anchor="middle">Sprawl breaks ops</text>
+
+  <!-- NODE 5 · COST (upper left) -->
+  <circle cx="445" cy="362" r="46" fill="url(#node)"/>
+  <g transform="translate(445,362)" stroke="#FFFFFF" stroke-width="2.6" fill="none"><circle cx="0" cy="0" r="16"/></g>
+  <text x="445" y="371" fill="#FFFFFF" font-size="24" font-weight="700" text-anchor="middle">&#163;</text>
+  <text x="389" y="356" fill="#2E1065" font-size="22" font-weight="700" text-anchor="end">COST</text>
+  <text x="389" y="375" fill="#6B6480" font-size="15.5" text-anchor="end">No one owns the bill</text>
+
+  <!-- footer takeaway -->
+  <text x="640" y="704" fill="#7D03E0" font-size="14.5" font-weight="700" text-anchor="middle">Projects optimise for launch — only central control survives all five.</text>
 </svg>

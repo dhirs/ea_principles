@@ -1,0 +1,79 @@
+<svg viewBox="0 0 768 576" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F2EEFB"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7D03E0"/>
+      <stop offset="1" stop-color="#6D28D9"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#2E1065" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="768" height="576" fill="url(#bg)"/>
+  <circle cx="712" cy="58" r="150" fill="#7D03E0" opacity="0.06"/>
+  <circle cx="58" cy="546" r="150" fill="#2E1065" opacity="0.05"/>
+
+  <!-- header -->
+  <rect x="56" y="42" width="34" height="4" rx="2" fill="url(#brand)"/>
+  <text x="98" y="47" font-size="13" font-weight="700" letter-spacing="3" fill="#6D28D9">HOUSEKEEPING</text>
+  <text x="56" y="88" font-size="30" font-weight="800" fill="#2E1065">Before We Dive In</text>
+
+  <!-- time bar -->
+  <text x="56" y="124" font-size="13" font-weight="700" letter-spacing="1.5" fill="#6B6480">45 MINUTES TOTAL</text>
+  <g>
+    <rect x="56" y="134" width="500" height="28" rx="6" fill="url(#brand)"/>
+    <rect x="560" y="134" width="152" height="28" rx="6" fill="#C9A6F7"/>
+    <text x="306" y="153" font-size="13.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">Presentation · 35 min</text>
+    <text x="636" y="153" font-size="12.5" font-weight="700" fill="#3A1170" text-anchor="middle">Q&amp;A · 10 min</text>
+  </g>
+
+  <!-- cards -->
+  <!-- 1 -->
+  <g transform="translate(56,196)">
+    <rect width="318" height="118" rx="14" fill="#FFFFFF" filter="url(#shadow)"/>
+    <circle cx="44" cy="44" r="22" fill="#F0E6FC"/>
+    <g transform="translate(44,44)" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round"><circle cx="0" cy="0" r="11"/><path d="M0 -6 V0 L5 4"/></g>
+    <text x="80" y="40" font-size="15.5" font-weight="800" fill="#2E1065">This is the intro session</text>
+    <text x="80" y="57" font-size="12.3" fill="#6B6480">A high-level overview of the process</text>
+    <text x="80" y="74" font-size="12.3" fill="#6B6480">of developing Enterprise AI Standards.</text>
+    <text x="80" y="91" font-size="12.3" fill="#6B6480">The deep-dive is the full workshop.</text>
+  </g>
+  <!-- 2 -->
+  <g transform="translate(394,196)">
+    <rect width="318" height="118" rx="14" fill="#FFFFFF" filter="url(#shadow)"/>
+    <circle cx="44" cy="44" r="22" fill="#F0E6FC"/>
+    <g transform="translate(33,33)" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18 L9 5 L14 13 L18 7 L22 18 Z"/></g>
+    <text x="80" y="40" font-size="15.5" font-weight="800" fill="#2E1065">Technical, not hands-on</text>
+    <text x="80" y="65" font-size="12.8" fill="#6B6480">Expect a technical lens throughout —</text>
+    <text x="80" y="83" font-size="12.8" fill="#6B6480">but we're not building anything today.</text>
+    <text x="80" y="101" font-size="12.8" fill="#6B6480">Nothing to install.</text>
+  </g>
+  <!-- 3 -->
+  <g transform="translate(56,330)">
+    <rect width="318" height="118" rx="14" fill="#FFFFFF" filter="url(#shadow)"/>
+    <circle cx="44" cy="44" r="22" fill="#F0E6FC"/>
+    <g transform="translate(33,34)" fill="#7D03E0"><circle cx="8" cy="6" r="5"/><circle cx="22" cy="6" r="5"/><path d="M0 20 a8 8 0 0 1 16 0 Z"/><path d="M14 20 a8 8 0 0 1 16 0 Z"/></g>
+    <text x="80" y="40" font-size="15.5" font-weight="800" fill="#2E1065">Who this is for</text>
+    <text x="80" y="65" font-size="12.8" fill="#6B6480">Senior practitioners already aware of</text>
+    <text x="80" y="83" font-size="12.8" fill="#6B6480">the role of the Enterprise Architecture</text>
+    <text x="80" y="101" font-size="12.8" fill="#6B6480">function — we won't re-explain it.</text>
+  </g>
+  <!-- 4 -->
+  <g transform="translate(394,330)">
+    <rect width="318" height="118" rx="14" fill="#FFFFFF" filter="url(#shadow)"/>
+    <circle cx="44" cy="44" r="22" fill="#F0E6FC"/>
+    <g transform="translate(33,33)" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4 h18 v13 h-11 l-5 4 v-4 h-2 Z"/></g>
+    <text x="80" y="40" font-size="15.5" font-weight="800" fill="#2E1065">Questions</text>
+    <text x="80" y="65" font-size="12.8" fill="#6B6480">Hold them for the 10-min Q&amp;A at the</text>
+    <text x="80" y="83" font-size="12.8" fill="#6B6480">end — or drop them in chat as we go</text>
+    <text x="80" y="101" font-size="12.8" fill="#6B6480">and I'll pick them up.</text>
+  </g>
+
+  <!-- footer -->
+  <rect x="120" y="484" width="528" height="44" rx="22" fill="url(#brand)"/>
+  <text x="384" y="511" font-size="14.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">A mile wide today — the inch-deep build is the workshop.</text>
+</svg>
