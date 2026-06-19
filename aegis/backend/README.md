@@ -40,6 +40,11 @@ copy). Override the location with `AEGIS_DATA_DIR`.
   implementation guidance: engine per layer (managed / custom / app-side),
   deterministic-vs-probabilistic, the `on_trip` fallback, and scope caveats
   (grounded ≠ true; guardrail ≠ business-logic).
+- **`get_reference_implementation(standard_id)`** — the step-by-step RI: the
+  central-team responsibilities (Builds / Operates / Owns) vs the project-team
+  responsibilities (Configures / Populates / Consumes), the interface contract
+  including YAML config, and the acceptance criteria. Answers "what does MY team
+  do vs the platform team?" Returns structured sections + the full markdown.
 - **`review_against_standard(standard_id, design)`** — returns the standard's
   blocking gates as a review checklist. If `AEGIS_ANTHROPIC_API_KEY` is set, also
   runs an LLM-judge (using the private rubric + gates server-side) and returns a

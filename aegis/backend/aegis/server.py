@@ -21,7 +21,7 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from . import catalogue, guardrails, rubrics
+from . import catalogue, guardrails, reference, rubrics
 
 mcp = FastMCP(
     "aegis",
@@ -82,6 +82,24 @@ def design_guardrail(check_type: str) -> dict[str, Any]:
     scope caveats (e.g. grounded ≠ true; guardrail ≠ business-logic).
     """
     return guardrails.design_guardrail(check_type)
+
+
+@mcp.tool()
+def get_reference_implementation(standard_id: str) -> dict[str, Any]:
+    """Return the step-by-step reference implementation for a standard.
+
+    This answers the most common project question: "what does MY team do vs what
+    does the central/platform team do?"
+
+    Args:
+        standard_id: e.g. "ST-GS2B1-01" (the ST- prefix is optional).
+
+    Returns the central-team responsibilities (Builds / Operates / Owns), the
+    project-team responsibilities (Configures / Populates / Consumes), the
+    interface contract including YAML config, and the acceptance criteria — as
+    structured sections plus the full markdown.
+    """
+    return reference.get_reference_implementation(standard_id)
 
 
 @mcp.tool()
