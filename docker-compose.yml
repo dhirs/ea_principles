@@ -1,0 +1,10 @@
+services:
+  ea-principles:
+    build: .
+    image: ea_principles:latest
+    container_name: ea_principles
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - ./s3-json-viewer/.env.local
