@@ -1,6 +1,6 @@
 <svg viewBox="0 0 768 576" xmlns="http://www.w3.org/2000/svg" font-family="'Helvetica Neue', Arial, sans-serif" role="img">
 <title>July 2 Workshop — What you get</title>
-<desc>Slide showing Part 1 of the workshop decomposed left to right: Part 1 is 90 minutes and contains three 30-minute scenarios — Cost, Customer Experience, and Legal and Risk — and each scenario contains two to three challenges run STAR-style as an interactive session.</desc>
+<desc>Slide showing Part 1 of the workshop decomposed left to right: Part 1 is 60 minutes and contains three 20-minute scenarios — Cost, Customer Experience, and Legal and Risk — and each scenario contains two to three challenges run STAR-style as an interactive session.</desc>
 
 <defs>
 <marker id="tick" markerWidth="6" markerHeight="12" refX="3" refY="6" orient="auto">
@@ -52,10 +52,10 @@
 
 <!-- dimension marks -->
 <line x1="92" y1="495" x2="168" y2="495" stroke="#111111" stroke-width="2.5" marker-start="url(#tick)" marker-end="url(#tick)"/>
-<text x="130" y="525" text-anchor="middle" class="dim">90m</text>
+<text x="130" y="525" text-anchor="middle" class="dim">60m</text>
 
 <line x1="255" y1="478" x2="355" y2="478" stroke="#111111" stroke-width="2.5" marker-start="url(#tick)" marker-end="url(#tick)"/>
-<text x="305" y="505" text-anchor="middle" class="dim">30m per</text>
+<text x="305" y="505" text-anchor="middle" class="dim">20m per</text>
 <text x="305" y="528" text-anchor="middle" class="dim">scenario</text>
 
 <line x1="540" y1="448" x2="660" y2="448" stroke="#111111" stroke-width="2.5" marker-start="url(#tick)" marker-end="url(#tick)"/>
