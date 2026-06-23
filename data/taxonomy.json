@@ -23,11 +23,9 @@
       "Schema v1.11 (2026-06-06) added a new required root-level field `references` on every principle — an array of real-world evidence links, each `{ url, title, source, note, date }`, pointing at published incident write-ups, engineering postmortems, vendor case studies, or practitioner accounts that document the principle's failure mode actually occurring in industry. The field is the external, citable counterpart to `problem.examples` (which are synthetic, in-house illustrative scenarios): examples teach the failure shape, references prove it happens. The value is an empty array `[]` when no published write-up has yet been mapped to the principle's specific failure mode — empty is correct and expected, and a reference must genuinely document THIS principle's failure (not generic topic-adjacent content). Surfaced during the GC3B1-01 (prompt-token-budget) review when a web search turned up multiple real industry write-ups of unenforced-prompt-budget cost drift (Adaline, Opsmeter, ProjectDiscovery, Redis, Cycles); the catalogue had no structured slot to attach that evidence to the principle it validates. References render as hyperlinks in the runtime UI. All pre-existing principles were retrofitted: GC3B1-01 populated with the discovered links, the remaining twelve carry `[]` pending evidence. See conventions.references, references_spec, and the 2026-06-06 references entry in decisions.md."
     ]
   },
-
   "principle_schema": {
     "intro": "Every principle in principles.json conforms to this schema. This is what makes the catalogue different from cloud-vendor frameworks: each principle names who validates it, when it is checked, and what artefacts the validator inspects. Vendor frameworks stop at the question; this catalogue defines the audit.",
     "vendor_neutrality_note": "The schema is vendor-neutral. Pillar names match AWS / Azure / GCP WAF terminology because those names are de-facto industry-standard. The catalogue's primary anchor framework is the AWS Well-Architected Generative AI Lens, but the framework_mappings field is structured to hold parallel mappings to Azure, GCP, NIST, OWASP, or any other framework without schema change.",
-
     "fields": [
       {
         "name": "standard_id",
@@ -185,13 +183,10 @@
         "description": "Optional compiled OpenAI-style prompt pair used by the runtime UI's 'Explain' affordance to generate an illustrative example for a chosen industry and implementation type. `system` is the full system message; it bakes in the principle's identity, failure-mode shape (silent regression / setup absence / cumulative drift / one-shot breach), the output JSON contract, and the style rules. `user_template` is the user message with two Mustache-style placeholders that the runtime substitutes: `{{ industry }}` and `{{ implementation_type }}`. `compiled_for_principle_version` records which version of the principle the prompt was compiled against (mirrors change_history.current_version at compile time); a script can compare this against the current version to detect a stale prompt. `compiled_at` is the ISO date of compilation; `compiled_by` is a short identifier of the compiler (e.g. 'manual_authoring' or the meta-prompt version). Absent when the principle has not yet been compiled — the runtime can either fall back to a generic prompt or hide the Explain affordance. See conventions.per_principle_explain_prompt_compilation, usage.when_compiling_an_explain_prompt, and the schema-v1.8 entry in decisions.md."
       }
     ],
-
     "framework_mappings_spec": {
       "intro": "Each principle's relationship to external frameworks (AWS WAF Lenses, AIGP competency framework, Azure WAF, GCP WAF, NIST AI RMF, OWASP LLM Top 10, and similar) is captured in the framework_mappings field. The field is an object keyed by framework identifier; each framework key holds a references array of zero or more reference objects.",
       "shape_example": "framework_mappings: { aws: { references: [ ... ] }, aigp: { references: [ ... ] }, azure: { references: [ ... ] } }",
-
       "primary_anchor_vs_cross_reference": "AWS is the catalogue's primary anchor: every principle must concretise (or explicitly extend with mapping_state: na) an AWS GenAI Lens BP. AIGP and other frameworks (NIST, ISO 42001, EU AI Act, etc.) are cross-references — informational only, no enforcement obligation. This asymmetry is a convention, not encoded in the schema: every framework key under framework_mappings uses the same outer shape, and the inner structural fields are framework-specific. The convention is enforced by review, not by schema validation.",
-
       "anchoring_methodology": {
         "scope": "Applies to AWS framework references specifically (where implementation steps exist within BPs). Other frameworks like AIGP do not have an analogous step structure — AIGP references map at the competency level directly.",
         "default_level": "implementation_step",
@@ -200,7 +195,6 @@
         "positioning": "This catalogue is a worked example, not a comprehensive standard. The schema is the product; the specific decomposition decisions in our catalogue are illustrative. An organisation adopting it may inherit our decomposition decisions, override them, or extend with steps we deliberately did not promote. A 'missing' implementation step in our catalogue means we judged it not concrete enough to elevate at our scope — not that nobody should ever elevate it. Adopters are expected to make their own calls.",
         "exception_whole_bp_anchoring": "A principle may exceptionally anchor to an entire BP (no implementation_step) when the BP is simple enough that step-level decomposition adds no clarity. This should be rare; the reason must be documented in the reference's note field and reflected in the BP's lens_mapping.md entry."
       },
-
       "cardinality_notes": [
         "Default cardinality: one reference, one implementation_step. Most principles concretise exactly one AWS implementation step within one BP.",
         "A principle can map to multiple frameworks (an entry for `aws` and one for `azure` etc.).",
@@ -210,9 +204,7 @@
         "Only framework keys that have been audited for this principle should be present. If Azure hasn't been checked, the azure key is absent rather than present with an empty references array."
       ],
       "related_file": "lens_mapping.md is the per-BP due-diligence ledger: for every AWS BP, it lists each implementation step with a status (promoted_to_principle, not_promoted with rationale, or pending_review).",
-
       "reference_object_structure": "Every reference object — regardless of framework — has three common fields (mapping_state, last_checked, note) plus a set of framework-specific structural fields. The common fields are required everywhere. The framework-specific fields vary because each framework has its own internal taxonomy (AWS has lens / pillar / question / BP / implementation_step; AIGP has domain / competency; NIST would have something else).",
-
       "common_reference_fields": [
         {
           "name": "mapping_state",
@@ -234,7 +226,6 @@
           "description": "Free-text rationale: what our principle adds beyond the framework's guidance, why the mapping is provisional, why no analogue exists, or any cross-lens placement explanation."
         }
       ],
-
       "framework_specific_reference_fields": {
         "aws": [
           {
@@ -299,17 +290,15 @@
           }
         ]
       },
-
       "mapping_states": {
         "verified": "The framework BP has been confirmed against the source documentation. All structural fields are populated with real values. Our principle is the concrete enforceable version of the BP.",
         "unverified": "Provisional mapping based on subject-matter proximity. Structural fields may contain TODO placeholders. Needs a verification pass against the framework's source documentation.",
         "na": "No analogue exists in this framework. The framework was checked; nothing matched. Structural fields are null; note carries the closest-fit explanation if useful. Used for native extensions and for principles AWS would cover only in a different Lens that's also not analogous."
       },
-
       "cross_lens_placement": "Some principles cover topics AWS places in the Responsible AI Lens rather than the GenAI Lens. These appear as an entry in framework_mappings.aws.references with lens: 'Responsible AI Lens'. The note field explains the cross-lens placement. There is no separate top-level cross-reference field — the cross-lens fact is implicit in the reference's lens value. (The legacy responsible_ai_lens_crossref top-level field that existed in schema versions <= 1.4 has been retired; see decisions.md 2026-05-26 entry.)",
-      "eu_ai_act_convention": "EU AI Act references are cross-references, never the primary anchor (AWS remains primary). A standard may carry multiple eu_ai_act references; exactly one should be the PRIMARY (the obligation the standard's gate actually discharges — named in its note), the rest CROSS-REFERENCEs (coverage contribution where the gate does not fully test the obligation) or mapping_state: na (control considered and excluded). control_ref ties the reference to the eight GenAI-distinctive system-level controls derived in the 2026-06-13 funnel (paid_workshop/part_2.md); a generic (non-GenAI-distinctive) obligation maps to an article with control_ref: null. EU AI Act mappings were authored mapping_state: unverified — asserted from the funnel, pending a side-by-side read against the article text. ISO 42001 is deliberately NOT a framework_mappings key: it is the management-system wrapper (governance-owned evidence layer), not a control source a standard concretises."
+      "eu_ai_act_convention": "EU AI Act references are cross-references, never the primary anchor (AWS remains primary). A standard may carry multiple eu_ai_act references; exactly one should be the PRIMARY (the obligation the standard's gate actually discharges — named in its note), the rest CROSS-REFERENCEs (coverage contribution where the gate does not fully test the obligation) or mapping_state: na (control considered and excluded). control_ref ties the reference to the eight GenAI-distinctive system-level controls derived in the 2026-06-13 funnel (paid_workshop/part_2.md); a generic (non-GenAI-distinctive) obligation maps to an article with control_ref: null. EU AI Act mappings were authored mapping_state: unverified — asserted from the funnel, pending a side-by-side read against the article text. ISO 42001 is deliberately NOT a framework_mappings key: it is the management-system wrapper (governance-owned evidence layer), not a control source a standard concretises.",
+      "aigp_convention": "AIGP references are cross-references, never the primary anchor (AWS remains primary). AIGP (IAPP AI Governance Professional) is a COMPETENCY framework, not an obligation a gate can discharge — so a standard earns an aigp reference only when its enforced mechanism IS a concrete way of delivering the competency (the 'IS how we do X' test), checked against the official AIGP Body of Knowledge competency definition. Mapped against BoK v2.1 (4-domain structure, effective 2026-02-02). Field shape: domain + competency. mapping_state: 'verified' only when checked against the BoK, 'unverified' while provisional, 'na' where a competency was considered and excluded. Many standards map to NO competency — cost/FinOps and reliability-engineering standards have no AIGP competency and were cleared in the 2026-06-23 audit rather than force-fitted. Re-audit on each new BoK release. Full why/how + the per-standard map: data/framework_mappings/aigp.md."
     },
-
     "ownership_spec": {
       "intro": "Two tiers, set on each principle via `ownership.tier`. Tier reflects CENTRALISATION OF ENFORCEMENT INFRASTRUCTURE — whether the platform team builds and maintains the runners, lints, validators, CI workflow templates, dashboards, etc. that make the principle hold mechanically (enterprise) or each project team builds its own (project). Tier is an INDEPENDENT axis from `validator` and `audit_mode`: an enterprise-tier principle can still have `validator: project_architect` and `audit_mode: self_attestation_with_mechanical_evidence` when the platform team owns the tooling and the PA self-attests using it. Tier is determined via the V1 tier rubric at `agentflow/sections/tier/rubric.json`. Convention introduced 2026-05-31; see `conventions.tier_rubric` and the 2026-05-31 entry in decisions.md.",
       "tiers": {
@@ -320,20 +309,35 @@
       "supersedes_prior_qualification_rules": "The prior 4-rule binary screen (failure spans multiple projects / regulator in scope / specialist function owns control / sign-off authority gap) is superseded by the tier rubric. The 4 rules are subsumed: rule 1 ≈ D2 high; rule 2 = D1 veto; rule 3 folds into D2; rule 4 folds into D1. The new rubric makes reuse cost a first-class scored dimension rather than a binary trigger. Convention introduced 2026-05-31; see the corresponding entry in decisions.md for the reasoning and the per-principle reclassification table (5 principles reclassified project → enterprise: GO1B1-01, GO1B1-02, GO1B1-03, GO1B1-04, GC2B2-01).",
       "rule": "A principle's tier is the outcome of the tier rubric mapped to the two-value enum. See `tier_rubric_ref` above. Validator and audit_mode are independent axes — set them based on the validation mechanism actually used for the principle. The common case under the new tier semantics is enterprise-tier + project_architect validator + self_attestation_with_mechanical_evidence audit_mode: platform team owns the tooling, PA self-attests using it.",
       "ownership_object_fields": [
-        { "name": "tier", "type": "string", "allowed_values_ref": "enums.ownership_tier", "description": "project or enterprise. Decided via the tier rubric at `agentflow/sections/tier/rubric.json`. Reflects centralisation of enforcement infrastructure, not validation." },
-        { "name": "validator", "type": "string", "description": "Named validator role (e.g. project_architect, enterprise_security, finance_and_arb, legal_and_responsible_ai). Independent of tier — an enterprise-tier principle can have validator: project_architect when the platform team builds the tooling and the PA self-attests using it." },
-        { "name": "audit_mode", "type": "string", "description": "How the validator audits (e.g. self_attestation_with_mechanical_evidence, central_review_at_gate). Drives whether `evidence` artefacts are required: `central_review_at_gate` audit_mode means a central validator clicks on artefacts and `evidence` is required; `self_attestation_with_mechanical_evidence` means CI is the proof and `evidence` may be empty." },
-        { "name": "arb_role", "type": "string", "description": "What ARB's role is for this principle (e.g. dashboard_and_spot_check, primary_reviewer)." }
+        {
+          "name": "tier",
+          "type": "string",
+          "allowed_values_ref": "enums.ownership_tier",
+          "description": "project or enterprise. Decided via the tier rubric at `agentflow/sections/tier/rubric.json`. Reflects centralisation of enforcement infrastructure, not validation."
+        },
+        {
+          "name": "validator",
+          "type": "string",
+          "description": "Named validator role (e.g. project_architect, enterprise_security, finance_and_arb, legal_and_responsible_ai). Independent of tier — an enterprise-tier principle can have validator: project_architect when the platform team builds the tooling and the PA self-attests using it."
+        },
+        {
+          "name": "audit_mode",
+          "type": "string",
+          "description": "How the validator audits (e.g. self_attestation_with_mechanical_evidence, central_review_at_gate). Drives whether `evidence` artefacts are required: `central_review_at_gate` audit_mode means a central validator clicks on artefacts and `evidence` is required; `self_attestation_with_mechanical_evidence` means CI is the proof and `evidence` may be empty."
+        },
+        {
+          "name": "arb_role",
+          "type": "string",
+          "description": "What ARB's role is for this principle (e.g. dashboard_and_spot_check, primary_reviewer)."
+        }
       ]
     },
-
     "gates_spec": {
       "intro": "Each gate is a { point, check, blocking } triple. point is the lifecycle moment the check fires. check is a binary statement that either holds or doesn't. blocking indicates whether failure prevents progression.",
       "lifecycle_points_note": "Lifecycle point depends on what the principle is checking, not directly on tier. Per-PR or per-deploy disciplines (eval harness, drift baseline, ADR existence) typically gate at pre_merge or pre_deploy regardless of tier; cadence-driven or central-review disciplines (portfolio reviews, audit-gated sign-offs) gate at release, quarterly_review, or annual_review. Under the new tier semantics (2026-05-31), enterprise-tier principles often still gate at pre_merge — the enterprise tier reflects that the platform team owns the tooling, not that ARB clicks evidence URLs at a central gate.",
       "lifecycle_points_ref": "enums.lifecycle_points",
       "required_status_check_constraint": "For project-tier principles where the gate is enforced via CI, the check field must explicitly state that the check is configured as a REQUIRED status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) — not advisory. Without this in-gate constraint, a PA can write a passing CI check that nobody is forced to wait for, and the gate quietly becomes optional. This is what carries the branch-protection requirement now that Evidence is optional for project-tier principles."
     },
-
     "evidence_spec": {
       "intro": "Evidence enumerates the artefacts a central validator (ARB, Security, Legal, Finance) physically clicks on at a central review gate. Under the new tier semantics (2026-05-31), evidence is required when the `ownership.audit_mode` is `central_review_at_gate` (a central validator actually clicks artefacts), NOT automatically when the tier is enterprise. An enterprise-tier principle with `audit_mode: self_attestation_with_mechanical_evidence` may leave evidence blank — CI is the proof. The trigger for non-empty evidence is the audit mechanism, not the tier.",
       "enterprise_tier_shape": {
@@ -351,44 +355,117 @@
       },
       "sign_off_rule": "sign_off is binary — pass or fail, no graded scale. If a principle needs a graded scale, it's two principles."
     },
-
     "change_history_spec": {
       "intro": "Every principle carries a change_history field tracking its evolution over time.",
       "shape_example": "change_history: { current_version: '1.0.0', changes: [ { version, date, author, summary } ] }",
       "current_version": "Semantic version of the principle as it stands today. Mirrors the version field of the most recent entry in changes. Denormalised on purpose: a reader can see the current version without scanning the array.",
       "changes": "Append-only array, chronological (oldest first, newest last).",
       "change_entry_fields": [
-        { "name": "version", "type": "string", "format": "semver (MAJOR.MINOR.PATCH)", "description": "MAJOR for rule changes (statement rewritten, scope changed). MINOR for meaningful additions (new gate, new evidence requirement, new framework mapping, mapping promoted from unverified to verified). PATCH for clarifications, typo fixes, note additions." },
-        { "name": "date", "type": "string", "format": "YYYY-MM-DD", "description": "ISO date the change was made." },
-        { "name": "author", "type": "string", "description": "Name of the person who made the change." },
-        { "name": "summary", "type": "string", "description": "Single sentence describing what changed. Should be specific enough that a reader scanning the history can tell what each version did." }
+        {
+          "name": "version",
+          "type": "string",
+          "format": "semver (MAJOR.MINOR.PATCH)",
+          "description": "MAJOR for rule changes (statement rewritten, scope changed). MINOR for meaningful additions (new gate, new evidence requirement, new framework mapping, mapping promoted from unverified to verified). PATCH for clarifications, typo fixes, note additions."
+        },
+        {
+          "name": "date",
+          "type": "string",
+          "format": "YYYY-MM-DD",
+          "description": "ISO date the change was made."
+        },
+        {
+          "name": "author",
+          "type": "string",
+          "description": "Name of the person who made the change."
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "description": "Single sentence describing what changed. Should be specific enough that a reader scanning the history can tell what each version did."
+        }
       ],
       "append_only_rule": "Never edit prior entries. Append a new entry for every change."
     },
-
     "references_spec": {
       "intro": "The references field holds external, real-world evidence that the principle's failure mode is not hypothetical — published incidents, engineering postmortems, vendor case studies, practitioner write-ups. It is the citable counterpart to problem.examples (which are synthetic, in-house illustrations). examples teach the failure shape; references prove it happens.",
       "entry_fields": [
-        { "name": "url", "type": "string", "required": true, "description": "The link. Must resolve to a public page." },
-        { "name": "title", "type": "string", "required": true, "description": "Hyperlink display text — the article/page title or a short descriptive label." },
-        { "name": "source", "type": "string", "required": true, "description": "Publisher or author (e.g. 'Adaline', 'ProjectDiscovery', 'Redis')." },
-        { "name": "note", "type": "string", "required": true, "description": "One sentence: what the link demonstrates and how it maps to this principle's failure mode." },
-        { "name": "date", "type": "string", "required": true, "format": "YYYY-MM-DD", "description": "Date the link was captured/verified." }
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "description": "The link. Must resolve to a public page."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Hyperlink display text — the article/page title or a short descriptive label."
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": true,
+          "description": "Publisher or author (e.g. 'Adaline', 'ProjectDiscovery', 'Redis')."
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "required": true,
+          "description": "One sentence: what the link demonstrates and how it maps to this principle's failure mode."
+        },
+        {
+          "name": "date",
+          "type": "string",
+          "required": true,
+          "format": "YYYY-MM-DD",
+          "description": "Date the link was captured/verified."
+        }
       ],
       "authoring_rule": "Only add a reference when the linked material genuinely documents THIS principle's failure mode — not generic topic-adjacent content. A reference that does not map to the specific failure the principle prevents is noise. Empty array [] is correct and expected until matching evidence is found.",
       "distinct_from_problem_examples": "problem.examples are synthetic scenarios authored to illustrate the failure shape; references are external, real, and citable. The two are complementary: examples teach the shape, references prove it happens."
     }
   },
-
   "enums": {
-    "impact_level": ["Critical", "High", "Medium", "Low"],
-    "applicability": ["llm", "rag", "agentic", "ml"],
-    "pattern_criticality": ["mandatory", "nice_to_have"],
-    "serving_paradigm": ["api_on_demand", "api_provisioned", "self_hosted_managed", "self_hosted_unmanaged"],
-    "maturity_level": ["foundational", "scaling", "mature"],
-    "dependency_kind": ["hard", "soft"],
-    "mapping_state": ["verified", "unverified", "na"],
-    "ownership_tier": ["project", "enterprise"],
+    "impact_level": [
+      "Critical",
+      "High",
+      "Medium",
+      "Low"
+    ],
+    "applicability": [
+      "llm",
+      "rag",
+      "agentic",
+      "ml"
+    ],
+    "pattern_criticality": [
+      "mandatory",
+      "nice_to_have"
+    ],
+    "serving_paradigm": [
+      "api_on_demand",
+      "api_provisioned",
+      "self_hosted_managed",
+      "self_hosted_unmanaged"
+    ],
+    "maturity_level": [
+      "foundational",
+      "scaling",
+      "mature"
+    ],
+    "dependency_kind": [
+      "hard",
+      "soft"
+    ],
+    "mapping_state": [
+      "verified",
+      "unverified",
+      "na"
+    ],
+    "ownership_tier": [
+      "project",
+      "enterprise"
+    ],
     "lifecycle_points": [
       "pre_commit",
       "pre_merge",
@@ -403,9 +480,10 @@
       "central_review_at_gate",
       "automated_only"
     ],
-    "sign_off": ["binary"]
+    "sign_off": [
+      "binary"
+    ]
   },
-
   "usage": {
     "when_starting_work_on_a_new_aws_bp": [
       "Read the BP page from the live AWS Lens; capture the implementation steps verbatim.",
@@ -433,7 +511,6 @@
       "Re-compile when the principle's statement, problem, examples, applicability, or maturity_level change in a way that affects what the example should show. A pure clarification or typo PATCH does not require re-compile; a MINOR or MAJOR bump usually does. Compare `compiled_for_principle_version` against `change_history.current_version` to detect stale prompts."
     ]
   },
-
   "conventions": {
     "illustrative_examples_signposting": "If problem.examples are illustrative narratives rather than documented incidents, signpost this in problem.description (e.g. 'Examples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.') so a reader cannot mistake invented precision for audit-grade evidence. Convention added 2026-05-26 after PRIN_001's first revision; see decisions.md 2026-05-26 entry.",
     "statement_must_derive_from_anchored_step": "A principle's statement.title and statement.description must be a recognisable derivation of its primary framework_mappings reference's implementation_step (or, in the rare whole-BP-anchored case, the BP title). A reader comparing the AWS step text and our statement should be able to see how ours concretises theirs — not have to take it on faith. If the lineage is not visible, the principle is either mis-anchored or the statement is a different principle wearing the wrong reference. Convention added 2026-05-26 after PRIN_001's first statement composed from BP implementation guidance rather than from any one step.",

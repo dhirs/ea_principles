@@ -8,7 +8,65 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-22 (latest) — GENREL03-BP02 → GR3B2-01 promoted (agent run deadline); GENREL03 CLOSED; catalogue at 24
+## 2026-06-23 (latest) — AIGP mappings audited + re-based on official BoK v2.1 (17 verified, 7 cleared)
+
+### Context
+
+The `aigp` mappings were placed by "subject-matter proximity" and, on inspection, used **incorrect competency labels** — a half-remembered version of the retired 7-domain AIGP structure. The official IAPP AIGP Body of Knowledge is now **v2.1 (effective 2026-02-02), 4 domains**. Pulled the real competency definitions (IAPP BoK + Oliver Patel's competency breakdown) and re-based every mapping.
+
+### Decision — re-tag against real competencies via the "IS how we do X" test
+
+A standard earns an `aigp` reference only if its enforced mechanism IS a concrete way of delivering the competency (not "same topic, roughly"). Result across 24 standards:
+
+- **17 tagged + verified.** III.B (data in training/testing): GO1B1-01/02/05, GS6B1-01, GS1B3-02. III.C (release/monitoring/maintenance): GO1B1-04, GO1B1-06, GO3B2-01. IV.C (deployment & use): GO3B2-02, GC5B1-01, GS1B3-01, GS2B1-01, GS4B2-01, GS5B1-01. I.C (lifecycle policy): GO3B1-01. IV.A (deploy decision): GC1B1-01. IV.B (assess system): GO1B1-03.
+- **7 cleared — no natural fit** (AIGP has no cost/FinOps or reliability-engineering competency): GC2B2-01, GC3B1-01, GC3B2-01, GC3B3-01, GC4B1-01, GR3B1-01, GR3B2-01. Cleared, not force-fitted (user directive: "do not push the mapping if one does not exist naturally").
+- All surviving refs flipped `unverified → verified`; each standard got a version bump + change_history entry.
+- Note: GO1B1-04 previously had **no** aigp ref — now III.C. So "tagged" count rose by the add and fell by the 7 removals: 23→17.
+
+### Refresh / keeping-current
+
+Added a **"Keeping mappings current"** procedure to `data/framework_mappings/README.md` (per-framework, driven by each doc's new **"Mapped against"** + **"Last reviewed"** anchors). `aigp.md` now records *Mapped against: BoK v2.1*. Recommended shape for a future `/refresh`: a guided per-framework re-check (drift detect + judgement-assisted re-audit), with a cheap quarterly scheduled task doing only version-drift detection autonomously. Not built this session.
+
+### Artefacts
+
+- `data/principles.json` — 17 `aigp` blocks rewritten (verified) + 7 removed; per-standard version bumps + change_history; parses clean, 24 standards, format_version unchanged (1.13 — no schema change, `aigp` field shape unchanged).
+- `data/taxonomy.json` — `framework_mappings_spec.aigp_convention` authored (was the one populated framework with no convention).
+- `data/framework_mappings/aigp.md` — corrected competency labels, examples, STATUS, refresh anchor; `README.md` — refresh procedure.
+
+### Open items
+
+- AIGP not yet surfaced as a sidebar filter (open UI work).
+- Re-audit on the next BoK release.
+
+---
+
+## 2026-06-23 — Per-framework mapping docs: new `data/framework_mappings/` architecture
+
+### Context
+
+Framework-mapping rationale was fragmented: AWS had a proper home (`lens_mapping.md` + `taxonomy.json` spec), EU AI Act was half-documented (convention key in `taxonomy.json` + scattered reasoning in `decisions.md`/`paid_workshop.md`), AIGP had only inline `note`s and no convention entry, and NIST had nothing but app scaffolding. Nothing in `CLAUDE.md` pointed to any of it. With more frameworks planned (GDPR, FCA, …), this needed a consistent structure before it got worse.
+
+### Decision — one doc per framework + a registry + a single CLAUDE.md signpost
+
+- New folder **`data/framework_mappings/`** with one markdown per framework (WHY / HOW / STATUS), a `_TEMPLATE.md`, and a `README.md` registry + **"How to add a new framework"** procedure.
+- Backfilled the real state: `aws.md` (anchor, 24/24), `aigp.md` (cross-ref, 23/24, missing GO1B1-04, all unverified), `eu_ai_act.md` (cross-ref, 7/24 = 6 Security + GO1B1-01, all unverified), `nist.md` (scaffolded, 0/24 — app filters kept as forward-scaffolding), `gdpr.md` (proposed, 0/24, methodology + GS5B1-01 worked example).
+- `CLAUDE.md` gains a single pointer to the folder; the README procedure is designed so adding a framework needs **no CLAUDE.md edit** (new `<key>.md` + a registry row).
+- Division of labour kept: `framework_mappings/` = human WHY/HOW; `taxonomy.json` `framework_mappings_spec` = machine-readable field shapes/conventions; `lens_mapping.md` = per-AWS-BP ledger.
+- **The one rule recorded across all docs:** a standard earns a reference only when its *gate actually discharges* the obligation — never by topical relation; un-discharged obligations are logged as future-standard candidates, not forced onto unrelated standards.
+
+### Scope / non-changes
+
+- **Docs only — no `principles.json` data changed.** No GDPR/NIST references authored; no versions bumped; `format_version` unchanged (1.13). GDPR and NIST remain unpopulated by design pending their own authoring passes.
+- Earlier doc shorthand "eu_ai_act = Security standards" corrected: GO1B1-01 (Operational Excellence) also carries an Art 15 reference → 7 total.
+
+### Open items
+
+- Author `aigp_convention` (+ the missing GO1B1-04 aigp ref); define `gdpr`/`nist` field shapes + conventions in `taxonomy.json` when those passes happen.
+- Surface AIGP / EU AI Act sidebar filters (open UI work).
+
+---
+
+## 2026-06-22 — GENREL03-BP02 → GR3B2-01 promoted (agent run deadline); GENREL03 CLOSED; catalogue at 24
 
 ### Context
 

@@ -77,10 +77,10 @@
           "references": [
             {
               "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.A: Govern Data for AI Systems",
-              "mapping_state": "unverified",
-              "last_checked": "2026-05-26",
-              "note": "Provisional mapping based on subject-matter proximity — the eval harness is a curated data artefact governing model evaluation, which aligns with III.A's data-governance scope. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+              "competency": "III.B: Govern the collection and use of data in training and testing the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "The committed, versioned ground-truth evaluation harness IS the governed test dataset and its use in pre-ship testing — concretises III.B (governance of data used in testing)."
             }
           ]
         },
@@ -143,7 +143,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.9.0",
+        "current_version": "1.9.1",
         "changes": [
           {
             "version": "1.0.0",
@@ -228,6 +228,12 @@
             "date": "2026-06-16",
             "author": "Dheeraj",
             "summary": "MINOR. Added framework_mappings.eu_ai_act cross-reference. One PRIMARY reference: Article 15 — Accuracy, robustness and cybersecurity, risk_tier High-risk, control_ref null. The ground-truth harness is the dataset that makes the Art 15 accuracy obligation a CI-tested, regression-gated property; control_ref is null because ground-truth/accuracy testing is generic ML governance, not one of the eight GenAI-distinctive controls (though the harness also carries the adversarial cases exercising Control #2 and grounding cases exercising Control #3). mapping_state unverified — asserted from the 2026-06-13 EU AI Act system-level-controls funnel (paid_workshop/part_2.md), not yet read side-by-side against the Article 15 text. AWS remains the primary anchor; EU AI Act is a cross-reference per taxonomy.json framework_mappings_spec.eu_ai_act_convention. No change to statement, problem, solution, gates, ownership, applicability, serving_paradigm, dependencies, references, or evidence."
+          },
+          {
+            "version": "1.9.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.B via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -297,10 +303,10 @@
           "references": [
             {
               "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.A: Govern Data for AI Systems",
-              "mapping_state": "unverified",
-              "last_checked": "2026-05-26",
-              "note": "Provisional mapping based on subject-matter proximity — strata declaration and per-stratum minima are data-governance disciplines on the evaluation dataset, aligning with III.A's data-governance scope. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+              "competency": "III.B: Govern the collection and use of data in training and testing the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "The strata manifest and per-stratum minimum counts govern the composition of the test dataset — concretises III.B (governance of data used in testing)."
             }
           ]
         }
@@ -352,7 +358,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.6.1",
+        "current_version": "1.6.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -413,6 +419,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.6.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.B via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -484,11 +496,11 @@
         "aigp": {
           "references": [
             {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-05-26",
-              "note": "Provisional mapping based on subject-matter proximity — defining custom evaluation metrics is a model-lifecycle design-and-build governance activity, distinct from the data-governance scope of III.A that GO1B1-01 and GO1B1-02 anchor to. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+              "competency": "IV.B: Perform key activities to assess the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Encapsulated, consistently-applied evaluation metrics ARE how the system's quality is assessed — concretises IV.B (key activities to assess the AI system)."
             }
           ]
         }
@@ -541,7 +553,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "2.3.1",
+        "current_version": "2.3.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -602,6 +614,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "2.3.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.B via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -686,6 +704,17 @@
               "note": "AWS step 6 names two distinct drift dimensions — model performance degradation (output drift) and actual-usage divergence from the initial ground truth (input drift). AWS leaves unspecified: where the monitor's configuration lives, how cadence is declared, what baseline shape is required, how alerts are routed, and what happens when the model is updated (potential baseline staleness). This principle concretises all five — `eval/drift/config.yaml` as the config artefact, per-section per-dimension cadence and thresholds, per-dimension baselines anchored to the deployment, alert_routing in-config, and a baseline-update coupling gate (Gate 2)."
             }
           ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.C: Govern the release, monitoring and maintenance of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "A deployment-anchored drift monitor IS monitoring of the released system — concretises III.C (release, monitoring and maintenance)."
+            }
+          ]
         }
       },
       "ownership": {
@@ -735,7 +764,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.3.1",
+        "current_version": "1.3.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -778,6 +807,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.3.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -852,10 +887,10 @@
           "references": [
             {
               "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.A: Govern Data for AI Systems",
-              "mapping_state": "unverified",
-              "last_checked": "2026-05-27",
-              "note": "Provisional mapping based on subject-matter proximity — refresh discipline of the ground-truth harness is a data-governance activity, aligning with III.A's scope. Same anchor as GO1B1-01 and GO1B1-02. Needs a side-by-side review against the AIGP III.A competency definition to promote to verified."
+              "competency": "III.B: Govern the collection and use of data in training and testing the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "The refresh discipline keeps the test dataset current with real usage — concretises III.B (governance of test data across the lifecycle)."
             }
           ]
         }
@@ -907,7 +942,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.3.1",
+        "current_version": "1.3.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -938,6 +973,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.3.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.B via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -1013,10 +1054,10 @@
           "references": [
             {
               "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-04",
-              "note": "Provisional mapping based on subject-matter proximity — pinning model versions and gating model changes on re-evaluation is a model-lifecycle governance control, aligning with III.B's scope (the same anchor as the cost siblings GC1B1-01 / GC2B2-01 / GC3B1-01). Distinct from the data-governance III.A the rest of the GO1B1 eval family maps to, because this principle governs the model artefact's version lifecycle, not the ground-truth data. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+              "competency": "III.C: Govern the release, monitoring and maintenance of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Pinning the model version and gating any change on re-evaluation IS change-management of the released system — concretises III.C (release, monitoring and maintenance)."
             }
           ]
         }
@@ -1069,7 +1110,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.2.1",
+        "current_version": "1.2.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -1094,6 +1135,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.2.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -1166,18 +1213,11 @@
         "aigp": {
           "references": [
             {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.A: Establish Governance Policies, Processes, and Standards",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-03",
-              "note": "Primary mapping. The registered template registry plus the SDK call-signature contract IS the governance standard for prompt content at the technical layer — every prompt has an owner, a version, a declared lifecycle status, and a contract for how it's accessed. IV.A's expectation that governance policies be operationalised through standards and processes is directly served by the manifest schema and the SDK enforcement. Needs side-by-side review against the AIGP IV.A competency definition to promote to verified."
-            },
-            {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.B: Implement Ongoing Risk Assessments and Monitoring",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-03",
-              "note": "Secondary mapping. The registry's addressable template_id is the substrate that prompt-layer monitoring keys on — token-cost dashboards, content classification, safety classification, prompt-drift detection all require an addressable thing to attach to. Without GO3B1-01 in place, GO3B2-01's observability emission has nothing structured to correlate at the prompt layer. Needs review against AIGP IV.B to verify."
+              "domain": "Domain I: Understanding the Foundations of AI Governance",
+              "competency": "I.C: Establish policies and procedures throughout the AI life cycle",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "The registered prompt registry (owner, version, code contract per prompt) IS an enforced lifecycle policy/procedure for prompt assets — concretises I.C (establish policies and procedures throughout the AI life cycle)."
             }
           ]
         }
@@ -1230,7 +1270,7 @@
         }
       ],
       "change_history": {
-        "current_version": "1.2.1",
+        "current_version": "1.2.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -1255,6 +1295,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.2.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to I.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -1320,18 +1366,11 @@
         "aigp": {
           "references": [
             {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.B: Implement Ongoing Risk Assessments and Monitoring",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-02",
-              "note": "Primary mapping. Centralised trace emission with mandatory header fields (project_id, workload_pattern, model_id, compliance_tier) is the technical substrate that makes ongoing monitoring possible at portfolio scale — without it, IV.B's expected risk-assessment cadence cannot be operated because evidence is fragmented across team-specific backends. Needs a side-by-side review against the AIGP IV.B competency definition to promote to verified."
-            },
-            {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-02",
-              "note": "Secondary mapping. The central PII pre-scrub, the approved-backends allow-list (gate 1), and trace-correlation across team boundaries directly serve IV.C's access-control and incident-management scope — incidents that cross team boundaries become reconstructable from a single trace_id instead of timestamp-guessed across fragmented logs. Needs review against AIGP IV.C to verify."
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.C: Govern the release, monitoring and maintenance of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "One-channel telemetry on every model call, tool and retrieval IS the monitoring substrate for the released system — concretises III.C (release, monitoring and maintenance)."
             }
           ]
         }
@@ -1384,7 +1423,7 @@
         }
       ],
       "change_history": {
-        "current_version": "1.2.1",
+        "current_version": "1.2.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -1409,6 +1448,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.2.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -1488,17 +1533,10 @@
           "references": [
             {
               "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-02",
-              "note": "Primary mapping. Read-side access control on observability traces, centrally-governed principal-to-compliance_tier authorisation, retention bounds keyed on compliance_tier, and read-side audit logging directly serve IV.C's access-control and incident-management scope. The sibling pair GO3B2-01 (IV.B primary, IV.C secondary) and GO3B2-02 (IV.C primary, IV.B secondary) covers both competencies from both directions — the centralisation gives IV.B its monitoring substrate, the access governance here gives IV.C its enforcement. Needs side-by-side review against the AIGP IV.C competency definition to promote to verified."
-            },
-            {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.B: Implement Ongoing Risk Assessments and Monitoring",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-02",
-              "note": "Secondary mapping. Read-side audit logs on regulated- and sensitive-tier trace accesses feed the ongoing-monitoring loop IV.B expects — anomalous read patterns, off-hours access, and access by deprecated principals all become detectable signals against a central audit stream rather than per-backend silences. Needs review against AIGP IV.B to verify."
+              "competency": "IV.C: Govern the deployment and use of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Read-side access control and retention bounds on observability traces ARE governance of the deployed system's data access — concretises IV.C (govern the deployment and use)."
             }
           ]
         }
@@ -1551,7 +1589,7 @@
         }
       ],
       "change_history": {
-        "current_version": "1.2.1",
+        "current_version": "1.2.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -1576,6 +1614,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.2.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -1641,11 +1685,11 @@
         "aigp": {
           "references": [
             {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-05-29",
-              "note": "Provisional mapping based on subject-matter proximity — model-selection decision records are a design-and-build governance artefact, aligning with III.B's scope (same domain GO1B1-03 maps to). Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+              "competency": "IV.A: Evaluate key factors and risks relevant to the decision to deploy the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "A recorded, deliberate model-selection decision IS the evaluation behind the deploy decision — concretises IV.A (evaluate factors/risks relevant to the decision to deploy)."
             }
           ]
         }
@@ -1697,7 +1741,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.3.1",
+        "current_version": "1.3.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -1728,6 +1772,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.3.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.A via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -1801,17 +1851,6 @@
               "note": "AWS step 4 calls for the hosting infrastructure to be right-sized to the workload's demand profile with the most cost-optimized configuration that meets performance requirements. AWS leaves unspecified: where the right-sizing baseline lives, where utilization alarms are declared, how the declared baseline is enforced against actual deployed infrastructure (the most common bypass), and how reserved-capacity / scheduling / quantization decisions are made auditable. This principle concretises all four — `infra/right-sizing/config.yaml` as the baseline artefact, `infra/monitoring/utilization-alarms.yaml` as the alarms artefact, two pre-merge CI gates (existence + content; code-vs-record consistency lint comparing IaC against the YAML and verifying deployed alarms), and runtime alarm enforcement post-deploy. The principle absorbs the substance of GENCOST02-BP02 steps 1 (demand identification — content WITHIN the YAML's utilization_targets), 2 (deploy on acceptable infrastructure — pre-condition), and 3 (establish demand profile — observation work product absorbed by the right-sizing config's baseline). AWS's implementation guidance is heavily vendor-menu (SageMaker AI HyperPod, EKS, Slurm, EC2 Reserved Instances, Inference Recommender, quantization techniques) but the step wording itself is a generic mandate; vendor specifics belong here in framework_mappings notes rather than in the principle's solution.approach."
             }
           ]
-        },
-        "aigp": {
-          "references": [
-            {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-05-29",
-              "note": "Provisional mapping based on subject-matter proximity — hosting-infrastructure right-sizing is a build-and-design discipline against the deployed workload, aligning with III.B's lifecycle scope. Same anchor as GC1B1-01 and GO1B1-03. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
-            }
-          ]
         }
       },
       "ownership": {
@@ -1862,7 +1901,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.2.1",
+        "current_version": "1.2.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -1893,6 +1932,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.2.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -1988,17 +2033,6 @@
               "note": "AWS GENCOST03-BP01 'Optimize prompt token length' tells teams to reduce prompt token count (step 2: 'trimming as many unnecessary words as possible') but leaves the discipline as coaching — it specifies no artefact, no ceiling, and no gate. This principle concretises step 2 into an enforceable contract: a declared per-template input-token ceiling (reusing GO3B1-01's runtime_token_budget.input field) plus a pre-merge gate that computes the template's declared-worst-case footprint and fails the build when it exceeds the ceiling, plus a budget-inflation governance gate. It absorbs step 1 ('Identify a verbose prompt which could be optimized') — a template that breaches its ceiling IS the identified verbose prompt, surfaced mechanically rather than by manual hunting. Steps 3 (use a separate LLM / Amazon Bedrock Prompt Optimization to shorten) and 4 (zero-shot / chain-of-thought / tree-of-thought / least-to-most technique menu plus 'continue testing') are not_promoted: step 3 is a vendor/technique suggestion with no architectural mandate surviving extraction, step 4 is a prompt-engineering technique menu plus process advice. The exact GENCOST03 question-stem wording is approximated from the verified focus-area title 'Cost-aware prompting' pending a question-page verification pass; the BP title and step-2 verbatim_text are verified against the live AWS Lens page (fetched 2026-06-04). Vendor specifics (Amazon Bedrock Prompt Optimization) are kept here rather than in solution.approach."
             }
           ]
-        },
-        "aigp": {
-          "references": [
-            {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-04",
-              "note": "Provisional mapping based on subject-matter proximity — a declared, enforced prompt-token budget is a design-and-build-time governance control over the model-call cost surface, aligning with III.B's lifecycle scope. Same anchor as cost siblings GC1B1-01 and GC2B2-01. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
-            }
-          ]
         }
       },
       "ownership": {
@@ -2049,7 +2083,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.2.1",
+        "current_version": "1.2.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -2074,6 +2108,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.2.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -2144,17 +2184,6 @@
               "note": "Anchored whole-BP. GENCOST03-BP02 'Control model response length' is the output-side member of the Cost-aware prompting (GENCOST03) focus area, sibling to BP01 'Optimize prompt token length' (→ GC3B1-01, input side) and BP03 'Implement prompt caching' (→ GC3B3-01). The BP title and the GENCOST03 question-stem are confirmed (the question stem 'How do you engineer prompts to optimize cost?' was verified 2026-06-05 during the BP01/BP03 walks). The live BP page's numbered implementation steps could NOT be fetched this session — docs.aws.amazon.com timed out repeatedly — so the BP's mandate is reconstructed from search extraction and its established scope: bound response length via max_tokens, stop sequences, and concise-output prompt instructions to reduce output-token cost. mapping_state is therefore 'unverified' pending a step-page verification pass to confirm the step decomposition and promote to 'verified'. This principle concretises the output-cost lever as the mirror of GC3B1-01: GO3B1-01 already carries a `runtime_token_budget.output` field but mandates neither that it be set nor that it be wired into the call, so most templates leave it blank and every call runs uncapped. Vendor specifics (Amazon Bedrock inference parameters / stop sequences) are kept here rather than in solution.approach."
             }
           ]
-        },
-        "aigp": {
-          "references": [
-            {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-16",
-              "note": "Provisional mapping by subject-matter proximity — a declared, enforced response-token cap is a design-and-build-time governance control over the model-call cost surface, the same III.B anchor as cost siblings GC1B1-01, GC2B2-01, and GC3B1-01. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
-            }
-          ]
         }
       },
       "ownership": {
@@ -2205,13 +2234,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-16",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENCOST03-BP02 (Control model response length), anchored whole-BP (implementation_step null). The output-side mirror of GC3B1-01 (input footprint) and the fourth GENCOST principle; 23rd in the catalogue. Resumed as the flagged 'most likely remaining promote candidate' after the GENOPS pillar closed 2026-06-16. step_promotion rubric 3/3/3/3 (has_enforceable_artefact: declared `runtime_token_budget.output` ceiling + pre-merge declaration lint + AST no-bypass routing lint + budget-inflation governance lint; architecturally_distinct: GO3B1-01 mandates the output field EXISTS while this makes it a binding, SDK-applied, un-bypassable cap — different failure mode, sibling named with disjoint artefacts; in_bp_scope: BP literally 'Control model response length'; not_vendor_menu: Bedrock inference-parameters / stop sequences stripped to framework_mappings + Option B, generic declared-cap-bound-into-the-call mandate survives). HALT: presented the candidate plus the absorption counter (GO3B1-01 already models the output budget field); user pressed hard on enforceability — specifically how a CI gate checks response length when the response does not exist at build time. RESOLVED in discussion: the gate canNOT check actual output length (a runtime quantity); it proves the cap is DECLARED + APPLIED BY THE SDK + UN-BYPASSED, and the model honours max_tokens at runtime. This is the 'wired-in, not runtime behaviour' enforcement limit, recorded in enforcement_limits.md — the distinguishing point from GC3B1-01, whose input footprint IS statically computable. User directed PROMOTE. SOLUTION: Option A (declared-and-bound, manifest-derivable) is the mandated spine — a real `runtime_token_budget.output`, the SDK applying it as max_tokens by construction, a declaration lint, an AST no-bypass lint extending GO3B1-01's routing lint, and a budget-inflation governance lint. Options B (declared stop_sequences) and C (runtime alarm on GO3B2-01's per-call output-token signal) documented as additive alternative RIs; the RI and gates are built on Option A only. focus_area P52 — Cost-aware Prompting (shared with GC3B1-01/GC3B3-01, mirroring AWS GENCOST03). Hand-scored against section rubrics: statement 3/2/3/2/3 (abstract should/ought register, artefact + mechanism live in gates); problem 3/3/3/3/3/3 (every example is an output-cost failure the model-selection / hosting gates and GO3B1-01's existence-only check all miss); solution 3/3/3/3/3/2 (Option A artefacts named with paths + gate points; B/C explicitly optional so coverage scopes to Option A; the enforcement limit stated in-line); gates 3/3/3/3/3/3 (two pre_merge required-status-check gates — declaration + no-bypass routing, and budget-inflation governance). tier rubric D1=no (capping output tokens is cost discipline; no regulator / audit / litigation exposure) / D2=2 (a declaration lint + an AST no-bypass lint + a budget-governance lint shipped in the central llm-sdk suite, reused across projects; thinner than GC3B1-01 because it adds no new tokenizer computation — it extends GO3B1-01's existing no-inline AST lint with one parameter) → recommended_centralise → enterprise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check, parallel to GC3B1-01 / GC2B2-01 / GO3B1-01. maturity_level scaling — pays off at project #2: the gate sits on GO3B1-01's scaling-tier registry substrate and amortises once a portfolio of prompt templates exists; foundational rejected because a principle cannot pay off before its scaling-tier substrate is adopted. depends_on_deployment: no — Option A is manifest-derivable + call-graph-static. serving_paradigm all four mandatory — response length drives cost in BOTH managed per-token billing AND self-hosted/provisioned compute time. impact_level Medium (matches the GENCOST03 BP risk rating and the cost-pillar pattern; output-cost failures are recoverable via capping, not customer regressions or safety events). applicability { llm/rag/agentic: mandatory, ml: nice_to_have } matching the cost siblings (classical ML has no prompt-shaped artefact). dependencies [{ GO3B1-01: hard }] — reuses the manifest row, the runtime_token_budget.output field, the SDK call boundary that applies the cap, and the no-inline AST lint machinery. AIGP III.B unverified, parallel to the cost siblings. references: two real links surfaced during the BP02 walk (Amazon Bedrock inference-parameters doc for max_tokens; Stackviv max-tokens/stop-sequences article) — a LIGHTER set than GC3B1-01's five, recorded as an open item to enrich in a review pass. explain_prompt compiled with the uncapped-output cost failure shape (output budget blank-by-default, every call uncapped, the more-expensive half left to the model's discretion), distinguished from GC3B1-01's input-side cumulative-drift framing. RI README at data/ri/GC3B2-01/README.md built on Option A. OPEN ITEMS: (1) JSON parse run in-session after merge (see decisions.md). (2) framework_mappings.aws mapping_state is 'unverified' — the BP title + GENCOST03 question are confirmed but the live page's numbered implementation steps could not be fetched this session (docs.aws.amazon.com timeouts); confirm the step decomposition and promote to 'verified' in a follow-up pass. (3) references set is light (2 vs the sibling's 5) — enrich with named-company output-cost cases in review. (4) S3 re-upload (ea/principles.json) + frontend build for the live app."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -2291,17 +2326,6 @@
               "note": "AWS BP03 verbatim and step list fetched from the live AWS Lens page 2026-06-05. Anchors step 2 (enable caching + configure cache checkpoints) and absorbs step 1 (Identify opportunities for caching — review for repeated prompt components, verify minimum-token thresholds) as the eligibility computation WITHIN the gate: a template whose computed static prefix clears the model's minimum cache size IS the identified caching opportunity, surfaced mechanically rather than by manual review. AWS leaves unspecified: where the cacheable-prefix size is declared, how eligibility is decided against the model's minimum-token threshold, how the declaration is kept honest against the actual prompt body, and how this is enforced as a versioned artefact in CI. This principle concretises all four. AWS's implementation guidance is Bedrock-specific (console toggle, Bedrock cache checkpoints) but the underlying mandate — mark the stable leading prefix of a reused prompt as a cache checkpoint so it bills at the provider's reduced cached-token rate — is provider-neutral (Anthropic `cache_control`, OpenAI automatic prefix caching, Bedrock cache checkpoints all implement the same prefix-reuse contract); vendor specifics are deferred to this note. Steps 3 (Monitor caching metrics — hit/miss rates, cached-vs-uncached cost) and 4 (Optimize cache usage — tune checkpoint placement, balance write vs read cost) are not_promoted as standalone principles: step 3's runtime monitoring is captured as the optional Option C (telemetry alarm on cache hit-rate) documented in solution.approach and properly belongs to the GO3B2 observability family; step 4 is tuning/process advice with no commitable pre-merge artefact. See lens_mapping.md GENCOST03-BP03 ledger."
             }
           ]
-        },
-        "aigp": {
-          "references": [
-            {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-05",
-              "note": "Provisional mapping based on subject-matter proximity — prompt-caching configuration is a build-phase design discipline on the prompt artefact, aligning with III.B's scope, parallel to the cost siblings GC1B1-01 / GC2B2-01 / GC3B1-01. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
-            }
-          ]
         }
       },
       "ownership": {
@@ -2352,7 +2376,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.1",
+        "current_version": "1.1.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -2371,6 +2395,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.1.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -2444,17 +2474,6 @@
               "note": "AWS GENCOST04-BP01 'Reduce vector length on embedded tokens' (Medium risk) tells teams to embed with a smaller vector dimension to cut vector-store storage and computation cost, deliberately trading against retrieval quality — but it leaves the discipline as advice: no declared artefact, no consistency check between the chosen dimension and the deployed index, and no gate. This principle concretises step 2 ('Embed data using the smallest vector length') into an enforceable contract: a declared per-vector-store record (embedding model + chosen dimension + the retrieval-quality result that justified it) plus a pre-merge gate that fails when the declaration is missing, when the deployed index dimension does not match the declared one, or when the dimension is raised without a recorded cost/quality rationale. It absorbs step 1 ('Identify the smallest vector length supported by the selected embedding foundation model') as the gate's input — the smallest-supported dimension is a property the declaration records against, surfaced from the model card rather than hunted manually. Steps 3 ('Perform latency and load testing to verify model response quality is still sufficient') and 4 ('Re-test with increased vector size or modified document chunking strategy') are not_promoted: they are retrieval-quality testing and chunking/search-algorithm tuning — process advice whose substance overlaps the GO1B1 eval-harness family and the GENPERF04 (Vector store optimization) performance focus area, with no commitable pre-merge artefact distinct from the quality-floor number this principle's declaration already records. The vendor-flavoured aside in the BP guidance (compressed vector types as an embedding-model selection factor) is stripped to the generic mandate; it is an input to the dimension/precision choice the declaration captures, not a separate gate. BP title, step verbatim_text, and the GENCOST04 question stem ('How do you optimize vector stores for cost?') all verified against the live AWS Lens pages (BP page + gencost04.html focus-area page fetched 2026-06-06). GENCOST04 ships exactly one BP (BP01), so the focus area is fully covered by this single principle. First principle under GENCOST04; new focus area P53 — Cost-informed Vector Stores created."
             }
           ]
-        },
-        "aigp": {
-          "references": [
-            {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-06",
-              "note": "Provisional mapping based on subject-matter proximity — choosing and committing to an embedding vector dimension is a design-and-build-time governance control over the vector-store cost surface, aligning with III.B's lifecycle scope, parallel to the cost siblings GC1B1-01 / GC2B2-01 / GC3B1-01 / GC3B3-01. Arguably also touches III.A (Govern Data for AI Systems) since the artefact is the data index; III.B chosen for consistency with the cost-pillar pattern. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
-            }
-          ]
         }
       },
       "ownership": {
@@ -2505,7 +2524,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.0.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -2518,6 +2537,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.0.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -2587,11 +2612,11 @@
         "aigp": {
           "references": [
             {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.B: Govern the AI Model Lifecycle (Design & Build)",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-06",
-              "note": "Provisional mapping based on subject-matter proximity — committing declared run ceilings and a terminal condition into an agent at build time is a design-and-build-time governance control over the agent's cost and runaway-behaviour surface, aligning with III.B's lifecycle scope, parallel to the cost siblings GC1B1-01 / GC2B2-01 / GC3B1-01 / GC3B3-01 / GC4B1-01. Arguably also touches a deployment/operations competency since the control bounds runtime behaviour; III.B chosen for consistency with the cost-pillar pattern. Needs a side-by-side review against the AIGP III.B competency definition to promote to verified."
+              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+              "competency": "IV.C: Govern the deployment and use of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "A hard run ceiling an agent cannot exceed IS a bound on the deployed agent's autonomy — concretises IV.C (govern the deployment and use; agentic systems)."
             }
           ]
         }
@@ -2644,7 +2669,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.0.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -2657,6 +2682,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.0.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -2741,17 +2772,10 @@
           "references": [
             {
               "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-07",
-              "note": "Primary mapping. Per-query identity-scoped authorization over a shared vector store, central retrieval-SDK enforcement, and read-side audit of retrieval decisions directly serve IV.C's access-control scope. Needs side-by-side review against the AIGP IV.C competency definition to promote to verified."
-            },
-            {
-              "domain": "Domain III: Understanding How to Govern AI Development",
-              "competency": "III.A: Govern Data for AI Systems",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-07",
-              "note": "Secondary mapping. Labelling each ingested document with its access-control metadata and segregating data by role inside the vector store is data governance for AI systems, aligning with III.A. Needs review to verify."
+              "competency": "IV.C: Govern the deployment and use of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Per-query identity-scoped retrieval authorization IS access governance over the deployed system — concretises IV.C (govern the deployment and use)."
             }
           ]
         },
@@ -2850,7 +2874,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.1.1",
         "changes": [
           {
             "version": "1.1.0",
@@ -2869,6 +2893,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.1.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -2948,10 +2978,10 @@
           "references": [
             {
               "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-07",
-              "note": "Provisional mapping. Runtime output guardrails with a defined fallback are an operational safety/incident-mitigation control over harmful or incorrect model output. Arguably also touches a responsible-AI / harm-mitigation competency; IV.C chosen provisionally. Needs side-by-side review against the AIGP competency definitions to promote to verified."
+              "competency": "IV.C: Govern the deployment and use of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "A runtime output guardrail with safe fallback IS governance of the deployed system's use — concretises IV.C (govern the deployment and use)."
             }
           ]
         },
@@ -3034,7 +3064,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.1.1",
         "changes": [
           {
             "version": "1.1.0",
@@ -3053,6 +3083,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.1.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -3132,10 +3168,10 @@
           "references": [
             {
               "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-07",
-              "note": "Provisional mapping. Input validation against prompt injection is an operational security control over the prompt attack surface. Same provisional IV.C placement as GS2B1-01 (output guardrail); needs side-by-side review against the AIGP competency definitions to promote to verified."
+              "competency": "IV.C: Govern the deployment and use of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Runtime input screening IS governance of the deployed system's use against misuse/manipulation — concretises IV.C (govern the deployment and use)."
             }
           ]
         },
@@ -3210,7 +3246,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.1.1",
         "changes": [
           {
             "version": "1.1.0",
@@ -3229,6 +3265,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.1.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -3306,10 +3348,10 @@
           "references": [
             {
               "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-08",
-              "note": "Provisional mapping. Bounding an agent's authority — which actions it may take and which require human confirmation — is an operational access-control and incident-prevention control over the agent's action surface. Same provisional IV.C placement as GS2B1-01 (output guardrail) and GS4B2-01 (input guardrail); needs side-by-side review against the AIGP competency definitions to promote to verified."
+              "competency": "IV.C: Govern the deployment and use of the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "A pre-execution gate on consequential agent actions IS governance of agentic deployment and use — concretises IV.C (govern the deployment and use; agentic systems)."
             }
           ]
         },
@@ -3392,7 +3434,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.1.1",
         "changes": [
           {
             "version": "1.1.0",
@@ -3411,6 +3453,12 @@
             "date": "2026-06-09",
             "author": "Dheeraj",
             "summary": "PATCH. Statement rewritten to abstract principle register in the 2026-06-09 principle/standard altitude split (see decisions.md). Title and description moved to should/ought altitude; the named artefact, path, and CI-gate mechanism the prior statement carried now lives solely in `gates` (the standard layer). No change to gates, solution, problem, framework_mappings, ownership, applicability, serving_paradigm, dependencies, references, or evidence — scope and enforcement unchanged. Scored against statement rubric v2 (is_abstract_principle). RI line-4 title reference updated to match. NOTE: explain_prompt still restates the prior prescriptive title and is left unchanged in this pass."
+          },
+          {
+            "version": "1.1.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to IV.C via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -3490,11 +3538,11 @@
         "aigp": {
           "references": [
             {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-10",
-              "note": "Provisional mapping, same IV.C placement as the four sibling Security principles (GS1B3-01, GS2B1-01, GS4B2-01, GS5B1-01) — data poisoning is an OWASP-catalogued security attack on the training pipeline. Flag for the side-by-side review: this one may belong instead under a data-governance competency (training-data quality and provenance), so the IV.C placement needs explicit confirmation against the AIGP competency definitions before promotion to verified."
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the collection and use of data in training and testing the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Screening training/customisation data before a run IS governance of the data used in training — concretises III.B directly."
             }
           ]
         },
@@ -3585,7 +3633,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.1.1",
         "changes": [
           {
             "version": "1.1.0",
@@ -3598,6 +3646,12 @@
             "date": "2026-06-10",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENSEC06-BP01 (Implement data purification filters for model training workflows), anchored to the whole BP (implementation_step null) because the mandate lives in the implementation guidance ('Data should be examined and cleaned for content which may be considered poisonous before introducing that data to a training job') and the six steps decompose it — steps 2+3 carry the promotable core (policy-derived filter declaration + filters for biased/factually-incorrect/hateful/violent/irrelevant content), step 1 is observation input, step 5 is the wired pipeline stage, steps 4/6 are consider-advice absorbed as filter options. 20th standard in the catalogue (9 GENOPS + 6 GENCOST + 5 GENSEC); fifth and FINAL Security-pillar standard — GENSEC06 was the last unwalked security focus area, so the GENSEC pillar is now fully walked. Opens new focus area P25 — Training Data Integrity (positive framing of AWS 'Data poisoning' per the catalogue convention; P21 Endpoint Security, P22 Response Validation, P23 Prompt Security, P24 Agentic Action Control precede it).\n\n**The learning-side member of the Security guardrail family** — GS4B2-01 screens INPUT, GS1B3-01 governs RETRIEVAL, GS2B1-01 screens OUTPUT, GS5B1-01 gates ACTION; this governs what the model LEARNS — the fifth face, and the only one whose failure is irreversible by rollback (poison absorbed into weights is retrained away or the model is retired; Tay reference).\n\n**step_promotion 3/3/3/3 (hand-applied):**\n\n- has_enforceable_artefact: purification manifest (`training/purification/config.yaml`: policy-derived categories + per-category filter/threshold/on_flag + audit destination) + three pre-merge lints + per-run audit records; binary checks throughout.\n- architecturally_distinct: the training-data path is unowned — all four sibling security standards govern inference-time faces; GO1B1 owns evals, not ingestion. Named each sibling and the distinction.\n- in_bp_scope: GENSEC06 is literally the data-poisoning question and ships only this BP.\n- not_vendor_menu: AWS prose is heavy with vendor callouts (Transcribe Toxicity Detection, Bedrock Guardrails API, fmeval, SageMaker Studio evaluation, HyperPod EKS/Slurm) — all named and stripped; the surviving vendor-neutral rule is 'no dataset reaches a training or customization job until it has passed declared, policy-derived purification filters, and every run leaves an audit record'.\n\n**Decisions driven by the HALT** (user reviewed the statement + problem sketch + four discussion points and directed promote-and-complete):\n\n1. PROMOTE despite narrow applicability — the narrowness objection (only workloads that train/fine-tune are touched; the same pressure that killed GENOPS04-BP02's FMOps half and GENPERF03-BP01) is outweighed because, unlike those, a vendor-neutral CI-gateable artefact survives extraction cleanly, and the narrowness is carried honestly by the statement's scope ('data used to train or customize') rather than by pretending universality.\n2. APPLICABILITY all four patterns mandatory — the schema's applicability axis is pattern-keyed (llm/rag/agentic/ml), not has-training-path-keyed, and fine-tuning is available to every pattern (including pure-API workloads via vendor fine-tune APIs, which the source-coupling gate explicitly covers). A workload with no training path satisfies the principle vacuously — same not-applicable-by-scope shape as GS5B1-01's no-action-surface case. Flagged in the HALT as a schema wrinkle; resolved without a schema change.\n3. PII DEFERRAL KEPT SEPARATE — the GENSEC01-BP03 step-3 PII-removal slice concerns the retrieval corpus at inference time; this standard concerns the training corpus. Conflating them would mis-place the control point. The PII slice remains an open extension candidate with no Lens anchor (GENSEC has no data-protection focus area — confirmed by the full pillar walk).\n4. POST-TRAINING toxicity evaluation (the BP's fmeval sentence) absorbed by the GO1B1 family, not re-mandated; training-environment isolation left to base-WAF Security.\n5. ENFORCEMENT LIMIT (same honesty boundary as the four siblings, appended to data/enforcement_limits.md): the lints prove filters are DECLARED, POLICY-COVERED, WIRED ahead of the job, and LOGGED — they cannot prove filters CATCH real poison (a vacuous filter passes). Efficacy -> quarterly seeded-poison audit (canary corpus across declared categories, catch-rate vs threshold, category list vs current AI policy, on GO1B1-01's harness).\n\n**Section rubrics (hand-applied, calibrated against the GS-family siblings and the v2 statement register):** statement v2 all five dims >= 2 — title 'Never train a model on data no one has examined' is abstract should/ought altitude (parallel to the rubric's own PASS exemplar 'Never let a user retrieve what they aren't allowed to see'), no artefact/path/gate named, scope held to training/customization data; problem: description + 5 synthetic examples with the illustrative disclaimer, failure shape = setup absence with an irreversibility edge; solution: Option A declared-and-wired spine + honest-boundary paragraph; gates: three pre_merge required-status-check lints + one quarterly_review with binary sign-off (the GS-family shape).\n\n**Fields:** impact_level High (matches AWS risk High; poisoned weights = retrain + safety/brand/regulatory exposure). serving_paradigm all four mandatory (poisoning rides the training path, orthogonal to serving; managed-API fine-tuning in scope). maturity_level FOUNDATIONAL — pays off at the first fine-tune (poison learned at project #1 is locked into the weights) and the enforcement is per-PR repo-local lints with no deployed substrate required. ownership.tier enterprise via D1=no borderline (regulated industries push toward yes; held parallel to the GS siblings) / D2=3 (central filter library: per-category filter implementations, toxicity/guardrail adapters at the data layer, canary poison corpus, audit-record schema, pipeline-stage templates for SageMaker/k8s/Slurm/vendor-API, the three lints — weeks of platform engineering) -> recommended_centralise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence (CI lint logs + per-run audit records + quarterly seeded-poison results), arb_role dashboard_and_spot_check. dependencies: GO1B1-01 soft (audit rides the harness), GS2B1-01 soft (guardrail configs reusable as data-layer filters per AWS step 4). references: OWASP ML02:2023 Data Poisoning Attack (cited by AWS's own Resources) + Microsoft Tay (The Verge, 2016 — the canonical public unscreened-learning incident). AIGP IV.C provisional unverified, flagged that a data-governance competency may fit better.\n\n**Open items:** JSON parse not run in-session (sandbox cannot reach the WSL mount) — run python3 json.load on data/principles.json from a terminal before pushing. Frontend: P25 — Training Data Integrity is a new free-text focus_area; confirm rendering. AIGP side-by-side review outstanding. GENSEC pillar now FULLY WALKED (GENSEC01-06 closed; 5 promoted). The GENSEC01-BP03 PII-removal deferral remains open as an extension candidate. Remaining unwalked: GENOPS02 (3 BPs), GENOPS05, GENCOST03-BP02, GENREL pillar, GENPERF04-BP01 formal sweep."
+          },
+          {
+            "version": "1.1.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.B via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -3679,11 +3733,11 @@
         "aigp": {
           "references": [
             {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-10",
-              "note": "Provisional, same IV.C placement as the five sibling Security standards. Flag for the side-by-side review: PII minimisation at ingestion is arguably a privacy / data-governance competency (data minimisation under privacy law) rather than security access control — this one is the strongest candidate of the family to move under a privacy-aligned competency when the review runs."
+              "domain": "Domain III: Understanding How to Govern AI Development",
+              "competency": "III.B: Govern the collection and use of data in training and testing the AI system",
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Controlling what may enter the retrieval corpus (PII / out-of-scope content) IS governance of the data the system uses — concretises III.B (ingestion side)."
             }
           ]
         },
@@ -3758,7 +3812,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.1.0",
+        "current_version": "1.1.1",
         "changes": [
           {
             "version": "1.1.0",
@@ -3771,6 +3825,12 @@
             "date": "2026-06-10",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENSEC01-BP03 step 3 (Develop a data ingestion pipeline which obfuscates or removes data that should not be processed by a foundation model) — the PII-removal half deferred at the 2026-06-07 GS1B3-01 walk and resolved today after re-reading the BP verbatim: the step itself is the Lens anchor (the earlier 'no Lens home' framing was wrong — it conflated the absence of a data-protection FOCUS AREA with the absence of an anchor). 21st standard; sixth Security standard; **first one-BP-two-standards case in the catalogue** (GS1B3-01 from step 4, GS1B3-02 from step 3), exercising the v1.13 many-standards-per-principle data model in ID space (distinct principle_ids retained — the two standards ladder to different whys: access vs minimisation). Focus area P21 — Endpoint Security (same as sibling; mirrors the AWS question area).\n\n**step_promotion 3/3/3/3 (hand-applied):** has_enforceable_artefact — sanitisation manifest (`ingestion/sanitisation/config.yaml`: data-card-derived exclusions + per-class detector/action/threshold + audit destination) + routed-ingestion AST lint + per-run audit records. architecturally_distinct — GS1B3-01 governs WHO retrieves (read gate); this governs WHAT enters the store (write gate); access control cannot compensate for over-ingestion (correctly ACL'd PII still leaks to everyone authorized on the containing document). in_bp_scope — step 3 is native to BP03's FM-data-store question; the sub-bullet 'sanitizing should happen before the model accesses the data, at time of ingestion' IS the mandate. not_vendor_menu — strip Bedrock/SageMaker guardrails, OpenSearch, Knowledge Bases and the rule survives: no document enters a model-accessible store until a declared sanitisation stage has masked or removed what the use case prohibits.\n\n**Decisions:** (1) User-directed promote-and-complete (HALT waived explicitly; the deferral had been discussed twice in-session). (2) Stage ordering fixed: sanitisation runs BEFORE GS1B3-01's ACL labelling — first whether content may be stored, then who may retrieve. (3) Scope boundaries: GS6B1-01 is the training-corpus twin (same clean-before-the-model idea at the other entry point); GS2B1-01's output PII filter is a backstop, not a substitute. (4) ENFORCEMENT LIMIT appended to enforcement_limits.md — lints prove declared/covered/wired/logged, not that detectors catch real PII (vacuous detector passes); efficacy -> quarterly seeded-PII audit (canary docs, leak-rate vs threshold, exclusion list vs data card, on GO1B1-01's harness).\n\n**Section rubrics (hand-applied, GS-family calibration):** statement v2 all dims >= 2 — 'Never ingest what the model should never process' is abstract should/ought, parallel to sibling 'Never let a user retrieve what they aren't allowed to see', no artefact named, scope held to the ingestion path. problem: description + 5 synthetic examples, setup-absence failure with a one-off-scrub-decay edge. solution: Option A spine + honest boundary. gates: three pre_merge required-status-check lints + one quarterly_review, the GS-family shape.\n\n**Fields:** applicability { rag: mandatory, agentic: mandatory } — the obligation binds the model-accessible-store ingestion path; pure prompted LLM and classical ML workloads have no such path (omission = not applicable, the GS5B1-01 shape). serving_paradigm all four (ingestion is orthogonal to serving). maturity foundational (PII ingested at project #1 is exposed from day one; per-PR repo-local lints). impact High (BP-level AWS risk High; PII exposure = regulatory + reputational). ownership enterprise via D1=no borderline (privacy regulators push toward yes; held parallel to GS siblings) / D2=3 (central detector library, data-layer guardrail adapters, ingestion SDK write path, canary PII corpus, audit schema, lints) -> recommended_centralise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence, arb_role dashboard_and_spot_check. dependencies: GS1B3-01 soft (same pipeline, stage ahead of ACL labelling, AST-lint family), GO1B1-01 soft (audit rides the harness). references: OWASP LLM02:2025 Sensitive Information Disclosure (mitigation #1 is this contract) + Wiz/Microsoft 38TB AI-pipeline exposure. AIGP IV.C provisional unverified — flagged as the family's strongest candidate to move under a privacy/data-governance competency at review.\n\n**Open items:** JSON parse from terminal (sandbox cannot reach the WSL mount). S3 re-upload for the live app. AIGP review. The GENSEC01-BP03 deferral is now CLOSED — no open security-pillar residue remains; remaining unwalked: GENOPS02 (3 BPs), GENOPS05, GENCOST03-BP02, GENREL pillar, GENPERF04-BP01 formal sweep."
+          },
+          {
+            "version": "1.1.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "AIGP mapping corrected and verified against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure; competencies reworded to 'AI system'). Prior label used the retired/incorrect competency naming; re-tagged to III.B via the 'IS how we do X' test; mapping_state unverified→verified. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -3845,17 +3905,6 @@
               "note": "First Reliability standard in the catalogue; opens the GENREL pillar (P3) and focus area P31. Anchored to the whole BP (implementation_step null): the BP's four steps are (1) error classification, (2) recovery mechanisms — retries with exponential backoff, fallback templates, circuit breakers, (3) monitoring recovery rates, (4) continuous improvement. This standard concretises the steps 1-2 core (classify the failure, then recover from it); step 3's monitoring rides GO3B2-01's emit channel rather than being re-built here, and step 4 is improvement-process advice with no commitable pre-merge artefact. Stripped of the Bedrock Flows vendor menu (iterator/condition nodes, Bedrock Flows orchestration), the surviving architectural rule is provider-neutral: every model call sits behind a layer that validates the response against an expected shape, retries retryable failures with backoff, and returns a declared fallback on exhaustion. AWS's own 'classify responses from external systems as actionable or not ... may serve to reduce non-determinism' is the GenAI-distinct slice that separates this from base-WAF REL05-BP01 (graceful degradation), which is generic resilience engineering: a normal API returns a typed contract or an error, whereas a foundation model returns plausible-looking content that may not parse, so validating non-deterministic output is the part the base framework does not cover. SIBLING DISTINCTION: GS2B1-01 checks whether a response is SAFE to release (semantic/policy), not whether it is STRUCTURALLY usable or how to recover when it is not; GC5B1-01 caps how FAR an agent runs (loop/cost ceiling), not what happens when a single call fails. This is the recover-from-a-bad-call face, unowned by any sibling. SCOPE BOUNDARY: functional correctness of the model's answer is the project's own job; this standard governs the cross-cutting recovery path, not whether the answer is right. ENFORCEMENT LIMIT (data/enforcement_limits.md): the lints prove a schema and fallback are declared and the call is routed — they cannot prove the fallback is the right one for the workflow or that the schema matches what the next step truly needs; efficacy is watched via emitted fallback-rate telemetry, not asserted by CI. NOTE: GENREL03-BP02 (Implement timeout mechanisms on agentic workflows) was walked in the same session and PARKED (not authored) — overlaps GC5B1-01's run ceiling on a different axis (wall-clock vs iterations) and risks base-WAF absorption (cross-refs REL05-BP05 client timeouts); user-directed to do BP01 only. Risk Medium."
             }
           ]
-        },
-        "aigp": {
-          "references": [
-            {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-15",
-              "note": "Provisional mapping. A defined detect-retry-fallback path for failed or malformed model calls is an operational incident-prevention control over the model's failure surface — it keeps a single failure from cascading into an outage. Closest existing AIGP placement (same Domain IV operational-governance family as the Security guardrails); needs side-by-side review against the AIGP competency definitions to promote to verified, and may instead belong under a dedicated reliability/operational-resilience competency if one exists."
-            }
-          ]
         }
       },
       "ownership": {
@@ -3911,13 +3960,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-15",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENREL03-BP01 (Use logic to manage prompt flows and gracefully recover from failure). 22nd standard in the catalogue and the FIRST Reliability standard — opens the GENREL pillar (P3 — Reliability) and new focus area P31 — Prompt Remediation & Recovery. Anchored whole-BP (implementation_step null): the BP's steps 1-2 (error classification + recovery mechanisms — retries/backoff/fallback/circuit-breaker) are the concretised core; step 3 monitoring rides GO3B2-01's emit channel; step 4 is continuous-improvement process advice with no commitable artefact.\n\nORIGIN: surfaced from a session mapping the 'reason about reliability and cost like a Staff engineer' best practice onto the catalogue. Of the four concerns (non-determinism, retries, latency, token cost): token cost is fully covered (GC3 family), non-determinism is covered as an eval/drift discipline (GO1B1 family) but NOT in its runtime face, and retries + latency were unwalked. AWS distributes non-determinism across the lens; its runtime face ('variations in model outputs for similar inputs' under Reliability's common challenges) and retries both land in GENREL03 — collapsing two of the four concerns into one walk. This standard is that runtime recovery contract.\n\nstep_promotion 3/3/3/3 (hand-applied):\n- has_enforceable_artefact: per-call recovery spec (output_schema + retry + fallback) + the central wrapper + two pre-merge lints (declaration completeness, routed-execution AST). Path-shaped, binary gates.\n- architecturally_distinct: the recover-from-a-bad-call face is unowned — GS2B1-01 governs output SAFETY, GC5B1-01 governs agent RUN LENGTH; neither validates structural usability or defines recovery on failure.\n- in_bp_scope: GENREL03 is literally 'remediation actions for loops, retries, and failures' and BP01 is 'gracefully recover from failure'.\n- not_vendor_menu: strip Bedrock Flows (iterator/condition nodes, Flows orchestration) and the rule survives — validate the response, retry retryable failures with backoff, return a declared fallback; AWS's own 'classify responses as actionable or not to reduce non-determinism' is the vendor-neutral GenAI-distinct core.\n\nDecisions driven by the HALT (interactive walk where the user pressed on: whether structured-output/JSON mode already solves this — it does not, it is one half of the validate step and does not cover transient failures, truncation, refusals, empty retrieval, or semantic wrongness; and how a central team can monitor this — it owns the wrapper, enforces routing with an AST lint, and reads the emitted fallback-rate telemetry rather than policing outputs):\n1. PROMOTE BP01 only; PARK BP02 (timeouts on agentic workflows) — user-directed. BP02 overlaps GC5B1-01 on a different axis (wall-clock vs iteration ceiling) and risks base-WAF absorption (cross-refs REL05-BP05 client timeouts); recorded in lens_mapping.md as parked, not not_promoted.\n2. The GenAI-distinct slice that survives base-WAF REL05-BP01 (generic graceful degradation) is validating NON-DETERMINISTIC model output — a normal API returns a typed contract or an error; an LLM returns plausible garbage. This is the runtime face of non-determinism the catalogue lacked.\n3. SCOPE BOUNDARY: functional correctness of the answer is the project's job; this governs the cross-cutting recovery path only (consistent with the catalogue's functional-vs-NFR remit rule in data/CLAUDE.md).\n4. ENFORCEMENT LIMIT (same honesty boundary as the guardrail family): lints prove DECLARED + ROUTED; they cannot prove the fallback is appropriate or the schema correct. Efficacy → quarterly recovery-effectiveness review over GO3B2-01-emitted fallback-rate telemetry. Append to data/enforcement_limits.md.\n\nFields:\n- applicability { llm, rag, agentic } all mandatory; ml omitted — classical ML inference does not return free-form, non-deterministic content that fails to parse, so the dominant failure does not materially apply.\n- serving_paradigm all four mandatory — the recovery contract lives in the application/call layer, not the serving infra, so it holds regardless of how the model is served.\n- maturity_level foundational — pays off at project #1 (any workload with a production model call needs a recovery path from day one; skipping it bakes in unguarded calls), and the core enforcement is a per-PR repo-local lint (declaration + routed-execution AST); the central LLM SDK is a SOFT dependency because a standalone wrapper also satisfies the contract. The maturity rubric's FAIL example forbids labelling a per-PR repo-local lint 'scaling'.\n- impact_level Medium — matches AWS BP risk Medium; the consequence is a broken/halted request or silent data gap, serious but workload-scoped, not the financial/data-loss class that drives High.\n- ownership.tier enterprise via D1=no / D2=3 (central LLM SDK call wrapper: schema validator, backoff/retry engine, idempotency-key plumbing, fallback executor, routed-execution AST lint, telemetry hooks — weeks of platform engineering plus ongoing maintenance) → recommended_centralise; validator project_architect, audit_mode self_attestation_with_mechanical_evidence (CI lint logs + quarterly review), arb_role dashboard_and_spot_check. This is literally the tier rubric's 'Centralised LLM SDK' calibration example.\n- dependencies: GO3B1-01 soft (recovery wrapper rides the central LLM SDK and reuses its no-inline-call AST lint pattern; standalone wrapper also works), GO3B2-01 soft (recovery telemetry emitted through the observability channel).\n- references: Air Canada chatbot (unreliable model answer flowed to a user with no recovery check) + the anchoring AWS BP page.\n- framework_mappings.aigp IV.C provisional/unverified (closest operational-incident-prevention placement; may belong under a reliability competency).\n- eu_ai_act intentionally omitted — only the six Security standards carry it so far (decisions.md 2026-06-14); a Reliability mapping is a later pass.\n\nexplain_prompt compiled with a setup-absence / unguarded-call failure shape. RI at data/ri/GR3B1-01/README.md (Option A, matching the existing RI template).\n\nOpen items: JSON parse verify from terminal (sandbox cannot reach the live mount reliably); S3 re-upload for the live app; new pillar P3 + focus_area P31 are free-text — confirm the runtime renders them (npm run build from s3-json-viewer/); AIGP IV.C unverified; GENREL03-BP02 parked (revisit when the GENREL pillar is walked properly); GENREL01/02/04/05/06 still unwalked."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
           }
         ]
       },
@@ -3997,17 +4052,6 @@
               "note": "Second standard under GENREL03 (the focus area GR3B1-01 opened) and the 24th in the catalogue. Anchored whole-BP (implementation_step null). The BP mandates wall-clock timeouts on agent runs + their external compute/tool calls, dead-letter queues, and graceful termination. The GenAI-distinct rule that survives base-WAF REL05-BP05 (per-call client timeouts) is a deadline on the WHOLE RUN across a tool sequence the model chooses at runtime, which must fire even when a dependency returns nothing — a per-call timeout cannot bound a model-driven sequence whose length is not known in advance. SIBLING DISTINCTION: GC5B1-01 caps run LENGTH (iterations/steps/tokens) and is structurally blind to an agent idle on an unresponsive tool (no steps/tokens accrue while it waits); GR3B1-01 recovers a single call that RETURNS an error, whereas this fires when nothing returns. GR3B2-01 and GC5B1-01 gate the SAME artefact (the agent run config) and share the central harness, different fields/lints — recorded as a soft dependency. SCOPE: parked 2026-06-15 during the GR3B1-01 walk (user 'do BP01 only'); unparked and promoted 2026-06-22 as a STANDALONE reliability twin (user-directed, over the alternative of folding a wall-clock dimension into GC5B1-01). The BP's idempotency requirement for safe replay is acknowledged as a distinct, not-yet-authored concern; this standard's safe-termination rule defaults to no-auto-retry until a dedicated idempotency standard exists. Also absorbs GENCOST05-BP01 step 3's deferred tool/Lambda timeout residue. genrel03.html verified 2026-06-15; live BP step page not re-fetched this session (web_fetch timed out, no Chrome) so the numbered steps are reconstructed — confirm on a verification pass. AWS BP risk High."
             }
           ]
-        },
-        "aigp": {
-          "references": [
-            {
-              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
-              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-22",
-              "note": "Provisional mapping, same anchor as the focus-area sibling GR3B1-01. A run-level deadline that terminates a hung agent and routes it to a dead-letter queue is an operational incident-prevention control over the workload's failure surface — it keeps a single unresponsive dependency from cascading into a service-wide hang. Needs side-by-side review against the AIGP competency definitions to promote to verified, and may instead belong under a dedicated reliability/operational-resilience competency if one exists."
-            }
-          ]
         }
       },
       "ownership": {
@@ -4068,13 +4112,19 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.0",
+        "current_version": "1.0.1",
         "changes": [
           {
             "version": "1.0.0",
             "date": "2026-06-22",
             "author": "Dheeraj",
             "summary": "Initial authoring against AWS GENREL03-BP02 (Implement timeout mechanisms on agentic workflows). 24th standard in the catalogue; second under GENREL03 (focus area P31), the reliability twin of the run-length cap GC5B1-01.\n\nORIGIN: parked 2026-06-15 during the GR3B1-01 walk ('do BP01 only'), unparked 2026-06-22 as the GENREL pillar was walked to completion. Two earlier tensions resolved at this session's HALT.\n\nHALT (interactive, user-driven):\n1. STANDALONE vs FOLD INTO GC5B1-01 — the wall-clock deadline could be a 4th limit dimension on GC5B1-01 (same run-config artefact, same harness, same lint shape). User directed STANDALONE (GR3B2-01) over the extension: the failure mode is genuinely distinct (an I/O hang, not a runaway loop) and Reliability owning its own timeout standard reads cleaner than burying a reliability failure inside a cost-framed principle. The shared artefact + harness are recorded as a soft GC5B1-01 dependency.\n2. THE DISTINCT FAILURE — GC5B1-01 caps iterations/steps/tokens; that cap is structurally blind to an agent idle on an unresponsive tool because no steps or tokens accrue while it waits. A wall-clock deadline fires regardless. This is the hang no run-length cap can catch — the specific problem the user asked to be framed before promoting.\n3. IDEMPOTENCY — user pressed: if a run times out at tool 10, tools 1-9 already ran, and a naive retry re-fires their side effects. Concluded timeout alone is unsafe. Scope decision (user accepted 'Option 1'): keep GR3B2-01 NARROW — deadline + graceful termination + DLQ, with a safe-termination rule that defaults to NO auto-retry; make tool-call idempotency a SEPARATE not-yet-authored standard (GR3B1-01's retries need it too). When that standard lands, the safe-termination lint relaxes to 'auto-retry allowed only if all tool calls are idempotent'.\n4. ARTEFACT LOCATION — user asked where the client declares this. NOT the prompt YAML (GO3B1-01 is per-template, wrong granularity); it lives in the AGENT RUN CONFIG, the same artefact GC5B1-01's caps use. Per-tool timeouts live on each tool binding.\n5. ENFORCEMENT — three pre-merge lints (declaration completeness, safe-termination, routed-execution AST) + a quarterly timeout-effectiveness review over GO3B2-01-emitted telemetry.\n\nstep_promotion 3/3/3/3 (hand-applied):\n- has_enforceable_artefact: agent-run-config fields (wall_clock_deadline, per-tool timeout, on_timeout) + three pre-merge lints; path-shaped, binary gates.\n- architecturally_distinct: distinct from GC5B1-01 (step/token cap blind to an I/O hang) and base-WAF REL05-BP05 (per-call timeout cannot bound a model-chosen run that never returns); shared artefact with GC5B1-01 named as soft dependency.\n- in_bp_scope: GENREL03 is 'remediation for loops, retries, and failures'; BP02 is literally 'timeout mechanisms on agentic workflows'.\n- not_vendor_menu: strip the DLQ/Lambda service specifics and the rule survives — a run-level wall-clock deadline with safe termination.\n\nENFORCEMENT LIMIT (data/enforcement_limits.md, same honesty boundary as GC3B2-01 / GR3B1-01): the lints prove the deadline is DECLARED + APPLIED + UN-BYPASSED + RETRY-SAFE BY DECLARATION; they cannot prove it fires correctly under live load, that the value is right-sized, or that cleanup leaves a safe state. Runtime efficacy → quarterly review over emitted timeout/termination telemetry.\n\nFields:\n- applicability: agentic mandatory; llm + rag nice_to_have (a request-level deadline helps any workload, but the dominant failure — a hang across a model-chosen tool sequence — is agentic); ml omitted (classical ML inference is not an agentic, multi-tool run).\n- serving_paradigm: all four mandatory — the deadline lives in the orchestration/run layer, independent of how the model is served.\n- maturity_level foundational — any agentic workload needs a run deadline from day one, and the core enforcement is per-PR repo-local lints (declaration + safe-termination + routed-execution AST); the central harness is a SOFT dependency (a standalone timeout wrapper also satisfies the contract). The maturity rubric's FAIL example forbids labelling a per-PR repo-local lint 'scaling'.\n- impact_level High — matches the AWS BP risk (High): a hung run exhausts the worker pool and takes the whole service down (an outage, broader than the single-request consequence that set GR3B1-01 to Medium), and the unsafe-retry path can double-fire a side effect with financial/data consequence.\n- ownership.tier enterprise via D1=no / D2=3 (central agent harness: deadline enforcement, cleanup hooks, DLQ routing, the routed-execution AST lint, telemetry hooks — platform engineering plus maintenance) → recommended_centralise; validator project_architect, audit self_attestation_with_mechanical_evidence, arb dashboard_and_spot_check. Same 'Centralised LLM SDK' tier calibration as GR3B1-01.\n- dependencies: GC5B1-01 soft (shared run-config artefact + harness; adds the wall-clock dimension), GR3B1-01 soft (on_timeout hand-off is the recovery path; safe-termination shares the idempotency concern), GO3B2-01 soft (timeout telemetry).\n- references: the anchoring AWS BP page + base-WAF REL05-BP05 (the per-call timeout this is distinguished from).\n- framework_mappings.aigp IV.C provisional/unverified (same operational-incident-prevention placement as GR3B1-01).\n- nist + eu_ai_act intentionally omitted — matching the focus-area sibling GR3B1-01 (eu_ai_act carried only by the Security standards so far; a Reliability mapping is a later pass).\n\nexplain_prompt compiled with a hung-agent / unbounded-run failure shape. RI at data/ri/GR3B2-01/README.md (Option A, matching the existing RI template).\n\nOpen items: JSON parse verify; S3 re-upload for the live app; AWS BP step page reconstructed (verify numbered steps from the live page / a connected browser); AIGP IV.C unverified; a future tool-call IDEMPOTENCY standard would let the safe-termination lint allow idempotent-run retries; GENREL04/05/06 still to walk this session."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
           }
         ]
       },
