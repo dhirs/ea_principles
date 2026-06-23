@@ -1153,6 +1153,168 @@
       }
     },
     {
+      "standard_id": "ST-GO2B3-01",
+      "principle_id": "PR-GO2B3-01",
+      "u_value": "Resilience",
+      "u_principle": "Recovering from a failure never repeats an action that already happened — every side-effecting tool call an agent makes is built to be safe to run again.",
+      "references": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/genops02-bp03.html",
+          "title": "AWS Well-Architected Generative AI Lens — GENOPS02-BP03: Implement solutions to mitigate the risk of system overload",
+          "source": "Amazon Web Services",
+          "note": "The anchoring AWS best practice. Its dominant thrust (auto-scaling, rate limiting, throttling, backoff, circuit breakers) was not_promoted/absorbed elsewhere (GR3B1-01 recovery + base-WAF REL05 + GENREL01 throughput quotas). This standard concretises implementation step 4 — 'Design retry logic: Implement idempotent operations where possible to facilitate safe retries' — the GenAI-distinct slice that makes a retried agent run safe rather than merely possible. AWS BP risk: High.",
+          "date": "2026-06-23"
+        },
+        {
+          "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/retry-backoff.html",
+          "title": "AWS Prescriptive Guidance — Retry with backoff pattern (idempotency tokens for safe replay)",
+          "source": "Amazon Web Services",
+          "note": "The design-pattern reference cited by the BP. Establishes that a retried operation is only safe when it is idempotent — typically via an idempotency token derived from the request — so a duplicate delivery is de-duplicated by the receiver rather than re-executed. This standard makes that token a declared, lint-enforced property of every side-effecting tool binding, not an optional convenience.",
+          "date": "2026-06-23"
+        }
+      ],
+      "dependencies": [
+        {
+          "principle_id": "GR3B2-01",
+          "kind": "soft",
+          "reason": "Reciprocal. GR3B2-01's safe-termination lint defaults to no-auto-retry 'until a dedicated idempotency standard exists' — this is that standard. With GO2B3-01 present, a timed-out run may be auto-retried when every tool call it makes is declared idempotent. The two share the agent run config artefact; GO2B3-01 functions without GR3B2-01 (it governs any retry path, not only the timeout one), so the dependency is soft."
+        },
+        {
+          "principle_id": "GR3B1-01",
+          "kind": "soft",
+          "reason": "GR3B1-01 retries a model/tool call that returns a retryable error with exponential backoff; that retry is only safe for a side-effecting call when the call is idempotent. GO2B3-01 supplies the declaration and key that make GR3B1-01's retries safe to apply to side-effecting tools. GO2B3-01's gate stands alone, so the dependency is soft."
+        },
+        {
+          "principle_id": "GO3B2-01",
+          "kind": "soft",
+          "reason": "When a retry reuses an idempotency key, the harness can emit that on its existing GO3B2-01 span (one field, no new emitter) so duplicate-delivery patterns are observable for forensics. This is explicitly optional — GO2B3-01 does not mandate new per-call telemetry — so the dependency is soft."
+        }
+      ],
+      "pillar": "P1 — Operational Excellence",
+      "focus_area": "P12 — Operational Health Management",
+      "impact_level": "High",
+      "applicability": {
+        "llm": "nice_to_have",
+        "rag": "nice_to_have",
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENOPS — Operational Excellence",
+              "focus_area": "Monitor and manage operational health",
+              "question": "GENOPS02 — How do you monitor and manage operational health for your generative AI workload?",
+              "best_practice": "GENOPS02-BP03 — Implement solutions to mitigate the risk of system overload",
+              "implementation_step": {
+                "number": 4,
+                "title": "Design retry logic"
+              },
+              "mapping_state": "verified",
+              "last_checked": "2026-06-23",
+              "note": "Anchored to implementation step 4 verbatim: 'Implement idempotent operations where possible to facilitate safe retries.' FIRST standard promoted from GENOPS02 — the focus area was closed 2026-06-16 with ZERO principles when its three monitoring/overload BPs were not_promoted/absorbed; it REOPENS here with one standard. BP03's dominant rate-limiting/throttling/backoff thrust remains not_promoted (retries/backoff/circuit-breakers → GR3B1-01; generic throttling/API-Gateway/Step-Functions → base-WAF REL05; model-provider TPM/RPM quotas → GENREL01); only the idempotency slice of step 4 promotes. ORIGIN: flagged during the GR3B2-01 walk (2026-06-22) as 'a distinct, not-yet-authored standard' that both GR3B1-01's retries and GR3B2-01's safe-termination depend on; authored 2026-06-23 at user direction. PILLAR PLACEMENT (user-decided): anchored here in Operational Excellence — where 'idempotent operations' appears verbatim — over the alternatives of GR3B2-02 / GR3B1-02 in the Reliability recovery family. The GenAI-distinct framing: an agent fires a model-chosen sequence of side-effecting tool calls, and a recovery retry (from a timeout or a transient error) replays calls that already ran — a duplicate real-world action (charge, email, order) a generic retry-with-backoff cannot prevent. Verbatim re-fetched + full BP page verified 2026-06-23."
+            }
+          ]
+        },
+        "eu_ai_act": {
+          "references": [
+            {
+              "article": "Article 15 — Accuracy, robustness and cybersecurity",
+              "risk_tier": "High-risk",
+              "control_ref": null,
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-23",
+              "note": "PRIMARY. Concretises the robustness limb of Art 15(4) — high-risk systems shall be 'as resilient as possible regarding errors, faults or inconsistencies that may occur within the system... technical and organisational measures shall be taken.' A fault (a transient error, a timeout-triggered replay) is exactly such an inconsistency; the idempotency gate is the technical measure that stops the recovery from compounding the fault into a duplicate harmful action (a double charge, a duplicate order). The gate mandates the control architecturally (every side-effecting tool declares a key or is barred from auto-retry, routed through the harness) — it does not prove runtime resilience (whether the provider de-duplicates is an accepted limit; see enforcement_limits.md), so this is a coverage contribution to Art 15, not a proof of it. control_ref is null: retry idempotency is generic distributed-systems reliability engineering (it would exist for any retrying system, not GenAI-distinctively), so it maps to the article without one of the eight GenAI-distinctive system-level controls — same basis as GO1B1-01's accuracy-harness Art 15 ref. Asserted from the robustness reading of Art 15; not yet read side-by-side against the Article 15 text. Sibling note: GR3B1-01 and GR3B2-01 (the recovery/timeout family) plausibly carry the same Art 15(4) resilience angle and do not yet — a reliability-family EU AI Act pass is the place to add them together."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Make every side-effecting tool call safe to retry",
+        "description": "An agent fires a sequence of tool calls the model chooses as it goes, and recovery logic — a retry after a transient error, or a replay after a timeout — can run part of that sequence again. If a tool that already charged a card, sent an email, or placed an order is replayed, the real-world action happens twice.\n\nEvery side-effecting tool an agent can call should declare how a repeat call is made safe: an idempotency key the runtime attaches so the receiver de-duplicates a replay instead of re-executing it. A tool that cannot be made safe to repeat is declared so explicitly, and is never placed on an automatic retry path."
+      },
+      "problem": {
+        "description": "Agents recover from failure by retrying. GR3B1-01 retries a call that returns a retryable error; GR3B2-01 can replay a run that was terminated on a deadline. Both are correct for read-only work and both are unsafe the moment a retried step has already caused a side effect.\n\nThe dominant failure is a side-effecting tool call with no idempotency contract. A run fails or times out at step 8; steps 1-7 already executed; one of them charged a customer or emailed them; the recovery path runs the sequence again and the charge or email fires a second time. The retry mechanism did exactly what it was told — the call simply was not safe to repeat.\n\nThe gap is that 'safe to repeat' is left to each developer to remember, per tool, in code a reviewer cannot see:\n\n- A side-effecting call with no idempotency key is silently double-executed on any retry.\n- A tool a developer 'knows' is not safe to retry has nothing stopping the framework from retrying it anyway.\n- Two engineers wire the same downstream API with and without a key, and only one is safe, with nothing surfacing the difference at review.\n\nThis is distinct from recovering a failed call (GR3B1-01, which decides whether to retry) and from stopping a hung run (GR3B2-01, which decides when to stop): those decide that a retry happens; this decides that a retry, when it happens, does not duplicate an action that already occurred. It is the safety property the catalogue's two recovery standards were written to defer to.\n\nThe honest boundary: the workload can attach a key and refuse to retry an unsafe tool, but whether the downstream provider actually de-duplicates on that key is the provider's behaviour, not something the workload's CI can prove.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A billing-support agent retries a payments tool after a transient 503; the first call had in fact succeeded before the connection dropped, no idempotency key was sent, and the customer is charged twice — a chargeback and a complaint follow.",
+          "An order agent times out at tool 10 (GR3B2-01 fires) after tool 3 already emailed an order confirmation; the run is replayed from the top and the customer receives a second confirmation email for one order.",
+          "A ticketing agent calls a create-ticket API that returns a gateway timeout though the ticket was created; the agent's retry creates a duplicate ticket, and the support queue now shows two of everything during an incident.",
+          "An inventory agent decrements stock through a write API; a retry after a flaky response decrements the same SKU twice, overselling an item that was actually in stock.",
+          "Two teams wire the same outbound 'send funds' tool: one passes a client-generated idempotency token, the other does not; the second team's agent double-pays a supplier on its first production retry, and nothing in either PR review had flagged the difference."
+        ]
+      },
+      "solution": {
+        "approach": "The baseline mandate (Option A — declared-and-routed) makes every side-effecting tool call carry an idempotency contract by construction, enforced at PR time and applied by the central harness at runtime.\n\nEvery tool binding in the agent run config declares its idempotency stance:\n\n- `side_effecting` — whether the tool causes an external effect (a write, a charge, a message). Read-only tools (retrieval, lookups) are inherently safe to repeat and need no key.\n- `idempotency_key` — for a side-effecting tool, a stable token expression derived from the call's inputs (e.g. `\"order:{order_id}\"`), so the same logical action computes the same key on a replay.\n- `idempotent` — set explicitly to `false` when a side-effecting tool cannot be made safe to repeat and no key exists; this marks it ineligible for any automatic retry.\n\nTool calls execute only through the central agent harness (`call_tool(...)` on the same central SDK as the recovery wrapper and prompt registry). The harness applies the contract by construction: it computes the declared key and attaches it to each side-effecting call, so a retry that recomputes the same key is de-duplicated by a correctly-built receiver instead of re-executed; and it refuses to auto-retry any tool marked `idempotent: false`, routing that run to termination/dead-letter (the GR3B2-01 hand-off) instead of replaying it blind.\n\nA central lint (convention `reliability/idempotency_check`) enforces at pre-merge, as required status checks:\n\n- **Declaration completeness** — every tool binding marked `side_effecting: true` declares either a non-empty `idempotency_key` or `idempotent: false`; a side-effecting tool with neither fails the build.\n- **Safe-retry** — a tool declared `idempotent: false` (or lacking a key) must not appear on any auto-retry path (GR3B1-01's retry config, GR3B2-01's `on_timeout: retry`); a configuration that would auto-retry an unsafe tool fails the PR. This is the rule GR3B2-01's safe-termination lint defers to, now made first-class.\n- **Routed execution** — an AST lint forbids invoking a tool except through the harness (the GO3B1-01 / GR3B1-01 no-inline pattern, applied to the tool-call plane), so no side-effecting call ships with the key-attachment path bypassed.\n\nThe honest boundary (see `enforcement_limits.md`): the lints prove every side-effecting tool declares a key or is marked unsafe, that an unsafe tool is never auto-retried, and that calls route through the harness so the key is attached by construction. They cannot prove the downstream provider honours the key and actually de-duplicates — that is the receiver's behaviour, outside the workload repo. Per the user's direction, this standard does NOT mandate new per-call telemetry to watch for honoured-vs-ignored keys; the provider-honouring gap is documented as an accepted limit, and a workload may surface duplicate-key events on GO3B2-01's existing channel if it chooses, but nothing here requires a telemetry pipeline.",
+        "key_benefits": [
+          "Makes the catalogue's two recovery standards safe — GR3B1-01 (retry a failed call) and GR3B2-01 (replay a stopped run) both assume idempotency for side-effecting work; this supplies the declaration and key they defer to, so a retry cannot double-fire a charge or an email.",
+          "Enforcement is structural — the routed-execution AST lint forces every side-effecting call through the central harness that attaches the key, and the declaration lint blocks a side-effecting tool that is silent about repeat-safety, so 'safe to retry' stops being per-developer memory in unreviewable code. (The harness is trusted to compute and attach the key correctly — the lint proves the call is routed, not that the harness's attachment is itself bug-free.)",
+          "Distinct from deciding whether to retry — GR3B1-01 decides a retry happens and GR3B2-01 decides a run stops; this decides that a retry, when it happens, does not repeat an action that already occurred.",
+          "No new operational headache — the contract is config the project team declares plus a key the central harness attaches; it mandates no per-call telemetry pipeline (an explicit scope decision), resting on the build-time lint and the harness, not on logs anyone must watch.",
+          "Honest about its boundary — CI proves the key is declared, that calls are routed through the key-attaching harness, and that unsafe tools are never auto-retried; the standard states plainly it can prove neither that the harness's attachment is bug-free nor that the downstream provider de-duplicates on the key, leaving both as documented limits rather than false guarantees."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR touching an agent run definition or a tool binding, a lint verifies that every tool binding marked `side_effecting: true` declares either a non-empty `idempotency_key` (a stable token expression derived from the call's inputs) or `idempotent: false`. A side-effecting tool that declares neither fails the build. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "A lint verifies that no tool declared `idempotent: false` (or lacking an `idempotency_key`) appears on an automatic retry path — neither GR3B1-01's retry configuration nor GR3B2-01's `on_timeout: retry`. A configuration that would auto-retry a tool not proven safe to repeat fails the PR. This is the no-unsafe-retry rule the GR3B2-01 safe-termination lint defers to, made first-class here. Configured as a required status check on the integration branch via branch protection. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "An AST lint forbids invoking a tool except through the central harness (e.g. `call_tool(...)` on the central SDK); a side-effecting call issued inline, bypassing the harness and its key-attachment path, fails the PR. Same mechanism as GO3B1-01's and GR3B1-01's no-inline pattern, applied to the tool-call plane, so every shipped side-effecting call carries the declared idempotency key by construction. Configured as a required status check on the integration branch via branch protection. Failure blocks merge.",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.0.1",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENOPS02-BP03 (Implement solutions to mitigate the risk of system overload), implementation step 4 ('Design retry logic: Implement idempotent operations where possible to facilitate safe retries'). 25th standard in the catalogue and the FIRST promoted from GENOPS02 — a focus area closed 2026-06-16 with zero principles, now reopened with one.\n\nORIGIN: flagged during the GR3B2-01 walk (2026-06-22) as 'a distinct, not-yet-authored standard' that both GR3B1-01's retries and GR3B2-01's safe-termination rule depend on (each defaults to no-unsafe-retry until it exists). Surfaced for a demo as the strongest pending promote — a standard two shipped standards already wait on — and authored at user direction.\n\nHALT (interactive, user-driven), resolved points:\n1. PILLAR / ID PLACEMENT — three options put to the user: GR3B2-02 (Reliability, beside the timeout twin it was split from), GR3B1-02 (Reliability, under graceful-recovery), or GO2B3-01 (Operational Excellence, anchoring literally to GENOPS02-BP03 step 4 where 'idempotent operations' is verbatim). User chose GO2B3-01 — the most honest AWS anchor — accepting that it reopens a closed GENOPS02 focus area and sits a pillar away from its two dependents.\n2. THE DISTINCT FAILURE — a recovery retry replays side-effecting tool calls that already ran, double-firing a real-world action (charge, email, order). Distinct from GR3B1-01 (decides a retry happens) and GR3B2-01 (decides a run stops): this decides a retry does not duplicate what already occurred.\n3. SOLUTION + ENFORCEABILITY — walked PR-time vs runtime with the user. PR-time: a lint proves every side-effecting tool declares an idempotency_key or idempotent:false, that unsafe tools never sit on a retry path, and that calls route through the harness. Runtime: the central harness attaches the key by construction and refuses to auto-retry an unsafe tool — enforcement by construction, not a separate gate. Client provides CONFIG (the tool-binding declarations), not a dataset (that is GO1B1-01's eval harness; distinct).\n4. TELEMETRY — user pushed back hard on any requirement to emit telemetry per tool call ('who is going to be emitting telemetry logs... another headache'). Resolved: the provider-honouring gap (whether the downstream de-duplicates on the key) is an accepted, documented limit; this standard does NOT mandate a per-call telemetry pipeline. A workload MAY surface duplicate-key events on GO3B2-01's existing span (one field, forensic) but nothing requires it. This is a deliberate divergence from GR3B2-01/GR3B1-01, which carry a quarterly telemetry-review gate — GO2B3-01 intentionally omits it per user direction, resting on the build-time lint + harness-by-construction.\n\nstep_promotion 3/3/3/3 (hand-applied):\n- has_enforceable_artefact: agent-run-config tool-binding fields (side_effecting, idempotency_key, idempotent) + three pre-merge lints; path-shaped, binary gates.\n- architecturally_distinct: distinct from GR3B1-01 (retry decision) and GR3B2-01 (stop decision); it is the safety property both defer to. Named precisely; shared run-config artefact recorded as soft dependencies.\n- in_bp_scope: anchors GENOPS02-BP03 step 4 verbatim ('implement idempotent operations to facilitate safe retries'); the BP's rate-limiting/throttling thrust stays not_promoted/absorbed (GR3B1-01 + base-WAF REL05 + GENREL01).\n- not_vendor_menu: strip the Step Functions / API Gateway / SageMaker service menu and the surviving rule is provider-neutral — a declared idempotency key on every side-effecting tool call, attached by construction, with unsafe tools barred from auto-retry.\n\nENFORCEMENT LIMIT (data/enforcement_limits.md, same honesty boundary as GR3B2-01 / GR3B1-01 / GC3B2-01): the lints prove the key is DECLARED + ATTACHED-BY-ROUTING + UNSAFE-TOOLS-NOT-RETRIED; they cannot prove the downstream provider honours the key and de-duplicates. Runtime de-dup is the receiver's behaviour, outside the workload repo. Per user direction this gap is an ACCEPTED LIMIT, not closed by a mandated telemetry gate.\n\nFields:\n- pillar P1 — Operational Excellence and focus_area P12 — Operational Health Management: a NEW focus_area slot allocated for GENOPS02 (existing P1 slots: P11 Model Performance Evaluation, P13 Traceability; P12 was unused). The name mirrors AWS's GENOPS02 'Monitor and manage operational health'; the resilience-action half of that focus area is what step 4's idempotency mandate concretises.\n- applicability: agentic mandatory (a model-chosen sequence of side-effecting tool calls is the failure surface); llm + rag nice_to_have (a side-effecting tool called from a plain LLM/RAG flow still benefits, but the dominant case is agentic); ml omitted (classical ML inference is read-only, no agent-driven side effects).\n- serving_paradigm: all four mandatory — the idempotency contract lives in the orchestration/tool-call layer, independent of how the model is served.\n- maturity_level foundational — any agent with side-effecting tools needs this from day one, and the core enforcement is per-PR repo-local lints; the central harness is a soft dependency (a standalone idempotency-key wrapper also satisfies the contract).\n- impact_level High — matches the AWS BP risk (High): a double-fired charge/payment/order carries direct financial + data-integrity consequence, broader than a single failed request.\n- ownership.tier enterprise via D1=no / D2=3 (central agent harness attaches keys, enforces the no-unsafe-retry rule, exposes the routed-execution AST lint — platform engineering plus maintenance) → recommended_centralise; validator project_architect, audit self_attestation_with_mechanical_evidence, arb dashboard_and_spot_check. Same 'Centralised LLM SDK' tier calibration as GR3B1-01 / GR3B2-01.\n- dependencies: GR3B2-01 soft (reciprocal — its safe-termination lint relaxes to allow auto-retry when all tools are idempotent now that this exists), GR3B1-01 soft (its retries on side-effecting calls become safe), GO3B2-01 soft (OPTIONAL forensic duplicate-key signal on the existing span; no new emitter mandated).\n- references: the anchoring AWS BP page + AWS Prescriptive Guidance retry/backoff (idempotency-token pattern).\n- framework_mappings.aigp / nist omitted (eu_ai_act added in v1.0.1) — matching the reliability recovery siblings GR3B1-01 / GR3B2-01 (no natural AIGP BoK v2.1 competency for retry-safety engineering; nist/eu_ai_act are later passes).\n\nGENOPS02 RIPPLE: the focus area's '3 BPs, ZERO principles / CLOSED' note and the 'GENOPS pillar FULLY WALKED — 9 standards' note are updated — GENOPS02 now yields one standard (BP03 step 4), GENOPS pillar now 10 standards. BP03 remains not_promoted for its rate-limiting/throttling thrust; only step 4's idempotency slice promotes (a partial-promote split, recorded in lens_mapping).\n\nRECIPROCAL: GR3B2-01 and GR3B1-01 get a change_history note that GO2B3-01 now exists, so their safe-termination / retry logic may key off idempotency declarations. Fully rewriting their gate text to cite GO2B3-01 is logged as follow-up, not done in this entry.\n\nexplain_prompt compiled with a duplicate-action-on-retry failure shape. RI at data/ri/GO2B3-01/README.md (Option A, matching the existing RI template).\n\nOpen items: JSON parse verify; S3 re-upload for the live app; the reciprocal gate-text relaxation in GR3B2-01/GR3B1-01; GENREL05/06 still to walk."
+          },
+          {
+            "version": "1.0.1",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Added eu_ai_act Article 15 (robustness) cross-reference, mapping_state unverified, control_ref null. Initially omitted (v1.0.0) on consistency grounds (sibling reliability standards GR3B1-01/GR3B2-01 carry no eu_ai_act); user correctly pushed back that consistency is not the catalogue's test — a standard earns a reference when its GATE DISCHARGES the obligation, not when siblings happen to share it. On the merits, Art 15(4) ('resilient as possible regarding errors, faults or inconsistencies; technical measures shall be taken') is genuinely discharged by the idempotency gate, which is a technical measure preventing a fault-triggered retry from compounding into a duplicate harmful action. PRIMARY ref; control_ref null because retry idempotency is generic reliability engineering, not one of the eight GenAI-distinctive controls (same basis as GO1B1-01's Art 15 accuracy ref). Honest scope: the gate mandates the control, not runtime resilience (provider-honouring is an accepted limit), so it is a coverage contribution, kept unverified pending a side-by-side read of the Article text. FOLLOW-UP logged: GR3B1-01/GR3B2-01 likely warrant the same Art 15(4) ref — to be done in a reliability-family EU AI Act pass, not piecemeal."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GO2B3-01 — Make every side-effecting tool call safe to retry — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery tool an agent can call declares, in the agent run config, whether it is side-effecting and — if so — an idempotency key (a stable token derived from the call's inputs) or an explicit mark that it is not safe to repeat. Tool calls execute only through a central harness that attaches the declared key to each side-effecting call, so a retry that recomputes the same key is de-duplicated by the receiver instead of re-executed, and that refuses to auto-retry a tool marked unsafe. Pre-merge lints enforce that every side-effecting tool declares a key or is marked unsafe, that an unsafe tool is never on a retry path, and that no tool call bypasses the harness. The standard is honest that CI cannot prove the downstream provider actually de-duplicates on the key; it does not mandate per-call telemetry.\n\nTHE FAILURE SHAPE\n\nThis is a duplicate-action-on-retry failure. An agent fires a model-chosen sequence of tool calls; recovery logic — a retry after a transient error, or a replay after a timeout — runs part of that sequence again. A side-effecting call that already happened (a charge, an email, an order, a stock decrement) with no idempotency key is executed a second time. The retry did what it was told; the call simply was not safe to repeat. The absence is forced into view by a discrete incident: a customer charged twice, a duplicate confirmation email, two tickets for one request, an oversold item, a supplier paid twice. The principle's value is forcing every side-effecting tool to declare an idempotency key the harness attaches, and barring unsafe tools from auto-retry, so a duplicate-action bug fails the PR — while being honest that whether the provider honours the key is the receiver's behaviour, not something CI proves.\n\nAPPLICABILITY\n\nGO2B3-01 is mandatory for Agent workloads — any workload where a model invokes side-effecting tools in a sequence it decides at runtime. It is nice-to-have for plain LLM and RAG workloads (a side-effecting tool called from such a flow still benefits, but the dominant case is agentic). It does not apply to classical ML. If the chosen Implementation type is ML or a non-agentic LLM/RAG workload, open use_case_background with one italicised sentence noting the principle targets agentic tool use and the example is illustrative of the closest analogue.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GO2B3-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150-250 words. Describe an enterprise with an agentic workload where a model invokes a sequence of tools, at least one of which causes a real external effect (a payment, an email, an order, a stock write). Be specific about the industry and implementation type. Name the workload, the team, the model, and a couple of the tools the agent calls. Crucially, hint offhandedly at the gap — the agent retries on transient errors or replays after a timeout, and nobody checked whether the side-effecting tools carry an idempotency key. The reader should picture a confident team whose agent 'works' in testing and who never imagined a retry could fire the same action twice. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200-350 words. Describe the moment a retry replays a side-effecting call. Walk through chronologically: the trigger (a transient 5xx after the call had actually succeeded, or a timeout-replay of a run whose early steps already ran) and the agent re-issuing a side-effecting call with no idempotency key. Then the consequence — a customer charged twice, a duplicate confirmation, two tickets, an oversold SKU, a supplier double-paid. Name roles (the on-call engineer, the support lead, the finance analyst). Make the consequence concrete. The failure must demonstrate something a declared idempotency key plus a no-unsafe-retry rule would have caught — a duplicated real-world action, not a model-quality complaint, not a single call that simply errors out (GR3B1-01), and not an agent hanging or looping too long (GR3B2-01 / GC5B1-01).\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name the workload, the model, the tools, the roles. 'The billing agent that calls the charge API then the email API' not 'the AI system'.\n- Match the implementation type honestly. For ML or non-agentic workloads, use the italicised opening sentence and describe the closest agentic analogue.\n- Match the industry honestly.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly.\n- Do not invent regulatory specifics. Generic framing only.\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-06-23",
+        "compiled_by": "manual_authoring"
+      }
+    },
+    {
       "standard_id": "ST-GO3B1-01",
       "principle_id": "PR-GO3B1-01",
       "u_value": "Traceability",
@@ -3960,7 +4122,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.0.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -3973,6 +4135,12 @@
             "date": "2026-06-23",
             "author": "Dheeraj",
             "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
+          },
+          {
+            "version": "1.0.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Reciprocal note (no gate change): GO2B3-01 (Make every side-effecting tool call safe to retry) was authored 2026-06-23 — the dedicated tool-call idempotency standard this standard's retry/safe-termination logic was written to defer to. With it present, an auto-retry of a side-effecting tool is permitted only when that tool is declared idempotent (carries an idempotency_key). The gate text here is NOT yet rewritten to cite GO2B3-01's declarations; that relaxation is logged as follow-up."
           }
         ]
       },
@@ -4112,7 +4280,7 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.0.2",
         "changes": [
           {
             "version": "1.0.0",
@@ -4125,6 +4293,12 @@
             "date": "2026-06-23",
             "author": "Dheeraj",
             "summary": "Removed AIGP mapping. Audited against the official IAPP AIGP Body of Knowledge v2.1 (4-domain structure): no competency naturally fits — cost-optimization / reliability-engineering are not AIGP BoK competencies. Mapping cleared rather than forced. See data/framework_mappings/aigp.md."
+          },
+          {
+            "version": "1.0.2",
+            "date": "2026-06-23",
+            "author": "Dheeraj",
+            "summary": "Reciprocal note (no gate change): GO2B3-01 (Make every side-effecting tool call safe to retry) was authored 2026-06-23 — the dedicated tool-call idempotency standard this standard's retry/safe-termination logic was written to defer to. With it present, an auto-retry of a side-effecting tool is permitted only when that tool is declared idempotent (carries an idempotency_key). The gate text here is NOT yet rewritten to cite GO2B3-01's declarations; that relaxation is logged as follow-up."
           }
         ]
       },

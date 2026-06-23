@@ -1,4 +1,21 @@
+"use client"
+
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { asArray, asObject } from "@/lib/principles/types"
+
+const FRAMEWORK_LABELS: Record<string, string> = {
+  aws: "AWS",
+  aigp: "AIGP",
+  eu_ai_act: "EU AI Act",
+  nist: "NIST",
+  gdpr: "GDPR",
+  fca: "FCA",
+  owasp: "OWASP",
+}
+
+function frameworkLabel(k: string) {
+  return FRAMEWORK_LABELS[k] ?? k.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+}
 
 function humanizeKey(k: string) {
   return k.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
@@ -36,16 +53,21 @@ export function FrameworkMappingsSection({ node }: { node: unknown }) {
   if (!obj) return null
   const frameworks = Object.entries(obj)
   if (frameworks.length === 0) return null
+
   return (
-    <div className="space-y-6">
+    <Tabs orientation="vertical" defaultValue={frameworks[0][0]}>
+      <TabsList className="w-40 shrink-0 h-fit gap-1 shadow-md bg-card">
+        {frameworks.map(([fw]) => (
+          <TabsTrigger key={fw} value={fw}>
+            {frameworkLabel(fw)}
+          </TabsTrigger>
+        ))}
+      </TabsList>
       {frameworks.map(([fw, val]) => {
         const fwObj = asObject(val) ?? {}
         const refs = asArray(fwObj.references) ?? []
         return (
-          <div key={fw}>
-            <div className="text-xs font-mono uppercase text-muted-foreground mb-3 tracking-wider">
-              {fw}
-            </div>
+          <TabsContent key={fw} value={fw} className="min-w-0">
             {refs.length === 0 ? (
               <p className="text-sm text-muted-foreground">No references.</p>
             ) : (
@@ -57,9 +79,9 @@ export function FrameworkMappingsSection({ node }: { node: unknown }) {
                 })}
               </div>
             )}
-          </div>
+          </TabsContent>
         )
       })}
-    </div>
+    </Tabs>
   )
 }

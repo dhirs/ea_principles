@@ -8,7 +8,83 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-23 (latest) — AIGP mappings audited + re-based on official BoK v2.1 (17 verified, 7 cleared)
+## 2026-06-23 (latest) — GO2B3-01 PROMOTED (tool-call idempotency); GENOPS02 reopened; catalogue at 25
+
+### Context
+
+Authored the tool-call **idempotency** standard — flagged during the GR3B2-01 walk (2026-06-22) as "a distinct, not-yet-authored standard" that both GR3B1-01's retries and GR3B2-01's safe-termination defer to. Surfaced for a demo as the strongest pending promote (a standard two shipped standards already wait on), and authored at user direction.
+
+### The standard
+
+**GO2B3-01 — "Make every side-effecting tool call safe to retry."** Every tool binding in the agent run config declares `side_effecting` and, if so, an `idempotency_key` (stable token from inputs) or `idempotent: false`. The central harness attaches the key by construction so a retry is de-duplicated by the receiver, and refuses to auto-retry a tool marked unsafe. Three pre-merge lints: declaration-completeness, no-unsafe-retry, routed-execution AST. The failure it prevents: a recovery retry (after a transient error or a timeout-replay) re-fires a side-effecting call that already ran — a double charge / duplicate email / duplicate order — which a generic retry-with-backoff cannot prevent.
+
+### Decisions at the HALT (user-driven)
+
+1. **Pillar / ID placement.** Three options offered: GR3B2-02 (Reliability, beside the timeout twin it was split from), GR3B1-02 (Reliability, graceful-recovery), or **GO2B3-01** (Operational Excellence, anchoring GENOPS02-BP03 step 4 where "Implement idempotent operations ... to facilitate safe retries" is verbatim). **User chose GO2B3-01** — the most honest AWS anchor — accepting that it **reopens GENOPS02** (closed 2026-06-16 with zero principles) and sits a pillar away from its two dependents.
+2. **Solution / enforceability.** PR-time lints prove declaration + no-unsafe-retry + routed execution; runtime = harness attaches the key and bars unsafe auto-retry, by construction. Client supplies **config** (tool-binding declarations), not a dataset (that is GO1B1-01's eval harness).
+3. **Telemetry — deliberately NOT mandated.** User pushed back hard on emitting telemetry per tool call. Resolved: the provider-honouring gap (whether the downstream de-duplicates on the key) is an **accepted, documented limit**, not closed by a quarterly telemetry-review gate. This is a deliberate divergence from GR3B1-01 / GR3B2-01 / GC3B2-01 (which all carry a binding telemetry review) and the catalogue's first enforcement gap left as an accepted limit — recorded in enforcement_limits.md.
+
+step_promotion 3/3/3/3. impact High; agentic mandatory; foundational; enterprise tier; new focus_area **P12 — Operational Health Management** allocated under P1.
+
+### GENOPS02 ripple
+
+GENOPS02 reopened: BP03 is now a **partial-promote** (rate-limiting/throttling thrust still not_promoted → GR3B1-01 + base-WAF REL05 + GENREL01; step 4 idempotency slice → GO2B3-01). The focus-area "CLOSED / ZERO principles" note and the "GENOPS pillar FULLY WALKED — 9 standards" note updated → GENOPS02 = 1, GENOPS pillar = 10 standards.
+
+### Reciprocal
+
+GR3B1-01 + GR3B2-01 each get a change_history note that GO2B3-01 now exists, so their retry / safe-termination logic may key off idempotency declarations. Fully rewriting their gate text to cite GO2B3-01 is logged as follow-up, not done this session.
+
+### Artefacts
+
+- `data/principles.json` — GO2B3-01 inserted at index 6 (GO-pillar numeric order); parses clean, **25 standards**, all 21 universal keys present (schema-presence checked vs all priors); `format_version` unchanged (1.13 — no schema change). GO2B3-01 at **v1.0.1**. GR3B1-01 → v1.0.2, GR3B2-01 → v1.0.2 (reciprocal change_history notes).
+
+### Framework mappings (decided in discussion)
+
+GO2B3-01 carries **aws** (anchor, GENOPS02-BP03 step 4) + **eu_ai_act Article 15** (robustness, `unverified`, `control_ref: null`). **aigp** omitted — no natural BoK v2.1 competency for retry-safety (same as GR3B1-01/GR3B2-01 cleared in the 2026-06-23 AIGP audit); **nist** omitted (unpopulated catalogue-wide). The EU AI Act ref was initially omitted on sibling-consistency grounds, then added after user pushback: the catalogue's test is whether the *gate discharges the obligation*, not whether siblings share it — and Art 15(4) ("resilient... regarding errors, faults or inconsistencies; technical measures shall be taken") is genuinely discharged by the idempotency gate. **Follow-up:** GR3B1-01/GR3B2-01 plausibly warrant the same Art 15(4) ref — to be done in a reliability-family EU AI Act pass, not piecemeal.
+- `data/ri/GO2B3-01/README.md` (new, Option A); `data/enforcement_limits.md` (GO2B3-01 accepted-limit case); `data/lens_mapping.md` (GENOPS02 BP03 row + notes); `data/authored/GO2B3-01.md` + index (63); `agentflow/app/anchor.json`; this entry.
+
+### Open items
+
+- S3 re-upload + frontend build for the live app (catalogue grew 24 → 25).
+- Reciprocal gate-text relaxation in GR3B2-01 / GR3B1-01 (allow auto-retry when all tools idempotent) — note added, lint text not yet rewritten.
+- GENREL05 (Distributed availability) + GENREL06 (Distributed compute) still to walk to close the Reliability pillar.
+
+---
+
+## 2026-06-23 — GENREL04 walked: both BPs not_promoted; Reliability now 4/6 focus areas done
+
+### Context
+
+Walked GENREL04 (Prompt management) — the first GENREL focus area whose live AWS pages were fetchable this run (genrel04.html, genrel04-bp01.html, genrel04-bp02.html fetched 2026-06-23; mapping_state **verified**, unlike GENREL01/02). Two BPs: BP01 prompt catalog (risk Medium), BP02 model catalog (risk Low). The lens_mapping pre-flag had already earmarked GENREL04 as "the reliability-framed twin of GO3B1-01" — confirmed on the walk.
+
+### Decision — both not_promoted, absorbed into existing Operational-Excellence standards
+
+- **BP01 (prompt catalog) → not_promoted, absorbed by GO3B1-01 + GO1B1-01.** GO3B1-01 already mandates the versioned prompt registry with rollback (4 of 5 BP steps verbatim); the testing-to-live step is GO1B1-01's eval harness. **Residual slice** genuinely absent from GO3B1-01: validated sampling-hyperparameter ranges (temperature/top_p/top_k) per prompt version + a prompt×model-version test matrix → resolves to a **GO3B1-01 schema extension** (optional `hyperparameter_ranges` + `model_compatibility` fields; "validated against" rides GO1B1-01), not a new standard. step_promotion **3/3/2/3**.
+- **BP02 (model catalog) → not_promoted, absorbed by GO1B1-06.** GO1B1-06 already mandates the approved immutable model catalog with rollback + re-eval gate (5 of 6 BP steps). **Residual slice:** model cards (capabilities/limitations, training-data, intended use, ethical/bias) → optional `model_card` field on GO1B1-06 + the bias/intended-use half flagged as a **responsible-AI/GENSEC** candidate, not a reliability standard. step_promotion **3/3/2/3**.
+
+Pattern: GENREL04 is AWS restating, under Reliability, the prompt-registry (GO3B1-01) and model-catalog (GO1B1-06) standards Operational Excellence already owns — same "reliability-framed twin" shape called in the pre-flag.
+
+### Artefacts
+
+- `data/adr/GENREL04-prompt-catalog.md` + `data/adr/GENREL04-model-catalog.md` — the two schema-extension recommendations (new this walk).
+- `data/authored/GENREL04-BP01.md` + `GENREL04-BP02.md`; index → 62 decisions.
+- `lens_mapping.md` — GENREL04 section added, both rows not_promoted, focus area CLOSED; pillar header → "GENREL01/02/03/04 walked; GENREL05/06 TODO".
+- `agentflow/app/anchor.json` → GENREL04 walk recorded, completed.
+- **`principles.json` unchanged** — both schema extensions are recommendations (ADRs), not applied this walk; catalogue stays at 24 standards, format_version 1.13.
+
+### Reliability pillar status
+
+4 of 6 focus areas done: GENREL01 (not_promoted/ADR), GENREL02 (not_promoted/base-WAF), GENREL03 (GR3B1-01 + GR3B2-01), GENREL04 (both not_promoted/ADRs). **Remaining: GENREL05 (Distributed availability), GENREL06 (Distributed compute tasks)** — both unwalked.
+
+### Open items
+
+- Apply the two schema extensions to `principles.json` (GO3B1-01 `hyperparameter_ranges`+`model_compatibility`; GO1B1-06 `model_card`) if/when the user wants them in the live schema — not done here.
+- Model-card bias/intended-use → responsible-AI/GENSEC candidate.
+- Walk GENREL05 + GENREL06 to close the pillar.
+
+---
+
+## 2026-06-23 — AIGP mappings audited + re-based on official BoK v2.1 (17 verified, 7 cleared)
 
 ### Context
 
