@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 716" role="img" aria-label="AI CoE org chart v2">
+      <defs>
+        <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#475569"/></marker>
+        <marker id="arA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#d97706"/></marker>
+      </defs>
+
+      <!-- Steering committee -->
+      <rect x="340" y="14" width="560" height="50" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+      <text x="620" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">AI STEERING COMMITTEE</text>
+      <text x="620" y="53" text-anchor="middle" font-size="12" fill="#475569">sets the agenda · funds the quarter’s builds</text>
+      <line x1="620" y1="64" x2="620" y2="100" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="5 4"/>
+
+      <!-- Chief EA -->
+      <rect x="960" y="14" width="260" height="50" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="5 4"/>
+      <text x="1090" y="35" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">Chief Enterprise Architect</text>
+      <text x="1090" y="52" text-anchor="middle" font-size="11" fill="#64748b">AI catalogue = AI domain of EA</text>
+      <line x1="1090" y1="64" x2="1090" y2="118" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="5 4"/>
+      <line x1="1090" y1="118" x2="762" y2="128" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="5 4"/>
+
+      <!-- AI FUNCTION container -->
+      <rect x="36" y="82" width="1150" height="438" rx="16" fill="#fcfdff" stroke="#c4b5fd" stroke-width="1.5"/>
+      <text x="54" y="102" font-size="11" font-weight="700" letter-spacing="0.12em" fill="#7c3aed">THE AI FUNCTION · AI CoE</text>
+
+      <!-- Head of CoE -->
+      <rect x="520" y="100" width="240" height="58" rx="10" fill="#0f172a"/>
+      <text x="640" y="126" text-anchor="middle" font-size="15.5" font-weight="700" fill="#fff">Head of AI CoE</text>
+      <text x="640" y="145" text-anchor="middle" font-size="11.5" fill="#cbd5e1">takes the budget · builds the capability</text>
+
+      <!-- tier-2 bus (solid to 3, dotted to governance) -->
+      <line x1="640" y1="158" x2="640" y2="178" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="200" y1="178" x2="760" y2="178" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="200" y1="178" x2="200" y2="190" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="480" y1="178" x2="480" y2="190" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="760" y1="178" x2="760" y2="190" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="760" y1="178" x2="1040" y2="178" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <line x1="1040" y1="178" x2="1040" y2="190" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="5 4"/>
+
+      <!-- Pillars -->
+      <rect x="90" y="190" width="220" height="66" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+      <text x="200" y="216" text-anchor="middle" font-size="14.5" font-weight="700" fill="#6d28d9">Lead AI Architect</text>
+      <text x="200" y="237" text-anchor="middle" font-size="11.5" fill="#5b21b6">the WHAT — owns the catalogue</text>
+
+      <rect x="370" y="190" width="220" height="66" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+      <text x="480" y="216" text-anchor="middle" font-size="14.5" font-weight="700" fill="#6d28d9">Head of Engineering</text>
+      <text x="480" y="237" text-anchor="middle" font-size="11.5" fill="#5b21b6">the BUILD — ships standards</text>
+
+      <rect x="650" y="190" width="220" height="66" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+      <text x="760" y="216" text-anchor="middle" font-size="14.5" font-weight="700" fill="#6d28d9">Head of Product</text>
+      <text x="760" y="237" text-anchor="middle" font-size="11.5" fill="#5b21b6">the RUN — SLA &amp; lifecycle</text>
+
+      <rect x="930" y="190" width="220" height="66" rx="10" fill="#fff7ed" stroke="#d97706"/>
+      <text x="1040" y="212" text-anchor="middle" font-size="14.5" font-weight="700" fill="#b45309">Head of Governance</text>
+      <text x="1040" y="230" text-anchor="middle" font-size="11" fill="#b45309">CERTIFY &amp; change-control</text>
+      <text x="1040" y="246" text-anchor="middle" font-size="10.5" font-style="italic" fill="#b45309">dotted in · solid out</text>
+
+      <!-- drops -->
+      <line x1="200" y1="256" x2="200" y2="286" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="480" y1="256" x2="480" y2="286" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="760" y1="256" x2="760" y2="286" stroke="#94a3b8" stroke-width="1.6"/>
+      <line x1="1040" y1="256" x2="1040" y2="286" stroke="#d97706" stroke-width="1.4"/>
+
+      <!-- Architecture discipline -->
+      <rect x="80" y="286" width="240" height="150" rx="10" fill="#fff" stroke="#cbd5e1"/>
+      <text x="200" y="308" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">Architecture discipline</text>
+      <text x="200" y="330" text-anchor="middle" font-size="12" fill="#475569">architects — solid line</text>
+      <text x="200" y="348" text-anchor="middle" font-size="12" font-style="italic" fill="#6d28d9">deploy into pods (dotted)</text>
+      <text x="200" y="374" text-anchor="middle" font-size="12" font-style="italic" fill="#b45309">+ governance specialists</text>
+      <text x="200" y="390" text-anchor="middle" font-size="11.5" font-style="italic" fill="#b45309">embedded (dotted → Head of G)</text>
+      <text x="200" y="416" text-anchor="middle" font-size="11" fill="#64748b">keeps the catalogue consistent</text>
+
+      <!-- POD -->
+      <rect x="380" y="286" width="200" height="150" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="480" y="308" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">POD  ×N</text>
+      <text x="480" y="330" text-anchor="middle" font-size="12" fill="#334155">POD Lead (PM)</text>
+      <text x="480" y="351" text-anchor="middle" font-size="12" font-style="italic" fill="#6d28d9">Architect (dotted)</text>
+      <text x="480" y="372" text-anchor="middle" font-size="12" fill="#475569">2–3 Developers</text>
+      <text x="480" y="390" text-anchor="middle" font-size="12" fill="#475569">+ Platform Eng (build)</text>
+      <text x="480" y="416" text-anchor="middle" font-size="10.5" font-style="italic" fill="#64748b">~2 pillars per pod,</text>
+      <text x="480" y="429" text-anchor="middle" font-size="10.5" font-style="italic" fill="#64748b">re-pointed each quarter</text>
+      <!-- architect deployment dotted -->
+      <path d="M320,351 L380,351" fill="none" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="5 4"/>
+
+      <!-- Product run + adoption -->
+      <rect x="650" y="286" width="220" height="68" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+      <text x="760" y="312" text-anchor="middle" font-size="13.5" font-weight="700" fill="#047857">Run / Platform Eng</text>
+      <text x="760" y="332" text-anchor="middle" font-size="12" fill="#047857">owns the SLA · on-call</text>
+      <rect x="650" y="368" width="220" height="68" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+      <text x="760" y="394" text-anchor="middle" font-size="13.5" font-weight="700" fill="#047857">Adoption / Enablement</text>
+      <text x="760" y="414" text-anchor="middle" font-size="12" fill="#047857">embeds with project teams</text>
+      <line x1="760" y1="354" x2="760" y2="368" stroke="#6ee7b7" stroke-width="1.6"/>
+      <rect x="650" y="450" width="220" height="68" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+      <text x="760" y="476" text-anchor="middle" font-size="13.5" font-weight="700" fill="#047857">Migration / Retrofit</text>
+      <text x="760" y="496" text-anchor="middle" font-size="12" fill="#047857">moves teams onto the SDK</text>
+      <line x1="760" y1="436" x2="760" y2="450" stroke="#6ee7b7" stroke-width="1.6"/>
+
+      <!-- build->run gate -->
+      <text x="615" y="304" text-anchor="middle" font-size="10" font-weight="700" fill="#b45309">gate</text>
+      <line x1="582" y1="320" x2="646" y2="320" stroke="#d97706" stroke-width="2" marker-end="url(#arA)"/>
+      <circle cx="614" cy="320" r="8.5" fill="#d97706"/>
+      <text x="614" y="324" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">✓</text>
+
+      <!-- Governance team -->
+      <rect x="920" y="286" width="240" height="150" rx="10" fill="#fff7ed" stroke="#fcd34d"/>
+      <text x="1040" y="308" text-anchor="middle" font-size="13.5" font-weight="700" fill="#b45309">Governance team</text>
+      <text x="1040" y="330" text-anchor="middle" font-size="12" fill="#92400e">authors the wrapper:</text>
+      <text x="1040" y="348" text-anchor="middle" font-size="12" fill="#92400e">· audit / attestation sheet</text>
+      <text x="1040" y="366" text-anchor="middle" font-size="12" fill="#92400e">· ARB gate definition</text>
+      <text x="1040" y="384" text-anchor="middle" font-size="12" fill="#92400e">· change-control &amp; waivers</text>
+      <text x="1040" y="410" text-anchor="middle" font-size="11" font-style="italic" fill="#b45309">specialists embed in</text>
+      <text x="1040" y="424" text-anchor="middle" font-size="11" font-style="italic" fill="#b45309">Architecture →</text>
+
+      <!-- Head of G solid-out line (independence) -->
+      <line x1="1150" y1="220" x2="1212" y2="220" stroke="#d97706" stroke-width="1.8"/>
+      <line x1="1212" y1="220" x2="1212" y2="612" stroke="#d97706" stroke-width="1.8"/>
+      <line x1="1212" y1="612" x2="1100" y2="612" stroke="#d97706" stroke-width="1.8" marker-end="url(#arA)"/>
+      <text x="1224" y="420" font-size="10.5" font-weight="700" fill="#b45309" transform="rotate(90 1224 420)">solid line · independence</text>
+
+      <!-- AI feeds the AI review (dotted, exits container) -->
+      <line x1="300" y1="520" x2="300" y2="582" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="300" y="540" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6d28d9">authors &amp; prepares evidence</text>
+
+      <!-- Outside-the-AI-function band -->
+      <text x="640" y="548" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.1em" fill="#64748b">— OUTSIDE THE AI FUNCTION · ENTERPRISE AUTHORITY —</text>
+      <rect x="36" y="560" width="1150" height="120" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+
+      <!-- AI Architecture Review -->
+      <rect x="180" y="582" width="240" height="74" rx="10" fill="#fff" stroke="#cbd5e1"/>
+      <text x="300" y="612" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">AI Architecture Review</text>
+      <text x="300" y="632" text-anchor="middle" font-size="11.5" fill="#475569">deep AI cert · prepares evidence</text>
+
+      <!-- Enterprise ARB -->
+      <rect x="520" y="582" width="240" height="82" rx="10" fill="#0f172a"/>
+      <text x="640" y="608" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Enterprise ARB</text>
+      <text x="640" y="627" text-anchor="middle" font-size="11.5" fill="#cbd5e1">final authority · enterprise-wide</text>
+      <text x="640" y="645" text-anchor="middle" font-size="11" fill="#94a3b8">spot-check &amp; portfolio</text>
+
+      <!-- Enterprise Risk -->
+      <rect x="860" y="582" width="240" height="74" rx="10" fill="#fff" stroke="#cbd5e1"/>
+      <text x="980" y="612" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">Enterprise Risk / Compliance</text>
+      <text x="980" y="632" text-anchor="middle" font-size="11.5" fill="#475569">(CRO) — owns governance authority</text>
+
+      <!-- flows -->
+      <line x1="420" y1="619" x2="516" y2="619" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+      <text x="468" y="610" text-anchor="middle" font-size="10.5" fill="#64748b">feeds</text>
+      <line x1="860" y1="619" x2="764" y2="619" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+      <text x="812" y="610" text-anchor="middle" font-size="10.5" fill="#64748b">authority</text>
+    </svg>

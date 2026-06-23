@@ -8,7 +8,83 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-16 (latest) — GENCOST03-BP02 → GC3B2-01 promoted (output token cap); GENCOST03 CLOSED (prompt-cost triad)
+## 2026-06-22 (latest) — GENREL03-BP02 → GR3B2-01 promoted (agent run deadline); GENREL03 CLOSED; catalogue at 24
+
+### Context
+
+Unparked GENREL03-BP02 "Implement timeout mechanisms on agentic workflows" (parked 2026-06-15 during the GR3B1-01 walk, "do BP01 only"). AWS risk High. genrel03.html verified 2026-06-15; live BP step page not re-fetched this session (web_fetch timed out, no Chrome) — steps reconstructed, confirm on a verification pass.
+
+### HALT — standalone vs fold-in, and the idempotency tangle (user-driven)
+
+The user drove the whole decision. Four resolved points:
+
+1. **Standalone vs fold into GC5B1-01.** The wall-clock deadline could be a 4th limit dimension on GC5B1-01 (same run-config artefact, same harness, same lint shape). User directed **standalone (GR3B2-01)**: the failure is genuinely distinct (an I/O hang, not a runaway loop), and Reliability owning its own timeout standard reads cleaner than burying a reliability failure in a cost-framed principle. Shared artefact + harness recorded as a soft GC5B1-01 dependency.
+2. **The distinct failure (user asked it be framed before deciding):** GC5B1-01 caps iterations/steps/tokens; that cap is structurally blind to an agent idle on an unresponsive tool because no steps or tokens accrue while it waits. A wall-clock deadline fires regardless. This is the hang no run-length cap can catch.
+3. **Idempotency.** User pressed: a run timing out at tool 10 has already fired tools 1-9; a naive retry re-fires their side effects. Timeout alone is unsafe. **Scope decision (user accepted "Option 1"):** keep GR3B2-01 narrow — deadline + graceful termination + DLQ, safe-termination defaulting to **no auto-retry**. Tool-call idempotency is split out as a **separate, not-yet-authored standard** (GR3B1-01's retries need it too); when it lands, the safe-termination lint relaxes to "retry allowed only if all tool calls are idempotent".
+4. **Artefact location.** User asked where the client declares this. NOT the prompt YAML (GO3B1-01 is per-template — wrong granularity); it lives in the **agent run config**, the same artefact GC5B1-01's caps use. Per-tool timeouts on each tool binding.
+
+### Decision — promote → GR3B2-01
+
+24th standard; second under GENREL03 (focus area P31); the reliability twin of GC5B1-01. Contract (Option A — declared-and-routed): `wall_clock_deadline` + per-tool `timeout` + `on_timeout` (`terminate`/`dead_letter`) declared in the agent run config; the central agent harness `run(...)` applies the deadline by construction, terminates + cleans up + routes to DLQ on expiry; three pre-merge lints (declaration completeness, safe-termination, routed-execution AST) + a quarterly timeout-effectiveness review over GO3B2-01 telemetry. step_promotion **3/3/3/3**. **Enforcement limit** (enforcement_limits.md): the lints prove the deadline is declared + applied + un-bypassed + retry-safe by declaration — NOT that it fires under live load, is right-sized, or that cleanup is clean (the "wired-in, not runtime behaviour" limit, same as GC3B2-01). Distinctions: GC5B1-01 = run LENGTH cap (blind to I/O hang); GR3B1-01 = recover a call that RETURNS an error (this fires when nothing returns); base-WAF REL05-BP05 = per-call timeout (cannot bound a model-chosen run that never returns). impact_level High (matches AWS risk High — a hung run exhausts the worker pool → outage). Also absorbs GENCOST05-BP01 step 3's deferred tool/Lambda timeout residue.
+
+### GENREL03 CLOSED
+
+BP01 → GR3B1-01, BP02 → GR3B2-01. Catalogue at **24 standards** (9 GENOPS + 7 GENCOST + 6 GENSEC + **2 GENREL**).
+
+### Files touched
+
+`data/principles.json` (GR3B2-01 appended after GR3B1-01; parses OK, count 24; schema-presence checked — field set identical to GR3B1-01, all 20 universal keys), `data/ri/GR3B2-01/README.md` (new, Option A), `data/enforcement_limits.md` (GR3B2-01 worked case), `data/lens_mapping.md` (BP02 row flipped parked→promoted + GENREL03 closed), `data/authored/GENREL03-BP02.md` (promote entry on top, parked entry retained for history) + index row moved to top, `agentflow/app/anchor.json` (completed), this entry. format_version unchanged (no schema change).
+
+### Open items
+
+- A future **tool-call idempotency standard** would let GR3B2-01's safe-termination lint permit idempotent-run retries.
+- AWS BP step page reconstructed — verify GENREL03-BP02's numbered steps from the live page / a connected browser; AIGP IV.C unverified.
+- JSON parse OK in-session; S3 re-upload (ea/principles.json) + frontend build for the live app.
+- GENREL pillar continues: GENREL04 (prompt management) next, then GENREL05 (distributed availability), GENREL06 (distributed compute).
+
+---
+
+## 2026-06-22 — GENREL02-BP01 not_promoted; GENREL02 CLOSED
+
+GENREL02 "Network reliability" ships one BP — GENREL02-BP01 "Implement redundant network connections among model endpoints and supporting infrastructure" (focus area + BP title via search; live page not fetchable, mapping_state unverified). **not_promoted (user-directed)** at the HALT: it's the GenAI relabel of base-WAF **REL02-BP02** (multi-AZ, PrivateLink, redundant Direct Connect/VPN, BGP) — generic network redundancy, a vendor menu, no commitable repo artefact or CI gate, fully absorbed by base-WAF REL02 (the shape that closed most of GENPERF). The one adjacent angle — private connectivity to model endpoints to keep inference off the public internet — is a **security** concern for a GENSEC walk, not a reliability principle here. **No ADR** (no AI-specific recommendation; guidance is "follow base-WAF REL02"). step_promotion **3/3/3/3 → not_promote**. Files: `data/lens_mapping.md` (GENREL02 section), `data/authored/GENREL02-BP01.md` + index row, `agentflow/app/anchor.json`, this entry. No `principles.json` change — catalogue stays at **23 standards**. GENREL continues: GENREL03-BP02 (parked timeouts) next.
+
+---
+
+## 2026-06-22 — GENREL01-BP01 not_promoted → ADR; GENREL01 CLOSED; GENREL pillar walk resumed
+
+### Context
+
+Resumed the GENREL pillar (last touched 2026-06-15 with GR3B1-01). Goal for the session: complete GENREL. Walked GENREL01 "Manage throughput quotas" first — the documented next candidate and the flagged home for GENOPS02-BP03's deferred provider-quota slice. Focus area + BP title confirmed via search; live BP page not fetchable (web_fetch timed out repeatedly, no Chrome browser connected) so the verbatim is reconstructed and **mapping_state is unverified**. GENREL01 ships one BP per search enumeration (GENREL01-BP01); confirm the count on a verification pass.
+
+### HALT — the enforceability fight (user-driven)
+
+Problem: foundation-model APIs cap requests/tokens per minute; on Bedrock that quota is **per account/region**, shared across every workload, so one workload's spike throttles the rest (multiple keys in one account do NOT split it — Bedrock quotas are account-scoped, not key-scoped). The user pressed hard on enforceability, same shape as the GC3B2-01 walk. We worked through three designs: (1) a **client-side rate limiter** — rejected, it runs per process so N instances each capped at X sum to N·X and never protect a *shared* quota, and it isn't FIFO/fair across clients; (2) a **central rate-limiting gateway** with global token-bucket state — rejected as a parallel backend the org won't build, and per-client quota allocation is operational/political, not architectural; (3) the user's own proposal — **per-project accounts/keys** for isolated quota + clean per-project billing — accepted as the realistic answer, but it resolves to **generic multi-account landing-zone governance (base-WAF)**, not an AI-specific principle.
+
+### Decision — not_promote (user-directed)
+
+Once account isolation + provisioned throughput do the work, nothing distinct and enforceable survives. Absorption: throttling recovery (429 retry+backoff) → **GR3B1-01**; cross-region balancing → **GENREL05-BP01** (walked later); provisioned-vs-on-demand = a buy decision adjacent to **GC2B2-01**; generic autoscaling → base-WAF REL + GENSUS01-BP01 (Sustainability, out of scope). step_promotion **3/3/3/3 → not_promote** (the rubric scores whether the *decision* holds up; a well-reasoned not_promote scores high).
+
+### Deliverable — an ADR (new pattern)
+
+Instead of a principle, captured the recommendation we give projects as an ADR at **`data/adr/GENREL01-throughput-quotas.md`** (new `data/adr/` folder — first time a not_promote produces an ADR as its deliverable). Five points: isolate by default (own account/key per project → own quota + per-project bill); reserve capacity for critical steady traffic (Bedrock Provisioned Throughput / committed tiers), bursty stays on-demand; each project stays under its own ceiling via rate limit + GR3B1-01 backoff; no central gateway / no quota pooling; central team ships a *standard* (declare provider + capacity mode + rate-limit config through the shared SDK) not a backend, monitoring rides GO3B2-01. This also resolves the deferred **GENOPS02-BP03** provider-quota slice — it lands here and likewise needs no new gate.
+
+### Files touched
+
+`data/adr/GENREL01-throughput-quotas.md` (new), `data/lens_mapping.md` (GENREL01 section + pillar header), `data/lens_mapping_authored.md` (prepended entry, then SPLIT — see below), `agentflow/app/anchor.json` (not_promote/closed), this entry. No change to `principles.json` — catalogue stays at **23 standards**. format_version unchanged.
+
+### Ledger split (2026-06-22)
+
+`lens_mapping_authored.md` had grown to 59 entries / ~108 KB — too big for a single read (over the 25k-token tool limit). Split it: a dedicated index at **`data/lens_mapping_authored_index.md`** (Key | Date | Outcome | File, newest first) + one file per decision at **`data/authored/<KEY>.md`** (keyed by BP code; two collisions suffixed `__2`). Content-preserving — every `- 20…` entry line appears verbatim in exactly one chunk (diff-verified). Old monolith replaced with a pointer stub; verbatim backup at `data/lens_mapping_authored.backup-20260622.md`. **New authoring process:** write the full entry to `data/authored/<KEY>.md` + prepend a row to the index (replaces "prepend to lens_mapping_authored.md"). Stray empty `data/lens_mapping_authored.new` still present (bash `rm` blocked on mount; truncated to 0 bytes).
+
+### Open items
+
+- **mapping_state UNVERIFIED** on GENREL01 — confirm BP's numbered steps + confirm BP01 is the only BP from the live page (fetch timed out; retry from a connected browser or the user's terminal).
+- Stray empty file `data/lens_mapping_authored.new` left by the prepend (bash `rm`/`mv` blocked on this mount — `Operation not permitted`); truncated to 0 bytes, user can delete it.
+- GENREL pillar continues: GENREL02 (network reliability) next, then GENREL03-BP02 (parked timeouts), GENREL04 (prompt management), GENREL05 (distributed availability), GENREL06 (distributed compute).
+
+---
+
+## 2026-06-16 — GENCOST03-BP02 → GC3B2-01 promoted (output token cap); GENCOST03 CLOSED (prompt-cost triad)
 
 ### Context
 

@@ -1,0 +1,69 @@
+<svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7D03E0"/><stop offset="1" stop-color="#6D28D9"/>
+    </linearGradient>
+  </defs>
+  <rect width="980" height="560" fill="#FFFFFF"/>
+  <circle cx="930" cy="40" r="110" fill="#7D03E0" opacity="0.05"/>
+
+  <!-- header -->
+  <rect x="40" y="30" width="30" height="4" rx="2" fill="url(#brand)"/>
+  <text x="78" y="35" font-size="12" font-weight="700" letter-spacing="2.5" fill="#6D28D9">REFERENCE IMPLEMENTATION</text>
+  <text x="40" y="66" font-size="24" font-weight="800" fill="#2E1065">Who Builds What — and What CI Enforces</text>
+  <text x="40" y="86" font-size="12.5" fill="#6B6480">Worked example: GO1B1-01 · the eval-harness / golden-set standard</text>
+
+  <!-- LEFT · CENTRAL EA TEAM -->
+  <rect x="40" y="96" width="430" height="300" rx="12" fill="#FFFFFF" stroke="#E6DAF7" stroke-width="1.5"/>
+  <rect x="40" y="96" width="430" height="5" rx="2.5" fill="url(#brand)"/>
+  <text x="60" y="128" font-size="17" font-weight="800" fill="#2E1065">CENTRAL EA TEAM</text>
+  <text x="60" y="146" font-size="11.5" fill="#6B6480">builds it once · every project reuses</text>
+  <line x1="60" y1="156" x2="450" y2="156" stroke="#EEE6F9" stroke-width="1.5"/>
+  <g fill="#4A4458" font-size="11.5">
+    <text x="60" y="176" font-size="11" font-weight="800" letter-spacing="1.5" fill="#7D03E0">BUILDS</text>
+    <circle cx="64" cy="192" r="2.6" fill="#7D03E0"/><text x="74" y="196">eval-core library — runner, grading, CLI</text>
+    <circle cx="64" cy="209" r="2.6" fill="#7D03E0"/><text x="74" y="213">manifest + scenario schemas &amp; validators</text>
+    <circle cx="64" cy="226" r="2.6" fill="#7D03E0"/><text x="74" y="230">reusable CI workflow templates</text>
+    <circle cx="64" cy="243" r="2.6" fill="#7D03E0"/><text x="74" y="247">shared adversarial library + dashboard</text>
+    <text x="60" y="272" font-size="11" font-weight="800" letter-spacing="1.5" fill="#7D03E0">OPERATES</text>
+    <circle cx="64" cy="288" r="2.6" fill="#7D03E0"/><text x="74" y="292">semver, N-1 support, patches &amp; security</text>
+    <circle cx="64" cy="305" r="2.6" fill="#7D03E0"/><text x="74" y="309">on-call for cross-project CI breakage</text>
+    <text x="60" y="334" font-size="11" font-weight="800" letter-spacing="1.5" fill="#7D03E0">OWNS</text>
+    <circle cx="64" cy="350" r="2.6" fill="#7D03E0"/><text x="74" y="354">platform-repo/eval-core · eval-workflows</text>
+  </g>
+
+  <!-- RIGHT · PROJECT TEAM -->
+  <rect x="510" y="96" width="430" height="300" rx="12" fill="#FFFFFF" stroke="#E6DAF7" stroke-width="1.5"/>
+  <rect x="510" y="96" width="430" height="5" rx="2.5" fill="url(#brand)"/>
+  <text x="530" y="128" font-size="17" font-weight="800" fill="#2E1065">PROJECT TEAM</text>
+  <text x="530" y="146" font-size="11.5" fill="#6B6480">configures it per project</text>
+  <line x1="530" y1="156" x2="920" y2="156" stroke="#EEE6F9" stroke-width="1.5"/>
+  <g fill="#4A4458" font-size="11.5">
+    <text x="530" y="176" font-size="11" font-weight="800" letter-spacing="1.5" fill="#7D03E0">CONFIGURES</text>
+    <circle cx="534" cy="192" r="2.6" fill="#7D03E0"/><text x="544" y="196">manifest.yaml — declare workloads</text>
+    <circle cx="534" cy="209" r="2.6" fill="#7D03E0"/><text x="544" y="213">eval/config.yaml + eval/adapter.py</text>
+    <circle cx="534" cy="226" r="2.6" fill="#7D03E0"/><text x="544" y="230">eval.yml → calls the central workflow</text>
+    <circle cx="534" cy="243" r="2.6" fill="#7D03E0"/><text x="544" y="247">branch protection — required status check</text>
+    <text x="530" y="272" font-size="11" font-weight="800" letter-spacing="1.5" fill="#7D03E0">POPULATES</text>
+    <circle cx="534" cy="288" r="2.6" fill="#7D03E0"/><text x="544" y="292">eval/scenarios/*.json (≥10, grow w/ regressions)</text>
+    <circle cx="534" cy="305" r="2.6" fill="#7D03E0"/><text x="544" y="309">eval/data — supporting data &amp; mocks</text>
+    <text x="530" y="334" font-size="11" font-weight="800" letter-spacing="1.5" fill="#7D03E0">CONSUMES</text>
+    <circle cx="534" cy="350" r="2.6" fill="#7D03E0"/><text x="544" y="354">pip install eval-core · central CI workflow</text>
+  </g>
+
+  <!-- divider arrows hint -->
+  <text x="490" y="250" font-size="20" font-weight="800" fill="#C9A6F7" text-anchor="middle">→</text>
+
+  <!-- CI GATE BAR -->
+  <rect x="40" y="414" width="900" height="126" rx="14" fill="#2E1065"/>
+  <rect x="40" y="414" width="900" height="5" rx="2.5" fill="url(#brand)"/>
+  <text x="64" y="446" font-size="14" font-weight="800" fill="#FFFFFF">CI GATE — a required status check · the build FAILS unless every item passes:</text>
+  <g font-size="11.8" fill="#E8DDF8">
+    <text x="70" y="478" font-size="13" fill="#34D399" font-weight="800">✓</text><text x="86" y="478">manifest.yaml present &amp; schema-valid</text>
+    <text x="70" y="502" font-size="13" fill="#34D399" font-weight="800">✓</text><text x="86" y="502">≥10 scenarios, each schema-valid</text>
+    <text x="70" y="526" font-size="13" fill="#34D399" font-weight="800">✓</text><text x="86" y="526">adapter + config wired correctly</text>
+    <text x="510" y="478" font-size="13" fill="#34D399" font-weight="800">✓</text><text x="526" y="478">eval.yml invokes central eval-core</text>
+    <text x="510" y="502" font-size="13" fill="#34D399" font-weight="800">✓</text><text x="526" y="502">configured as a REQUIRED check (branch protection)</text>
+    <text x="510" y="526" font-size="13" fill="#34D399" font-weight="800">✓</text><text x="526" y="526">latest eval-core run exits 0 — no regression</text>
+  </g>
+</svg>

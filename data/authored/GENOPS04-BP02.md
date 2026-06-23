@@ -1,0 +1,9 @@
+# GENOPS04-BP02
+
+- **Key:** `GENOPS04-BP02`
+- **Date:** 2026-06-07
+- **Outcome:** not_promoted
+
+---
+
+- 2026-06-07 | GENOPS04-BP02 (whole BP — "Implement GenAIOps to optimize the application lifecycle"; AWS verbatim fetched 2026-06-07, 5 steps, risk **High**) | not_promoted — no principle authored. Second and last BP in GENOPS04. BP mandates GenAIOps — automate development/deployment/management of models with CI/CD for training, tuning, and deploying foundation models; split into operationalizing FM consumption (DevOps for RAG/agent apps) and FM training/tuning (FMOps/LLMOps). Five SageMaker-centric steps: SageMaker Pipelines → MLflow tracking → Git + SageMaker Model Registry → CloudWatch monitoring → feedback-loop/retraining. **User directed not_promote 2026-06-07** after an interactive HALT. Two compounding grounds: (1) **umbrella BP** — AWS itself names the common concerns as CI/CD, prompt management, artifact versioning, model upgrades, evaluation, monitoring, each already concretised by a sibling: prompt management → GO3B1-01; model versioning/upgrades → GO1B1-06; evaluation → GO1B1-01..05; monitoring → GO3B2-01/02; CI/CD → base WAF (+ BP01, not_promoted); step-5 feedback loop → GENOPS01-BP02 (not_promoted). (2) the uniquely-here **FMOps/LLMOps training-pipeline** half is a vendor menu (SageMaker Pipelines / managed MLflow / Model Registry / Clarify / Code* services) and narrow — only bites for the minority training/fine-tuning their own models; the dominant consume-a-managed-API RAG/agent pattern has no training pipeline. Cross-references base WAF OPS again (OPS05-BP01/07/10). step_promotion would fail `architecturally_distinct` (umbrella of owned siblings) + `not_vendor_menu`. **GENOPS04 focus area CLOSED — zero principles** (BP01 generic IaC → base WAF; BP02 GenAIOps umbrella → existing siblings + FMOps vendor menu); both High risk yet neither GenAI-distinct, a clean worked-example result like GENPERF.

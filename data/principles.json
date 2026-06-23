@@ -3928,6 +3928,163 @@
         "compiled_at": "2026-06-15",
         "compiled_by": "manual_authoring"
       }
+    },
+    {
+      "standard_id": "ST-GR3B2-01",
+      "principle_id": "PR-GR3B2-01",
+      "u_value": "Resilience",
+      "u_principle": "An agent that stops making progress is stopped on a deadline and left in a safe state, never left hanging on a dependency that may never answer.",
+      "references": [
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/genrel03-bp02.html",
+          "title": "AWS Well-Architected Generative AI Lens — GENREL03-BP02: Implement timeout mechanisms on agentic workflows",
+          "source": "Amazon Web Services",
+          "note": "The anchoring AWS best practice. Mandates wall-clock timeouts on agent runs and the external compute / tool calls they invoke, paired with dead-letter queues for work that exceeds its deadline and graceful termination so partial state is cleaned up — so a workflow that hangs on an unresponsive dependency is stopped rather than left running indefinitely.",
+          "date": "2026-06-22"
+        },
+        {
+          "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_mitigate_interaction_failure_client_timeouts.html",
+          "title": "AWS Well-Architected Reliability Pillar — REL05-BP05: Set client timeouts",
+          "source": "Amazon Web Services",
+          "note": "The base-WAF control this standard is distinguished from. REL05-BP05 sets a timeout on an individual client call; GR3B2-01 places a deadline on the whole agent run across a sequence of tool calls the model chooses at runtime, and must fire even when a call never returns at all — the run-level, model-driven case generic per-call timeouts do not cover.",
+          "date": "2026-06-22"
+        }
+      ],
+      "dependencies": [
+        {
+          "principle_id": "GC5B1-01",
+          "kind": "soft",
+          "reason": "Shares the same artefact and harness — the agent run config where GC5B1-01's iteration/step/token caps live, and the central run executor. GR3B2-01 adds the wall-clock dimension (the deadline that catches an I/O hang the run-length caps are blind to) as additional fields and an additional lint on the same config; a standalone timeout wrapper also satisfies the contract, so it composes with rather than strictly requires GC5B1-01."
+        },
+        {
+          "principle_id": "GR3B1-01",
+          "kind": "soft",
+          "reason": "The on_timeout hand-off (dead_letter / route-to-human) is the recovery path GR3B1-01 defines, and the safe-termination rule's no-unsafe-retry constraint is the same idempotency concern GR3B1-01's retried calls honour; the timeout gate functions without GR3B1-01 present, so the dependency is soft."
+        },
+        {
+          "principle_id": "GO3B2-01",
+          "kind": "soft",
+          "reason": "Timeout and termination events — deadline-fired, tool-abandoned, routed-to-DLQ rates — are emitted through GO3B2-01's observability channel so a workload that is hanging repeatedly surfaces on a dashboard; the pre-merge wiring gates function without it, so the dependency is soft."
+        }
+      ],
+      "pillar": "P3 — Reliability",
+      "focus_area": "P31 — Prompt Remediation & Recovery",
+      "impact_level": "High",
+      "applicability": {
+        "llm": "nice_to_have",
+        "rag": "nice_to_have",
+        "agentic": "mandatory"
+      },
+      "serving_paradigm": {
+        "api_on_demand": "mandatory",
+        "api_provisioned": "mandatory",
+        "self_hosted_managed": "mandatory",
+        "self_hosted_unmanaged": "mandatory"
+      },
+      "maturity_level": "foundational",
+      "framework_mappings": {
+        "aws": {
+          "references": [
+            {
+              "lens": "Generative AI Lens",
+              "pillar": "GENREL — Reliability",
+              "focus_area": "Prompt remediation and recovery actions",
+              "question": "GENREL03 — How do you implement remediation actions for generative AI workload loops, retries, and failures?",
+              "best_practice": "GENREL03-BP02 — Implement timeout mechanisms on agentic workflows",
+              "implementation_step": null,
+              "mapping_state": "verified",
+              "last_checked": "2026-06-22",
+              "note": "Second standard under GENREL03 (the focus area GR3B1-01 opened) and the 24th in the catalogue. Anchored whole-BP (implementation_step null). The BP mandates wall-clock timeouts on agent runs + their external compute/tool calls, dead-letter queues, and graceful termination. The GenAI-distinct rule that survives base-WAF REL05-BP05 (per-call client timeouts) is a deadline on the WHOLE RUN across a tool sequence the model chooses at runtime, which must fire even when a dependency returns nothing — a per-call timeout cannot bound a model-driven sequence whose length is not known in advance. SIBLING DISTINCTION: GC5B1-01 caps run LENGTH (iterations/steps/tokens) and is structurally blind to an agent idle on an unresponsive tool (no steps/tokens accrue while it waits); GR3B1-01 recovers a single call that RETURNS an error, whereas this fires when nothing returns. GR3B2-01 and GC5B1-01 gate the SAME artefact (the agent run config) and share the central harness, different fields/lints — recorded as a soft dependency. SCOPE: parked 2026-06-15 during the GR3B1-01 walk (user 'do BP01 only'); unparked and promoted 2026-06-22 as a STANDALONE reliability twin (user-directed, over the alternative of folding a wall-clock dimension into GC5B1-01). The BP's idempotency requirement for safe replay is acknowledged as a distinct, not-yet-authored concern; this standard's safe-termination rule defaults to no-auto-retry until a dedicated idempotency standard exists. Also absorbs GENCOST05-BP01 step 3's deferred tool/Lambda timeout residue. genrel03.html verified 2026-06-15; live BP step page not re-fetched this session (web_fetch timed out, no Chrome) so the numbered steps are reconstructed — confirm on a verification pass. AWS BP risk High."
+            }
+          ]
+        },
+        "aigp": {
+          "references": [
+            {
+              "domain": "Domain IV: Understanding How to Govern AI Deployment and Use",
+              "competency": "IV.C: Establish Security, Access Control, and Incident Management",
+              "mapping_state": "unverified",
+              "last_checked": "2026-06-22",
+              "note": "Provisional mapping, same anchor as the focus-area sibling GR3B1-01. A run-level deadline that terminates a hung agent and routes it to a dead-letter queue is an operational incident-prevention control over the workload's failure surface — it keeps a single unresponsive dependency from cascading into a service-wide hang. Needs side-by-side review against the AIGP competency definitions to promote to verified, and may instead belong under a dedicated reliability/operational-resilience competency if one exists."
+            }
+          ]
+        }
+      },
+      "ownership": {
+        "tier": "enterprise",
+        "validator": "project_architect",
+        "audit_mode": "self_attestation_with_mechanical_evidence",
+        "arb_role": "dashboard_and_spot_check"
+      },
+      "statement": {
+        "title": "Don't let a stalled agent hang forever",
+        "description": "An agent runs a sequence of tool calls the model chooses as it goes. Any one of those calls — a tool, an API, an external job — can stop responding: it deadlocks, runs long, or silently returns nothing. While the agent waits, it is not looping and not spending tokens, so a limit on steps or tokens never trips. The run just hangs, holding a worker and a connection.\n\nEvery agent run should carry a deadline it cannot exceed. When the deadline passes, the run is stopped, its partial work is cleaned up, and it is handed off safely — not silently retried in a way that repeats whatever already happened."
+      },
+      "problem": {
+        "description": "An agent invokes tools in an order the model decides at runtime, and waits for each to return. When a tool stops responding — a deadlocked API, a long-running job that quietly exceeds its own limit, a socket with no read timeout — the agent blocks. It is idle, not active: no iterations are accumulating and no tokens are flowing, so any cap on run length (GC5B1-01) is structurally blind to it. The run hangs until something far downstream gives up, holding a worker thread and a connection the whole time.\n\nThe dominant failure is a run with no deadline of its own. Under load, hung runs pile up and exhaust the worker pool, and a single unresponsive dependency takes the whole service down — an outage no per-call retry prevents, because the call never returns to be retried.\n\nStopping a hung run is not enough on its own — it has to stop safely:\n\n- A run killed at tool 10 has already executed tools 1-9; if any carried a side effect, that work is now half-done.\n- Naively retrying the whole run re-fires tools 1-9, repeating side effects that already happened.\n- A timeout with no defined hand-off leaves partial state stranded with nothing owning the cleanup.\n\nThis is distinct from recovering a single failed call (GR3B1-01, which needs the call to return an error to act on) and from generic per-call client timeouts (base-WAF REL05-BP05): the deadline is on the whole run, across a tool sequence the model chooses, and it must fire even when nothing returns at all.\n\nExamples below are illustrative — synthesised scenarios; specific numbers are not from cited evidence.",
+        "examples": [
+          "A customer-service agent calls a payments API as one step of a longer run; the API deadlocks and never responds, the agent thread blocks, and within minutes every worker is parked on a hung call and the service stops answering new requests — no loop or token cap ever fires because nothing is looping.",
+          "A research agent invokes a long-running extraction job that silently exceeds its own limit and returns nothing; with no read timeout the agent waits on the socket and the user's request hangs until the load balancer 504s several minutes later.",
+          "An order agent times out at tool 10 after tools 1-9 already ran — one of which emailed the customer a confirmation; the run is naively retried from the top and the confirmation email goes out a second time.",
+          "A team configures only a token budget on its agent; a flaky vector store hangs on one call, the run sits open far past its SLA because no tokens are being spent to trip the budget, and the user stares at a spinner.",
+          "An overnight batch of agent runs each occasionally stalls on an unresponsive tool; with no per-run deadline the hung runs accumulate, exhaust the worker pool by 3am, and the entire queue is stalled by morning."
+        ]
+      },
+      "solution": {
+        "approach": "The baseline mandate (Option A — declared-and-routed) gives every agent run a deadline enforced by construction, with safe hand-off when it fires and production monitoring for the part no lint can reach.\n\nEvery agent run declares, in its run config (the same artefact GC5B1-01's iteration/step/token caps live in), a recovery-on-timeout spec carrying:\n\n- `wall_clock_deadline` — the maximum elapsed time a run may take, regardless of what it is doing.\n- per-tool `timeout` — the maximum a single tool call may block before it is abandoned, declared on each tool binding.\n- `on_timeout` — the action when the deadline fires, constrained to `terminate` or `dead_letter`; auto-`retry` is forbidden unless every tool call in the run is marked idempotent.\n\nSecond, the run executes only through the central agent harness (`run(...)` on the same central SDK as the recovery wrapper and prompt registry). The harness applies the deadline by construction: on expiry it stops the run, invokes the declared cleanup, and routes the run to the dead-letter queue instead of leaving it hung or blindly restarting it.\n\nA central lint (convention `reliability/timeout_check`) enforces at pre-merge, as required status checks:\n\n- **Declaration completeness** — every agent run declares a non-zero `wall_clock_deadline` and per-tool `timeout`; a missing or zero value fails the build.\n- **Safe termination** — `on_timeout` must be `terminate` or `dead_letter`; a run that auto-retries on timeout fails unless all its tool calls are marked idempotent.\n- **Routed execution** — an AST lint forbids running an agent except through the harness (the GO3B1-01 / GR3B1-01 no-inline pattern, applied to the run plane), so no run ships without the deadline wired in.\n\nThe honest boundary (see `enforcement_limits.md`): the lints prove the deadline is declared, applied, un-bypassed, and retry-safe by declaration — they cannot prove it fires correctly under live load, that the value is right-sized for the workflow, or that the cleanup actually leaves a safe state. Timeout efficacy is watched in production: the harness emits timeout and termination events through GO3B2-01's channel, and a workload whose timeout rate crosses a declared threshold is reviewed. Wiring is gated at PR time; effectiveness is monitored, not asserted by CI.\n\nIdempotency itself — making the tool calls safe to replay — is a distinct concern not owned here; until a dedicated idempotency standard exists, this standard's safe-termination rule defaults to no-auto-retry so an un-idempotent run can never be replayed.",
+        "key_benefits": [
+          "Catches the hang no run-length cap can — a step or token ceiling (GC5B1-01) is blind to an agent idle on an unresponsive tool; a wall-clock deadline fires regardless of whether anything is happening.",
+          "Enforcement is structural — the routed-execution AST lint makes every run carry a deadline by construction, the same proven mechanism GO3B1-01 and GR3B1-01 use, so one un-bounded run cannot quietly ship.",
+          "Stops safely, not just quickly — the safe-termination lint forbids replaying an un-idempotent run, so a timeout cannot fire a half-completed side effect a second time.",
+          "Distinct from a per-call timeout — the deadline is on the whole run across a model-chosen tool sequence and fires even when nothing returns, which a per-call client timeout cannot guarantee.",
+          "Honest about its boundary — CI proves the deadline is declared, routed, and retry-safe; the standard states plainly it does not prove the deadline fires under load or that the value is right, handing that to production monitoring."
+        ]
+      },
+      "gates": [
+        {
+          "point": "pre_merge",
+          "check": "On any PR touching an agent run definition, a lint verifies the run declares a non-zero `wall_clock_deadline` and a per-tool `timeout` on every tool binding, and fails when either is absent or zero. Configured as a required status check on the integration branch (typically `develop` in git-flow setups, `main` in trunk-based setups) via branch protection — advisory CI runs do not satisfy this gate. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "A lint verifies `on_timeout` is `terminate` or `dead_letter`; a run configured to auto-retry on timeout fails the PR unless every tool call in the run is marked idempotent. This is the no-unsafe-retry rule made mechanical — a hung run that already fired tools 1-9 is never blindly replayed. Configured as a required status check on the integration branch via branch protection. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "pre_merge",
+          "check": "An AST lint forbids executing an agent run except through the central harness (e.g. `run(...)` on the central SDK); a run started inline, bypassing the harness, fails the PR. Same mechanism as GO3B1-01's and GR3B1-01's no-inline pattern, applied to the run plane, so every shipped run carries the deadline-and-termination path by construction. Configured as a required status check on the integration branch via branch protection. Failure blocks merge.",
+          "blocking": true
+        },
+        {
+          "point": "quarterly_review",
+          "check": "A timeout-effectiveness review is run for each agentic workload: the deadline-fired, tool-abandoned, and routed-to-DLQ rates emitted through GO3B2-01's channel are checked against a declared threshold, and a sample of terminated runs is confirmed to have left the workflow in a safe state (no stranded partial side effect, no double-fire). Binary sign-off; a timeout rate above threshold or an unsafe termination blocks continued operation until corrected. This is the named control for the timeout efficacy the pre-merge lints cannot verify (see enforcement_limits.md).",
+          "blocking": true
+        }
+      ],
+      "evidence": {
+        "artefacts": [],
+        "review_mode": "automated_only",
+        "sign_off": "binary"
+      },
+      "change_history": {
+        "current_version": "1.0.0",
+        "changes": [
+          {
+            "version": "1.0.0",
+            "date": "2026-06-22",
+            "author": "Dheeraj",
+            "summary": "Initial authoring against AWS GENREL03-BP02 (Implement timeout mechanisms on agentic workflows). 24th standard in the catalogue; second under GENREL03 (focus area P31), the reliability twin of the run-length cap GC5B1-01.\n\nORIGIN: parked 2026-06-15 during the GR3B1-01 walk ('do BP01 only'), unparked 2026-06-22 as the GENREL pillar was walked to completion. Two earlier tensions resolved at this session's HALT.\n\nHALT (interactive, user-driven):\n1. STANDALONE vs FOLD INTO GC5B1-01 — the wall-clock deadline could be a 4th limit dimension on GC5B1-01 (same run-config artefact, same harness, same lint shape). User directed STANDALONE (GR3B2-01) over the extension: the failure mode is genuinely distinct (an I/O hang, not a runaway loop) and Reliability owning its own timeout standard reads cleaner than burying a reliability failure inside a cost-framed principle. The shared artefact + harness are recorded as a soft GC5B1-01 dependency.\n2. THE DISTINCT FAILURE — GC5B1-01 caps iterations/steps/tokens; that cap is structurally blind to an agent idle on an unresponsive tool because no steps or tokens accrue while it waits. A wall-clock deadline fires regardless. This is the hang no run-length cap can catch — the specific problem the user asked to be framed before promoting.\n3. IDEMPOTENCY — user pressed: if a run times out at tool 10, tools 1-9 already ran, and a naive retry re-fires their side effects. Concluded timeout alone is unsafe. Scope decision (user accepted 'Option 1'): keep GR3B2-01 NARROW — deadline + graceful termination + DLQ, with a safe-termination rule that defaults to NO auto-retry; make tool-call idempotency a SEPARATE not-yet-authored standard (GR3B1-01's retries need it too). When that standard lands, the safe-termination lint relaxes to 'auto-retry allowed only if all tool calls are idempotent'.\n4. ARTEFACT LOCATION — user asked where the client declares this. NOT the prompt YAML (GO3B1-01 is per-template, wrong granularity); it lives in the AGENT RUN CONFIG, the same artefact GC5B1-01's caps use. Per-tool timeouts live on each tool binding.\n5. ENFORCEMENT — three pre-merge lints (declaration completeness, safe-termination, routed-execution AST) + a quarterly timeout-effectiveness review over GO3B2-01-emitted telemetry.\n\nstep_promotion 3/3/3/3 (hand-applied):\n- has_enforceable_artefact: agent-run-config fields (wall_clock_deadline, per-tool timeout, on_timeout) + three pre-merge lints; path-shaped, binary gates.\n- architecturally_distinct: distinct from GC5B1-01 (step/token cap blind to an I/O hang) and base-WAF REL05-BP05 (per-call timeout cannot bound a model-chosen run that never returns); shared artefact with GC5B1-01 named as soft dependency.\n- in_bp_scope: GENREL03 is 'remediation for loops, retries, and failures'; BP02 is literally 'timeout mechanisms on agentic workflows'.\n- not_vendor_menu: strip the DLQ/Lambda service specifics and the rule survives — a run-level wall-clock deadline with safe termination.\n\nENFORCEMENT LIMIT (data/enforcement_limits.md, same honesty boundary as GC3B2-01 / GR3B1-01): the lints prove the deadline is DECLARED + APPLIED + UN-BYPASSED + RETRY-SAFE BY DECLARATION; they cannot prove it fires correctly under live load, that the value is right-sized, or that cleanup leaves a safe state. Runtime efficacy → quarterly review over emitted timeout/termination telemetry.\n\nFields:\n- applicability: agentic mandatory; llm + rag nice_to_have (a request-level deadline helps any workload, but the dominant failure — a hang across a model-chosen tool sequence — is agentic); ml omitted (classical ML inference is not an agentic, multi-tool run).\n- serving_paradigm: all four mandatory — the deadline lives in the orchestration/run layer, independent of how the model is served.\n- maturity_level foundational — any agentic workload needs a run deadline from day one, and the core enforcement is per-PR repo-local lints (declaration + safe-termination + routed-execution AST); the central harness is a SOFT dependency (a standalone timeout wrapper also satisfies the contract). The maturity rubric's FAIL example forbids labelling a per-PR repo-local lint 'scaling'.\n- impact_level High — matches the AWS BP risk (High): a hung run exhausts the worker pool and takes the whole service down (an outage, broader than the single-request consequence that set GR3B1-01 to Medium), and the unsafe-retry path can double-fire a side effect with financial/data consequence.\n- ownership.tier enterprise via D1=no / D2=3 (central agent harness: deadline enforcement, cleanup hooks, DLQ routing, the routed-execution AST lint, telemetry hooks — platform engineering plus maintenance) → recommended_centralise; validator project_architect, audit self_attestation_with_mechanical_evidence, arb dashboard_and_spot_check. Same 'Centralised LLM SDK' tier calibration as GR3B1-01.\n- dependencies: GC5B1-01 soft (shared run-config artefact + harness; adds the wall-clock dimension), GR3B1-01 soft (on_timeout hand-off is the recovery path; safe-termination shares the idempotency concern), GO3B2-01 soft (timeout telemetry).\n- references: the anchoring AWS BP page + base-WAF REL05-BP05 (the per-call timeout this is distinguished from).\n- framework_mappings.aigp IV.C provisional/unverified (same operational-incident-prevention placement as GR3B1-01).\n- nist + eu_ai_act intentionally omitted — matching the focus-area sibling GR3B1-01 (eu_ai_act carried only by the Security standards so far; a Reliability mapping is a later pass).\n\nexplain_prompt compiled with a hung-agent / unbounded-run failure shape. RI at data/ri/GR3B2-01/README.md (Option A, matching the existing RI template).\n\nOpen items: JSON parse verify; S3 re-upload for the live app; AWS BP step page reconstructed (verify numbered steps from the live page / a connected browser); AIGP IV.C unverified; a future tool-call IDEMPOTENCY standard would let the safe-termination lint allow idempotent-run retries; GENREL04/05/06 still to walk this session."
+          }
+        ]
+      },
+      "explain_prompt": {
+        "system": "You are a senior software architect explaining the failure mode that GR3B2-01 — Don't let a stalled agent hang forever — prevents, using a single illustrative scenario from a real industry.\n\nTHE PRINCIPLE\n\nEvery agent run carries a wall-clock deadline it cannot exceed, plus a per-tool timeout on each tool binding, declared in the agent run config. The run executes only through a central harness that applies the deadline by construction: when it expires the harness stops the run, runs the declared cleanup, and routes the run to a dead-letter queue. The on-timeout action is constrained to terminate or dead-letter; a run is never auto-retried on timeout unless every tool call is idempotent, so a half-completed run is not blindly replayed. Pre-merge lints enforce that every run declares a deadline and tool timeouts, that the on-timeout action is safe, and that no run is started except through the harness. Because no static lint can prove the deadline fires correctly under load or that the value is right, the harness emits timeout and termination rates and a periodic review checks them.\n\nTHE FAILURE SHAPE\n\nThis is an unbounded-run / hang-on-dependency failure. An agent invokes a sequence of tools the model chooses at runtime and waits for each to return. One tool stops responding — a deadlocked API, a long job that quietly returns nothing, a socket with no read timeout. The agent is now idle, not looping: no steps accumulate and no tokens flow, so any cap on run length is blind to it. The run hangs, holding a worker and a connection, until something far downstream gives up. Under load the hung runs pile up and exhaust the worker pool, and one unresponsive dependency hangs the whole service. The absence is forced into view by a discrete incident: a service that stops answering requests, a user request that hangs until a 504, a confirmation email sent twice when a hung run was naively retried, an overnight queue stalled by accumulated hung runs. The principle's value is forcing every run to declare a deadline and run through a harness that stops it safely, so an unbounded run fails the PR — while being honest that whether the deadline fires correctly under live load is judged by a review of emitted telemetry, not the lint.\n\nAPPLICABILITY\n\nGR3B2-01 is mandatory for Agent workloads — any workload where a model invokes tools in a sequence it decides at runtime. It is nice-to-have for plain LLM and RAG workloads (a request-level deadline still helps, but the dominant hang-across-a-tool-sequence failure is agentic). It does not apply to classical ML. If the chosen Implementation type is ML or a non-agentic LLM/RAG workload, open use_case_background with one italicised sentence noting the principle targets agentic workloads and the example is illustrative of the closest analogue.\n\nYOUR TASK\n\nYou will be given an Industry and an Implementation type. Write an illustrative example for that combination demonstrating GR3B2-01's failure mode.\n\nOUTPUT CONTRACT\n\nRespond with a single valid JSON object of exactly this shape and nothing else:\n\n{\n  \"use_case_background\": \"string — 150-250 words. Describe an enterprise with an agentic workload where a model invokes a sequence of tools to complete a task. Be specific about the industry and implementation type. Name the workload, the team, the model, and a couple of the tools the agent calls. Crucially, hint offhandedly at the gap — the runs have no deadline of their own, only perhaps a token budget, and execute however long their tools take. The reader should picture a confident team whose agent 'works' in testing and who never imagined a tool could simply stop responding. Do NOT describe the failure here.\",\n  \"issue_detail\": \"string — 200-350 words. Describe the moment a tool stops responding. Walk through chronologically: the trigger (a deadlocked API, a long job that returns nothing, a dependency with no read timeout) and the agent blocking mid-run with no deadline to stop it. Then the consequence — workers parked on hung calls until the service stops answering, a user request that hangs until a 504, an overnight queue stalled by accumulated hung runs, or a side effect fired twice when a hung run was naively retried. Name roles (the on-call engineer, the SRE, the support lead). Make the consequence concrete. The failure must demonstrate something a run-level wall-clock deadline with safe termination would have caught — an unbounded or unsafely-retried run, not a model-quality complaint, not a single call that returns an error (which GR3B1-01 covers), and not an agent looping too long while actively spending tokens (which GC5B1-01 covers).\"\n}\n\nSTYLE RULES\n\n- Concrete over abstract. Name the workload, the model, the tools, the roles. 'The fulfilment agent that calls the inventory API then the carrier API' not 'the AI system'.\n- Match the implementation type honestly. For ML or non-agentic workloads, use the italicised opening sentence and describe the closest agentic analogue.\n- Match the industry honestly.\n- Use specific numbers where they sharpen the story, but signpost invented precision honestly.\n- Do not invent regulatory specifics. Generic framing only.\n- Both sections are prose paragraphs. No bullet lists, no headings, no markdown emphasis other than the optional italicised opening sentence described above.\n- Do not include the principle's solution, the fix, or recommendations. Show the problem only.\n- Do not write any text outside the JSON object.",
+        "user_template": "Industry: {{ industry }}\nImplementation type: {{ implementation_type }}",
+        "compiled_for_principle_version": "1.0.0",
+        "compiled_at": "2026-06-22",
+        "compiled_by": "manual_authoring"
+      }
     }
   ]
 }

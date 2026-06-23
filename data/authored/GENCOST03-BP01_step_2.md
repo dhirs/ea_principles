@@ -1,0 +1,9 @@
+# GENCOST03-BP01 step 2
+
+- **Key:** `GENCOST03-BP01 step 2`
+- **Date:** 2026-06-04
+- **Outcome:** promoted → GC3B1-01
+
+---
+
+- 2026-06-04 | GENCOST03-BP01 step 2 (AWS verbatim "Engineer the prompt to reduce the token count, trimming as many unnecessary words as possible") | promoted_to_principle: GC3B1-01 — Cap every prompt template at a declared token budget and fail builds whose token footprint exceeds it. Resumed from the paused budget-principle slot now that substrate GO3B1-01 (template registry + runtime_token_budget.input field) shipped 2026-06-03. Concretises step 2's coaching ("trim words") into an enforceable contract: declared per-template input ceiling + pre-merge footprint-vs-budget lint (Option A: scaffolding tokens via the model tokenizer + Σ variable typical_max, gated against runtime_token_budget.input) + budget-inflation governance lint. Distinct from GO3B1-01: GO3B1-01 mandates the budget field EXISTS; GC3B1-01 makes the number a binding ceiling (different failure mode — silent token creep vs no addressable template; different focus area — P52 Cost-aware Prompting vs P13 Traceability). step_promotion rubric 3/3/3/3 (enforceable artefact + footprint/governance gates; architecturally distinct sibling with disjoint artefacts; BP literally named "Optimize prompt token length"; Bedrock Prompt Optimization stripped, generic ceiling-and-gate mandate survives). Options B (measured-from-eval-harness-fixtures) and C (runtime alarm on GO3B1-01's per-call signal) documented in solution.approach + the RI as additive alternatives at user direction; gates and RI built on Option A only. ownership.tier enterprise via D1=no / D2=2 → recommended_centralise. serving_paradigm all four mandatory (AWS verbatim: prompt length drives cost in both managed per-token billing and self-hosted compute time). maturity_level scaling (pays off project #2 on GO3B1-01 substrate). New focus area P52 — Cost-aware Prompting created. Step 1 absorbed.

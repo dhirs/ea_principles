@@ -40,6 +40,8 @@ The shape recurs as three honest limits:
 
 - **The `audit_mode` field itself.** `self_attestation_with_mechanical_evidence` is the catalogue's standard precisely because CI is the proof for the *mechanical* part. The principles whose residual human-judgment gap carries legal or safety exposure escalate to `central_review_at_gate` (GS1B3-01 is the first), where a named validator inspects the artefacts the lint cannot judge.
 
+- **GR3B2-01 — the agent run deadline (wired-in, not runtime behaviour).** A CI gate cannot prove a `wall_clock_deadline` actually fires when an agent hangs under live load, that the value is right-sized for the workflow, or that the declared cleanup leaves a safe state — those are runtime properties that do not exist at build time. What CI *can* prove is that the deadline is **declared** (non-zero `wall_clock_deadline` + per-tool `timeout`), **applied** (the run executes through the central harness, which enforces it by construction), **un-bypassed** (the routed-execution AST lint fails any inline agent loop), and **retry-safe by declaration** (`on_timeout` is `terminate`/`dead_letter`, never auto-retry unless every tool call is marked idempotent). Whether the deadline genuinely halts a hung run, and whether termination is clean, is watched via the timeout/termination telemetry emitted on GO3B2-01's channel and a quarterly timeout-effectiveness review — a binding acceptance criterion, not an optional extra. Same "wired-in, not runtime behaviour" limit as GC3B2-01's output cap: the gate proves the bound is set and un-bypassable, not that it bites under load.
+
 ## The rule for authors
 
 When authoring a principle:

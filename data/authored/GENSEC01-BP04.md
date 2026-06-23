@@ -1,0 +1,9 @@
+# GENSEC01-BP04
+
+- **Key:** `GENSEC01-BP04`
+- **Date:** 2026-06-07
+- **Outcome:** not_promoted
+
+---
+
+- 2026-06-07 | GENSEC01-BP04 (whole BP — "Implement access monitoring to generative AI services and foundation models"; AWS verbatim fetched 2026-06-07, 5 steps, risk **High**) | not_promoted — no principle authored. Last BP in GENSEC01. BP mandate: monitor access to GenAI services/FMs to catch unintended/unauthorized use (CloudTrail API logging, Bedrock model-invocation logging, Q activity capture, CloudWatch alarms / Security Hub on suspicious activity, centralized S3 retention; traceability line: log GenAI app name + end-user per request, per-agent logging for agentic, architect with application identities). **User directed not_promote 2026-06-07.** Decomposes into three already-owned buckets: (1) generic access logging + alerting (CloudTrail, CloudWatch alarms, Security Hub, S3 retention) = base-WAF security monitoring, AWS cross-references SEC03-BP08, same generic infra discipline as BP02; (2) vendor menu (steps 1–4: Bedrock invocation logging / Q Developer activity capture / Q Business log delivery / SageMaker logging); (3) the GenAI-distinct telemetry slice (trace every model call / tool invocation / retrieval, per-agent logging) already owned by **GO3B2-01** (emission contract) + **GO3B2-02** (read-access governance) — GS1B3-01 already emits retrieval-authorization decisions through GO3B2-01. The one piece GO3B2-01 doesn't explicitly carry — end-user attribution ("log the end-user making the request") — is a thin extension, a recommended `end_user_id` field on GO3B2-01's emit payload, absorbed not promoted (same shape as GENPERF02-BP02's inference-params slice into GO3B1-01). step_promotion would fail `architecturally_distinct` (GO3B2 family + base WAF own it) + `not_vendor_menu`. **GENSEC01 CLOSED** — BP01 not_promoted, BP02 not_promoted, BP03 → GS1B3-01 promoted, BP04 not_promoted (1 promote, 3 not_promoted).

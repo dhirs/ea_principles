@@ -1,0 +1,9 @@
+# GENOPS01-BP02
+
+- **Key:** `GENOPS01-BP02`
+- **Date:** 2026-06-07
+- **Outcome:** not_promoted
+
+---
+
+- 2026-06-07 | GENOPS01-BP02 (whole BP — "Collect and monitor user feedback"; AWS verbatim fetched 2026-06-07, 4 steps, risk **High**) | not_promoted — no principle authored. The last open BP in GENOPS01 (BP01 → GO1B1-01..06). BP mandates supplementing ground-truth evaluation with direct user feedback (thumbs up/down) captured in-app and reviewed on a cadence; desired outcome = surface FM degradation as it happens **without** ground truth data. **User directed not_promote 2026-06-07** after an interactive HALT in which the feedback-as-telemetry promote case was constructed and rejected. Step shape: steps 1–2 are pure vendor menus (Amazon Q Business PutFeedback/DynamoDB/conversation-logging tree; Amazon Bedrock S3/Lambda/EventBridge tree) — cleanest `not_vendor_menu` failure; step 3 (regular review process) is cadence/review-process advice, same shape not_promoted at GENOPS03-BP01 step 5 / deferred at GENCOST01-BP01 step 4; step 4 (implement+test improvements, A/B testing) absorbed by the GO1B1 eval family. The honest promote candidate — declare a feedback signal + emit it through **GO3B2-01**'s `emit()` as a `user_feedback` event referencing the response `trace_id` (rising 👎 rate = ground-truth-free degradation signal) — rides GO3B2-01 as substrate (feedback is just another event type on the existing emission stream; nothing architecturally distinct survives), and the only part the BP genuinely adds (the feedback-capture UX) is precisely the part no CI gate can prove (runtime/UX, not wired-in code). step_promotion would fail `not_vendor_menu` + `architecturally_distinct`/`has_enforceable_artefact`; High AWS risk does not substitute for architectural distinctness. **GENOPS01 focus area CLOSED** — BP01 → GO1B1-01..06; BP02 → not_promoted.

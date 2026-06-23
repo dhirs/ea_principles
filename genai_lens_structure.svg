@@ -1,0 +1,72 @@
+<svg viewBox="0 0 768 576" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7D03E0"/><stop offset="1" stop-color="#6D28D9"/>
+    </linearGradient>
+  </defs>
+  <rect width="768" height="576" fill="#FFFFFF"/>
+  <circle cx="722" cy="44" r="115" fill="#7D03E0" opacity="0.05"/>
+
+  <!-- header -->
+  <rect x="40" y="34" width="30" height="4" rx="2" fill="url(#brand)"/>
+  <text x="78" y="39" font-size="12" font-weight="700" letter-spacing="2.5" fill="#6D28D9">AWS WELL-ARCHITECTED · GENAI LENS</text>
+  <text x="40" y="76" font-size="25" font-weight="800" fill="#2E1065">How the GenAI Lens Is Structured</text>
+  <text x="40" y="98" font-size="13" fill="#6B6480">A drill-down: each pillar holds focus areas; each focus area holds best practices.</text>
+
+  <!-- top three boxes -->
+  <g>
+    <rect x="51" y="116" width="200" height="50" rx="10" fill="url(#brand)"/>
+    <text x="151" y="139" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">PILLARS</text>
+    <text x="151" y="156" font-size="10" fill="#E8DDF8" text-anchor="middle">the 6 WAF pillars</text>
+
+    <rect x="284" y="116" width="200" height="50" rx="10" fill="url(#brand)"/>
+    <text x="384" y="139" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">FOCUS AREAS</text>
+    <text x="384" y="156" font-size="10" fill="#E8DDF8" text-anchor="middle">several per pillar</text>
+
+    <rect x="517" y="116" width="200" height="50" rx="10" fill="url(#brand)"/>
+    <text x="617" y="139" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">BEST PRACTICES</text>
+    <text x="617" y="156" font-size="10" fill="#E8DDF8" text-anchor="middle">several per focus area</text>
+
+    <text x="267" y="148" font-size="22" font-weight="800" fill="#C9A6F7" text-anchor="middle">›</text>
+    <text x="500" y="148" font-size="22" font-weight="800" fill="#C9A6F7" text-anchor="middle">›</text>
+  </g>
+
+  <!-- PANEL 1 · pillars -->
+  <rect x="40" y="180" width="222" height="322" rx="12" fill="#FFFFFF" stroke="#E6DAF7" stroke-width="1.5"/>
+  <text x="60" y="206" font-size="10.5" font-weight="800" letter-spacing="1.5" fill="#7D03E0">THE SIX PILLARS</text>
+  <g font-size="11">
+    <circle cx="64" cy="232" r="2.6" fill="#7D03E0"/><text x="74" y="236" font-weight="700" fill="#2E1065">Operational Excellence <tspan font-weight="400" fill="#9189A6">GENOPS</tspan></text>
+    <circle cx="64" cy="274" r="2.6" fill="#7D03E0"/><text x="74" y="278" font-weight="700" fill="#2E1065">Security <tspan font-weight="400" fill="#9189A6">GENSEC</tspan></text>
+    <circle cx="64" cy="316" r="2.6" fill="#7D03E0"/><text x="74" y="320" font-weight="700" fill="#2E1065">Reliability <tspan font-weight="400" fill="#9189A6">GENREL</tspan></text>
+    <circle cx="64" cy="358" r="2.6" fill="#7D03E0"/><text x="74" y="362" font-weight="700" fill="#2E1065">Performance Eff. <tspan font-weight="400" fill="#9189A6">GENPERF</tspan></text>
+    <circle cx="64" cy="400" r="2.6" fill="#7D03E0"/><text x="74" y="404" font-weight="700" fill="#2E1065">Cost Optimization <tspan font-weight="400" fill="#9189A6">GENCOST</tspan></text>
+    <circle cx="64" cy="442" r="2.6" fill="#7D03E0"/><text x="74" y="446" font-weight="700" fill="#2E1065">Sustainability <tspan font-weight="400" fill="#9189A6">GENSUS</tspan></text>
+  </g>
+
+  <!-- PANEL 2 · focus areas -->
+  <rect x="273" y="180" width="222" height="322" rx="12" fill="#FFFFFF" stroke="#E6DAF7" stroke-width="1.5"/>
+  <text x="293" y="206" font-size="10.5" font-weight="800" letter-spacing="1.5" fill="#7D03E0">EXAMPLES (PER PILLAR)</text>
+  <g font-size="11.5" fill="#4A4458">
+    <circle cx="297" cy="232" r="2.6" fill="#7D03E0"/><text x="307" y="236">Model performance evaluation</text>
+    <circle cx="297" cy="262" r="2.6" fill="#7D03E0"/><text x="307" y="266">Response validation</text>
+    <circle cx="297" cy="292" r="2.6" fill="#7D03E0"/><text x="307" y="296">Prompt security</text>
+    <circle cx="297" cy="322" r="2.6" fill="#7D03E0"/><text x="307" y="326">Cost-aware prompting</text>
+    <circle cx="297" cy="352" r="2.6" fill="#7D03E0"/><text x="307" y="356">Vector store optimization</text>
+    <circle cx="297" cy="382" r="2.6" fill="#7D03E0"/><text x="307" y="386">Excessive agency</text>
+    <text x="307" y="418" font-size="15" font-weight="800" fill="#C9A6F7">…</text>
+  </g>
+
+  <!-- PANEL 3 · best practices -->
+  <rect x="506" y="180" width="222" height="322" rx="12" fill="#FFFFFF" stroke="#E6DAF7" stroke-width="1.5"/>
+  <text x="526" y="206" font-size="10.5" font-weight="800" letter-spacing="1.5" fill="#7D03E0">EXAMPLES (PER FOCUS AREA)</text>
+  <g>
+    <circle cx="530" cy="232" r="2.6" fill="#7D03E0"/><text x="540" y="236" font-size="11.5" font-weight="800" fill="#2E1065">GENOPS01-BP01</text><text x="540" y="252" font-size="10.5" fill="#6B6480">Periodically evaluate performance</text>
+    <circle cx="530" cy="280" r="2.6" fill="#7D03E0"/><text x="540" y="284" font-size="11.5" font-weight="800" fill="#2E1065">GENCOST03-BP01</text><text x="540" y="300" font-size="10.5" fill="#6B6480">Cache the cost-aware prompt prefix</text>
+    <circle cx="530" cy="328" r="2.6" fill="#7D03E0"/><text x="540" y="332" font-size="11.5" font-weight="800" fill="#2E1065">GENSEC02-BP01</text><text x="540" y="348" font-size="10.5" fill="#6B6480">Validate model responses</text>
+    <text x="540" y="386" font-size="15" font-weight="800" fill="#C9A6F7">…</text>
+    <text x="540" y="406" font-size="10.5" fill="#9189A6">hundreds more across the lens</text>
+  </g>
+
+  <!-- footer -->
+  <text x="384" y="534" font-size="12.5" font-weight="700" fill="#7D03E0" text-anchor="middle">We baseline our catalogue on the GenAI Lens — selected best practices become enforceable standards.</text>
+</svg>

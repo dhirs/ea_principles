@@ -1,0 +1,84 @@
+<svg viewBox="0 0 768 576" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7D03E0"/><stop offset="1" stop-color="#6D28D9"/>
+    </linearGradient>
+  </defs>
+  <rect width="768" height="576" fill="#FFFFFF"/>
+  <circle cx="720" cy="48" r="120" fill="#7D03E0" opacity="0.05"/>
+  <circle cx="50" cy="540" r="110" fill="#2E1065" opacity="0.04"/>
+
+  <!-- header -->
+  <rect x="40" y="38" width="30" height="4" rx="2" fill="url(#brand)"/>
+  <text x="78" y="43" font-size="12" font-weight="700" letter-spacing="2.5" fill="#6D28D9">IN THE FULL WORKSHOP</text>
+  <text x="40" y="80" font-size="26" font-weight="800" fill="#2E1065">Operating Model &amp; Product Strategy</text>
+  <text x="40" y="102" font-size="13" fill="#6B6480">A preview of what the paid workshop goes deep on.</text>
+
+  <!-- LEFT · OPERATING MODEL -->
+  <rect x="40" y="124" width="340" height="400" rx="12" fill="#FFFFFF" stroke="#E6DAF7" stroke-width="1.5"/>
+  <rect x="40" y="124" width="340" height="5" rx="2.5" fill="url(#brand)"/>
+  <text x="60" y="156" font-size="16" font-weight="800" fill="#2E1065">OPERATING MODEL</text>
+  <text x="60" y="174" font-size="11.5" fill="#6B6480">how the AI function is organised</text>
+  <line x1="60" y1="184" x2="360" y2="184" stroke="#EEE6F9" stroke-width="1.5"/>
+
+  <g>
+    <circle cx="74" cy="210" r="13" fill="#F0E6FC"/><path d="M68 210 l4 4 l8 -9" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="98" y="208" font-size="14" font-weight="700" fill="#2E1065">AI CoE structure</text>
+    <text x="98" y="224" font-size="11" fill="#6B6480">the shape of the central team</text>
+
+    <circle cx="74" cy="260" r="13" fill="#F0E6FC"/><path d="M68 260 l4 4 l8 -9" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="98" y="258" font-size="14" font-weight="700" fill="#2E1065">EA Function</text>
+    <text x="98" y="274" font-size="11" fill="#6B6480">where AI sits within EA</text>
+
+    <circle cx="74" cy="310" r="13" fill="#F0E6FC"/><path d="M68 310 l4 4 l8 -9" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="98" y="308" font-size="14" font-weight="700" fill="#2E1065">Engineering</text>
+    <text x="98" y="324" font-size="11" fill="#6B6480">builds &amp; ships the standards</text>
+
+    <circle cx="74" cy="360" r="13" fill="#F0E6FC"/><path d="M68 360 l4 4 l8 -9" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="98" y="358" font-size="14" font-weight="700" fill="#2E1065">Product</text>
+    <text x="98" y="374" font-size="11" fill="#6B6480">runs SLA &amp; lifecycle</text>
+
+    <circle cx="74" cy="410" r="13" fill="#F0E6FC"/><path d="M68 410 l4 4 l8 -9" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="98" y="408" font-size="14" font-weight="700" fill="#2E1065">Governance</text>
+    <text x="98" y="424" font-size="11" fill="#6B6480">independent certification</text>
+
+    <circle cx="74" cy="460" r="13" fill="#F0E6FC"/><path d="M68 460 l4 4 l8 -9" stroke="#7D03E0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="98" y="458" font-size="14" font-weight="700" fill="#2E1065">Interplay with wider EA</text>
+    <text x="98" y="474" font-size="11" fill="#6B6480">how it connects to the rest of EA</text>
+  </g>
+
+  <!-- RIGHT · PRODUCT STRATEGY -->
+  <rect x="404" y="124" width="324" height="400" rx="12" fill="#FFFFFF" stroke="#E6DAF7" stroke-width="1.5"/>
+  <rect x="404" y="124" width="324" height="5" rx="2.5" fill="url(#brand)"/>
+  <text x="424" y="156" font-size="16" font-weight="800" fill="#2E1065">PRODUCT STRATEGY</text>
+  <text x="424" y="174" font-size="11.5" fill="#6B6480">how enforcement matures over time</text>
+  <line x1="424" y1="184" x2="708" y2="184" stroke="#EEE6F9" stroke-width="1.5"/>
+
+  <!-- Phase 1 -->
+  <rect x="424" y="198" width="284" height="92" rx="10" fill="#F7F3FD" stroke="#E0CFF7" stroke-width="1.5"/>
+  <circle cx="456" cy="244" r="18" fill="url(#brand)"/><text x="456" y="250" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="486" y="232" font-size="14.5" font-weight="800" fill="#2E1065">Phase 1 — Self-attestation</text>
+  <text x="486" y="252" font-size="11.5" fill="#6B6480">Projects certify themselves</text>
+  <text x="486" y="269" font-size="11.5" fill="#6B6480">against the standard.</text>
+
+  <text x="566" y="306" font-size="16" font-weight="800" fill="#C9A6F7" text-anchor="middle">↓</text>
+
+  <!-- Phase 2 -->
+  <rect x="424" y="312" width="284" height="92" rx="10" fill="#ECE3FA" stroke="#D3BCF2" stroke-width="1.5"/>
+  <circle cx="456" cy="358" r="18" fill="url(#brand)"/><text x="456" y="364" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="486" y="346" font-size="14.5" font-weight="800" fill="#2E1065">Phase 2 — EA spot-checks</text>
+  <text x="486" y="366" font-size="11.5" fill="#6B6480">Central EA audits projects at</text>
+  <text x="486" y="383" font-size="11.5" fill="#6B6480">random — trust, but verify.</text>
+
+  <text x="566" y="420" font-size="16" font-weight="800" fill="#C9A6F7" text-anchor="middle">↓</text>
+
+  <!-- Phase 3 -->
+  <rect x="424" y="426" width="284" height="92" rx="10" fill="url(#brand)"/>
+  <circle cx="456" cy="472" r="18" fill="#FFFFFF"/><text x="456" y="478" font-size="16" font-weight="800" fill="#6D28D9" text-anchor="middle">3</text>
+  <text x="486" y="460" font-size="14.5" font-weight="800" fill="#FFFFFF">Phase 3 — Central SDK</text>
+  <text x="486" y="480" font-size="11.5" fill="#E8DDF8">Enforcement automated —</text>
+  <text x="486" y="497" font-size="11.5" fill="#E8DDF8">baked into a central SDK.</text>
+
+  <!-- footer -->
+  <text x="384" y="552" font-size="12" font-weight="700" fill="#7D03E0" text-anchor="middle">The org that runs it · the path from attestation to automation.</text>
+</svg>
