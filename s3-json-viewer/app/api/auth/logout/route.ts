@@ -4,7 +4,9 @@ import { COOKIE_NAME } from "@/lib/auth/session";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const res = NextResponse.redirect(new URL("/login", req.url));
+  const host = req.headers.get("x-forwarded-host") || req.headers.get("host") || "localhost:3000";
+  const proto = req.headers.get("x-forwarded-proto") || "http";
+  const res = NextResponse.redirect(new URL("/login", `${proto}://${host}`));
   res.cookies.set(COOKIE_NAME, "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
