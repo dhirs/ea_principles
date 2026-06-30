@@ -1,0 +1,143 @@
+<svg viewBox="0 0 980 752" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Use Case — Returns Triage Agent: invocation architecture with tool backends</title>
+<desc>A customer submits a return through web, app or support form. The returns backend makes a machine-to-machine API call to the headless Returns Triage Agent, passing a structured payload. While reasoning, the agent calls two tools — order_lookup against the Order Management System, and fraud_check against the Fraud/Risk service — then returns a single structured decision: AUTO_APPROVE, HUMAN_REVIEW or REJECT, which the backend routes to the refund service, a human queue, or a rejection notice. A committed golden set gates every deploy of the agent in CI.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#64748B"/></marker>
+<marker id="arrG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#7D2FDB"/></marker>
+<marker id="arrT" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#E8B23A"/></marker>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:21px;font-weight:700;}
+.hsub{fill:#E7D8FB;font-size:12.5px;}
+.card{fill:#F4F6FB;stroke:#E1E6F2;stroke-width:1.5;}
+.lbl{fill:#3A445C;font-size:13.5px;font-weight:700;}
+.sub{fill:#64748B;font-size:10.8px;}
+.mono{font-family:'Courier New',monospace;font-size:10.5px;}
+.edge{fill:#64748B;font-size:10.5px;font-weight:600;}
+.dec{fill:#fff;font-size:12.5px;font-weight:700;}
+.zone{fill:none;stroke:#C7B3EC;stroke-width:1.3;stroke-dasharray:5 4;}
+.ztag{fill:#7D2FDB;font-size:10.5px;font-weight:700;}
+.tcall{fill:#E8B23A;font-size:10.5px;font-weight:700;font-family:'Courier New',monospace;}
+</style>
+
+<!-- header -->
+<rect x="0" y="0" width="980" height="70" fill="url(#hdr)"/>
+<text x="30" y="33" class="h1">Returns Triage Agent — how it's invoked</text>
+<text x="30" y="55" class="hsub">Headless decision service · machine-to-machine · ~2,000 returns/day · Standard GO1B1-01</text>
+
+<!-- runtime zone -->
+<rect x="16" y="92" width="948" height="456" class="zone" rx="12"/>
+<text x="30" y="112" class="ztag">RUNTIME — machine-to-machine, no UI, no human in the loop on AUTO_APPROVE</text>
+
+<!-- 1. customer -->
+<rect x="28" y="150" width="150" height="150" rx="10" class="card"/>
+<text x="42" y="176" class="lbl">Customer</text>
+<text x="42" y="202" class="sub">Submits a return via:</text>
+<text x="42" y="222" class="sub">• Website</text>
+<text x="42" y="240" class="sub">• Mobile app</text>
+<text x="42" y="258" class="sub">• Support form</text>
+<text x="42" y="284" class="sub">(no chat with the agent)</text>
+
+<line x1="178" y1="225" x2="234" y2="225" stroke="#64748B" stroke-width="2" marker-end="url(#arr)"/>
+<text x="180" y="216" class="edge">return event</text>
+
+<!-- 2. returns backend -->
+<rect x="236" y="150" width="170" height="150" rx="10" fill="#3A445C"/>
+<text x="251" y="176" fill="#fff" font-size="13.5" font-weight="700">Returns backend</text>
+<text x="251" y="200" fill="#fff" font-size="10.8">Orchestrator / pipeline</text>
+<text x="251" y="224" fill="#fff" font-size="10.8">Builds structured payload:</text>
+<text x="251" y="242" class="mono" fill="#fff">reason_text, order,</text>
+<text x="251" y="258" class="mono" fill="#fff">payment, customer, item</text>
+<text x="251" y="284" fill="#fff" font-size="10.8">Calls the agent over API</text>
+
+<line x1="406" y1="225" x2="470" y2="225" stroke="#7D2FDB" stroke-width="2.5" marker-end="url(#arrG)"/>
+<text x="408" y="216" fill="#7D2FDB" font-size="10.5" font-weight="700">POST /triage</text>
+<text x="414" y="248" class="sub">JSON in</text>
+
+<!-- 3. agent -->
+<rect x="472" y="136" width="210" height="178" rx="10" fill="#7D2FDB"/>
+<text x="577" y="164" text-anchor="middle" fill="#fff" font-size="14.5" font-weight="700">Returns Triage Agent</text>
+<text x="577" y="182" text-anchor="middle" fill="#fff" font-size="10.8">headless API service</text>
+<rect x="490" y="196" width="174" height="30" rx="5" fill="#6B3DB0"/>
+<text x="577" y="216" text-anchor="middle" fill="#fff" font-size="11">LLM (reasons over payload)</text>
+<rect x="490" y="232" width="174" height="30" rx="5" fill="#6B3DB0"/>
+<text x="577" y="252" text-anchor="middle" fill="#fff" font-size="11">+ returns policy / prompt</text>
+<rect x="490" y="268" width="174" height="32" rx="5" fill="#6B3DB0"/>
+<text x="577" y="288" text-anchor="middle" fill="#fff" font-size="11">+ tools: order &amp; fraud</text>
+
+<line x1="682" y1="200" x2="748" y2="200" stroke="#7D2FDB" stroke-width="2.5" marker-end="url(#arrG)"/>
+<text x="688" y="191" fill="#7D2FDB" font-size="10.5" font-weight="700">decision</text>
+<text x="690" y="223" class="sub">JSON out</text>
+
+<!-- 4. decisions -->
+<rect x="750" y="136" width="206" height="44" rx="8" fill="#2E9E5B"/>
+<text x="766" y="156" class="dec">AUTO_APPROVE</text>
+<text x="766" y="171" fill="#D8F0E1" font-size="9.5">→ refund service (no human)</text>
+<rect x="750" y="192" width="206" height="44" rx="8" fill="#E8B23A"/>
+<text x="766" y="212" fill="#3A2A00" font-size="12.5" font-weight="700">HUMAN_REVIEW</text>
+<text x="766" y="227" fill="#3A2A00" font-size="9.5">→ human agent queue</text>
+<rect x="750" y="248" width="206" height="44" rx="8" fill="#C0392B"/>
+<text x="766" y="268" class="dec">REJECT</text>
+<text x="766" y="283" fill="#F6D6D1" font-size="9.5">→ rejection notice to customer</text>
+
+<!-- tool-call arrows: request down (solid), result up (dashed) -->
+<!-- OMS -->
+<line x1="505" y1="314" x2="505" y2="370" stroke="#E8B23A" stroke-width="2.5" marker-end="url(#arrT)"/>
+<line x1="538" y1="370" x2="538" y2="314" stroke="#E8B23A" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrT)"/>
+<text x="496" y="336" text-anchor="end" class="tcall">order_lookup()</text>
+<text x="496" y="352" text-anchor="end" class="sub">call ↓ · data ↑</text>
+<!-- Fraud -->
+<line x1="620" y1="314" x2="620" y2="370" stroke="#E8B23A" stroke-width="2.5" marker-end="url(#arrT)"/>
+<line x1="653" y1="370" x2="653" y2="314" stroke="#E8B23A" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrT)"/>
+<text x="666" y="336" class="tcall">fraud_check()</text>
+<text x="666" y="352" class="sub">call ↓ · risk ↑</text>
+
+<!-- tool backend: OMS -->
+<rect x="300" y="372" width="266" height="158" rx="10" fill="#3A445C"/>
+<text x="318" y="398" fill="#fff" font-size="13" font-weight="700">Order Management System (OMS)</text>
+<text x="318" y="416" fill="#E7D8FB" font-size="10.5" font-family="'Courier New',monospace">order_lookup() returns:</text>
+<text x="318" y="442" fill="#fff" font-size="10.8">• order &amp; delivery status</text>
+<text x="318" y="462" fill="#fff" font-size="10.8">• return window / eligibility</text>
+<text x="318" y="482" fill="#fff" font-size="10.8">• item + reported condition</text>
+<text x="318" y="502" fill="#fff" font-size="10.8">• customer's prior-returns count</text>
+<text x="318" y="522" fill="#fff" font-size="10.8">→ confirms the facts the reason claims</text>
+
+<!-- tool backend: Fraud -->
+<rect x="586" y="372" width="266" height="158" rx="10" fill="#3A445C"/>
+<text x="604" y="398" fill="#fff" font-size="13" font-weight="700">Fraud / Risk service</text>
+<text x="604" y="416" fill="#E7D8FB" font-size="10.5" font-family="'Courier New',monospace">fraud_check() returns:</text>
+<text x="604" y="442" fill="#fff" font-size="10.8">• customer risk score</text>
+<text x="604" y="462" fill="#fff" font-size="10.8">• serial-returner / abuse flag</text>
+<text x="604" y="482" fill="#fff" font-size="10.8">• chargeback &amp; dispute history</text>
+<text x="604" y="502" fill="#fff" font-size="10.8">• velocity (returns in last 30d)</text>
+<text x="604" y="522" fill="#fff" font-size="10.8">→ flags abuse a clean reason hides</text>
+
+<!-- Why-a-tool panels (outside the runtime zone) -->
+<rect x="20" y="576" width="462" height="160" rx="10" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.5"/>
+<text x="38" y="602" fill="#B07D14" font-size="13" font-weight="700">Why order_lookup is a tool, not a pre-fetch</text>
+<text x="38" y="626" class="sub">• The retrieval depends on the reasoning: "never arrived" →</text>
+<text x="50" y="642" class="sub">carrier delivery scan; "wrong item" → what was actually shipped.</text>
+<text x="50" y="658" class="sub">The agent fetches only what this case needs.</text>
+<text x="38" y="680" class="sub">• Args are dynamic — the agent pulls the order id / SKU out of</text>
+<text x="50" y="696" class="sub">messy free text, then queries.</text>
+<text x="38" y="718" class="sub">• Logged as a call, so the eval's must_consult check can prove the</text>
+<text x="50" y="734" class="sub">decision was grounded in real order data, not hallucinated.</text>
+
+<rect x="498" y="576" width="462" height="160" rx="10" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.5"/>
+<text x="516" y="602" fill="#B07D14" font-size="13" font-weight="700">Why fraud_check is a tool, not a pre-fetch</text>
+<text x="516" y="626" class="sub">• The agent decides whether a risk check is even warranted (high</text>
+<text x="528" y="642" class="sub">value, suspicious reason, repeat returner) instead of scoring all</text>
+<text x="528" y="658" class="sub">2,000 returns a day.</text>
+<text x="516" y="680" class="sub">• Returns a score + flags the agent weighs against policy and order</text>
+<text x="528" y="696" class="sub">value — a judgement, not a flat lookup.</text>
+<text x="516" y="718" class="sub">• Logged call → auditable: the harness can assert risk was consulted</text>
+<text x="528" y="734" class="sub">before an AUTO_APPROVE.</text>
+</svg>

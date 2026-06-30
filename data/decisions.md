@@ -8,7 +8,114 @@ Entries are dated. Newest entry at the top.
 
 ---
 
-## 2026-06-23 (latest) — GO2B3-01 PROMOTED (tool-call idempotency); GENOPS02 reopened; catalogue at 25
+## 2026-06-27 (latest) — GENCOST pillar certified FULLY WALKED; GC3B2-01 anchor verified
+
+### Context
+
+The GENCOST header still read "full BP enumeration still TODO" and GENCOST03-BP02 (→ GC3B2-01) carried `mapping_state: unverified` (authored 2026-06-16 with the live step-page unfetchable). Ran a completeness pass against the live AWS Lens to confirm no focus area or BP was missed and to verify the one outstanding anchor.
+
+### Enumeration — verified against live AWS 2026-06-27
+
+cost-optimization.html lists **exactly 5 focus areas** (GENCOST01–05, no GENCOST06). Per-focus-area BP counts confirmed from each gencostNN.html:
+
+- GENCOST01 (Model selection) — **1 BP** → GC1B1-01.
+- GENCOST02 (GenAI pricing model) — **2 BPs** → BP01 not_promoted (absorbed by GC1B1-01); BP02 → GC2B2-01.
+- GENCOST03 (Cost-aware prompting) — **4 BPs** → GC3B1-01, GC3B2-01, GC3B3-01; BP04 not_promoted (vendor-tag micro-optimisation).
+- GENCOST04 (Cost-informed vector stores) — **1 BP** → GC4B1-01.
+- GENCOST05 (Cost-informed agents) — **1 BP** → GC5B1-01.
+
+**9 BPs total, all accounted for: 7 promoted, 2 not_promoted.** No gaps.
+
+### GC3B2-01 anchor verified
+
+gencost03-bp02.html fetched 2026-06-27. The live numbered steps — minimalist response scheme; inform the model of the scheme; hard response-length limit via the response-length hyperparameter; deterministic-response prompt extension; continue testing — confirm the mandate GC3B2-01 was reconstructed against (max_tokens / stop sequences / concise instruction + determinism). The whole-BP anchor and the 3/3/3/3 step_promotion call stand. `framework_mappings.aws.mapping_state` flipped **unverified → verified**, last_checked → 2026-06-27; **GC3B2-01 → v1.0.2** (change_history entry added). No change to statement/gates/solution.
+
+### Pillar result
+
+**GENCOST FULLY WALKED — 7 standards** (GC1B1-01, GC2B2-01, GC3B1-01, GC3B2-01, GC3B3-01, GC4B1-01, GC5B1-01). The cost pillar yields the most standards of any pillar: model-selection ADR (GC1B1-01), infra right-sizing (GC2B2-01), the prompt-cost triad (input footprint / output cap / cache reuse), vector-dimension minimisation (GC4B1-01), and the agent hard-stop (GC5B1-01). **Five AWS pillars now carry an explicit "fully walked" stamp: GENOPS, GENSEC, GENPERF, GENREL, GENCOST.** Only GENSUS remains — intentionally omitted from the catalogue (folded into Cost/OpEx/Security).
+
+### Artefacts
+
+- `data/principles.json` — GC3B2-01 aws ref verified + v1.0.2 change_history; parses clean, **25 standards**, format_version 1.13 unchanged.
+- `lens_mapping.md` — GENCOST header → "FULLY WALKED 2026-06-27" with the 5-focus-area / 9-BP enumeration; both GC3B2-01 `unverified` notes flipped to verified.
+- `agentflow/app/anchor.json` — pillar-completeness pass recorded.
+
+### Open items
+
+- **S3 re-upload needed again** — this pass bumped GC3B2-01 to v1.0.2 (mapping_state verified), so `data/principles.json` changed after the earlier upload; re-upload `ea/principles.json` + Refresh so the live app carries the verified anchor. (Standard count unchanged at 25.)
+- Catalogue: all six AWS pillars resolved (5 walked + GENSUS omitted). Remaining threads are schema-extension ADRs (GENREL04 hyperparameter_ranges/model_compatibility/model_card; GENREL05-BP03 target_regions) and the reliability-family EU AI Act Art 15 pass — all optional, none blocking.
+
+---
+
+## 2026-06-27 — GENREL06 walked: one BP not_promoted; RELIABILITY PILLAR FULLY WALKED
+
+### Context
+
+Walked GENREL06 (Distributed compute tasks) — the last unwalked Reliability focus area. Live pages fetched + verified 2026-06-27 (genrel06.html + genrel06-bp01.html; mapping_state **verified**). Ships **one** BP. User directed not_promote after the read.
+
+### Decision — not_promoted, focus area + pillar CLOSED
+
+**GENREL06-BP01 (Design for fault-tolerance for high-performance distributed computation tasks) → not_promoted.** AWS risk **High**. The BP is entirely **model customization** — pre-training, continuous pre-training, fine-tuning, distillation: long-running (days–months) distributed training jobs made fault-tolerant via checkpointing (S3/FSx), auto-resume, GPU/node health monitoring + auto node replacement, on SageMaker HyperPod (EKS/Slurm) / Bedrock managed customization / AWS Batch. The cleanest not_promote of the pillar:
+
+- **Out of the dominant serving paradigm** — only bites teams that self-host model training; the API-consuming majority (the catalogue's primary audience) never customizes a model, so there is nothing to gate.
+- **Generic distributed-HPC fault tolerance** — checkpoint / retry / replace-node, "model customization job" standing in for any HPC job; BP cross-references base-WAF **REL10-BP02 / REL11-BP01 / REL11-BP03**.
+- **Vendor menu** (HyperPod / Bedrock / Batch / FSx for Lustre / EKS / Slurm); **no workload-repo artefact** (checkpointing lives in training scripts + cluster config, infra-level).
+- Consistent with how the catalogue already treats training: GENOPS04 closed on the FMOps training vendor menu; model-customization cost punted to GENSUS01-BP02. Training infra is out of remit.
+
+step_promotion **3/3/3/3 → not_promote**. No ADR (like GENREL02 — guidance is base-WAF REL10/REL11).
+
+### Reliability pillar — FULLY WALKED
+
+GENREL01–06 all closed. **2 standards total: GR3B1-01 + GR3B2-01** (both from GENREL03). The pillar's only enforceable GenAI-distinct slice is **runtime non-determinism recovery** (graceful-recovery + agentic-timeout). Everything else resolved to base-WAF redundancy/DR wearing GenAI nouns (GENREL01/02/05) or twins of existing OpEx standards (GENREL04) or model-training infra outside the serving paradigm (GENREL06). Four AWS pillars now carry an explicit "fully walked" stamp: GENOPS, GENSEC, GENPERF, GENREL.
+
+### Artefacts
+
+- `data/authored/GENREL06-BP01.md` (new); index → **67 decisions**.
+- `lens_mapping.md` — GENREL06 section added; pillar header → "FULLY WALKED 2026-06-27"; GENREL pillar-summary block added; GENREL05 note extended. No ADR.
+- `agentflow/app/anchor.json` → GENREL06 walk recorded, pillar complete, awaiting next pick.
+- **`principles.json` unchanged** — no promote; catalogue stays at **25 standards**, format_version 1.13.
+
+### Open items
+
+- Reliability pillar complete; no GENREL open work.
+- Carried forward: S3 re-upload + frontend build (catalogue at 25); GR3B1-01/GR3B2-01 reciprocal idempotency gate-text relaxation; GENREL05-BP03 `target_regions` GO2B3-01 schema-extension (logged in ADR); reliability-family EU AI Act Art 15 pass; GENCOST full-BP-enumeration verification.
+
+---
+
+## 2026-06-27 — GENREL05 walked: all three BPs not_promoted; Reliability now 5/6 focus areas done
+
+### Context
+
+Walked GENREL05 (Distributed availability) — live pages fetched + verified 2026-06-27 (genrel05-bp01/02/03.html; mapping_state **verified**, after initial web_fetch timeouts resolved with a shorter timeout). Three BPs, all AWS risk Medium. Picked as the flagged next candidate to close the Reliability pillar. User reviewed all three and directed **not_promote on all** before any statement was drafted.
+
+### Decision — all three not_promoted, focus area CLOSED, zero new standards
+
+- **BP01 (load-balance inference across Regions) → not_promoted.** GenAI-Lens relabel of base-WAF multi-region/multi-AZ inference serving (Bedrock cross-Region inference profiles / SageMaker multi-AZ endpoints + auto-scaling + health checks/failover). Generic horizontal-scaling DR, vendor menu, no repo artefact; BP's own Resources cross-reference base-WAF **REL10-BP01** + **REL04-BP01**. step_promotion 3/3/3/3 → not_promote. No ADR.
+- **BP02 (replicate embedding data across Regions) → not_promoted.** Cross-Region replication of vector/KB data (S3 CRR / OpenSearch cross-cluster replication / Glue). Generic data replication ("embedding store" = any datastore), vendor menu, absorbed by base-WAF **REL10**. Adjacent angles land cross-pillar: data residency → GDPR/compliance + GS1B3-02; replication cost → GENCOST. step_promotion 3/3/3/3 → not_promote. No ADR.
+- **BP03 (verify agent capabilities across Regions) → not_promoted, but gets an ADR.** The one BP with a genuinely agent-distinct failure mode: regional failover that is transparent for a stateless service can **silently degrade an agent** — if its tool surface or model access isn't region-complete in the failover Region, it runs with a missing capability instead of erroring; the failover unit is the agent's whole tool+model surface, which base-WAF REL10 doesn't address. Still not_promoted: the AWS mechanism (deploy APIs in N Regions + CloudFront/Route 53 routing) is generic infra, and the agent-distinct part is absorbable as a **GO2B3-01 tool-binding config extension** (a `target_regions` completeness check) + **GO1B1-06** model-access, not a new standard. step_promotion 3/3/3/3 → not_promote. Recommendation captured at `data/adr/GENREL05-agent-region-completeness.md` (treat tool+model surface as the failover unit; make region-completeness checkable; fail closed not silent).
+
+Pattern: distributed availability is base-WAF multi-region DR wearing GenAI nouns (inference / embedding / agent), with one agent-distinct sliver captured as an ADR rather than a standard. Same clean "no distinct GenAI architecture" shape as GENREL01/02 and GENPERF.
+
+### Artefacts
+
+- `data/authored/GENREL05-BP01.md` + `GENREL05-BP02.md` + `GENREL05-BP03.md` (new); index → **66 decisions**.
+- `data/adr/GENREL05-agent-region-completeness.md` (new — BP03 recommendation).
+- `lens_mapping.md` — GENREL05 section added (3 rows not_promoted, focus area CLOSED); pillar header → "GENREL01–05 walked; GENREL06 TODO"; GENREL04 note extended.
+- `agentflow/app/anchor.json` → GENREL05 walk recorded, awaiting next pick.
+- **`principles.json` unchanged** — no promote; catalogue stays at **25 standards**, format_version 1.13.
+
+### Reliability pillar status
+
+5 of 6 focus areas done: GENREL01 (not_promoted/ADR), GENREL02 (not_promoted/base-WAF), GENREL03 (GR3B1-01 + GR3B2-01), GENREL04 (both not_promoted/ADRs), GENREL05 (all three not_promoted; BP03 ADR). **Remaining: GENREL06 (Distributed compute tasks)** — last unwalked focus area; closes the pillar.
+
+### Open items
+
+- Walk GENREL06 to close the Reliability pillar.
+- GENREL05-BP03 future work: optional `target_regions` field on the GO2B3-01 tool-binding config + reachability check (schema extension, logged in the ADR, not a standard) — next agentic-reliability pass, alongside the GR3B1-01/GR3B2-01 EU AI Act Art 15 follow-up.
+
+---
+
+## 2026-06-23 — GO2B3-01 PROMOTED (tool-call idempotency); GENOPS02 reopened; catalogue at 25
 
 ### Context
 

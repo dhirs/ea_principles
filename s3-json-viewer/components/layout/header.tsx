@@ -1,6 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
 import { RefreshButton } from "./refresh-button"
+import { UserMenu } from "./user-menu"
+import { DomainSelector } from "./domain-selector"
 
 export function Header() {
   return (
@@ -15,8 +17,14 @@ export function Header() {
           className="h-9 w-auto"
         />
       </Link>
+      <div className="ml-6">
+        <DomainSelector />
+      </div>
       <div className="flex-1" />
-      <RefreshButton />
+      <div className="flex items-center gap-2">
+        <RefreshButton />
+        <UserMenu />
+      </div>
     </header>
   )
 }

@@ -1,0 +1,123 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Issue — tests passed, the decisions were still wrong (a Customer Experience failure)</title>
+<desc>The Returns Triage Agent's tests checked only that the agent ran — plumbing that stays green even when the decision is financially wrong, as in case RT-006 where AUTO_APPROVE refunds an uncaptured payment. The only check of decision correctness was one architect's private golden set, never committed and never gated. A wrong-decision change shipped silently and was found weeks later by Finance and customers. This is a Customer Experience failure: the harm is eroded trust and silent accuracy drift that customers feel directly.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:38px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:15px;}
+.card{fill:#F4F6FB;stroke:#E1E6F2;stroke-width:1.5;}
+.ptitle{fill:#3A445C;font-size:16px;font-weight:700;}
+.psub{fill:#64748B;font-size:11.5px;font-style:italic;}
+.b{fill:#3A445C;font-size:12px;}
+.mono{font-family:'Courier New',monospace;font-size:12px;fill:#3A445C;}
+.kick{fill:#64748B;font-size:10.5px;font-weight:700;letter-spacing:.5px;}
+.concl{fill:#3A445C;font-size:12px;font-weight:700;}
+.mut{fill:#64748B;font-size:10.5px;}
+.cetext{fill:#3A445C;font-size:12.5px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="96" fill="url(#hdr)"/>
+<text x="56" y="50" class="h1">Issue</text>
+<text x="56" y="78" class="hsub">The tests passed. The decisions were still wrong.</text>
+
+<!-- ===== Panel A ===== -->
+<rect x="48" y="116" width="286" height="300" rx="12" class="card"/>
+<rect x="48" y="116" width="286" height="7" rx="3.5" fill="#2E9E5B"/>
+<text x="68" y="152" class="ptitle">The tests they had</text>
+<text x="68" y="170" class="psub">plumbing — all green</text>
+<text x="68" y="200" class="b"><tspan fill="#2E9E5B" font-weight="700">✓</tspan>  POST /triage returns 200</text>
+<text x="68" y="226" class="b"><tspan fill="#2E9E5B" font-weight="700">✓</tspan>  response is valid JSON</text>
+<text x="68" y="252" class="b"><tspan fill="#2E9E5B" font-weight="700">✓</tspan>  action is 1 of 3 allowed</text>
+<text x="68" y="278" class="b"><tspan fill="#2E9E5B" font-weight="700">✓</tspan>  a typo'd reason won't crash</text>
+<line x1="68" y1="304" x2="314" y2="304" stroke="#E1E6F2" stroke-width="1.2"/>
+<text x="68" y="332" class="concl">Every one passes while</text>
+<text x="68" y="350" class="concl">the decision is wrong.</text>
+<text x="68" y="380" class="mut">Nothing here knows the</text>
+<text x="68" y="398" class="mut">correct decision.</text>
+
+<!-- ===== Panel B ===== -->
+<rect x="352" y="116" width="286" height="300" rx="12" class="card"/>
+<rect x="352" y="116" width="286" height="7" rx="3.5" fill="#C0392B"/>
+<text x="372" y="152" class="ptitle">What "green" missed</text>
+<text x="372" y="170" class="psub">a real case — RT-006</text>
+<text x="372" y="196" class="kick">INPUT</text>
+<text x="372" y="214" class="mono">payment = pending · £60 item</text>
+<text x="372" y="240" class="kick">CORRECT DECISION</text>
+<text x="372" y="258" class="mono" fill="#2E9E5B">HUMAN_REVIEW</text>
+<text x="372" y="274" class="mut">auto-approve = refund on uncaptured pay</text>
+<text x="372" y="300" class="kick">AGENT RETURNED</text>
+<text x="372" y="318" class="mono" fill="#C0392B">AUTO_APPROVE</text>
+<line x1="372" y1="336" x2="618" y2="336" stroke="#E1E6F2" stroke-width="1.2"/>
+<text x="372" y="362" class="b">→ 200 · valid JSON · allowed</text>
+<text x="372" y="382" class="concl" fill="#2E9E5B">→ all plumbing tests PASS</text>
+<text x="372" y="404" class="mut">Nothing compared it to the truth.</text>
+
+<!-- ===== Panel C ===== -->
+<rect x="656" y="116" width="286" height="300" rx="12" class="card"/>
+<rect x="656" y="116" width="286" height="7" rx="3.5" fill="#E8B23A"/>
+<text x="676" y="152" class="ptitle">The only real check</text>
+<text x="676" y="170" class="psub">…and never a standard</text>
+<text x="676" y="196" class="b">The architect kept ~50</text>
+<text x="676" y="214" class="b">labelled cases — the right</text>
+<text x="676" y="232" class="b">decision per return.</text>
+<text x="676" y="258" class="b">Run by hand on his laptop,</text>
+<text x="676" y="276" class="b">before each release.</text>
+<text x="676" y="304" class="b"><tspan fill="#C0392B" font-weight="700">✗</tspan>  never committed to the repo</text>
+<text x="676" y="326" class="b"><tspan fill="#C0392B" font-weight="700">✗</tspan>  never a required CI gate</text>
+<line x1="676" y1="346" x2="922" y2="346" stroke="#E1E6F2" stroke-width="1.2"/>
+<text x="676" y="372" class="concl">No standard requiring</text>
+<text x="676" y="390" class="concl">decisions be checked vs</text>
+<text x="676" y="408" class="concl">committed ground truth.</text>
+
+<!-- ===== Result strip ===== -->
+<rect x="48" y="432" width="894" height="244" rx="12" fill="#FBEEEC" stroke="#C0392B" stroke-width="1.6"/>
+<text x="72" y="470" fill="#C0392B" font-size="20" font-weight="800">Result</text>
+<text x="72" y="506" class="b" font-size="13"><tspan fill="#C0392B" font-weight="700">›</tspan>  A change started returning AUTO_APPROVE on uncaptured payments. Every test passed. It shipped — silently.</text>
+<text x="72" y="540" class="b" font-size="13"><tspan fill="#C0392B" font-weight="700">›</tspan>  Found weeks later by Finance (refund leakage) and customers (good returns wrongly rejected) — the costliest place to find it.</text>
+<text x="72" y="574" class="b" font-size="13"><tspan fill="#C0392B" font-weight="700">›</tspan>  Then the architect left, and the golden set left with him — no safe way to change the agent again.</text>
+<line x1="72" y1="600" x2="918" y2="600" stroke="#F2C9C2" stroke-width="1.2"/>
+<text x="72" y="632" fill="#7D2FDB" font-size="13.5" font-weight="700">The failure wasn't a bad test. Decision correctness was a concern</text>
+<text x="72" y="652" fill="#7D2FDB" font-size="13.5" font-weight="700">nobody owned and nothing enforced.</text>
+
+<!-- divider -->
+<line x1="958" y1="116" x2="958" y2="676" stroke="#E1E6F2" stroke-width="1.5"/>
+
+<!-- ===== Right quarter: Customer Experience note ===== -->
+<rect x="974" y="116" width="258" height="560" rx="12" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<rect x="994" y="138" width="218" height="30" rx="15" fill="#7D2FDB"/>
+<text x="1103" y="158" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="700" letter-spacing="1">CUSTOMER EXPERIENCE</text>
+
+<text x="996" y="200" fill="#7D2FDB" font-size="16" font-weight="800">Why this category?</text>
+
+<text x="996" y="230" class="cetext">The wrong decisions land</text>
+<text x="996" y="248" class="cetext">on customers — not in a</text>
+<text x="996" y="266" class="cetext">log file.</text>
+
+<text x="996" y="298" class="cetext">A wrong REJECT turns away</text>
+<text x="996" y="316" class="cetext">a legitimate return; trust</text>
+<text x="996" y="334" class="cetext">erodes and the agent fails</text>
+<text x="996" y="352" class="cetext">the customer's task.</text>
+
+<text x="996" y="384" class="cetext">It's the CX failure mode of</text>
+<text x="996" y="402" class="cetext"><tspan fill="#7D2FDB" font-weight="700">accuracy &amp; quality drift</tspan>:</text>
+<text x="996" y="420" class="cetext">decision quality degrades</text>
+<text x="996" y="438" class="cetext">silently, and customers</text>
+<text x="996" y="456" class="cetext">feel it before any</text>
+<text x="996" y="474" class="cetext">dashboard shows it.</text>
+
+<line x1="996" y1="500" x2="1210" y2="500" stroke="#D6C6F2" stroke-width="1.2"/>
+<text x="996" y="528" class="mut" font-size="11.5">The refund leak is real Cost</text>
+<text x="996" y="545" class="mut" font-size="11.5">damage too — but the defining</text>
+<text x="996" y="562" class="mut" font-size="11.5">harm is an unreliable, trust-</text>
+<text x="996" y="579" class="mut" font-size="11.5">eroding product. That makes</text>
+<text x="996" y="596" class="mut" font-size="11.5">it Customer Experience.</text>
+</svg>

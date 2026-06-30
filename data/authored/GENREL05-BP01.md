@@ -1,0 +1,9 @@
+# GENREL05-BP01
+
+- **Key:** `GENREL05-BP01`
+- **Date:** 2026-06-27
+- **Outcome:** not_promoted
+
+---
+
+- 2026-06-27 | GENREL05-BP01 (whole BP — "Load-balance inference requests across all regions of availability"; live page fetched + verified 2026-06-27 from genrel05-bp01.html; mapping_state **verified**) | **not_promoted (user-directed 2026-06-27).** First BP of GENREL05 (Distributed availability), AWS risk **Medium**. The BP is the GenAI-Lens relabel of base-WAF multi-region/multi-AZ inference serving: Amazon Bedrock cross-Region inference profiles **or** self-hosted SageMaker AI Inference Endpoints across multiple AZs with auto-scaling, health checks + automated failover, and cross-Region latency/error/throughput monitoring. **No distinct enforceable AI-specific principle survives.** (1) Generic horizontal-scaling / multi-region DR — the only GenAI veneer is "inference request" standing in for any request; (2) the verbatim is a **vendor menu** (cross-Region inference profiles / SageMaker endpoints / auto-scaling), the not_vendor_menu failure shape; (3) **no commitable repo artefact or CI gate** — region/AZ topology and routing are infra / landing-zone, not a workload-repo lint; (4) the BP's own Resources cross-reference base-WAF **REL10-BP01** (multi-AZ/multi-region fault isolation) and **REL04-BP01** — confirming absorption. Same absorption shape that closed GENREL02 and most of GENPERF. step_promotion **3/3/3/3 → not_promote** (has_enforceable_artefact 3 — correctly identifies no repo artefact, routing/topology is landing-zone; architecturally_distinct 3 — redundant with base-WAF REL10, named; in_bp_scope 3 — native GENREL05 but substance is base-WAF; not_vendor_menu 3 — cross-Region-inference-profile / SageMaker menu quoted, nothing architectural survives). No ADR (no AI-specific recommendation to record; guidance is "follow base-WAF REL10"). No principle authored; catalogue stays at 25 standards.

@@ -1,0 +1,125 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>The problem — many AI projects across the enterprise, each its own way</title>
+<desc>A large enterprise runs dozens of AI projects of different shapes: single LLM calls (e.g. marketing copy, call summariser, sentiment tagging), agents (returns triage, claims assistant, underwriting helper) and RAG systems (policy Q&amp;A bot, knowledge search, document assistant). Each team uses its own mechanism for testing, cost control and grounding — or skips it. Nothing is shared and nothing is enforced, so the same failures recur in every project, invisibly. The failure is fractal: one root cause repeated everywhere.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:32px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14.5px;}
+.lane{font-size:13px;font-weight:800;letter-spacing:.5px;}
+.lanesub{font-size:10.5px;}
+.nodet{fill:#3A445C;font-size:13px;font-weight:700;}
+.miss{fill:#C0392B;font-size:11px;font-style:italic;}
+.own{fill:#64748B;font-size:11px;font-style:italic;}
+.glyph{font-size:12px;font-weight:800;}
+.pt{fill:#3A445C;font-size:14px;}
+.ptb{fill:#3A445C;font-size:14px;font-weight:700;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="96" fill="url(#hdr)"/>
+<text x="56" y="44" class="h1">The problem isn't one project</text>
+<text x="56" y="72" class="hsub">Across a large enterprise: many AI projects, many shapes — and every one its own way.</text>
+
+<!-- ============ LANE 1: LLM-only ============ -->
+<rect x="40" y="120" width="800" height="160" rx="14" fill="#EEF1F6" stroke="#D5DCE8" stroke-width="1.3"/>
+<rect x="56" y="160" width="150" height="80" rx="10" fill="#3A445C"/>
+<text x="131" y="194" text-anchor="middle" class="lane" fill="#fff">LLM-ONLY CALLS</text>
+<text x="131" y="214" text-anchor="middle" class="lanesub" fill="#C7CEDC">one prompt → one output</text>
+
+<g>
+<circle cx="330" cy="182" r="28" fill="#E7EAF0" stroke="#3A445C" stroke-width="2"/>
+<text x="330" y="187" text-anchor="middle" class="glyph" fill="#3A445C">LLM</text>
+<text x="330" y="232" text-anchor="middle" class="nodet">Marketing copy</text>
+<text x="330" y="250" text-anchor="middle" class="own">spot-checked by hand</text>
+
+<circle cx="540" cy="182" r="28" fill="#E7EAF0" stroke="#3A445C" stroke-width="2"/>
+<text x="540" y="187" text-anchor="middle" class="glyph" fill="#3A445C">LLM</text>
+<text x="540" y="232" text-anchor="middle" class="nodet">Call summariser</text>
+<text x="540" y="250" text-anchor="middle" class="miss">no eval at all</text>
+
+<circle cx="750" cy="182" r="28" fill="#E7EAF0" stroke="#3A445C" stroke-width="2"/>
+<text x="750" y="187" text-anchor="middle" class="glyph" fill="#3A445C">LLM</text>
+<text x="750" y="232" text-anchor="middle" class="nodet">Sentiment tagging</text>
+<text x="750" y="250" text-anchor="middle" class="miss">no cost cap</text>
+</g>
+
+<!-- ============ LANE 2: Agents ============ -->
+<rect x="40" y="292" width="800" height="160" rx="14" fill="#F1EBFA" stroke="#D6C6F2" stroke-width="1.3"/>
+<rect x="56" y="332" width="150" height="80" rx="10" fill="#7D2FDB"/>
+<text x="131" y="366" text-anchor="middle" class="lane" fill="#fff">AGENTS</text>
+<text x="131" y="386" text-anchor="middle" class="lanesub" fill="#E7D8FB">tools · multi-step decisions</text>
+
+<g>
+<circle cx="330" cy="354" r="28" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="2"/>
+<text x="330" y="359" text-anchor="middle" class="glyph" fill="#7D2FDB">AGT</text>
+<text x="330" y="404" text-anchor="middle" class="nodet">Returns triage</text>
+<text x="330" y="422" text-anchor="middle" class="own">golden set on a laptop</text>
+
+<circle cx="540" cy="354" r="28" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="2"/>
+<text x="540" y="359" text-anchor="middle" class="glyph" fill="#7D2FDB">AGT</text>
+<text x="540" y="404" text-anchor="middle" class="nodet">Claims assistant</text>
+<text x="540" y="422" text-anchor="middle" class="own">its own guardrails</text>
+
+<circle cx="750" cy="354" r="28" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="2"/>
+<text x="750" y="359" text-anchor="middle" class="glyph" fill="#7D2FDB">AGT</text>
+<text x="750" y="404" text-anchor="middle" class="nodet">Underwriting helper</text>
+<text x="750" y="422" text-anchor="middle" class="miss">no decision tests</text>
+</g>
+
+<!-- ============ LANE 3: RAG ============ -->
+<rect x="40" y="464" width="800" height="160" rx="14" fill="#FBF6EC" stroke="#EFD9A6" stroke-width="1.3"/>
+<rect x="56" y="504" width="150" height="80" rx="10" fill="#E8B23A"/>
+<text x="131" y="538" text-anchor="middle" class="lane" fill="#fff">RAG SYSTEMS</text>
+<text x="131" y="558" text-anchor="middle" class="lanesub" fill="#fff">answers grounded in docs</text>
+
+<g>
+<circle cx="330" cy="526" r="28" fill="#FCF3E1" stroke="#E8B23A" stroke-width="2"/>
+<text x="330" y="531" text-anchor="middle" class="glyph" fill="#B07D14">RAG</text>
+<text x="330" y="576" text-anchor="middle" class="nodet">Policy Q&amp;A bot</text>
+<text x="330" y="594" text-anchor="middle" class="own">own grounding check</text>
+
+<circle cx="540" cy="526" r="28" fill="#FCF3E1" stroke="#E8B23A" stroke-width="2"/>
+<text x="540" y="531" text-anchor="middle" class="glyph" fill="#B07D14">RAG</text>
+<text x="540" y="576" text-anchor="middle" class="nodet">Knowledge search</text>
+<text x="540" y="594" text-anchor="middle" class="own">cache flag, unowned</text>
+
+<circle cx="750" cy="526" r="28" fill="#FCF3E1" stroke="#E8B23A" stroke-width="2"/>
+<text x="750" y="531" text-anchor="middle" class="glyph" fill="#B07D14">RAG</text>
+<text x="750" y="576" text-anchor="middle" class="nodet">Document assistant</text>
+<text x="750" y="594" text-anchor="middle" class="miss">no grounding gate</text>
+</g>
+
+<!-- ============ Right: the point ============ -->
+<rect x="864" y="120" width="376" height="504" rx="14" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="888" y="158" fill="#7D2FDB" font-size="18" font-weight="800">Same shapes.</text>
+<text x="888" y="182" fill="#7D2FDB" font-size="18" font-weight="800">No shared rules.</text>
+<line x1="888" y1="200" x2="1216" y2="200" stroke="#E1E6F2" stroke-width="1.2"/>
+
+<text x="888" y="230" class="pt">Dozens of AI projects, of every</text>
+<text x="888" y="250" class="pt">shape, run across the business.</text>
+
+<text x="888" y="292" class="ptb">Each team invents its own</text>
+<text x="888" y="312" class="ptb">testing, cost control and</text>
+<text x="888" y="332" class="ptb">grounding — or skips them.</text>
+
+<text x="888" y="372" class="pt">Nothing is shared.</text>
+<text x="888" y="392" class="pt">Nothing is enforced.</text>
+
+<text x="888" y="432" class="pt">So the same failures recur in</text>
+<text x="888" y="452" class="pt">every one, invisibly —</text>
+<text x="888" y="476" class="pt"><tspan fill="#C0392B" font-weight="700">wrong decisions</tspan>, <tspan fill="#C0392B" font-weight="700">runaway cost</tspan>,</text>
+<text x="888" y="496" class="pt"><tspan fill="#C0392B" font-weight="700">ungrounded answers</tspan>.</text>
+
+<rect x="888" y="524" width="328" height="76" rx="10" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.5"/>
+<text x="908" y="552" fill="#7D2FDB" font-size="14.5" font-weight="800">The failure is fractal —</text>
+<text x="908" y="574" fill="#3A445C" font-size="13">one root cause, repeated</text>
+<text x="908" y="592" fill="#3A445C" font-size="13">in every project.</text>
+</svg>

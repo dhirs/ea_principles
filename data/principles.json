@@ -2341,9 +2341,9 @@
               "question": "GENCOST03 — How do you engineer prompts to optimize cost?",
               "best_practice": "GENCOST03-BP02 — Control model response length",
               "implementation_step": null,
-              "mapping_state": "unverified",
-              "last_checked": "2026-06-16",
-              "note": "Anchored whole-BP. GENCOST03-BP02 'Control model response length' is the output-side member of the Cost-aware prompting (GENCOST03) focus area, sibling to BP01 'Optimize prompt token length' (→ GC3B1-01, input side) and BP03 'Implement prompt caching' (→ GC3B3-01). The BP title and the GENCOST03 question-stem are confirmed (the question stem 'How do you engineer prompts to optimize cost?' was verified 2026-06-05 during the BP01/BP03 walks). The live BP page's numbered implementation steps could NOT be fetched this session — docs.aws.amazon.com timed out repeatedly — so the BP's mandate is reconstructed from search extraction and its established scope: bound response length via max_tokens, stop sequences, and concise-output prompt instructions to reduce output-token cost. mapping_state is therefore 'unverified' pending a step-page verification pass to confirm the step decomposition and promote to 'verified'. This principle concretises the output-cost lever as the mirror of GC3B1-01: GO3B1-01 already carries a `runtime_token_budget.output` field but mandates neither that it be set nor that it be wired into the call, so most templates leave it blank and every call runs uncapped. Vendor specifics (Amazon Bedrock inference parameters / stop sequences) are kept here rather than in solution.approach."
+              "mapping_state": "verified",
+              "last_checked": "2026-06-27",
+              "note": "Anchored whole-BP. GENCOST03-BP02 'Control model response length' is the output-side member of the Cost-aware prompting (GENCOST03) focus area, sibling to BP01 'Optimize prompt token length' (→ GC3B1-01, input side) and BP03 'Implement prompt caching' (→ GC3B3-01). The BP title and the GENCOST03 question-stem are confirmed (the question stem 'How do you engineer prompts to optimize cost?' was verified 2026-06-05 during the BP01/BP03 walks). The live BP page's numbered implementation steps were VERIFIED 2026-06-27 (gencost03-bp02.html fetched during the GENCOST pillar-completeness pass): step 1 define a minimalist response scheme, step 2 inform the model of the scheme in the prompt, step 3/4 set a hard limit on response length via the response-length hyperparameter (plus extend the prompt template for deterministic responses), step 5 continue testing. This confirms the reconstructed mandate — bound response length via max_tokens, stop sequences, and concise-output prompt instructions — so mapping_state is promoted 'unverified' → 'verified' and the whole-BP anchor holds. This principle concretises the output-cost lever as the mirror of GC3B1-01: GO3B1-01 already carries a `runtime_token_budget.output` field but mandates neither that it be set nor that it be wired into the call, so most templates leave it blank and every call runs uncapped. Vendor specifics (Amazon Bedrock inference parameters / stop sequences) are kept here rather than in solution.approach."
             }
           ]
         }
@@ -2396,8 +2396,14 @@
         "sign_off": "binary"
       },
       "change_history": {
-        "current_version": "1.0.1",
+        "current_version": "1.0.2",
         "changes": [
+          {
+            "version": "1.0.2",
+            "date": "2026-06-27",
+            "author": "Dheeraj",
+            "summary": "AWS anchor VERIFIED during the GENCOST pillar-completeness pass. The live GENCOST03-BP02 page (gencost03-bp02.html) was fetched 2026-06-27 and its numbered implementation steps confirm the reconstructed mandate: (1) define a minimalist response scheme, (2) inform the model of the scheme in the prompt, (3/4) set a hard limit on response length via the response-length hyperparameter (plus a deterministic-response prompt extension), (5) continue testing. framework_mappings.aws.mapping_state promoted 'unverified' → 'verified'; last_checked → 2026-06-27. No change to statement / gates / solution — the whole-BP anchor and the 3/3/3/3 step_promotion call stand. Closes open item (2) from v1.0.0. Part of certifying the GENCOST pillar fully walked (GENCOST01–05, 9 BPs, 7 standards)."
+          },
           {
             "version": "1.0.0",
             "date": "2026-06-16",

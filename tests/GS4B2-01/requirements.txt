@@ -1,0 +1,6 @@
+pyyaml>=6.0
+pytest>=8.0
+# Optional — uncomment when wiring real engines (Claude Code TODO):
+# anthropic>=0.40        # LLM-as-judge / model client
+# boto3>=1.34            # Bedrock Guardrails ApplyGuardrail (Layer 1)
+# tiktoken>=0.7          # accurate token counting for Layer 0

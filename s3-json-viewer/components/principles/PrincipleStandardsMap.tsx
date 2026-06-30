@@ -2,13 +2,15 @@
 
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { usePrinciples } from "@/lib/principles/PrinciplesContext"
 import { asObject, asString, type Principle } from "@/lib/principles/types"
 
 type Standard = { id: string; title: string }
 type Group = { principleId: string; title: string | undefined; standards: Standard[] }
+
+const PAGE_SIZE = 10
 
 // Drop the "Pn — " prefix that pillar / focus_area strings carry, keep the label.
 function label(value: unknown): string {
@@ -44,6 +46,7 @@ export function PrincipleStandardsMap() {
   const { data, error } = usePrinciples()
   const [pillar, setPillar] = useState("")
   const [focusArea, setFocusArea] = useState("")
+  const [page, setPage] = useState(1)
 
   const rows = useMemo(() => (data?.principles ?? []) as Principle[], [data])
 
@@ -82,6 +85,18 @@ export function PrincipleStandardsMap() {
     })
     return groupByPrinciple(filtered)
   }, [rows, pillar, focusArea])
+
+  // Reset to the first page whenever the filtered result set changes.
+  useEffect(() => {
+    setPage(1)
+  }, [pillar, focusArea])
+
+  const totalPages = Math.max(1, Math.ceil(groups.length / PAGE_SIZE))
+  const currentPage = Math.min(page, totalPages)
+  const pageGroups = useMemo(
+    () => groups.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
+    [groups, currentPage],
+  )
 
   if (error) {
     return (
@@ -130,11 +145,23 @@ export function PrincipleStandardsMap() {
         </div>
       </div>
 
+      {groups.length > 0 && (
+        <Paginator
+          className="mb-4"
+          page={currentPage}
+          totalPages={totalPages}
+          pageSize={PAGE_SIZE}
+          total={groups.length}
+          onPrev={() => setPage((p) => Math.max(1, p - 1))}
+          onNext={() => setPage((p) => Math.min(totalPages, p + 1))}
+        />
+      )}
+
       {groups.length === 0 ? (
         <p className="text-muted-foreground">No principles match the selected filters.</p>
       ) : (
         <ul className="space-y-4">
-          {groups.map((g) => (
+          {pageGroups.map((g) => (
             <li
               key={g.principleId}
               className="grid grid-cols-1 gap-4 rounded-xl border border-border bg-card p-5 shadow-sm md:grid-cols-[minmax(0,18rem)_1fr]"
@@ -174,6 +201,71 @@ export function PrincipleStandardsMap() {
           ))}
         </ul>
       )}
+
+      {groups.length > 0 && (
+        <Paginator
+          className="mt-6"
+          page={currentPage}
+          totalPages={totalPages}
+          pageSize={PAGE_SIZE}
+          total={groups.length}
+          onPrev={() => setPage((p) => Math.max(1, p - 1))}
+          onNext={() => setPage((p) => Math.min(totalPages, p + 1))}
+        />
+      )}
+    </div>
+  )
+}
+
+function Paginator({
+  page,
+  totalPages,
+  pageSize,
+  total,
+  onPrev,
+  onNext,
+  className = "",
+}: {
+  page: number
+  totalPages: number
+  pageSize: number
+  total: number
+  onPrev: () => void
+  onNext: () => void
+  className?: string
+}) {
+  return (
+    <div className={`flex items-center justify-between gap-4 ${className}`}>
+      <p className="text-sm text-muted-foreground">
+        Showing{" "}
+        <span className="font-medium text-foreground">
+          {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)}
+        </span>{" "}
+        of <span className="font-medium text-foreground">{total}</span>
+      </p>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onPrev}
+          disabled={page <= 1}
+          className="inline-flex h-8 cursor-pointer items-center gap-1 rounded-md border border-border bg-background px-3 text-sm font-medium hover:bg-muted disabled:cursor-default disabled:opacity-50"
+        >
+          <ChevronLeft className="size-4" />
+          Prev
+        </button>
+        <span className="text-sm text-muted-foreground">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          type="button"
+          onClick={onNext}
+          disabled={page >= totalPages}
+          className="inline-flex h-8 cursor-pointer items-center gap-1 rounded-md border border-border bg-background px-3 text-sm font-medium hover:bg-muted disabled:cursor-default disabled:opacity-50"
+        >
+          Next
+          <ChevronRight className="size-4" />
+        </button>
+      </div>
     </div>
   )
 }

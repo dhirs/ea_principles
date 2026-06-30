@@ -1,0 +1,25 @@
+# Declared input-guardrail config for ST-GS4B2-01.
+# This file IS the contract the standard's pre-merge lint checks for:
+# input_filters + limits + on_trip must all be present and non-null.
+name: gs4b2-01-input-guardrail
+
+input_filters:
+  - injection_patterns        # Layer 1
+  - prompt_extraction_probes  # Layer 1
+  - llm_judge                 # Layer 2
+
+limits:
+  max_prompt_tokens: 2000     # Layer 0
+  rate_limit_per_min: 30      # Layer 0, per caller
+
+on_trip: block_and_replace    # block_and_replace | escalate
+on_trip_message: "Sorry, I can't help with that request."
+
+layer2_judge:
+  enabled: true
+  threshold: 0.5              # verdict >= threshold => trip
+
+# Efficacy gate (quarterly red-team). run_redteam exits non-zero below this.
+efficacy:
+  min_catch_rate: 0.85        # recall floor on the attack corpus
+  max_false_positive_rate: 0.10

@@ -13,7 +13,8 @@ This is the human reasoning layer. The machine-readable field definitions and co
 | EU AI Act (Reg. 2024/1689) | `eu_ai_act` | cross-reference | populated | 7 / 24 | [eu_ai_act.md](./eu_ai_act.md) |
 | NIST AI RMF | `nist` | cross-reference | scaffolded (not populated) | 0 / 24 | [nist.md](./nist.md) |
 | GDPR (Reg. 2016/679) | `gdpr` | cross-reference | proposed (not populated) | 0 / 24 | [gdpr.md](./gdpr.md) |
-| _planned: FCA, ISO/IEC 23894, OWASP LLM Top 10, …_ | — | cross-reference | not started | — | — |
+| FCA Handbook (SYSC / PRIN, under FSMA 2000) | `fca` | cross-reference | proposed (not populated) | 0 / 24 | [fca.md](./fca.md) |
+| _planned: ISO/IEC 23894, OWASP LLM Top 10, …_ | — | cross-reference | not started | — | — |
 
 > Note: ISO/IEC 42001 is deliberately **not** a framework key — it is a governance/management-system wrapper (proof a control is *governed*), not a control a standard concretises. See `eu_ai_act.md` for the three-layer rationale.
 

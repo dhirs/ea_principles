@@ -1,16 +1,16 @@
-# Cost Sample — Phoenix Life (illustrative LLM spend estimate)
+# Cost Sample — illustrative LLM spend estimate
 
-> **Status:** rough Fermi estimate, to revisit. This is **not** a real Phoenix figure — there is no
-> public number for their LLM spend. It is built bottom-up from plausible assumptions so we can flex
-> the inputs later (ideally turn it into an adjustable spreadsheet model). Used in the Cost use case
-> (`cost_caching.md`, GENCOST03-BP03 → GC3B3-01) to show the caching saving is a real share of a real
-> bill, not a rounding error.
+> **Status:** rough Fermi estimate, to revisit. This is **not** based on any specific company — there is
+> no public number behind it. It is built bottom-up from plausible assumptions for a large UK life &
+> pensions insurer so we can flex the inputs later (ideally turn it into an adjustable spreadsheet
+> model). Used in the Cost use case (`cost_caching.md`, GENCOST03-BP03 → GC3B3-01) to show the caching
+> saving is a real share of a real bill, not a rounding error.
 
-## Scale anchors (approximate, from memory — Phoenix Group, the parent)
+## Scale anchors (approximate — a large UK life & pensions insurer, illustrative)
 - ~12M customers
 - ~£280bn assets under administration
 - ~7,500–10,000 staff
-- Brands: Standard Life / ReAssure / SunLife
+- Several consumer brands
 - Heavily document- and contact-driven — a near-ideal GenAI footprint
 
 ## Pricing used (illustrative, GPT-4o-class — revisit, prices change)

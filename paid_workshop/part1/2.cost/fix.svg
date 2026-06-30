@@ -1,0 +1,104 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Fix — the governed prompt-caching standard</title>
+<desc>The fix: declare the cacheable static prefix of each reused prompt, gate that the breakpoint is correctly bounded, and continuously monitor the cache-hit rate, so the saving is real and stays real. The central team provides a standard way to declare the prefix and breakpoint, a CI lint that fails when a moving value sits above the breakpoint, a fleet-wide hit-rate dashboard and alert, and one bar for governed caching. Each local team owns which prompts are cache-eligible, where its breakpoint sits, keeping the prefix genuinely static, and acting when its hit-rate alert fires. The standard GC3B3-01 is anchored in the AWS Generative AI Lens GENCOST03-BP03.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:34px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:15px;}
+.cruxlbl{fill:#7D2FDB;font-size:12px;font-weight:700;letter-spacing:2px;}
+.crux{fill:#3A445C;font-size:18px;font-weight:700;}
+.ptitle{font-size:15px;font-weight:800;letter-spacing:1.2px;}
+.chipt{fill:#3A445C;font-size:16px;font-weight:700;}
+.chips{fill:#64748B;font-size:12.5px;}
+.fwlbl{fill:#7D2FDB;font-size:12px;font-weight:700;letter-spacing:1.5px;}
+.fwt{fill:#3A445C;font-size:12.5px;font-weight:700;}
+.fws{fill:#64748B;font-size:11px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">Fix</text>
+<text x="48" y="70" class="hsub">Govern the cache, don't trust a flag — "the same work is never paid for twice."</text>
+
+<!-- crux strip -->
+<rect x="48" y="98" width="1184" height="80" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="70" y="124" class="cruxlbl">THE STANDARD, IN ONE LINE</text>
+<text x="70" y="148" class="crux">Declare the cacheable static prefix, gate that the breakpoint is correctly bounded,</text>
+<text x="70" y="170" class="crux">and continuously monitor the cache-hit rate — so the saving is real and stays real.</text>
+
+<!-- ===== central panel ===== -->
+<rect x="48" y="194" width="568" height="426" rx="14" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="74" y="230" class="ptitle" fill="#7D2FDB">CENTRAL TEAM PROVIDES</text>
+<line x1="74" y1="242" x2="590" y2="242" stroke="#D6C6F2" stroke-width="1.2"/>
+<g>
+<circle cx="90" cy="276" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="274" class="chipt">A way to declare prefix + breakpoint</text>
+<text x="112" y="294" class="chips">one standard shape every prompt uses</text>
+<circle cx="90" cy="334" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="332" class="chipt">A CI lint on the breakpoint</text>
+<text x="112" y="352" class="chips">fails the build if a moving value sits above it</text>
+<circle cx="90" cy="392" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="390" class="chipt">Fleet-wide hit-rate dashboard + alert</text>
+<text x="112" y="410" class="chips">makes the invisible cache visible</text>
+<circle cx="90" cy="450" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="448" class="chipt">One bar: caching is governed</text>
+<text x="112" y="468" class="chips">not a one-line flag owned by no one</text>
+<circle cx="90" cy="508" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="506" class="chipt">Cost attribution per project</text>
+<text x="112" y="526" class="chips">a leak has an owner, not just a bill</text>
+</g>
+
+<!-- center seam -->
+<line x1="640" y1="210" x2="640" y2="604" stroke="#E1E6F2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<circle cx="640" cy="407" r="24" fill="#fff" stroke="#E1E6F2" stroke-width="1.5"/>
+<path d="M640 383 A24 24 0 0 1 640 431 Z" fill="#E8B23A" opacity="0.85"/>
+<path d="M640 383 A24 24 0 0 0 640 431 Z" fill="#7D2FDB" opacity="0.85"/>
+<text x="640" y="411" text-anchor="middle" fill="#3A445C" font-size="11" font-weight="800">vs</text>
+
+<!-- ===== local panel ===== -->
+<rect x="664" y="194" width="568" height="426" rx="14" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.6"/>
+<text x="690" y="230" class="ptitle" fill="#B07D14">EACH LOCAL TEAM OWNS</text>
+<line x1="690" y1="242" x2="1206" y2="242" stroke="#EFD9A6" stroke-width="1.2"/>
+<g>
+<circle cx="706" cy="276" r="5.5" fill="#E8B23A"/>
+<text x="728" y="274" class="chipt">Which prompts are cache-eligible</text>
+<text x="728" y="294" class="chips">you know what's reused at volume</text>
+<circle cx="706" cy="334" r="5.5" fill="#E8B23A"/>
+<text x="728" y="332" class="chipt">Where the breakpoint sits</text>
+<text x="728" y="352" class="chips">correctly bounded around the static block</text>
+<circle cx="706" cy="392" r="5.5" fill="#E8B23A"/>
+<text x="728" y="390" class="chipt">Keeping the prefix genuinely static</text>
+<text x="728" y="410" class="chips">no timestamps or ids above the line</text>
+<circle cx="706" cy="450" r="5.5" fill="#E8B23A"/>
+<text x="728" y="448" class="chipt">Acting when the alert fires</text>
+<text x="728" y="468" class="chips">hit-rate drop → fix the prefix, fast</text>
+<circle cx="706" cy="508" r="5.5" fill="#E8B23A"/>
+<text x="728" y="506" class="chipt">Owning the prompt's structure</text>
+<text x="728" y="526" class="chips">someone is responsible for the contract</text>
+</g>
+
+<!-- ===== framework anchors strip ===== -->
+<rect x="48" y="634" width="1184" height="66" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="70" y="662" class="fwlbl">ANCHORED IN</text>
+<text x="70" y="682" fill="#3A445C" font-size="13" font-weight="800">GC3B3-01</text>
+
+<!-- primary: GenAI Lens -->
+<rect x="190" y="648" width="404" height="40" rx="8" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.4"/>
+<text x="206" y="666" class="fwt" fill="#7D2FDB">AWS Generative AI Lens · GENCOST03-BP03</text>
+<text x="206" y="681" class="fws">primary anchor — "enable caching; configure cache checkpoints at optimal locations"</text>
+
+<!-- not yet mapped -->
+<rect x="606" y="648" width="312" height="40" rx="8" fill="#fff" stroke="#E1E6F2" stroke-width="1.4"/>
+<text x="622" y="666" class="fwt" fill="#94A3B8">AIGP · EU AI Act</text>
+<text x="622" y="681" class="fws">cross-references not yet authored for this standard</text>
+
+<text x="1208" y="674" text-anchor="end" class="fws" font-style="italic">u_principle: the same work is never paid for twice</text>
+</svg>

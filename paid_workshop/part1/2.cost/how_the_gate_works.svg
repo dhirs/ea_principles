@@ -1,0 +1,92 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>How the gate works — structure checks vs the static-prefix check</title>
+<desc>The gate runs cheap structure checks first: the cache.yaml config is present, its schema is valid, and the prompt has all required sections. But these only prove shape — a perfectly shaped prompt can still inject a volatile value at runtime. To prove the prefix is actually static you must render it twice with deliberately different context, then assert the token count and a byte hash of the prefix up to the breakpoint are identical across both renders. If they differ, a volatile value sits above the breakpoint and the gate fails.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.col{font-size:15px;font-weight:800;letter-spacing:.6px;}
+.cols{fill:#64748B;font-size:12px;font-style:italic;}
+.stept{fill:#3A445C;font-size:14.5px;font-weight:700;}
+.steps{fill:#64748B;font-size:12px;}
+.mono{font-family:'Courier New',monospace;font-size:12px;}
+.cap{fill:#64748B;font-size:12.5px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">How the gate works</text>
+<text x="48" y="70" class="hsub">Shape is easy to check. Proving the prefix is actually static is the part that matters.</text>
+
+<!-- ===================== LEFT: structure checks ===================== -->
+<rect x="40" y="104" width="556" height="468" rx="14" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="66" y="138" class="col" fill="#7D2FDB">1 · STRUCTURE CHECKS</text>
+<text x="66" y="158" class="cols">cheap, static — runs in milliseconds</text>
+<line x1="66" y1="172" x2="570" y2="172" stroke="#E1E6F2" stroke-width="1.2"/>
+
+<circle cx="84" cy="204" r="12" fill="#2E9E5B"/><text x="84" y="209" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">✓</text>
+<text x="110" y="200" class="stept">Config present</text>
+<text x="110" y="220" class="steps">cache.yaml exists in the repo</text>
+
+<circle cx="84" cy="262" r="12" fill="#2E9E5B"/><text x="84" y="267" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">✓</text>
+<text x="110" y="258" class="stept">Schema valid</text>
+<text x="110" y="278" class="steps">required keys present, correct types</text>
+
+<circle cx="84" cy="320" r="12" fill="#2E9E5B"/><text x="84" y="325" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">✓</text>
+<text x="110" y="316" class="stept">Sections complete</text>
+<text x="110" y="336" class="steps">prompt has system, tools, few_shot, input</text>
+
+<line x1="66" y1="370" x2="570" y2="370" stroke="#E1E6F2" stroke-width="1.2"/>
+<rect x="66" y="388" width="504" height="160" rx="10" fill="#FBEEEC" stroke="#C0392B" stroke-width="1.4"/>
+<text x="86" y="416" fill="#C0392B" font-size="13.5" font-weight="800">…but this only proves SHAPE</text>
+<text x="86" y="442" class="cap">A perfectly-shaped prompt can still build a</text>
+<text x="86" y="462" class="cap">different prefix at runtime —</text>
+<text x="86" y="486" class="mono" fill="#C0392B">prefix = SYS + f"{now()} " + msg</text>
+<text x="86" y="510" class="cap">passes every check above, yet the bytes</text>
+<text x="86" y="530" class="cap">change on every call. Structure can't see it.</text>
+
+<!-- ===================== RIGHT: static-prefix check ===================== -->
+<rect x="612" y="104" width="628" height="468" rx="14" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="638" y="138" class="col" fill="#7D2FDB">2 · THE STATIC-PREFIX CHECK</text>
+<text x="638" y="158" class="cols">the one that catches the real failure</text>
+<line x1="638" y1="172" x2="1214" y2="172" stroke="#D6C6F2" stroke-width="1.2"/>
+
+<text x="638" y="198" class="stept">Call build_prompt(ctx) twice — different context</text>
+<text x="638" y="218" class="steps">central renders it, varying timestamp, session_id, user, message</text>
+
+<text x="638" y="248" class="stept">Hash the prefix up to the breakpoint</text>
+<text x="638" y="268" class="steps">a short fingerprint of the exact bytes</text>
+
+<text x="638" y="298" class="stept">Assert the two hashes match</text>
+<text x="638" y="318" class="mono" fill="#3A445C">hash_A == hash_B</text>
+
+<!-- pass case -->
+<rect x="638" y="338" width="576" height="74" rx="10" fill="#fff" stroke="#2E9E5B" stroke-width="1.5"/>
+<text x="656" y="362" class="mono" fill="#2E9E5B">render A:  sha 9f2c…</text>
+<text x="656" y="384" class="mono" fill="#2E9E5B">render B:  sha 9f2c…</text>
+<text x="1196" y="380" text-anchor="end" fill="#2E9E5B" font-size="15" font-weight="800">✓ PASS — static</text>
+
+<!-- fail case -->
+<rect x="638" y="422" width="576" height="92" rx="10" fill="#fff" stroke="#C0392B" stroke-width="1.5"/>
+<text x="656" y="446" class="mono" fill="#3A445C">render A:  sha 9f2c…</text>
+<text x="656" y="468" class="mono" fill="#C0392B">render B:  sha 4a8e…  ← changed</text>
+<text x="656" y="492" class="cap" fill="#C0392B">hash changed → a volatile value is above the breakpoint</text>
+<text x="1196" y="452" text-anchor="end" fill="#C0392B" font-size="15" font-weight="800">✗ FAIL</text>
+
+<text x="638" y="540" class="cap">The hash is the proof the prefix is byte-for-byte identical.</text>
+<text x="638" y="558" class="cap">Diff the two renders and it points straight at what moved.</text>
+
+<!-- bottom takeaway -->
+<rect x="40" y="588" width="1200" height="104" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="64" y="618" fill="#7D2FDB" font-size="14" font-weight="800">THE POINT</text>
+<text x="64" y="646" fill="#3A445C" font-size="15">Structure checks are static analysis — necessary, but they only confirm the prompt is <tspan font-weight="700">shaped</tspan> right.</text>
+<text x="64" y="672" fill="#3A445C" font-size="15">Proving the prefix is <tspan font-weight="700">static</tspan> needs dynamic proof: render twice, compare token count + hash. That's what keeps the saving real.</text>
+</svg>

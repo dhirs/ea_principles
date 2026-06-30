@@ -1,0 +1,110 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Architecture — how the eval harness actually runs</title>
+<desc>A generic Central Runner owned by the platform team reads the project's manifest.yaml to find its dataset and adapter, loads the test cases from the dataset, then calls run_scenario(input) on the project's Adapter one case at a time. The Adapter calls the project's unchanged agent, maps its native output into the fixed contract shape {decision, evidence_trace}, and returns it. The Runner compares against expected and exits 0 or 1 as the CI gate. The dataset, manifest, adapter and agent are all project-owned; the adapter is the single fixed interface between central and local.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+<marker id="arrP" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#7D2FDB"/></marker>
+<marker id="arrG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#64748B"/></marker>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:34px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:15px;}
+.card{fill:#F4F6FB;stroke:#E1E6F2;stroke-width:1.5;}
+.title{fill:#3A445C;font-size:17px;font-weight:700;}
+.sub{fill:#64748B;font-size:12px;}
+.mono{font-family:'Courier New',monospace;}
+.li{fill:#3A445C;font-size:12.5px;}
+.step{fill:#64748B;font-size:12px;font-weight:700;}
+.boxlbl{font-size:14px;font-weight:800;letter-spacing:1px;}
+.legend{fill:#64748B;font-size:12.5px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">Architecture — how the harness runs</text>
+<text x="48" y="70" class="hsub">One generic runner, owned by the platform team. Everything domain-specific sits behind a single fixed interface, owned by the project.</text>
+
+<!-- ===== project-owned dashed box ===== -->
+<rect x="396" y="116" width="836" height="520" rx="16" fill="none" stroke="#E8B23A" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="420" y="146" class="boxlbl" fill="#B07D14">WHAT THE PROJECT OWNS</text>
+<text x="420" y="166" class="sub">project-specific — the runner never reads its meaning, only its shape</text>
+
+<!-- ===== central runner ===== -->
+<rect x="48" y="250" width="300" height="252" rx="12" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="2"/>
+<text x="72" y="286" class="title" fill="#7D2FDB">Central Runner</text>
+<text x="72" y="306" class="sub">generic · the platform team owns it</text>
+<line x1="72" y1="320" x2="324" y2="320" stroke="#D6C6F2" stroke-width="1.2"/>
+<text x="72" y="348" class="li">reads manifest, finds paths</text>
+<text x="72" y="374" class="li">loads the test cases</text>
+<text x="72" y="400" class="li mono">calls run_scenario()</text>
+<text x="72" y="426" class="li">compares vs expected</text>
+<text x="72" y="458" class="li mono" fill="#7D2FDB" font-weight="700">exit 0 / 1  → the CI gate</text>
+
+<!-- ===== manifest (code panel) ===== -->
+<rect x="454" y="182" width="416" height="120" rx="10" fill="#2C3142"/>
+<text x="470" y="204" font-family="'Courier New',monospace" font-size="11.5" fill="#9AA3B2"># manifest.yaml — what the runner reads</text>
+<text x="470" y="224" font-family="'Courier New',monospace" font-size="11.5" fill="#E7E9F0"><tspan fill="#9B7BE0">dataset:</tspan>  eval/returns_triage.jsonl</text>
+<text x="470" y="242" font-family="'Courier New',monospace" font-size="11.5" fill="#E7E9F0"><tspan fill="#9B7BE0">adapter:</tspan>  eval/adapter.py:run_scenario</text>
+<text x="470" y="260" font-family="'Courier New',monospace" font-size="11.5" fill="#E7E9F0"><tspan fill="#9B7BE0">pass_bar:</tspan> <tspan fill="#E8B23A">safety=must_pass · accuracy&gt;=0.98</tspan></text>
+<text x="470" y="278" font-family="'Courier New',monospace" font-size="11.5" fill="#E7E9F0"><tspan fill="#9B7BE0">stages:</tspan>   pre_commit=[smoke] · release=[all]</text>
+<text x="470" y="296" font-family="'Courier New',monospace" font-size="10.5" fill="#9AA3B2">↑ pass_bar is the project-owned rule behind exit 0 / 1</text>
+
+<!-- ===== dataset ===== -->
+<rect x="440" y="468" width="320" height="140" rx="10" class="card"/>
+<text x="600" y="502" text-anchor="middle" class="title">Dataset (golden set)</text>
+<text x="600" y="524" text-anchor="middle" class="sub mono">returns_triage.jsonl</text>
+<text x="600" y="548" text-anchor="middle" class="sub">input + expected_decision</text>
+<text x="600" y="568" text-anchor="middle" class="sub">+ expected_evidence_trace</text>
+
+<!-- ===== adapter (the fixed interface) ===== -->
+<rect x="892" y="262" width="312" height="132" rx="10" fill="#fff" stroke="#7D2FDB" stroke-width="2"/>
+<text x="1048" y="296" text-anchor="middle" class="title mono" fill="#7D2FDB">run_scenario(input)</text>
+<text x="1048" y="318" text-anchor="middle" class="sub">the Adapter — the one fixed interface</text>
+<text x="1048" y="344" text-anchor="middle" class="sub">maps the agent's output →</text>
+<text x="1048" y="366" text-anchor="middle" class="sub mono">{ decision, evidence_trace }</text>
+
+<!-- ===== agent ===== -->
+<rect x="892" y="466" width="312" height="120" rx="10" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.8"/>
+<text x="1048" y="506" text-anchor="middle" class="title">Returns Agent / LLM</text>
+<text x="1048" y="530" text-anchor="middle" class="sub">unchanged · emits its native output</text>
+<text x="1048" y="552" text-anchor="middle" class="sub">(the thing under test)</text>
+
+<!-- ===== edges ===== -->
+<!-- 1 read manifest -->
+<path d="M300,278 C360,250 408,240 450,238" fill="none" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrG)"/>
+<text x="332" y="200" class="step">1 · read manifest</text>
+
+<!-- 2 load cases -->
+<path d="M438,520 C400,500 380,470 350,452" fill="none" stroke="#64748B" stroke-width="1.8" marker-end="url(#arrG)"/>
+<text x="356" y="512" class="step">2 · load cases</text>
+
+<!-- 3 run_scenario (right) -->
+<path d="M348,338 L886,316" fill="none" stroke="#7D2FDB" stroke-width="2.2" marker-end="url(#arrP)"/>
+<text x="560" y="324" class="step" fill="#7D2FDB">3 · run_scenario(input) — one case at a time</text>
+
+<!-- 5 returns (left) -->
+<path d="M886,372 L352,398" fill="none" stroke="#64748B" stroke-width="2.2" stroke-dasharray="6 4" marker-end="url(#arrG)"/>
+<text x="556" y="392" class="step">5 · returns { decision, evidence_trace } → scored</text>
+
+<!-- 4 adapter <-> agent -->
+<path d="M1024,394 L1024,462" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#arrG)"/>
+<text x="930" y="436" class="step">4 · call</text>
+<path d="M1072,462 L1072,394" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrG)"/>
+<text x="1086" y="436" class="step">output</text>
+
+<!-- legend -->
+<rect x="48" y="664" width="16" height="16" rx="4" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="72" y="677" class="legend">Platform / central owns</text>
+<rect x="264" y="664" width="16" height="16" rx="4" fill="none" stroke="#E8B23A" stroke-width="1.8" stroke-dasharray="4 3"/>
+<text x="288" y="677" class="legend">Project owns</text>
+<rect x="430" y="664" width="16" height="16" rx="4" fill="#fff" stroke="#7D2FDB" stroke-width="2"/>
+<text x="454" y="677" class="legend">The Adapter is the single fixed interface between them — central calls its shape, never its meaning.</text>
+</svg>

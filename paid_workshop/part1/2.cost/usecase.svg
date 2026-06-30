@@ -1,0 +1,87 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Use Case background — Cost: contact-centre support agent at a large insurer</title>
+<desc>Background for the Cost use case. The client is a large UK life and pensions insurer (illustrative, not based on any specific company): ~12M customers, ~£280bn assets under administration, several consumer brands, ~$0.7M/year estimated LLM spend. The AI is a contact-centre support agent handling ~12,000 conversations a day — drafting, summarising, classifying and retrieving policy info for human advisors. Every call carries a large ~8k-token static prefix against a tiny question, so input tokens dominate the bill — the cost lever this use case targets.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:32px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:15px;}
+.card{fill:#F4F6FB;stroke:#E1E6F2;stroke-width:1.5;}
+.ptitle{font-size:15px;font-weight:800;letter-spacing:1px;}
+.chip{fill:#64748B;font-size:11.5px;font-style:italic;}
+.k{fill:#3A445C;font-size:15px;font-weight:700;}
+.v{fill:#64748B;font-size:13px;}
+.ambt{fill:#B07D14;font-size:15px;font-weight:800;letter-spacing:1px;}
+.amb{fill:#3A445C;font-size:13.5px;}
+.mut{fill:#94A3B8;font-size:11.5px;font-style:italic;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="96" fill="url(#hdr)"/>
+<text x="56" y="44" class="h1">Use Case — Cost: the support agent</text>
+<text x="56" y="72" class="hsub">Background · who the client is, and what the AI is trying to do · Standard GC3B3-01</text>
+
+<!-- ===== Left: the client ===== -->
+<rect x="48" y="116" width="560" height="376" rx="14" class="card"/>
+<text x="74" y="150" class="ptitle" fill="#7D2FDB">THE CLIENT</text>
+<text x="74" y="170" class="chip">illustrative — a large UK life &amp; pensions insurer (not a specific company)</text>
+<line x1="74" y1="184" x2="582" y2="184" stroke="#E1E6F2" stroke-width="1.2"/>
+
+<circle cx="88" cy="214" r="5" fill="#7D2FDB"/>
+<text x="108" y="212" class="k">~12M customers</text>
+<text x="108" y="231" class="v">life, pensions &amp; savings</text>
+
+<circle cx="88" cy="262" r="5" fill="#7D2FDB"/>
+<text x="108" y="260" class="k">~£280bn assets under administration</text>
+<text x="108" y="279" class="v">7,500–10,000 staff</text>
+
+<circle cx="88" cy="310" r="5" fill="#7D2FDB"/>
+<text x="108" y="308" class="k">Several consumer brands</text>
+<text x="108" y="327" class="v">document- &amp; contact-heavy → ideal GenAI footprint</text>
+
+<circle cx="88" cy="358" r="5" fill="#7D2FDB"/>
+<text x="108" y="356" class="k">~$0.7M / year estimated LLM spend</text>
+<text x="108" y="375" class="v">range ~$150k (pilots) to several £M (broad rollout)</text>
+
+<text x="74" y="430" class="v" font-weight="700" fill="#7D2FDB">The reason cost discipline matters:</text>
+<text x="74" y="452" class="v">a contact-and-document business runs millions of</text>
+<text x="74" y="472" class="v">model calls — small per-call waste becomes a real bill.</text>
+
+<!-- ===== Right: what the AI does ===== -->
+<rect x="660" y="116" width="572" height="376" rx="14" class="card"/>
+<text x="686" y="150" class="ptitle" fill="#7D2FDB">WHAT THE AI DOES</text>
+<text x="686" y="170" class="chip">contact-centre support agent — "agent assist"</text>
+<line x1="686" y1="184" x2="1206" y2="184" stroke="#E1E6F2" stroke-width="1.2"/>
+
+<rect x="686" y="200" width="520" height="50" rx="10" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.4"/>
+<text x="706" y="222" class="k" fill="#7D2FDB">~12,000 conversations / day</text>
+<text x="706" y="240" class="v">helping human advisors, not replacing them</text>
+
+<text x="686" y="282" class="k">On each turn, for the advisor it:</text>
+<circle cx="700" cy="308" r="4.5" fill="#7D2FDB"/><text x="716" y="312" class="v">drafts a reply to the customer</text>
+<circle cx="700" cy="334" r="4.5" fill="#7D2FDB"/><text x="716" y="338" class="v">summarises the case so far</text>
+<circle cx="700" cy="360" r="4.5" fill="#7D2FDB"/><text x="716" y="364" class="v">classifies the query / routes it</text>
+<circle cx="700" cy="386" r="4.5" fill="#7D2FDB"/><text x="716" y="390" class="v">retrieves the right policy &amp; product info</text>
+
+<text x="686" y="430" class="v" font-weight="700" fill="#7D2FDB">Goal:</text>
+<text x="724" y="430" class="v">cut handling time and keep answers consistent</text>
+<text x="686" y="452" class="v">and accurate across thousands of advisors.</text>
+<text x="686" y="472" class="v">Each call carries ~8k tokens of fixed context.</text>
+
+<!-- ===== Bottom: the cost shape ===== -->
+<rect x="48" y="508" width="1184" height="168" rx="14" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.6"/>
+<text x="74" y="542" class="ambt">THE COST SHAPE  —  why this is a Cost case</text>
+<line x1="74" y1="556" x2="1206" y2="556" stroke="#EFD9A6" stroke-width="1.2"/>
+
+<text x="74" y="586" class="amb"><tspan fill="#E8B23A" font-weight="800">›</tspan>  Every call re-sends a big static prefix — system prompt + tool defs + few-shot examples + retrieved policy (~8k tokens) — against a tiny question.</text>
+<text x="74" y="616" class="amb"><tspan fill="#E8B23A" font-weight="800">›</tspan>  Input tokens dominate the bill (~75–80% of cost). That unchanging prefix is the single biggest cost lever in the system.</text>
+<text x="74" y="646" class="amb"><tspan fill="#E8B23A" font-weight="800">›</tspan>  Caching the static prefix so it bills at a fraction is exactly what this use case (GC3B3-01) targets — plausibly ~$250k–$450k/year.</text>
+<text x="1206" y="668" text-anchor="end" class="mut">figures illustrative — not based on any specific company</text>
+</svg>

@@ -1,0 +1,136 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Cost sample — worked bottom-up estimate</title>
+<desc>A bottom-up Fermi estimate of annual LLM spend, shown with the calculations for validation. Each line is annual volume times tokens-per-call times price. Contact-centre agent assist: 21.6M calls at $0.0175 = ~$380k. Document processing: 6M calls at $0.030 = ~$180k. Internal knowledge assistant: ~7M calls at $0.015 = ~$105k. Developer assistants: ~$75k flat. Base total ~$0.7M/year. Pricing assumed input $2.50/1M and output $10/1M tokens. Range $150k to $8M. Governed caching saves ~$250k-$450k.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:13.5px;}
+.colh{fill:#7D2FDB;font-size:12px;font-weight:800;letter-spacing:.4px;}
+.uc{fill:#3A445C;font-size:14.5px;font-weight:700;}
+.calc{fill:#64748B;font-size:11.5px;font-family:'Courier New',monospace;}
+.res{fill:#3A445C;font-size:16px;font-weight:800;font-family:'Courier New',monospace;}
+.ptitle{font-size:13px;font-weight:800;letter-spacing:.8px;}
+.row{fill:#3A445C;font-size:13px;}
+.cost{fill:#3A445C;font-size:13px;font-weight:700;font-family:'Courier New',monospace;}
+.mut{fill:#94A3B8;font-size:11px;font-style:italic;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="92" fill="url(#hdr)"/>
+<text x="48" y="42" class="h1">Cost sample — show the working</text>
+<text x="48" y="68" class="hsub">Bottom-up Fermi estimate · every figure = annual volume × tokens/call × price · prices verified vs OpenAI list, June 2026</text>
+
+<!-- ===== TABLE ===== -->
+<!-- column headers -->
+<text x="56" y="124" class="colh">USE CASE</text>
+<text x="300" y="124" class="colh">ANNUAL VOLUME  (how it's derived)</text>
+<text x="688" y="124" class="colh">TOKENS/CALL</text>
+<text x="838" y="124" class="colh">COST/CALL  ( = in + out )</text>
+<text x="1216" y="124" text-anchor="end" class="colh">ANNUAL</text>
+<line x1="48" y1="134" x2="1232" y2="134" stroke="#7D2FDB" stroke-width="1.6"/>
+
+<!-- row 1: contact centre -->
+<rect x="48" y="140" width="1184" height="58" fill="#F7F8FB"/>
+<text x="56" y="166" class="uc">Contact-centre</text>
+<text x="56" y="184" class="uc">agent assist</text>
+<text x="300" y="166" class="calc">9M contacts × 60% AI-touched</text>
+<text x="300" y="182" class="calc">× 4 calls  ≈  21.6M calls</text>
+<text x="688" y="174" class="calc">5k in / 0.5k out</text>
+<text x="838" y="166" class="calc">5k·$2.50/M + 0.5k·$10/M</text>
+<text x="838" y="184" class="calc">= $0.0125 + $0.0050 = $0.0175</text>
+<text x="1216" y="166" text-anchor="end" class="res">~$380k</text>
+<text x="1216" y="184" text-anchor="end" class="calc">21.6M × $0.0175</text>
+
+<!-- row 2: document processing -->
+<text x="56" y="226" class="uc">Document</text>
+<text x="56" y="244" class="uc">processing</text>
+<text x="300" y="226" class="calc">3M docs × 2 calls</text>
+<text x="300" y="242" class="calc">=  6M calls</text>
+<text x="688" y="234" class="calc">8k in / 1k out</text>
+<text x="838" y="226" class="calc">8k·$2.50/M + 1k·$10/M</text>
+<text x="838" y="244" class="calc">= $0.0200 + $0.0100 = $0.0300</text>
+<text x="1216" y="226" text-anchor="end" class="res">~$180k</text>
+<text x="1216" y="244" text-anchor="end" class="calc">6M × $0.030</text>
+
+<!-- row 3: knowledge assistant -->
+<rect x="48" y="258" width="1184" height="58" fill="#F7F8FB"/>
+<text x="56" y="284" class="uc">Internal knowledge</text>
+<text x="56" y="302" class="uc">assistant</text>
+<text x="300" y="284" class="calc">3,200 users × 10 q/day</text>
+<text x="300" y="300" class="calc">× 220 days  ≈  7M queries</text>
+<text x="688" y="292" class="calc">4k in / 0.5k out</text>
+<text x="838" y="284" class="calc">4k·$2.50/M + 0.5k·$10/M</text>
+<text x="838" y="302" class="calc">= $0.0100 + $0.0050 = $0.0150</text>
+<text x="1216" y="284" text-anchor="end" class="res">~$105k</text>
+<text x="1216" y="302" text-anchor="end" class="calc">7M × $0.015</text>
+
+<!-- row 4: developer assistants -->
+<text x="56" y="350" class="uc">Developer</text>
+<text x="56" y="368" class="uc">assistants</text>
+<text x="300" y="359" class="calc">(if API-metered — not broken down)</text>
+<text x="688" y="359" class="calc">—</text>
+<text x="838" y="359" class="calc">flat placeholder estimate</text>
+<text x="1216" y="359" text-anchor="end" class="res">~$75k</text>
+
+<!-- total row -->
+<rect x="48" y="384" width="1184" height="56" rx="10" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="64" y="418" fill="#7D2FDB" font-size="16" font-weight="800">BASE TOTAL</text>
+<text x="300" y="418" class="calc" fill="#7D2FDB">380 + 180 + 105 + 75</text>
+<text x="1216" y="418" text-anchor="end" fill="#7D2FDB" font-size="22" font-weight="800" font-family="'Courier New',monospace">≈ $0.7M / year</text>
+
+<!-- ===== bottom panels ===== -->
+<!-- pricing -->
+<rect x="48" y="460" width="580" height="200" rx="14" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="72" y="492" class="ptitle" fill="#7D2FDB">PRICING ASSUMED</text>
+<line x1="72" y1="504" x2="604" y2="504" stroke="#E1E6F2" stroke-width="1.2"/>
+<text x="72" y="524" class="row">Input (GPT-4o)</text>
+<text x="604" y="524" text-anchor="end" class="cost">$2.50 / 1M</text>
+<text x="72" y="548" class="row">Output (GPT-4o)</text>
+<text x="604" y="548" text-anchor="end" class="cost">$10 / 1M</text>
+<text x="72" y="572" class="row" fill="#B07D14">Cached input</text>
+<text x="604" y="572" text-anchor="end" class="cost" fill="#B07D14">$1.25 / 1M (–50%)</text>
+<text x="72" y="600" class="row" font-size="12">Reasoning (o3 / o4-mini): same price per token, but 3–10× the</text>
+<text x="72" y="616" class="row" font-size="12">tokens (hidden thinking) — so higher effective cost.</text>
+<text x="72" y="640" class="mut">Verified vs OpenAI list price, June 2026.</text>
+<text x="72" y="656" class="mut">Volumes &amp; token sizes remain team assumptions.</text>
+
+<!-- caching saving (recomputed at cached input rate) -->
+<rect x="652" y="460" width="580" height="200" rx="14" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.6"/>
+<text x="676" y="488" class="ptitle" fill="#B07D14">WITH CACHED INPUT — $1.25 / 1M</text>
+<text x="676" y="504" class="mut">input at the cached rate; output (never cached) unchanged</text>
+<line x1="676" y1="512" x2="1208" y2="512" stroke="#EFD9A6" stroke-width="1.2"/>
+
+<text x="676" y="530" class="colh" fill="#B07D14">USE CASE</text>
+<text x="956" y="530" text-anchor="end" class="colh" fill="#B07D14">NOW</text>
+<text x="1084" y="530" text-anchor="end" class="colh" fill="#B07D14">CACHED</text>
+<text x="1208" y="530" text-anchor="end" class="colh" fill="#B07D14">SAVING</text>
+
+<text x="676" y="552" class="row">Contact assist</text>
+<text x="956" y="552" text-anchor="end" class="cost">$380k</text>
+<text x="1084" y="552" text-anchor="end" class="cost">$243k</text>
+<text x="1208" y="552" text-anchor="end" class="cost" fill="#2E9E5B">$137k</text>
+
+<text x="676" y="574" class="row">Document proc.</text>
+<text x="956" y="574" text-anchor="end" class="cost">$180k</text>
+<text x="1084" y="574" text-anchor="end" class="cost">$120k</text>
+<text x="1208" y="574" text-anchor="end" class="cost" fill="#2E9E5B">$60k</text>
+
+<text x="676" y="596" class="row">Knowledge asst.</text>
+<text x="956" y="596" text-anchor="end" class="cost">$105k</text>
+<text x="1084" y="596" text-anchor="end" class="cost">$70k</text>
+<text x="1208" y="596" text-anchor="end" class="cost" fill="#2E9E5B">$35k</text>
+
+<rect x="676" y="608" width="532" height="44" rx="10" fill="#fff" stroke="#E8B23A" stroke-width="1.5"/>
+<text x="692" y="636" fill="#B07D14" font-size="15" font-weight="800">Total saving</text>
+<text x="1192" y="636" text-anchor="end" fill="#2E9E5B" font-size="18" font-weight="800" font-family="'Courier New',monospace">≈ $232k / year</text>
+
+<text x="1208" y="690" text-anchor="end" class="mut" font-size="12">Cache optimisation only — additional savings possible with better model selection.</text>
+</svg>

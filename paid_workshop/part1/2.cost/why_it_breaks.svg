@@ -1,0 +1,112 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Why the prompt-caching saving silently evaporates</title>
+<desc>Prompt caching works by reusing a static prefix up to a declared breakpoint: an identical prefix is a cache hit billed at $1.25/M, any change is a miss billed at $2.50/M, and matching is positional so the first differing byte invalidates everything after it. The left prompt is correctly cached (hit). The right prompt has a per-request value — a timestamp or session id — added above the breakpoint, so the prefix differs on every call, the hit rate falls to zero and spend climbs back to full price. Nobody notices because a hit and a miss produce identical output, CI is green and the agent works; the only signal is the bill, a quarter later.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.stkh{font-size:14px;font-weight:800;}
+.blk{fill:#3A445C;font-size:12.5px;font-weight:600;}
+.blks{fill:#64748B;font-size:10px;}
+.bp{fill:#B07D14;font-size:10.5px;font-weight:700;}
+.badge{fill:#fff;font-size:13px;font-weight:800;}
+.note{fill:#64748B;font-size:11px;font-style:italic;}
+.ct{font-size:13.5px;font-weight:800;}
+.cb{fill:#3A445C;font-size:12px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="90" fill="url(#hdr)"/>
+<text x="48" y="42" class="h1">Why the saving silently evaporates</text>
+<text x="48" y="68" class="hsub">The cache only pays off if the prefix is byte-identical, call after call. One moving value undoes it — invisibly.</text>
+
+<!-- ================= LEFT: CACHED (hit) ================= -->
+<rect x="40" y="108" width="316" height="454" rx="12" fill="#F7FBF8" stroke="#2E9E5B" stroke-width="1.8"/>
+<text x="58" y="136" class="stkh" fill="#2E9E5B">CACHED — prefix stable</text>
+
+<rect x="58" y="150" width="280" height="42" rx="7" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="70" y="170" class="blk">System prompt</text><text x="70" y="184" class="blks">static</text>
+<rect x="58" y="198" width="280" height="42" rx="7" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="70" y="218" class="blk">Tool definitions</text><text x="70" y="232" class="blks">static</text>
+<rect x="58" y="246" width="280" height="42" rx="7" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="70" y="266" class="blk">Few-shot examples</text><text x="70" y="280" class="blks">static</text>
+
+<text x="58" y="306" class="bp">↑ cached prefix — billed once, reused</text>
+<line x1="58" y1="312" x2="338" y2="312" stroke="#E8B23A" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="338" y="306" text-anchor="end" class="bp">cache breakpoint</text>
+
+<rect x="58" y="320" width="280" height="42" rx="7" fill="#F4F6FB" stroke="#CBD5E1" stroke-width="1.3"/>
+<text x="70" y="340" class="blk">Variable question</text><text x="70" y="354" class="blks">the live ask — changes every call</text>
+
+<rect x="58" y="384" width="280" height="40" rx="20" fill="#2E9E5B"/>
+<text x="198" y="409" text-anchor="middle" class="badge">HIT  →  $1.25 / 1M input</text>
+<text x="198" y="446" text-anchor="middle" class="note">prefix identical every call · cache matches</text>
+
+<!-- ================= RIGHT: POISONED (miss) ================= -->
+<rect x="372" y="108" width="316" height="454" rx="12" fill="#FDF7F6" stroke="#C0392B" stroke-width="1.8"/>
+<text x="390" y="136" class="stkh" fill="#C0392B">POISONED — moving value on top</text>
+
+<rect x="390" y="150" width="280" height="40" rx="7" fill="#FBEEEC" stroke="#C0392B" stroke-width="1.6"/>
+<text x="402" y="168" class="blk" fill="#C0392B">timestamp / session_id</text><text x="402" y="182" class="blks" fill="#C0392B">added later — different every call</text>
+<rect x="390" y="194" width="280" height="36" rx="7" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="402" y="217" class="blk">System prompt</text>
+<rect x="390" y="234" width="280" height="36" rx="7" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="402" y="257" class="blk">Tool definitions</text>
+<rect x="390" y="274" width="280" height="36" rx="7" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="402" y="297" class="blk">Few-shot examples</text>
+
+<text x="390" y="324" class="bp" fill="#C0392B">↑ "cached" prefix now changes every call</text>
+<line x1="390" y1="330" x2="670" y2="330" stroke="#E8B23A" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="670" y="324" text-anchor="end" class="bp">cache breakpoint</text>
+
+<rect x="390" y="338" width="280" height="36" rx="7" fill="#F4F6FB" stroke="#CBD5E1" stroke-width="1.3"/>
+<text x="402" y="361" class="blk">Variable question</text>
+
+<rect x="390" y="384" width="280" height="40" rx="20" fill="#C0392B"/>
+<text x="530" y="409" text-anchor="middle" class="badge">MISS  →  $2.50 / 1M input</text>
+<text x="530" y="446" text-anchor="middle" class="note" fill="#C0392B">one value moved up → hit-rate ≈ 0 → full price</text>
+
+<!-- ================= RIGHT: explanation cards ================= -->
+<rect x="712" y="108" width="528" height="132" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="734" y="136" class="ct" fill="#7D2FDB">1 · How it works</text>
+<text x="734" y="160" class="cb">Matching is positional: the cache matches from the top until the</text>
+<text x="734" y="180" class="cb">first byte that differs — and <tspan font-weight="700">everything after that is invalidated</tspan>.</text>
+<text x="734" y="204" class="cb">Identical prefix = hit ($1.25/M). Any change = miss ($2.50/M).</text>
+<text x="734" y="226" class="cb" fill="#64748B">So a stable prefix is worth ~50% off the input — input is most of the bill.</text>
+
+<rect x="712" y="252" width="528" height="132" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="734" y="280" class="ct" fill="#C0392B">2 · How it breaks</text>
+<text x="734" y="304" class="cb">Someone adds a per-request value — timestamp, session id, user</text>
+<text x="734" y="324" class="cb">name, a reordered tool list — <tspan font-weight="700">above the breakpoint</tspan>.</text>
+<text x="734" y="348" class="cb">Now the prefix differs on every call; the cache never matches.</text>
+<text x="734" y="370" class="cb" fill="#64748B">The change looks harmless — same content, agent still answers correctly.</text>
+
+<rect x="712" y="396" width="528" height="166" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="734" y="424" class="ct" fill="#3A445C">3 · Why nobody notices</text>
+<text x="734" y="448" class="cb">A hit and a miss produce the <tspan font-weight="700">identical output</tspan>. No error.</text>
+<text x="734" y="468" class="cb">Nothing turns red. CI is green. The agent works.</text>
+<text x="734" y="492" class="cb">The only signal is the bill — and Finance sees it a <tspan font-weight="700">quarter later</tspan>.</text>
+<text x="734" y="516" class="cb" fill="#64748B">Root cause: nobody owns the prompt's structure, nobody watches</text>
+<text x="734" y="536" class="cb" fill="#64748B">the cache-hit rate. A one-line flag, set by one person, owned by no one.</text>
+
+<!-- ================= bottom takeaway strip ================= -->
+<rect x="40" y="578" width="648" height="118" rx="12" fill="#FBEEEC" stroke="#C0392B" stroke-width="1.5"/>
+<text x="64" y="606" fill="#C0392B" font-size="13" font-weight="800">WHAT YOU SEE  vs  WHAT'S HAPPENING</text>
+<text x="64" y="632" class="cb"><tspan fill="#2E9E5B" font-weight="800">✓</tspan> CI green   <tspan fill="#2E9E5B" font-weight="800">✓</tspan> agent works   <tspan fill="#2E9E5B" font-weight="800">✓</tspan> output identical</text>
+<text x="64" y="660" class="cb"><tspan fill="#C0392B" font-weight="800">✗</tspan> cache hit-rate ≈ 0   <tspan fill="#C0392B" font-weight="800">✗</tspan> input back to full price   <tspan fill="#C0392B" font-weight="800">✗</tspan> found a quarter late</text>
+<text x="64" y="684" class="note">Functionally fine. Only the billing changed — and only the invoice shows it.</text>
+
+<rect x="704" y="578" width="536" height="118" rx="12" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="728" y="606" fill="#7D2FDB" font-size="13" font-weight="800">THE TAKEAWAY</text>
+<text x="728" y="634" class="cb">A cache saving you don't <tspan font-weight="700">own and monitor</tspan> can turn itself</text>
+<text x="728" y="654" class="cb">off and look exactly the same while it does.</text>
+<text x="728" y="682" class="cb" fill="#7D2FDB" font-weight="700">Govern it: own the prefix contract, gate the breakpoint, alert on hit-rate.</text>
+</svg>

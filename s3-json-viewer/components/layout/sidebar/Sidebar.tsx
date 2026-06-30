@@ -1,8 +1,6 @@
 import { BestPracticeFilter } from "./BestPracticeFilter"
 import { FocusAreaFilter } from "./FocusAreaFilter"
 import { MaturityFilter } from "./MaturityFilter"
-import { NistCategoryFilter } from "./NistCategoryFilter"
-import { NistSubCategoryFilter } from "./NistSubCategoryFilter"
 import { PillarFilter } from "./PillarFilter"
 import { SearchPrinciples } from "./SearchPrinciples"
 import { SidebarMenu } from "./SidebarMenu"
@@ -17,8 +15,6 @@ export function Sidebar() {
         <FocusAreaFilter />
         <MaturityFilter />
         <BestPracticeFilter />
-        <NistCategoryFilter />
-        <NistSubCategoryFilter />
       </div>
     </aside>
   )

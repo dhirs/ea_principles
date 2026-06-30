@@ -1,0 +1,93 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>From a hardcoded prompt to a declared prompt + standardised metadata</title>
+<desc>Today the prompt is baked into application code as a string, with the cache flag buried inline, no declared structure, and nothing for a central team to check. The standardised approach splits it in two: the prompt content in its own file, and a separate cache.yaml of standardised metadata — the same shape across every project — that declares the cacheable prefix, the breakpoint, forbidden volatile tokens and the hit-rate alert, which the central team can lint.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+<marker id="arrP" markerWidth="11" markerHeight="11" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#7D2FDB"/></marker>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.col{font-size:15px;font-weight:800;letter-spacing:.6px;}
+.cm{font-family:'Courier New',monospace;font-size:12px;fill:#E7E9F0;}
+.cmc{font-family:'Courier New',monospace;font-size:11px;fill:#9AA3B2;}
+.key{fill:#9B7BE0;}
+.bad{fill:#C0392B;font-size:11.5px;}
+.good{fill:#2E9E5B;font-size:11.5px;}
+.note{fill:#64748B;font-size:12px;}
+.tag{fill:#fff;font-size:11px;font-weight:700;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">From hardcoded prompt to declared metadata</text>
+<text x="48" y="70" class="hsub">Same prompt, same model — the difference is whether its structure is something central can see and check.</text>
+
+<!-- ===================== LEFT: TODAY ===================== -->
+<text x="48" y="120" class="col" fill="#C0392B">TODAY  —  baked into code, ungoverned</text>
+
+<rect x="48" y="134" width="540" height="330" rx="10" fill="#2C3142"/>
+<rect x="48" y="134" width="120" height="26" rx="6" fill="#C0392B"/>
+<text x="108" y="152" text-anchor="middle" class="tag">app.py</text>
+<text x="68" y="186" class="cmc"># prompt baked in as a string</text>
+<text x="68" y="208" class="cm">SYS = "You are a support agent …</text>
+<text x="68" y="226" class="cm">      [~8k tokens of tools + few-shot] …"</text>
+<text x="68" y="256" class="cm">def handle(msg):</text>
+<text x="68" y="274" class="cm">  prompt = SYS + f"{<tspan fill="#E8B23A">now()</tspan>} " + msg</text>
+<text x="68" y="292" class="cmc">                  ↑ volatile value, inline</text>
+<text x="68" y="314" class="cm">  return llm(prompt, <tspan fill="#9B7BE0">cache</tspan>=True)</text>
+<text x="68" y="332" class="cmc">                       ↑ one flag, buried</text>
+<text x="68" y="372" class="cmc"># no declared prefix · no breakpoint</text>
+<text x="68" y="390" class="cmc"># no lint · no owner · no monitor</text>
+
+<text x="68" y="430" class="bad">✗ structure is implicit — only the author knows it</text>
+<text x="68" y="450" class="bad">✗ central team can't see or check anything</text>
+
+<!-- arrow across -->
+<line x1="600" y1="300" x2="656" y2="300" stroke="#7D2FDB" stroke-width="2.5" marker-end="url(#arrP)"/>
+<text x="628" y="290" text-anchor="middle" fill="#7D2FDB" font-size="11" font-weight="700">split</text>
+
+<!-- ===================== RIGHT: STANDARDISED ===================== -->
+<text x="668" y="120" class="col" fill="#7D2FDB">STANDARDISED  —  prompt + declared metadata</text>
+
+<!-- part 1: the prompt content -->
+<rect x="668" y="134" width="564" height="150" rx="10" fill="#2C3142"/>
+<rect x="668" y="134" width="200" height="26" rx="6" fill="#7D2FDB"/>
+<text x="768" y="152" text-anchor="middle" class="tag">1 · support_agent.json</text>
+<text x="884" y="152" class="cmc">— just the content the model reads</text>
+<text x="688" y="184" class="cm">{</text>
+<text x="700" y="202" class="cm"><tspan fill="#9B7BE0">"system"</tspan>:   "You are a support agent …",</text>
+<text x="700" y="220" class="cm"><tspan fill="#9B7BE0">"tools"</tspan>:    ["get_order", "get_policy", …],</text>
+<text x="700" y="238" class="cm"><tspan fill="#9B7BE0">"few_shot"</tspan>: ["… worked examples …"],</text>
+<text x="700" y="256" class="cm"><tspan fill="#9B7BE0">"input"</tspan>:    "{customer_message}"</text>
+<text x="688" y="274" class="cm">}</text>
+
+<!-- part 2: the metadata -->
+<rect x="668" y="296" width="564" height="172" rx="10" fill="#2C3142"/>
+<rect x="668" y="296" width="160" height="26" rx="6" fill="#E8B23A"/>
+<text x="748" y="314" text-anchor="middle" class="tag">2 · cache.yaml</text>
+<text x="838" y="314" class="cmc">— standardised metadata, same shape everywhere</text>
+<text x="688" y="346" class="cm"><tspan fill="#9B7BE0">prompt:</tspan> support_agent_v3</text>
+<text x="688" y="366" class="cm"><tspan fill="#9B7BE0">cacheable_prefix:</tspan> [system, tools, few_shot]</text>
+<text x="688" y="386" class="cm"><tspan fill="#9B7BE0">breakpoint_after:</tspan> few_shot</text>
+<text x="688" y="406" class="cm"><tspan fill="#9B7BE0">forbid_above_breakpoint:</tspan> <tspan fill="#E8B23A">[timestamp, session_id]</tspan></text>
+<text x="688" y="426" class="cm"><tspan fill="#9B7BE0">alert_hit_rate_below:</tspan> 0.85</text>
+<text x="688" y="452" class="cmc"># central lints THIS file — structure is now explicit</text>
+
+<text x="668" y="494" class="good">✓ structure is declared, versioned, the same across every project</text>
+<text x="668" y="514" class="good">✓ central can lint it, gate it, and monitor it</text>
+
+<!-- bottom takeaway -->
+<rect x="48" y="546" width="1184" height="120" rx="12" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="72" y="578" fill="#7D2FDB" font-size="14" font-weight="800">THE MOVE</text>
+<text x="72" y="608" fill="#3A445C" font-size="15">Pull the prompt out of the code, and put its caching rules into a small standard file beside it.</text>
+<text x="72" y="636" fill="#3A445C" font-size="15">The prompt stays the project's. The <tspan font-weight="700">metadata becomes the contract</tspan> — the thing central reads, lints, and watches.</text>
+<text x="72" y="658" class="note">Nothing about the model changes. The structure just stops being a secret in someone's code.</text>
+</svg>

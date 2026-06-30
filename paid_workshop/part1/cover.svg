@@ -1,0 +1,100 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Workshop cover — Deploying AI Across the Enterprise</title>
+<desc>Cover slide for the 5 July 2026 workshop on deploying AI across large enterprises. A constellation of AI services across business units (claims, support, risk, finance, underwriting) all connect to a central governed STANDARDS core, conveying that scaling AI safely means one enforceable standard governing the whole fleet.</desc>
+
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#2C0A5C"/>
+<stop offset="0.55" stop-color="#5A1FA8"/>
+<stop offset="1" stop-color="#7D2FDB"/>
+</linearGradient>
+<radialGradient id="glow" cx="0.72" cy="0.42" r="0.5">
+<stop offset="0" stop-color="#9B57E8" stop-opacity="0.55"/>
+<stop offset="1" stop-color="#9B57E8" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="goldglow" cx="0.5" cy="0.5" r="0.5">
+<stop offset="0" stop-color="#E8B23A" stop-opacity="0.5"/>
+<stop offset="1" stop-color="#E8B23A" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="hex" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#9B57E8"/><stop offset="1" stop-color="#6B3DB0"/>
+</linearGradient>
+<filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="6"/>
+</filter>
+</defs>
+
+<!-- background -->
+<rect width="1280" height="720" fill="url(#bg)"/>
+<rect width="1280" height="720" fill="url(#glow)"/>
+<circle cx="925" cy="330" r="220" fill="url(#goldglow)"/>
+
+<!-- faint outer scale dots -->
+<g fill="#E7D8FB" opacity="0.18">
+<circle cx="700" cy="150" r="4"/><circle cx="1140" cy="200" r="5"/>
+<circle cx="1180" cy="430" r="4"/><circle cx="760" cy="560" r="5"/>
+<circle cx="1080" cy="560" r="4"/><circle cx="650" cy="400" r="3"/>
+<circle cx="980" cy="610" r="4"/><circle cx="1210" cy="320" r="3"/>
+</g>
+
+<!-- ===== network motif (right) ===== -->
+<g stroke="#C7B3EC" stroke-width="1.4" opacity="0.5">
+<line x1="925" y1="330" x2="1066" y2="279"/>
+<line x1="925" y1="330" x2="976" y2="189"/>
+<line x1="925" y1="330" x2="862" y2="194"/>
+<line x1="925" y1="330" x2="784" y2="279"/>
+<line x1="925" y1="330" x2="784" y2="381"/>
+<line x1="925" y1="330" x2="862" y2="466"/>
+<line x1="925" y1="330" x2="976" y2="471"/>
+<line x1="925" y1="330" x2="1061" y2="393"/>
+</g>
+
+<!-- agent / service nodes -->
+<g>
+<g transform="translate(1066,279)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E7D8FB"/><rect x="-15" y="-15" width="30" height="30" rx="8" fill="none" stroke="#7D2FDB" stroke-width="1.5"/></g>
+<g transform="translate(976,189)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E7D8FB"/><rect x="-15" y="-15" width="30" height="30" rx="8" fill="none" stroke="#7D2FDB" stroke-width="1.5"/></g>
+<g transform="translate(862,194)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E8B23A"/></g>
+<g transform="translate(784,279)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E7D8FB"/><rect x="-15" y="-15" width="30" height="30" rx="8" fill="none" stroke="#7D2FDB" stroke-width="1.5"/></g>
+<g transform="translate(784,381)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E7D8FB"/><rect x="-15" y="-15" width="30" height="30" rx="8" fill="none" stroke="#7D2FDB" stroke-width="1.5"/></g>
+<g transform="translate(862,466)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E7D8FB"/><rect x="-15" y="-15" width="30" height="30" rx="8" fill="none" stroke="#7D2FDB" stroke-width="1.5"/></g>
+<g transform="translate(976,471)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E8B23A"/></g>
+<g transform="translate(1061,393)"><rect x="-15" y="-15" width="30" height="30" rx="8" fill="#E7D8FB"/><rect x="-15" y="-15" width="30" height="30" rx="8" fill="none" stroke="#7D2FDB" stroke-width="1.5"/></g>
+</g>
+
+<!-- node labels (business units) -->
+<g fill="#E7D8FB" font-size="12" opacity="0.92" text-anchor="middle">
+<text x="1066" y="312">Claims</text>
+<text x="976" y="166">Support</text>
+<text x="862" y="171">Risk</text>
+<text x="784" y="312">Finance</text>
+<text x="784" y="414">Underwriting</text>
+<text x="862" y="499">Fraud</text>
+<text x="976" y="504">Servicing</text>
+<text x="1061" y="426">Pricing</text>
+</g>
+
+<!-- central standards core -->
+<circle cx="925" cy="330" r="74" fill="url(#goldglow)" filter="url(#soft)"/>
+<polygon points="975,301 925,272 875,301 875,359 925,388 975,359" fill="url(#hex)" stroke="#E8B23A" stroke-width="2.5"/>
+<text x="925" y="322" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" letter-spacing="1">ONE</text>
+<text x="925" y="340" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" letter-spacing="1">STANDARD</text>
+<text x="925" y="356" text-anchor="middle" fill="#E8B23A" font-size="9.5" letter-spacing="1">GOVERNED · GATED</text>
+
+<!-- ===== text block (left) ===== -->
+<text x="92" y="210" fill="#E8B23A" font-size="15" font-weight="700" letter-spacing="3">ENTERPRISE AI · DEPLOYMENT WORKSHOP</text>
+
+<text x="88" y="296" fill="#fff" font-size="64" font-weight="800" letter-spacing="-0.5">Deploying AI</text>
+<text x="88" y="366" fill="#fff" font-size="64" font-weight="800" letter-spacing="-0.5">Across the</text>
+<text x="88" y="436" fill="#E7D8FB" font-size="64" font-weight="800" letter-spacing="-0.5">Enterprise</text>
+
+<rect x="92" y="470" width="64" height="4" rx="2" fill="#E8B23A"/>
+
+<text x="92" y="512" fill="#E7D8FB" font-size="18">Passing the demo isn't passing production.</text>
+<text x="92" y="540" fill="#E7D8FB" font-size="18">The enforceable standards that make AI safe,</text>
+<text x="92" y="568" fill="#E7D8FB" font-size="18">governed and repeatable at scale.</text>
+
+<!-- footer -->
+<line x1="92" y1="624" x2="1188" y2="624" stroke="#6B3DB0" stroke-width="1.2" opacity="0.7"/>
+<text x="92" y="660" fill="#fff" font-size="16" font-weight="700">Workshop · 5 July 2026</text>
+<text x="1188" y="660" text-anchor="end" fill="#C7B3EC" font-size="14">Part 1 — The Problem: what counts as production failure</text>
+</svg>

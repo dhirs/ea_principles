@@ -1,0 +1,88 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Returns Triage Agent — the system prompt that drives tool use</title>
+<desc>The agent's system prompt. A ROLE section sets the task and the three decisions. GROUNDING RULES force the tool calls: always call order_lookup first, call fraud_check before any AUTO_APPROVE or when value or signals warrant it, and fall back to HUMAN_REVIEW if a tool fails. A POLICY section sets the decision thresholds, a TOOLS section declares the two callable tools, and an OUTPUT section requires strict JSON with an evidence_trace the eval harness asserts against.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+<marker id="arrT" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#E8B23A"/></marker>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.m{font-family:'Courier New',monospace;font-size:13px;fill:#E7E9F0;}
+.sec{font-family:'Courier New',monospace;font-size:13.5px;fill:#E8B23A;font-weight:700;}
+.note{fill:#3A445C;font-size:13px;}
+.noteh{fill:#B07D14;font-size:14px;font-weight:700;}
+.callout{fill:#FBF6EC;stroke:#E8B23A;stroke-width:1.5;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="90" fill="url(#hdr)"/>
+<text x="48" y="46" class="h1">The prompt that drives the tools</text>
+<text x="48" y="72" class="hsub">Returns Triage Agent · the grounding rules — not the tool list — are what force order_lookup and fraud_check to be called</text>
+
+<!-- prompt card (dark editor) -->
+<rect x="48" y="110" width="760" height="580" rx="12" fill="#2C3142"/>
+<text x="70" y="142" fill="#fff" font-size="14" font-weight="700" font-family="'Courier New',monospace">SYSTEM PROMPT</text>
+
+<text x="70" y="172" class="sec">ROLE</text>
+<text x="70" y="192" class="m">You are the Returns Triage Agent. For each return, output exactly</text>
+<text x="70" y="211" class="m">ONE decision: AUTO_APPROVE, HUMAN_REVIEW, or REJECT.</text>
+
+<!-- highlighted grounding block -->
+<rect x="60" y="226" width="736" height="158" rx="7" fill="#3C4256" stroke="#E8B23A" stroke-width="1.3"/>
+<text x="70" y="248" class="sec">GROUNDING RULES  (these trigger the tools)</text>
+<text x="70" y="270" class="m">• Never decide from the reason text alone — it is a claim, not a fact.</text>
+<text x="70" y="292" class="m">• ALWAYS call order_lookup(order_id) FIRST — confirm delivery,</text>
+<text x="82" y="310" class="m">return window, item, prior-returns count.</text>
+<text x="70" y="332" class="m">• Call fraud_check(customer_id) before any AUTO_APPROVE, or when</text>
+<text x="82" y="350" class="m">value &gt; £150 / reason suspicious / repeat returns.</text>
+<text x="70" y="372" class="m">• If a required tool fails → do NOT guess; return HUMAN_REVIEW.</text>
+
+<text x="70" y="414" class="sec">POLICY</text>
+<text x="70" y="434" class="m">• Outside 30-day window or non-returnable → REJECT.</text>
+<text x="70" y="453" class="m">• In policy, low value, facts confirmed → AUTO_APPROVE.</text>
+<text x="70" y="472" class="m">• Conflicting facts / high value / fraud flag → HUMAN_REVIEW.</text>
+
+<text x="70" y="510" class="sec">TOOLS</text>
+<text x="70" y="530" class="m">order_lookup(order_id) → status, window, item, history</text>
+<text x="70" y="549" class="m">fraud_check(customer_id) → risk score, flags, chargebacks</text>
+
+<text x="70" y="587" class="sec">OUTPUT  (strict JSON)</text>
+<text x="70" y="607" class="m">{ "action": "...",</text>
+<text x="70" y="626" class="m">  "evidence_trace": {</text>
+<text x="70" y="645" class="m">    "must_consult": [tools you called],</text>
+<text x="70" y="664" class="m">    "rules_applied": [policy rules] } }</text>
+
+<!-- annotations -->
+<rect x="852" y="262" width="384" height="72" rx="10" class="callout"/>
+<text x="872" y="288" class="noteh">Forces the OMS call every time</text>
+<text x="872" y="309" class="note">order_lookup runs on every return — the agent</text>
+<text x="872" y="326" class="note">grounds in real data before deciding anything.</text>
+<line x1="852" y1="298" x2="800" y2="300" stroke="#E8B23A" stroke-width="2" marker-end="url(#arrT)"/>
+
+<rect x="852" y="350" width="384" height="72" rx="10" class="callout"/>
+<text x="872" y="376" class="noteh">Conditional fraud call</text>
+<text x="872" y="397" class="note">fraud_check fires only when it's worth it (value,</text>
+<text x="872" y="414" class="note">signals, AUTO_APPROVE) — not all 2,000/day.</text>
+<line x1="852" y1="386" x2="800" y2="345" stroke="#E8B23A" stroke-width="2" marker-end="url(#arrT)"/>
+
+<rect x="852" y="438" width="384" height="72" rx="10" class="callout"/>
+<text x="872" y="464" class="noteh">Safe fallback, no guessing</text>
+<text x="872" y="485" class="note">A failed tool result becomes HUMAN_REVIEW —</text>
+<text x="872" y="502" class="note">never a fabricated decision.</text>
+<line x1="852" y1="474" x2="800" y2="372" stroke="#E8B23A" stroke-width="2" marker-end="url(#arrT)"/>
+
+<rect x="852" y="588" width="384" height="86" rx="10" class="callout"/>
+<text x="872" y="614" class="noteh">What the eval harness asserts</text>
+<text x="872" y="635" class="note">evidence_trace.must_consult lets the golden-set</text>
+<text x="872" y="652" class="note">check prove the agent actually called the tools —</text>
+<text x="872" y="669" class="note">catching right-answer-for-wrong-reasons.</text>
+<line x1="852" y1="625" x2="800" y2="645" stroke="#E8B23A" stroke-width="2" marker-end="url(#arrT)"/>
+</svg>

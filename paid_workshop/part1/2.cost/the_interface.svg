@@ -1,0 +1,95 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>The interface — one contract every project implements, central calls blind</title>
+<desc>Every project implements one fixed function, build_prompt(context), that returns the prompt split into a cacheable prefix and a per-call suffix; its location is declared in cache.yaml. The central gate, identical for every project, loads that function, calls it twice with deliberately different context, and asserts the prefix hash and token count match. The project owns how it builds the prompt and where the breakpoint falls; central owns calling it twice and checking the prefix never moves.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:29px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.col{font-size:14px;font-weight:800;letter-spacing:.6px;}
+.cm{font-family:'Courier New',monospace;font-size:12.5px;fill:#E7E9F0;}
+.cmc{font-family:'Courier New',monospace;font-size:11px;fill:#9AA3B2;}
+.kw{fill:#9B7BE0;}
+.tag{fill:#fff;font-size:11px;font-weight:700;}
+.note{fill:#64748B;font-size:12px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">The interface — one contract, every project</text>
+<text x="48" y="70" class="hsub">Central can't read your prompt. It just calls one function you implement, and checks the prefix never moves.</text>
+
+<!-- ===================== LEFT: project implements ===================== -->
+<text x="40" y="116" class="col" fill="#E8B23A">PROJECT IMPLEMENTS THE INTERFACE</text>
+
+<!-- cache.yaml: declares the adapter -->
+<rect x="40" y="128" width="568" height="64" rx="10" fill="#2C3142"/>
+<rect x="40" y="128" width="120" height="24" rx="6" fill="#E8B23A"/>
+<text x="100" y="145" text-anchor="middle" class="tag">cache.yaml</text>
+<text x="58" y="178" class="cm"><tspan class="kw">adapter:</tspan> prompts/support_agent.py:build_prompt</text>
+
+<!-- build_prompt implementation -->
+<rect x="40" y="202" width="568" height="222" rx="10" fill="#2C3142"/>
+<rect x="40" y="202" width="190" height="24" rx="6" fill="#E8B23A"/>
+<text x="135" y="219" text-anchor="middle" class="tag">support_agent.py</text>
+<text x="58" y="250" class="cm"><tspan class="kw">def</tspan> build_prompt(ctx: PromptContext):</text>
+<text x="58" y="274" class="cm">    prefix = SYSTEM + TOOLS + FEW_SHOT</text>
+<text x="58" y="290" class="cmc">             ↑ cacheable — must be static</text>
+<text x="58" y="316" class="cm">    suffix = f"{ctx.timestamp} {ctx.message}"</text>
+<text x="58" y="332" class="cmc">             ↑ the per-call part</text>
+<text x="58" y="362" class="cm">    <tspan class="kw">return</tspan> PromptResult(prefix=prefix,</text>
+<text x="58" y="380" class="cm">                        suffix=suffix)</text>
+<text x="58" y="408" class="cmc"># you decide what's in the prefix vs suffix</text>
+
+<!-- PromptContext -->
+<rect x="40" y="434" width="568" height="68" rx="10" fill="#2C3142"/>
+<rect x="40" y="434" width="320" height="24" rx="6" fill="#64748B"/>
+<text x="200" y="451" text-anchor="middle" class="tag">PromptContext  — this is what 'ctx' is</text>
+<text x="58" y="482" class="cm">ctx = { timestamp, session_id, user_id, message }</text>
+<text x="58" y="497" class="cmc">↑ the fields central will deliberately vary between runs</text>
+
+<!-- ===================== RIGHT: central calls it ===================== -->
+<text x="640" y="116" class="col" fill="#7D2FDB">CENTRAL CALLS IT — identical for every project</text>
+
+<rect x="640" y="128" width="600" height="252" rx="10" fill="#2C3142"/>
+<rect x="640" y="128" width="150" height="24" rx="6" fill="#7D2FDB"/>
+<text x="715" y="145" text-anchor="middle" class="tag">central gate</text>
+<text x="658" y="176" class="cm">build_prompt = load(cache_yaml.adapter)</text>
+<text x="658" y="204" class="cm">ctxA = PromptContext(timestamp=T1, session_id=S1,</text>
+<text x="658" y="220" class="cm">                     user_id=U1, message=<tspan fill="#86E0A8">"hi"</tspan>)</text>
+<text x="658" y="240" class="cm">ctxB = PromptContext(timestamp=T2, session_id=S2,</text>
+<text x="658" y="256" class="cm">                     user_id=U2, message=<tspan fill="#86E0A8">"bye"</tspan>)</text>
+<text x="658" y="272" class="cmc">     every field differs between ctxA and ctxB</text>
+<text x="658" y="300" class="cm">A = build_prompt(ctxA);  B = build_prompt(ctxB)</text>
+<text x="658" y="332" class="cm"><tspan class="kw">assert</tspan> sha256(A.prefix) == sha256(B.prefix)</text>
+<text x="658" y="352" class="cmc"># the prefix must be byte-for-byte identical</text>
+
+<!-- outcomes -->
+<rect x="640" y="394" width="294" height="108" rx="10" fill="#F7FBF8" stroke="#2E9E5B" stroke-width="1.6"/>
+<text x="660" y="420" fill="#2E9E5B" font-size="14" font-weight="800">✓ PASS</text>
+<text x="660" y="446" class="note">prefix identical across both runs</text>
+<text x="660" y="466" class="note">→ genuinely static</text>
+<text x="660" y="490" class="note">→ caches, saving holds</text>
+
+<rect x="946" y="394" width="294" height="108" rx="10" fill="#FDF7F6" stroke="#C0392B" stroke-width="1.6"/>
+<text x="966" y="420" fill="#C0392B" font-size="14" font-weight="800">✗ FAIL</text>
+<text x="966" y="446" class="note">build put ctx.timestamp in the</text>
+<text x="966" y="466" class="note">prefix → the two differ</text>
+<text x="966" y="490" class="note">→ blocked before it ships</text>
+
+<!-- bottom: the contract -->
+<rect x="40" y="528" width="1200" height="162" rx="12" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="64" y="558" fill="#7D2FDB" font-size="14" font-weight="800">THE CONTRACT</text>
+<text x="64" y="590" fill="#3A445C" font-size="19" font-weight="800" font-family="'Courier New',monospace">build_prompt(context)  →  { prefix, suffix }</text>
+<line x1="64" y1="606" x2="1216" y2="606" stroke="#D6C6F2" stroke-width="1.2"/>
+<text x="64" y="634" fill="#3A445C" font-size="14"><tspan fill="#B07D14" font-weight="800">Project owns:</tspan>  how it builds the prompt, and where the breakpoint falls (what goes in prefix vs suffix).</text>
+<text x="64" y="662" fill="#3A445C" font-size="14"><tspan fill="#7D2FDB" font-weight="800">Central owns:</tspan>  calling that one function twice with varied context, and checking the prefix never moves.</text>
+<text x="64" y="683" class="note">Same function name, same return shape, every project — so one gate works across all of them, without reading a single prompt.</text>
+</svg>

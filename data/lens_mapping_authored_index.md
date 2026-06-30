@@ -4,10 +4,14 @@ Dedicated index for the authored-decisions ledger. Each row is one BP-walk decis
 
 When authoring a new decision: write the full entry to `data/authored/<KEY>.md` and prepend a row here.
 
-Total decisions: 63
+Total decisions: 67
 
 | Key | Date | Outcome | File |
 |---|---|---|---|
+| `GENREL06-BP01` | 2026-06-27 | not_promoted | [GENREL06-BP01.md](./authored/GENREL06-BP01.md) |
+| `GENREL05-BP03` | 2026-06-27 | not_promoted (ADR) | [GENREL05-BP03.md](./authored/GENREL05-BP03.md) |
+| `GENREL05-BP02` | 2026-06-27 | not_promoted | [GENREL05-BP02.md](./authored/GENREL05-BP02.md) |
+| `GENREL05-BP01` | 2026-06-27 | not_promoted | [GENREL05-BP01.md](./authored/GENREL05-BP01.md) |
 | `GO2B3-01` | 2026-06-23 | promoted → GO2B3-01 | [GO2B3-01.md](./authored/GO2B3-01.md) |
 | `GENREL04-BP02` | 2026-06-23 | not_promoted | [GENREL04-BP02.md](./authored/GENREL04-BP02.md) |
 | `GENREL04-BP01` | 2026-06-23 | not_promoted | [GENREL04-BP01.md](./authored/GENREL04-BP01.md) |
