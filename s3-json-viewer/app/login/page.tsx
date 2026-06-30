@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { LoginForm } from "./LoginForm";
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default function LoginPage() {
             Sign in with your registered email and password.
           </p>
 
-          <LoginForm />
+          <Suspense><LoginForm /></Suspense>
 
           <p className="mt-8 text-center text-xs text-muted-foreground">
             Access is provisioned for approved clients. Need access?{" "}
