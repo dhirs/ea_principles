@@ -6,6 +6,9 @@ S3 JSON Viewer - A Next.js web application that fetches and displays JSON data f
 
 > **App root is `s3-json-viewer/`.** `package.json`, `node_modules`, `.env.local`, and the real `app/` (with `api/`, `layout.tsx`, `standards/`, `principles/`) all live there. Run `npm run dev` / `npm run build` from inside `s3-json-viewer/`, not the repo root. The root-level `app/page.tsx` is a stray leftover and is NOT what the dev server serves.
 
+## Second app: CRM (leads + events) — separate from this one
+There are **two apps** in this repo. This CLAUDE.md is about the **principles app** (`s3-json-viewer/`, port 3000). The other is our **own CRM** — leads + Maven events/attendance, Supabase-backed — living in **`hubspot/ui/`** (port 3001; `./scripts/start_supabase_ui.sh`). Despite the folder name it uses **zero HubSpot API** — `hubspot/` is a legacy misnomer; we build our own CRM. Its full docs are **`hubspot/ui/crm.md`** (tables `leads` / `maven_events` / `maven_attendance`, the pages/API routes, and the `hubspot/load_maven_attendance.py` CSV importer). Read that before touching CRM code. Leads are always upserted via the PostgREST URL (`ignore-duplicates`, `on_conflict=email`), never psql.
+
 ## Data model: standards vs principles (IMPORTANT — read before touching data code)
 The S3 JSON top-level key is **`standards`** (was `principles`). Each node carries BOTH `standard_id` (e.g. `ST-GO1B1-01`) and `principle_id` (e.g. `PR-GO1B1-01`) — the model is **many standards per principle**. A node's principle "title" is the `u_principle` field (aspirational statement); `statement.title` is the *standard's* title.
 - **`standard_id` is the node id** used for routing, lookup, search, and the detail-page header. Code reading the S3 object must use `data.standards` and find by `standard_id`.

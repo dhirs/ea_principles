@@ -1,8 +1,8 @@
 "use client";
 
-import { Search, Users, Sparkles, Snowflake, BarChart3, ChevronDown } from "lucide-react";
+import { Search, Users, Sparkles, Snowflake, BarChart3, ChevronDown, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { NavLinks } from "@/components/NavLinks";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export type Filter = "all" | "enriched" | "cold";
@@ -17,7 +17,7 @@ const FILTERS: { key: Filter; label: string; icon: React.ReactNode }[] = [
 
 const SENIORITY: Seniority[] = ["Senior", "Mid", "Entry"];
 
-export function Sidebar({
+export function LeadsFilters({
   q,
   setQ,
   filter,
@@ -25,6 +25,7 @@ export function Sidebar({
   seg,
   setSeg,
   stats,
+  onClose,
 }: {
   q: string;
   setQ: (v: string) => void;
@@ -33,6 +34,7 @@ export function Sidebar({
   seg: Seniority | null;
   setSeg: (s: Seniority | null) => void;
   stats: Stats | null;
+  onClose: () => void;
 }) {
   const counts: Record<Filter, number | undefined> = {
     all: stats?.total,
@@ -42,9 +44,16 @@ export function Sidebar({
 
   return (
     <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-72 shrink-0 overflow-y-auto border-r bg-card/40 p-5 md:block">
-      <NavLinks />
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Filters
+        </p>
+        <Button variant="ghost" size="icon" onClick={onClose} aria-label="Hide filters">
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
 
-      <div className="relative mt-6">
+      <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={q}

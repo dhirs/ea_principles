@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CalendarDays, Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
-import { NavLinks } from "@/components/NavLinks";
+import { NavPanel } from "@/components/NavPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -53,9 +53,7 @@ export default function EventsPage() {
 
   return (
     <div className="flex">
-      <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-72 shrink-0 overflow-y-auto border-r bg-card/40 p-5 md:block">
-        <NavLinks />
-      </aside>
+      <NavPanel />
 
       <main className="min-w-0 flex-1 p-6">
         <div className="mb-4 flex items-center justify-between">

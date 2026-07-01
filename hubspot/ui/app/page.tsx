@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { Sidebar, type Filter, type Seniority, type Stats } from "@/components/Sidebar";
+import { ChevronLeft, ChevronRight, Loader2, SlidersHorizontal } from "lucide-react";
+import { NavPanel } from "@/components/NavPanel";
+import { LeadsFilters, type Filter, type Seniority, type Stats } from "@/components/LeadsFilters";
 import { LeadDetail } from "@/components/LeadDetail";
 import { Button } from "@/components/ui/button";
 
@@ -31,6 +32,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stats | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(true);
 
   // debounce search
   useEffect(() => {
@@ -69,15 +71,20 @@ export default function Page() {
 
   return (
     <div className="flex">
-      <Sidebar
-        q={q}
-        setQ={setQ}
-        filter={filter}
-        setFilter={setFilter}
-        seg={seg}
-        setSeg={setSeg}
-        stats={stats}
-      />
+      <NavPanel onActiveClick={() => setShowFilters((v) => !v)} />
+
+      {showFilters && (
+        <LeadsFilters
+          q={q}
+          setQ={setQ}
+          filter={filter}
+          setFilter={setFilter}
+          seg={seg}
+          setSeg={setSeg}
+          stats={stats}
+          onClose={() => setShowFilters(false)}
+        />
+      )}
 
       <main className="min-w-0 flex-1 p-6">
         <div className="mb-4 flex items-center justify-between">
@@ -87,6 +94,9 @@ export default function Page() {
               {loading ? "Loading…" : `${total.toLocaleString()} ${filter === "all" ? "" : filter + " "}leads`}
             </p>
           </div>
+          <Button variant="outline" size="sm" onClick={() => setShowFilters((v) => !v)}>
+            <SlidersHorizontal className="h-4 w-4" /> {showFilters ? "Hide filters" : "Filters"}
+          </Button>
         </div>
 
         <div className="overflow-hidden rounded-xl border bg-card">
