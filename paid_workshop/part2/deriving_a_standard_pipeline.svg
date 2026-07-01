@@ -1,0 +1,105 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="720">
+  <title id="ttl">Deriving a standard — the three-step EA pipeline</title>
+  <desc id="dsc">From a system-level control: decompose into best practices (OWASP, MITRE ATLAS, NIST), crosswalk each to the AWS GenAI Lens (covered = anchor, gap = new standard), then write — statement with gate and evidence, reference implementation, and applies_to tag.</desc>
+
+  <defs>
+    <linearGradient id="startGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#EEEDFA"/><stop offset="1" stop-color="#F6F1FF"/>
+    </linearGradient>
+    <linearGradient id="botGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4F1FB"/><stop offset="1" stop-color="#FAF7F3"/>
+    </linearGradient>
+  </defs>
+
+  <text x="480" y="44" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary, #141413)">Deriving a Standard — Three Steps</text>
+  <text x="480" y="70" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">From one system-level control to a gated, catalogued standard</text>
+
+  <!-- ===== START RIBBON ===== -->
+  <rect x="40" y="88" width="880" height="54" rx="12" fill="url(#startGrad)" stroke="#7F77DD" stroke-width="1.5"/>
+  <rect x="40" y="88" width="7" height="54" rx="3.5" fill="#7F77DD"/>
+  <circle cx="76" cy="115" r="16" fill="#7F77DD"/>
+  <g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" fill="none">
+    <line x1="68" y1="115" x2="80" y2="115"/><path d="M77 111 l5 4 l-5 4" fill="#ffffff" stroke="none"/><line x1="84" y1="108" x2="84" y2="122"/>
+  </g>
+  <text x="104" y="110" font-size="13" font-weight="700" letter-spacing="0.5" fill="#544BB5">START · A SYSTEM-LEVEL CONTROL</text>
+  <text x="104" y="129" font-size="12" fill="var(--color-text-secondary, #3d3d3a)">e.g. "the system must resist prompt injection &amp; jailbreaks" — EU AI Act Art 15</text>
+
+  <!-- feed arrow into stage 1 -->
+  <g fill="#7F77DD" stroke="#7F77DD"><line x1="180" y1="146" x2="180" y2="170" stroke-width="2.4"/><path d="M174 168 l6 10 l6 -10 z" stroke="none"/></g>
+
+  <!-- inter-stage chevrons -->
+  <g fill="none" stroke="#C2C1BC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M326 321 l9 9 l-9 9"/>
+    <path d="M626 321 l9 9 l-9 9"/>
+  </g>
+
+  <!-- ===== STAGE 1 — DECOMPOSE ===== -->
+  <rect x="40" y="180" width="280" height="300" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.6"/>
+  <rect x="40" y="180" width="280" height="6" rx="3" fill="#378ADD"/>
+  <circle cx="180" cy="232" r="24" fill="#378ADD"/>
+  <g stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="#ffffff">
+    <line x1="166" y1="232" x2="177" y2="232"/><line x1="177" y1="232" x2="193" y2="222"/><line x1="177" y1="232" x2="193" y2="232"/><line x1="177" y1="232" x2="193" y2="242"/>
+    <circle cx="166" cy="232" r="2.4" stroke="none"/><circle cx="193" cy="222" r="2.4" stroke="none"/><circle cx="193" cy="232" r="2.4" stroke="none"/><circle cx="193" cy="242" r="2.4" stroke="none"/>
+  </g>
+  <text x="180" y="285" text-anchor="middle" font-size="16" font-weight="700" fill="var(--color-text-primary, #141413)">1 · Decompose</text>
+  <text x="180" y="304" text-anchor="middle" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Break into testable best practices</text>
+  <g font-size="11.5" font-weight="700" fill="#185FA5" text-anchor="middle">
+    <rect x="80" y="318" width="200" height="24" rx="12" fill="#EAF3FC"/><text x="180" y="334">OWASP Top 10 LLM</text>
+    <rect x="80" y="350" width="200" height="24" rx="12" fill="#EAF3FC"/><text x="180" y="366">MITRE ATLAS</text>
+    <rect x="80" y="382" width="200" height="24" rx="12" fill="#EAF3FC"/><text x="180" y="398">NIST GenAI 600-1</text>
+  </g>
+  <text x="180" y="440" text-anchor="middle" font-size="10.5" font-style="italic" fill="#8a8a85">not ISO 42001</text>
+
+  <!-- ===== STAGE 2 — CROSSWALK ===== -->
+  <rect x="340" y="180" width="280" height="300" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#EF9F27" stroke-width="1.6"/>
+  <rect x="340" y="180" width="280" height="6" rx="3" fill="#EF9F27"/>
+  <circle cx="480" cy="232" r="24" fill="#EF9F27"/>
+  <g stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" fill="#ffffff">
+    <line x1="468" y1="226" x2="488" y2="226"/><path d="M486 222 l6 4 l-6 4 z" stroke="none"/>
+    <line x1="492" y1="238" x2="472" y2="238"/><path d="M474 234 l-6 4 l6 4 z" stroke="none"/>
+  </g>
+  <text x="480" y="285" text-anchor="middle" font-size="16" font-weight="700" fill="var(--color-text-primary, #141413)">2 · Crosswalk</text>
+  <text x="480" y="304" text-anchor="middle" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Map each BP to the AWS GenAI Lens</text>
+  <rect x="370" y="320" width="220" height="27" rx="13.5" fill="#E7F6EE" stroke="#1F9D57" stroke-width="1"/>
+  <text x="480" y="338" text-anchor="middle" font-size="11.5" font-weight="700" fill="#157F45">✓ Covered → anchor</text>
+  <rect x="370" y="356" width="220" height="27" rx="13.5" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+  <text x="480" y="374" text-anchor="middle" font-size="11.5" font-weight="700" fill="#A32D2D">✕ Gap → new "na" standard</text>
+  <text x="480" y="404" text-anchor="middle" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">anchor at the implementation-step level</text>
+  <text x="480" y="440" text-anchor="middle" font-size="10.5" font-style="italic" fill="#8a8a85">Lens = primary anchor</text>
+
+  <!-- ===== STAGE 3 — WRITE ===== -->
+  <rect x="640" y="180" width="280" height="300" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+  <rect x="640" y="180" width="280" height="6" rx="3" fill="#E24B4A"/>
+  <circle cx="780" cy="232" r="24" fill="#E24B4A"/>
+  <path d="M767 233 l9 10 l16 -22" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="780" y="285" text-anchor="middle" font-size="16" font-weight="700" fill="var(--color-text-primary, #141413)">3 · Write</text>
+  <text x="780" y="304" text-anchor="middle" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Make it real, provable &amp; scoped</text>
+  <g font-size="11.5" font-weight="700" fill="#A32D2D" text-anchor="middle">
+    <rect x="662" y="318" width="236" height="24" rx="12" fill="#FCEFEF"/><text x="780" y="334">Statement · Gate · Evidence</text>
+    <rect x="662" y="350" width="236" height="24" rx="12" fill="#FCEFEF"/><text x="780" y="366">Reference implementation</text>
+    <rect x="662" y="382" width="236" height="24" rx="12" fill="#FCEFEF"/><text x="780" y="398">Tag applies_to {ML · LLM · agent}</text>
+  </g>
+  <text x="780" y="440" text-anchor="middle" font-size="10.5" font-style="italic" fill="#A32D2D">no gate, no standard</text>
+
+  <!-- ===== REUSABLE PATTERN RIBBON ===== -->
+  <rect x="40" y="508" width="880" height="150" rx="14" fill="url(#botGrad)" stroke="#7F77DD" stroke-width="1.5"/>
+  <rect x="40" y="508" width="7" height="150" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="538" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="1.2" fill="var(--color-text-secondary, #3d3d3a)">THE REUSABLE PATTERN</text>
+
+  <g font-size="13" font-weight="700" text-anchor="middle">
+    <rect x="150" y="556" width="96" height="32" rx="16" fill="#EEEDFA" stroke="#7F77DD" stroke-width="1"/><text x="198" y="577" fill="#544BB5">Control</text>
+    <rect x="300" y="556" width="130" height="32" rx="16" fill="#EAF3FC" stroke="#378ADD" stroke-width="1"/><text x="365" y="577" fill="#185FA5">Decompose</text>
+    <rect x="484" y="556" width="126" height="32" rx="16" fill="#FDF1DD" stroke="#EF9F27" stroke-width="1"/><text x="547" y="577" fill="#854F0B">Crosswalk</text>
+    <rect x="664" y="556" width="96" height="32" rx="16" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/><text x="712" y="577" fill="#A32D2D">Write</text>
+  </g>
+  <g fill="none" stroke="#B0AFAA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M258 567 l8 5 l-8 5"/>
+    <path d="M442 567 l8 5 l-8 5"/>
+    <path d="M622 567 l8 5 l-8 5"/>
+  </g>
+
+  <text x="480" y="620" text-anchor="middle" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">Covered by the Lens → anchor · not covered → a new standard beyond AWS (mapping_state "na")</text>
+  <text x="480" y="644" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--color-text-primary, #141413)">Write = the standard (gate + evidence) + its reference implementation + the applies_to tag.</text>
+</svg>

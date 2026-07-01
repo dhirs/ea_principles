@@ -1,0 +1,88 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Enforcement — what the gate actually checks</title>
+<desc>Enforcement escalates from cheap static lints to deeper proofs. Static pre-merge lints check the guardrail.yaml is present, its schema is valid, the project code makes no direct provider-SDK calls, and every response is routed through the central utility. Beyond static: a behavioural test feeds a known-unsupported answer and asserts the gate trips; an architectural backstop removes the project's model API keys and egress so bypass is impossible not just detectable; and a quarterly red-team proves the grounding check catches fabrications.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.col{font-size:14px;font-weight:800;letter-spacing:.6px;}
+.cols{fill:#64748B;font-size:11.5px;font-style:italic;}
+.num{fill:#fff;font-size:12px;font-weight:800;}
+.st{fill:#3A445C;font-size:14px;font-weight:700;}
+.ss{fill:#64748B;font-size:11.5px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">Enforcement — what the gate checks</text>
+<text x="48" y="70" class="hsub">Cheap structural lints first; then the checks that catch the clever and the probabilistic.</text>
+
+<!-- ================= LEFT: static lints ================= -->
+<rect x="40" y="104" width="588" height="500" rx="14" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="66" y="136" class="col" fill="#7D2FDB">STATIC — pre-merge lints</text>
+<text x="66" y="156" class="cols">deterministic · runs on every PR · milliseconds</text>
+<line x1="66" y1="170" x2="602" y2="170" stroke="#D6C6F2" stroke-width="1.2"/>
+
+<circle cx="82" cy="204" r="13" fill="#7D2FDB"/><text x="82" y="209" text-anchor="middle" class="num">1</text>
+<text x="110" y="200" class="st">File present</text>
+<text x="110" y="220" class="ss">guardrail.yaml exists in the repo</text>
+
+<circle cx="82" cy="262" r="13" fill="#7D2FDB"/><text x="82" y="267" text-anchor="middle" class="num">2</text>
+<text x="110" y="258" class="st">Schema valid</text>
+<text x="110" y="278" class="ss">required keys, sane values — grounding: on, threshold in range,</text>
+<text x="110" y="294" class="ss">on_trip fallback non-empty</text>
+
+<circle cx="82" cy="342" r="13" fill="#7D2FDB"/><text x="82" y="347" text-anchor="middle" class="num">3</text>
+<text x="110" y="338" class="st">No direct LLM calls  <tspan class="ss" font-weight="400">(scans the code)</tspan></text>
+<text x="110" y="358" class="ss">bans imports/calls to raw provider SDKs — anthropic, boto3</text>
+<text x="110" y="374" class="ss">bedrock invoke, openai. Every model call must go via central.</text>
+
+<circle cx="82" cy="422" r="13" fill="#7D2FDB"/><text x="82" y="427" text-anchor="middle" class="num">4</text>
+<text x="110" y="418" class="st">Every response routed</text>
+<text x="110" y="438" class="ss">the user-facing path returns central's checked output,</text>
+<text x="110" y="454" class="ss">never raw model text</text>
+
+<rect x="66" y="486" width="536" height="98" rx="10" fill="#fff" stroke="#D6C6F2" stroke-width="1.3"/>
+<text x="84" y="512" class="st" fill="#7D2FDB">These catch the honest mistake</text>
+<text x="84" y="536" class="ss">Fast and deterministic — they block a merge that forgot the gate,</text>
+<text x="84" y="554" class="ss">wired the wrong path, or reached for the raw SDK. But a determined</text>
+<text x="84" y="572" class="ss">dev could still route around a static scan. So lints aren't the end.</text>
+
+<!-- ================= RIGHT: beyond static ================= -->
+<rect x="652" y="104" width="588" height="500" rx="14" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.6"/>
+<text x="678" y="136" class="col" fill="#B07D14">BEYOND STATIC — lints can be gamed</text>
+<text x="678" y="156" class="cols">proof, not just presence</text>
+<line x1="678" y1="170" x2="1214" y2="170" stroke="#EFD9A6" stroke-width="1.2"/>
+
+<circle cx="694" cy="204" r="13" fill="#E8B23A"/><text x="694" y="209" text-anchor="middle" class="num">5</text>
+<text x="722" y="200" class="st">Behavioural test</text>
+<text x="722" y="220" class="ss">an integration test feeds a known-unsupported answer and</text>
+<text x="722" y="236" class="ss">asserts the gate trips → fallback. Proves the wiring works, not</text>
+<text x="722" y="252" class="ss">just that it exists.</text>
+
+<circle cx="694" cy="300" r="13" fill="#E8B23A"/><text x="694" y="305" text-anchor="middle" class="num">6</text>
+<text x="722" y="296" class="st">Architectural backstop</text>
+<text x="722" y="316" class="ss">project code has no model API keys and no network egress to</text>
+<text x="722" y="332" class="ss">provider endpoints — only the central utility does. Bypass isn't</text>
+<text x="722" y="348" class="ss">detected, it's <tspan fill="#C0392B" font-weight="700">impossible</tspan>.</text>
+
+<circle cx="694" cy="400" r="13" fill="#E8B23A"/><text x="694" y="405" text-anchor="middle" class="num">7</text>
+<text x="722" y="396" class="st">Quarterly efficacy red-team</text>
+<text x="722" y="416" class="ss">fires fabrications and adversarial questions at the gate and</text>
+<text x="722" y="432" class="ss">measures catch-rate — grounding is probabilistic, so no lint</text>
+<text x="722" y="448" class="ss">can certify it works.</text>
+
+<rect x="678" y="486" width="536" height="98" rx="10" fill="#fff" stroke="#EFD9A6" stroke-width="1.3"/>
+<text x="696" y="512" class="st" fill="#B07D14">These handle the determined and the probabilistic</text>
+<text x="696" y="536" class="ss">Lints prove the gate is declared and wired. The behavioural test</text>
+<text x="696" y="554" class="ss">proves it fires; the backstop makes skipping it impossible; the</text>
+<text x="696" y="572" class="ss">red-team proves it actually catches what matters.</text>
+</svg>

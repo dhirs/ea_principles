@@ -1,0 +1,94 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>How each local team wires in the grounding gate</title>
+<desc>Each project does three small things: declare a guardrail.yaml (grounding on, a threshold, and the on-trip fallback message); expose its RAG output as answer plus retrieved_context so the central gate can compare them; and route every response through the central guardrail.check wrapper, returning the fallback when it trips. The project owns retrieval quality, the fallback wording, the threshold, and acting on trips and red-team findings — but never writes the grounding check itself.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.col{font-size:14px;font-weight:800;letter-spacing:.6px;}
+.tag{fill:#fff;font-size:11px;font-weight:700;}
+.cm{font-family:'Courier New',monospace;font-size:12.5px;fill:#E7E9F0;}
+.cmc{font-family:'Courier New',monospace;font-size:11px;fill:#9AA3B2;}
+.kw{fill:#9B7BE0;}
+.own{fill:#3A445C;font-size:13px;}
+.owns{fill:#64748B;font-size:11.5px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">Implementation — each local team</text>
+<text x="48" y="70" class="hsub">Three small things. The project never writes the grounding check — it just declares, exposes, and routes.</text>
+
+<!-- ===== 1 · declare ===== -->
+<text x="40" y="116" class="col" fill="#E8B23A">1 · DECLARE  —  guardrail.yaml</text>
+<rect x="40" y="128" width="588" height="150" rx="10" fill="#2C3142"/>
+<rect x="40" y="128" width="150" height="24" rx="6" fill="#E8B23A"/>
+<text x="115" y="145" text-anchor="middle" class="tag">guardrail.yaml</text>
+<text x="58" y="176" class="cm"><tspan class="kw">grounding:</tspan> on</text>
+<text x="58" y="196" class="cm"><tspan class="kw">threshold:</tspan> 0.75</text>
+<text x="58" y="216" class="cm"><tspan class="kw">on_trip:</tspan> "I can't confirm that from your policy —</text>
+<text x="58" y="234" class="cm">         let me get an advisor to help."</text>
+<text x="58" y="262" class="cmc"># you set the bar and the safe fallback; central runs the check</text>
+
+<!-- 2 · expose ===== -->
+<text x="40" y="316" class="col" fill="#E8B23A">2 · EXPOSE  —  answer + the context it used</text>
+<rect x="40" y="328" width="588" height="150" rx="10" fill="#2C3142"/>
+<rect x="40" y="328" width="180" height="24" rx="6" fill="#E8B23A"/>
+<text x="130" y="345" text-anchor="middle" class="tag">rag_pipeline.py</text>
+<text x="58" y="376" class="cm"><tspan class="kw">def</tspan> answer(question) -> Response:</text>
+<text x="58" y="396" class="cm">    ctx = retrieve(question)        <tspan class="cmc"># policy passages</tspan></text>
+<text x="58" y="416" class="cm">    text = llm(question, ctx)</text>
+<text x="58" y="436" class="cm">    <tspan class="kw">return</tspan> Response(answer=text,</text>
+<text x="58" y="454" class="cm">                    retrieved_context=ctx)</text>
+<text x="360" y="476" class="cmc"># hand the gate what it needs to compare</text>
+
+<!-- 3 · route ===== -->
+<text x="40" y="516" class="col" fill="#E8B23A">3 · ROUTE  —  every response through the gate</text>
+<rect x="40" y="528" width="588" height="150" rx="10" fill="#2C3142"/>
+<rect x="40" y="528" width="150" height="24" rx="6" fill="#E8B23A"/>
+<text x="115" y="545" text-anchor="middle" class="tag">handler.py</text>
+<text x="58" y="576" class="cm">r = answer(question)</text>
+<text x="58" y="600" class="cm">checked = guardrail.<tspan fill="#86E0A8">check</tspan>(r.answer, r.retrieved_context)</text>
+<text x="58" y="618" class="cmc">                     ↑ the central SDK — you don't implement it</text>
+<text x="58" y="646" class="cm"><tspan class="kw">return</tspan> checked.answer <tspan class="kw">if</tspan> checked.passed <tspan class="kw">else</tspan> checked.fallback</text>
+<text x="58" y="668" class="cmc"># nothing reaches the customer without passing through here</text>
+
+<!-- ===== right: what the project owns ===== -->
+<rect x="652" y="108" width="588" height="500" rx="14" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.6"/>
+<text x="678" y="142" class="col" fill="#B07D14">WHAT THE PROJECT OWNS</text>
+<line x1="678" y1="156" x2="1214" y2="156" stroke="#EFD9A6" stroke-width="1.2"/>
+
+<circle cx="694" cy="192" r="6" fill="#E8B23A"/>
+<text x="716" y="190" class="own" font-weight="700">Retrieval quality</text>
+<text x="716" y="210" class="owns">the gate can't ground an answer in the wrong documents</text>
+
+<circle cx="694" cy="252" r="6" fill="#E8B23A"/>
+<text x="716" y="250" class="own" font-weight="700">The fallback wording</text>
+<text x="716" y="270" class="owns">what the customer sees when an answer is blocked</text>
+
+<circle cx="694" cy="312" r="6" fill="#E8B23A"/>
+<text x="716" y="310" class="own" font-weight="700">The threshold</text>
+<text x="716" y="330" class="owns">how strict — tuned to your risk, within central's floor</text>
+
+<circle cx="694" cy="372" r="6" fill="#E8B23A"/>
+<text x="716" y="370" class="own" font-weight="700">Acting on trips + red-team findings</text>
+<text x="716" y="390" class="owns">a rising block-rate means retrieval or prompt needs work</text>
+
+<line x1="678" y1="424" x2="1214" y2="424" stroke="#EFD9A6" stroke-width="1.2"/>
+<text x="678" y="454" class="own" font-weight="800" fill="#B07D14">What the project never touches</text>
+<text x="678" y="480" class="owns">The grounding check, the safety layer, the lints and the red-team</text>
+<text x="678" y="500" class="owns">all live in central. You declare intent, expose the data, and route</text>
+<text x="678" y="520" class="owns">through the wrapper — the hard, shared machinery is not yours to</text>
+<text x="678" y="540" class="owns">build or maintain.</text>
+
+<rect x="678" y="560" width="536" height="34" rx="8" fill="#fff" stroke="#E8B23A" stroke-width="1.3"/>
+<text x="698" y="582" fill="#B07D14" font-size="12.5" font-weight="700">Declare · Expose · Route — three lines of contract, not a guardrail to build.</text>
+</svg>

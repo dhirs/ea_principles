@@ -2,6 +2,7 @@
 
 import { Search, Users, Sparkles, Snowflake, BarChart3, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { NavLinks } from "@/components/NavLinks";
 import { cn } from "@/lib/utils";
 
 export type Filter = "all" | "enriched" | "cold";
@@ -41,7 +42,9 @@ export function Sidebar({
 
   return (
     <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-72 shrink-0 overflow-y-auto border-r bg-card/40 p-5 md:block">
-      <div className="relative">
+      <NavLinks />
+
+      <div className="relative mt-6">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={q}

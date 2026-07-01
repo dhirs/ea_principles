@@ -1,0 +1,119 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>How central builds the grounding gate — the call flow</title>
+<desc>The end user calls the project code. The project retrieves its context, then calls the central utility — not the LLM. The central utility is the only thing that calls the LLM: it generates the answer, runs the safety and grounding checks against the retrieved context, decides pass or trip, and returns a safe response to the project, which returns it to the user. Because the project never reaches the LLM directly, a raw ungrounded answer cannot bypass the gate.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+<marker id="arr" markerWidth="11" markerHeight="11" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#64748B"/></marker>
+<marker id="arrP" markerWidth="11" markerHeight="11" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#7D2FDB"/></marker>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:30px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:14px;}
+.bx{fill:#3A445C;font-size:15px;font-weight:700;}
+.bxs{fill:#64748B;font-size:11.5px;}
+.tag{fill:#fff;font-size:12px;font-weight:800;}
+.enum{fill:#7D2FDB;font-size:12px;font-weight:800;}
+.enums{fill:#64748B;font-size:11px;}
+.row{fill:#3A445C;font-size:12.5px;font-weight:600;}
+.albl{fill:#3A445C;font-size:11.5px;font-weight:700;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">Implementation — the central team</text>
+<text x="48" y="70" class="hsub">The project calls the central utility, never the LLM. Central makes the model call and gates it in one step.</text>
+
+<!-- ===== End user ===== -->
+<rect x="40" y="300" width="140" height="112" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.6"/>
+<text x="110" y="352" text-anchor="middle" class="bx">End user</text>
+<text x="110" y="374" text-anchor="middle" class="bxs">asks a policy</text>
+<text x="110" y="390" text-anchor="middle" class="bxs">question</text>
+
+<!-- ===== Project code ===== -->
+<rect x="270" y="298" width="200" height="176" rx="12" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.8"/>
+<rect x="270" y="298" width="128" height="24" rx="6" fill="#E8B23A"/>
+<text x="334" y="315" text-anchor="middle" class="tag">Project code</text>
+<text x="370" y="352" text-anchor="middle" class="bx">the RAG app</text>
+<text x="370" y="376" text-anchor="middle" class="bxs">retrieves context, then</text>
+<text x="370" y="392" text-anchor="middle" class="bxs">calls central —</text>
+<text x="370" y="408" text-anchor="middle" class="bxs" fill="#C0392B" font-weight="700">not the LLM</text>
+<text x="370" y="448" text-anchor="middle" class="bxs">returns safe reply</text>
+<text x="370" y="464" text-anchor="middle" class="bxs">to the user</text>
+
+<!-- doc store -->
+<rect x="290" y="512" width="160" height="58" rx="10" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.4"/>
+<text x="370" y="537" text-anchor="middle" class="bxs" font-weight="700" fill="#3A445C">Document store</text>
+<text x="370" y="555" text-anchor="middle" class="bxs">policy passages</text>
+
+<!-- ===== Central utility ===== -->
+<rect x="540" y="150" width="400" height="374" rx="14" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="2"/>
+<rect x="540" y="150" width="176" height="26" rx="6" fill="#7D2FDB"/>
+<text x="628" y="168" text-anchor="middle" class="tag">Central utility</text>
+<text x="924" y="168" text-anchor="end" class="bxs">only caller of the LLM</text>
+
+<rect x="560" y="192" width="360" height="48" rx="9" fill="#fff" stroke="#D6C6F2" stroke-width="1.3"/>
+<text x="574" y="212" class="enum">1</text><text x="594" y="212" class="row">receive { question, retrieved_context }</text>
+<text x="594" y="228" class="enums">from the project — central never re-retrieves</text>
+
+<rect x="560" y="248" width="360" height="48" rx="9" fill="#fff" stroke="#D6C6F2" stroke-width="1.3"/>
+<text x="574" y="268" class="enum">2</text><text x="594" y="268" class="row">call the LLM  →  raw answer</text>
+<text x="594" y="284" class="enums">the only place the model is ever called</text>
+
+<rect x="560" y="304" width="360" height="48" rx="9" fill="#fff" stroke="#D6C6F2" stroke-width="1.3"/>
+<text x="574" y="324" class="enum">3</text><text x="594" y="324" class="row">check · safety + grounding vs context</text>
+<text x="594" y="340" class="enums">PII / toxicity / denied topics, then grounding score</text>
+
+<rect x="560" y="360" width="360" height="48" rx="9" fill="#fff" stroke="#D6C6F2" stroke-width="1.3"/>
+<text x="574" y="380" class="enum">4</text><text x="594" y="380" class="row">decide · grounded → answer, else fallback</text>
+<text x="594" y="396" class="enums">an unsupported answer never leaves this box</text>
+
+<rect x="560" y="418" width="360" height="46" rx="9" fill="#2E9E5B"/>
+<text x="574" y="446" fill="#fff" font-size="13" font-weight="800">5</text><text x="598" y="446" fill="#fff" font-size="13" font-weight="800">return the safe response only</text>
+
+<!-- ===== LLM ===== -->
+<rect x="1030" y="238" width="200" height="120" rx="12" fill="#F4F6FB" stroke="#CBD5E1" stroke-width="1.6"/>
+<text x="1130" y="286" text-anchor="middle" class="bx">LLM / provider</text>
+<text x="1130" y="310" text-anchor="middle" class="bxs">Claude · Bedrock · etc.</text>
+<text x="1130" y="330" text-anchor="middle" class="bxs">generates the raw answer</text>
+
+<!-- ===== arrows ===== -->
+<!-- 1 user -> project -->
+<line x1="180" y1="344" x2="266" y2="344" stroke="#64748B" stroke-width="2" marker-end="url(#arr)"/>
+<text x="223" y="336" text-anchor="middle" class="albl">1 · question</text>
+<!-- 7 project -> user -->
+<line x1="266" y1="374" x2="182" y2="374" stroke="#64748B" stroke-width="2" marker-end="url(#arr)"/>
+<text x="223" y="392" text-anchor="middle" class="enums">7 · answer</text>
+
+<!-- 2 project <-> doc store -->
+<line x1="360" y1="474" x2="360" y2="510" stroke="#64748B" stroke-width="1.8" marker-end="url(#arr)"/>
+<line x1="382" y1="510" x2="382" y2="476" stroke="#64748B" stroke-width="1.8" marker-end="url(#arr)"/>
+<text x="470" y="498" text-anchor="middle" class="enums">2 · retrieve</text>
+
+<!-- 3 project -> central -->
+<line x1="470" y1="338" x2="536" y2="234" stroke="#7D2FDB" stroke-width="2.4" marker-end="url(#arrP)"/>
+<text x="505" y="300" text-anchor="middle" class="enum" font-size="11">3 · generate</text>
+<!-- 6 central -> project -->
+<line x1="536" y1="404" x2="472" y2="398" stroke="#7D2FDB" stroke-width="2.4" marker-end="url(#arrP)"/>
+<text x="505" y="428" text-anchor="middle" class="enum" font-size="11">6 · reply</text>
+
+<!-- 4 central -> LLM -->
+<line x1="920" y1="266" x2="1028" y2="282" stroke="#64748B" stroke-width="2" marker-end="url(#arr)"/>
+<text x="975" y="256" text-anchor="middle" class="albl">4 · prompt</text>
+<!-- 5 LLM -> central -->
+<line x1="1028" y1="316" x2="920" y2="300" stroke="#64748B" stroke-width="2" marker-end="url(#arr)"/>
+<text x="975" y="340" text-anchor="middle" class="enums">5 · raw answer</text>
+
+<!-- ===== bottom emphasis ===== -->
+<rect x="40" y="600" width="1200" height="96" rx="12" fill="#FBEEEC" stroke="#C0392B" stroke-width="1.5"/>
+<text x="64" y="632" fill="#C0392B" font-size="14" font-weight="800">WHY THIS SHAPE</text>
+<text x="64" y="662" fill="#3A445C" font-size="15">There is <tspan font-weight="700">no arrow from the project to the LLM.</tspan> The project can't get raw model output — central makes the call and gates it in the same step.</text>
+<text x="64" y="684" fill="#3A445C" font-size="14">So "no raw output bypasses the wrapper" isn't a rule to remember — it's <tspan font-weight="700">structurally impossible</tspan>. There's no path around the gate.</text>
+</svg>

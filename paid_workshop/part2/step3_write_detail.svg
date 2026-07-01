@@ -1,0 +1,85 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="720">
+  <title id="ttl">Step 3 — Write the standard, its reference implementation, and its tag</title>
+  <desc id="dsc">Writing a standard means three things: the standard itself (statement, gate, evidence), a reference implementation splitting central-team build from project-team configuration, and an applies_to tag scoping it to ML, LLM, or agent.</desc>
+
+  <text x="480" y="42" text-anchor="middle" font-size="23" font-weight="700" fill="var(--color-text-primary, #141413)"><tspan fill="#E24B4A">Step 3 · Write</tspan> — Standard, Reference Implementation &amp; Tag</text>
+  <text x="480" y="66" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Make it real: a provable rule, a build others adopt, and a scope</text>
+
+  <!-- ===== LEFT — ① THE STANDARD ===== -->
+  <rect x="40" y="84" width="440" height="488" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.8"/>
+  <rect x="40" y="84" width="440" height="6" rx="3" fill="#E24B4A"/>
+  <text x="62" y="114" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#A32D2D">① WRITE THE STANDARD</text>
+  <text x="62" y="142" font-size="16" font-weight="700" font-family="var(--font-mono), ui-monospace, monospace" fill="var(--color-text-primary, #141413)">ST-GENSEC04-12</text>
+  <g font-size="10.5" font-weight="700" text-anchor="middle">
+    <rect x="62" y="152" width="150" height="22" rx="11" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/><text x="137" y="167" fill="#A32D2D">mapping_state: na</text>
+    <rect x="220" y="152" width="196" height="22" rx="11" fill="#E7F6EE" stroke="#1F9D57" stroke-width="1"/><text x="318" y="167" fill="#157F45">applies_to {LLM, agent}</text>
+  </g>
+  <line x1="62" y1="190" x2="458" y2="190" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+  <text x="62" y="210" font-size="10.5" font-weight="700" letter-spacing="0.6" fill="#545450">STATEMENT</text>
+  <g font-size="11.5" fill="var(--color-text-primary, #141413)">
+    <text x="62" y="228">Retrieved &amp; tool-returned content is treated as</text>
+    <text x="62" y="244">untrusted and sanitised before it enters the model</text>
+    <text x="62" y="260">context — it cannot carry instructions that alter</text>
+    <text x="62" y="276">system behaviour.</text>
+  </g>
+  <text x="62" y="304" font-size="10.5" font-weight="700" letter-spacing="0.6" fill="#A32D2D">GATE (pass / fail)</text>
+  <g font-size="11.5" fill="var(--color-text-primary, #141413)">
+    <text x="62" y="322">Red-team suite injects adversarial payloads into the</text>
+    <text x="62" y="338">RAG corpus + tool responses; 0 instruction overrides</text>
+    <text x="62" y="354">allowed to pass the deploy gate.</text>
+  </g>
+  <text x="62" y="382" font-size="10.5" font-weight="700" letter-spacing="0.6" fill="#545450">EVIDENCE</text>
+  <g font-size="11.5" fill="var(--color-text-primary, #141413)">
+    <text x="62" y="400">Red-team report + runtime injection-detection logs</text>
+    <text x="62" y="416">(links B6).</text>
+  </g>
+  <rect x="56" y="438" width="408" height="118" rx="10" fill="#FCEFEF"/>
+  <text x="72" y="462" font-size="12" font-weight="700" fill="#A32D2D">No gate, no standard — just a wish.</text>
+  <text x="72" y="484" font-size="11.5" fill="var(--color-text-primary, #141413)">Every standard must carry a pass/fail test and the</text>
+  <text x="72" y="500" font-size="11.5" fill="var(--color-text-primary, #141413)">evidence that proves it — this is the discipline that</text>
+  <text x="72" y="516" font-size="11.5" fill="var(--color-text-primary, #141413)">makes a standard implementable rather than aspirational.</text>
+  <text x="72" y="540" font-size="11" font-style="italic" fill="#8a8a85">Extends the Lens from direct to indirect injection.</text>
+
+  <!-- ===== RIGHT-TOP — ② REFERENCE IMPLEMENTATION ===== -->
+  <rect x="500" y="84" width="420" height="308" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#5A63C7" stroke-width="1.6"/>
+  <rect x="500" y="84" width="420" height="6" rx="3" fill="#5A63C7"/>
+  <text x="522" y="114" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#3E45A0">② REFERENCE IMPLEMENTATION</text>
+  <text x="522" y="132" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The build others reuse — central vs project split</text>
+  <line x1="522" y1="142" x2="898" y2="142" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+  <text x="522" y="164" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#3E45A0">CENTRAL — Builds · Operates · Owns</text>
+  <text x="522" y="181" font-size="11.5" fill="var(--color-text-primary, #141413)">Shared red-team harness + injection-detection service (B6)</text>
+
+  <text x="522" y="209" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#3E45A0">PROJECT — Configures · Populates · Consumes</text>
+  <text x="522" y="226" font-size="11.5" fill="var(--color-text-primary, #141413)">Registers its RAG corpus + tool set; runs the harness in CI</text>
+
+  <text x="522" y="254" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#3E45A0">INTERFACE CONTRACT</text>
+  <text x="522" y="271" font-size="11.5" fill="var(--color-text-primary, #141413)">Harness API + required pass threshold (0 overrides)</text>
+
+  <text x="522" y="299" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#3E45A0">ACCEPTANCE CRITERIA</text>
+  <text x="522" y="316" font-size="11.5" fill="var(--color-text-primary, #141413)">Deploy gate green only when the suite passes on the</text>
+  <text x="522" y="332" font-size="11.5" fill="var(--color-text-primary, #141413)">project's own corpus</text>
+  <text x="522" y="366" font-size="11" font-style="italic" fill="#8a8a85">Build once centrally; every project consumes the same gate.</text>
+
+  <!-- ===== RIGHT-BOTTOM — ③ TAG ===== -->
+  <rect x="500" y="408" width="420" height="164" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#1F9D57" stroke-width="1.6"/>
+  <rect x="500" y="408" width="420" height="6" rx="3" fill="#1F9D57"/>
+  <text x="522" y="438" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#157F45">③ TAG · applies_to</text>
+  <text x="522" y="456" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Scope the standard by system type</text>
+  <g font-size="13" font-weight="700" text-anchor="middle">
+    <rect x="522" y="470" width="84" height="32" rx="16" fill="#E7F6EE" stroke="#1F9D57" stroke-width="1.2"/><text x="564" y="491" fill="#157F45">LLM</text>
+    <rect x="618" y="470" width="98" height="32" rx="16" fill="#E7F6EE" stroke="#1F9D57" stroke-width="1.2"/><text x="667" y="491" fill="#157F45">agent</text>
+    <rect x="728" y="470" width="84" height="32" rx="16" fill="#F0EFEC" stroke="#B0AFAA" stroke-width="1.2" stroke-dasharray="4 3"/><text x="770" y="491" fill="#9a9a95">ML ✕</text>
+  </g>
+  <text x="522" y="528" font-size="11.5" fill="var(--color-text-primary, #141413)">A pure ML model has no prompt → excluded.</text>
+  <text x="522" y="548" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">One catalogue, filtered by system type at build time.</text>
+
+  <!-- ===== BOTTOM BANNER ===== -->
+  <rect x="40" y="590" width="880" height="96" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="590" width="7" height="96" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="626" text-anchor="middle" font-size="14.5" font-weight="700" fill="var(--color-text-primary, #141413)">Write = the rule + the reference implementation others adopt + the scope.</text>
+  <text x="480" y="656" text-anchor="middle" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">A standard isn't "done" without a gate, an RI teams can consume, and an applies_to tag.</text>
+</svg>

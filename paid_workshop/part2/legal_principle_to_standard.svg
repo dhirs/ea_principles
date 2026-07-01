@@ -1,0 +1,114 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="720">
+  <title id="ttl">From principle to testable standard</title>
+  <desc id="dsc">Three moves — decompose, crosswalk, write with a gate and evidence — convert each surviving obligation into a catalogue standard, distinct from the law and from ISO 42001.</desc>
+
+  <text x="480" y="46" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary, #141413)">From Principle to Testable Standard</text>
+  <text x="480" y="72" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">Three moves turn each surviving obligation into a catalogue standard</text>
+
+  <!-- ===== STEP CARDS ===== -->
+  <!-- arrows -->
+  <g fill="#E24B4A">
+    <path d="M312 250 l22 0 l0 -6 l14 9 l-14 9 l0 -6 l-22 0 z"/>
+    <path d="M618 250 l22 0 l0 -6 l14 9 l-14 9 l0 -6 l-22 0 z"/>
+  </g>
+
+  <!-- Card 1 DECOMPOSE -->
+  <g>
+    <rect x="40" y="108" width="272" height="286" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+    <rect x="40" y="108" width="272" height="6" rx="3" fill="#E24B4A"/>
+    <circle cx="78" cy="156" r="17" fill="#E24B4A"/>
+    <text x="78" y="162" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">1</text>
+    <text x="110" y="162" font-size="13.5" font-weight="700" letter-spacing="0.6" fill="#A32D2D">DECOMPOSE</text>
+    <line x1="62" y1="182" x2="290" y2="182" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <text x="62" y="210">Break the principle into a</text>
+      <text x="62" y="228">concrete, specific control</text>
+    </g>
+    <rect x="56" y="252" width="240" height="126" rx="9" fill="#FCEFEF"/>
+    <text x="72" y="278" font-size="10" font-weight="700" letter-spacing="0.8" fill="#A32D2D">EXAMPLE</text>
+    <g font-size="11.5" fill="var(--color-text-primary, #141413)">
+      <text x="72" y="300">"Protect personal data"</text>
+      <text x="72" y="330" font-weight="700" fill="#A32D2D">↓</text>
+      <text x="72" y="352">"Retrieval scoped to the</text>
+      <text x="72" y="368">asking user"</text>
+    </g>
+  </g>
+
+  <!-- Card 2 CROSSWALK -->
+  <g>
+    <rect x="346" y="108" width="272" height="286" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+    <rect x="346" y="108" width="272" height="6" rx="3" fill="#E24B4A"/>
+    <circle cx="384" cy="156" r="17" fill="#E24B4A"/>
+    <text x="384" y="162" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">2</text>
+    <text x="416" y="162" font-size="13.5" font-weight="700" letter-spacing="0.6" fill="#A32D2D">CROSSWALK</text>
+    <line x1="368" y1="182" x2="596" y2="182" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <text x="368" y="210">Map the control to an</text>
+      <text x="368" y="228">engineering mechanism</text>
+      <text x="368" y="246">that delivers it</text>
+    </g>
+    <rect x="362" y="262" width="240" height="116" rx="9" fill="#FCEFEF"/>
+    <text x="378" y="288" font-size="10" font-weight="700" letter-spacing="0.8" fill="#A32D2D">EXAMPLE</text>
+    <g font-size="11.5" fill="var(--color-text-primary, #141413)">
+      <text x="378" y="312">Row-level filter on the</text>
+      <text x="378" y="330">vector query, keyed to</text>
+      <text x="378" y="348">the caller's identity</text>
+    </g>
+  </g>
+
+  <!-- Card 3 WRITE -->
+  <g>
+    <rect x="652" y="108" width="272" height="286" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+    <rect x="652" y="108" width="272" height="6" rx="3" fill="#E24B4A"/>
+    <circle cx="690" cy="156" r="17" fill="#E24B4A"/>
+    <text x="690" y="162" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">3</text>
+    <text x="722" y="162" font-size="13.5" font-weight="700" letter-spacing="0.6" fill="#A32D2D">WRITE</text>
+    <line x1="674" y1="182" x2="902" y2="182" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <text x="674" y="210">Write it up with a</text>
+      <text x="674" y="228">gate + evidence</text>
+    </g>
+    <rect x="668" y="252" width="240" height="126" rx="9" fill="#FCEFEF"/>
+    <text x="684" y="278" font-size="10" font-weight="700" letter-spacing="0.8" fill="#A32D2D">EXAMPLE</text>
+    <g font-size="11.5" fill="var(--color-text-primary, #141413)">
+      <text x="684" y="300" font-weight="700">Gate:</text><text x="716" y="300">CI test — cross-user</text>
+      <text x="684" y="318">retrieval returns nothing</text>
+      <text x="684" y="346" font-weight="700">Evidence:</text><text x="742" y="346">test run +</text>
+      <text x="684" y="364">ARB sign-off record</text>
+    </g>
+  </g>
+
+  <!-- ===== NO GATE CALLOUT ===== -->
+  <rect x="40" y="416" width="880" height="52" rx="12" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1.4"/>
+  <text x="480" y="448" text-anchor="middle" font-size="16" font-weight="700" fill="#A32D2D">No gate, no standard — just a wish.</text>
+
+  <!-- ===== THREE LAYERS ===== -->
+  <text x="480" y="506" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.8" fill="var(--color-text-secondary, #3d3d3a)">ONE OBLIGATION, THREE LAYERS — DON'T COLLAPSE THEM</text>
+
+  <g fill="var(--color-text-secondary, #3d3d3a)">
+    <text x="322" y="574" text-anchor="middle" font-size="20" font-weight="700">→</text>
+    <text x="638" y="574" text-anchor="middle" font-size="20" font-weight="700">→</text>
+  </g>
+
+  <!-- layer 1: principle -->
+  <rect x="40" y="524" width="266" height="96" rx="11" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.5"/>
+  <text x="60" y="552" font-size="13" font-weight="700" fill="#544BB5">The principle</text>
+  <text x="60" y="574" font-size="11.5" fill="var(--color-text-primary, #141413)">Legal obligation — the "what"</text>
+  <text x="60" y="596" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Owner: Governance</text>
+
+  <!-- layer 2: standard -->
+  <rect x="347" y="524" width="266" height="96" rx="11" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.5"/>
+  <text x="367" y="552" font-size="13" font-weight="700" fill="#A32D2D">Our standard</text>
+  <text x="367" y="574" font-size="11.5" fill="var(--color-text-primary, #141413)">Engineering control + gate</text>
+  <text x="367" y="596" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Owner: Enterprise Architecture</text>
+
+  <!-- layer 3: iso -->
+  <rect x="654" y="524" width="266" height="96" rx="11" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.5"/>
+  <text x="674" y="552" font-size="13" font-weight="700" fill="#544BB5">ISO 42001</text>
+  <text x="674" y="574" font-size="11.5" fill="var(--color-text-primary, #141413)">Governance wrapper / evidence</text>
+  <text x="674" y="596" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Owner: Governance</text>
+
+  <text x="480" y="662" text-anchor="middle" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">The law is not the standard, and ISO 42001 is neither — each answers a different question.</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Discussion — what standard would you build to stop ungrounded answers?</title>
+<desc>A discussion prompt before the solution. The challenge: one RAG bot fabricated a statement about cover and it reached the customer; now picture every RAG system across the enterprise, each trusting the model to stay faithful with nothing verifying it. The question to the room: how would you design a standard that guarantees no ungrounded answer reaches a customer, for every RAG system, not just one? Six things to weigh, and an open space to capture the room's ideas before the proposed fix.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:38px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:16px;}
+.lbl{fill:#7D2FDB;font-size:13px;font-weight:700;letter-spacing:2px;}
+.setup{fill:#64748B;font-size:15px;}
+.q{fill:#3A445C;font-size:23px;font-weight:800;}
+.weigh{fill:#3A445C;font-size:14px;}
+.boardlbl{fill:#B07D14;font-size:13px;font-weight:700;letter-spacing:2px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="96" fill="url(#hdr)"/>
+<text x="56" y="50" class="h1">Your turn</text>
+<text x="56" y="78" class="hsub">Before we show the fix — you design the standard.</text>
+
+<!-- ===== left: the challenge + question ===== -->
+<rect x="48" y="120" width="700" height="560" rx="14" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+
+<text x="76" y="158" class="lbl">THE CHALLENGE</text>
+<text x="76" y="190" class="setup">One RAG bot stated cover the policy didn't support — and it went</text>
+<text x="76" y="212" class="setup">straight to the customer, unchecked.</text>
+<text x="76" y="234" class="setup">Now picture every RAG system in the business, each trusting the</text>
+<text x="76" y="256" class="setup">model to stay faithful, with nothing verifying it did.</text>
+
+<line x1="76" y1="278" x2="720" y2="278" stroke="#E1E6F2" stroke-width="1.3"/>
+
+<text x="76" y="320" class="q">How would you design a</text>
+<text x="76" y="350" class="q">standard that guarantees no</text>
+<text x="76" y="380" class="q"><tspan fill="#C0392B">ungrounded answer</tspan> reaches a</text>
+<text x="76" y="410" class="q">customer — for <tspan fill="#7D2FDB">every</tspan> RAG system?</text>
+
+<text x="76" y="462" class="lbl">THINGS TO WEIGH</text>
+<g>
+<circle cx="90" cy="492" r="5" fill="#7D2FDB"/>
+<text x="110" y="497" class="weigh">What gets checked between the answer and the customer?</text>
+<circle cx="90" cy="524" r="5" fill="#7D2FDB"/>
+<text x="110" y="529" class="weigh">Who decides what "grounded in the passages" means?</text>
+<circle cx="90" cy="556" r="5" fill="#7D2FDB"/>
+<text x="110" y="561" class="weigh">Checked once (pre-merge), or on every live answer (runtime)?</text>
+<circle cx="90" cy="588" r="5" fill="#7D2FDB"/>
+<text x="110" y="593" class="weigh">What's enforced automatically vs left to goodwill?</text>
+<circle cx="90" cy="620" r="5" fill="#7D2FDB"/>
+<text x="110" y="625" class="weigh">What's set centrally, and what stays with each team?</text>
+<circle cx="90" cy="652" r="5" fill="#7D2FDB"/>
+<text x="110" y="657" class="weigh">How do you measure whether the gate actually catches fabrications?</text>
+</g>
+
+<!-- ===== right: ideas board ===== -->
+<rect x="764" y="120" width="468" height="560" rx="14" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.6"/>
+<text x="792" y="158" class="boardlbl">THE ROOM'S IDEAS</text>
+<g stroke="#EAD8AE" stroke-width="1.3">
+<line x1="792" y1="206" x2="1204" y2="206"/>
+<line x1="792" y1="256" x2="1204" y2="256"/>
+<line x1="792" y1="306" x2="1204" y2="306"/>
+<line x1="792" y1="356" x2="1204" y2="356"/>
+<line x1="792" y1="406" x2="1204" y2="406"/>
+<line x1="792" y1="456" x2="1204" y2="456"/>
+<line x1="792" y1="506" x2="1204" y2="506"/>
+<line x1="792" y1="556" x2="1204" y2="556"/>
+<line x1="792" y1="606" x2="1204" y2="606"/>
+<line x1="792" y1="656" x2="1204" y2="656"/>
+</g>
+</svg>

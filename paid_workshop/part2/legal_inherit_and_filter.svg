@@ -1,0 +1,61 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="720">
+  <title id="ttl">Legal and Compliance — you inherit principles, not standards</title>
+  <desc id="dsc">Risk teams and legal counsel hand you high-level obligations; you accept them as input, then filter to the system-level, GenAI-distinctive ones before building.</desc>
+
+  <text x="480" y="46" text-anchor="middle" font-size="23" font-weight="700" fill="var(--color-text-primary, #141413)">Legal &amp; Compliance — You Inherit Principles, Not Standards</text>
+  <text x="480" y="72" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">Risk teams and counsel give you the "what" — converting it is EA's job</text>
+
+  <!-- ===== LEFT — THE HANDOFF ===== -->
+  <g>
+    <rect x="40" y="100" width="410" height="438" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+    <rect x="40" y="100" width="410" height="6" rx="3" fill="#E24B4A"/>
+    <text x="62" y="138" font-size="13" font-weight="700" letter-spacing="0.8" fill="#A32D2D">THE HANDOFF</text>
+    <rect x="356" y="122" width="76" height="21" rx="10.5" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+    <text x="394" y="136.5" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="0.5" fill="#A32D2D">INPUT</text>
+    <text x="62" y="166" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">What Risk &amp; Legal give you</text>
+    <line x1="62" y1="182" x2="428" y2="182" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="69" cy="212" r="2.6" fill="#E24B4A"/><text x="82" y="216">High-level principles &amp; obligations</text>
+      <circle cx="69" cy="240" r="2.6" fill="#E24B4A"/><text x="82" y="244">You accept them as the obligation set</text>
+      <circle cx="69" cy="268" r="2.6" fill="#E24B4A"/><text x="82" y="272">Don't re-litigate whether they apply</text>
+    </g>
+    <rect x="56" y="330" width="378" height="192" rx="10" fill="#FCEFEF"/>
+    <text x="74" y="360" font-size="11" font-weight="700" letter-spacing="1" fill="#A32D2D">THE OWNERSHIP LINE</text>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="79" cy="388" r="2.6" fill="#E24B4A"/><text x="92" y="392">Governance owns "what must be met"</text>
+      <circle cx="79" cy="416" r="2.6" fill="#E24B4A"/><text x="92" y="420">EA owns "how it's built &amp; verified"</text>
+    </g>
+    <text x="74" y="476" font-size="13.5" font-weight="700" font-style="italic" fill="#A32D2D">Their output is your input.</text>
+  </g>
+
+  <!-- ===== RIGHT — THE FILTER ===== -->
+  <g>
+    <rect x="510" y="100" width="410" height="438" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+    <rect x="510" y="100" width="410" height="6" rx="3" fill="#E24B4A"/>
+    <text x="532" y="138" font-size="13" font-weight="700" letter-spacing="0.8" fill="#A32D2D">THE FILTER</text>
+    <rect x="806" y="122" width="96" height="21" rx="10.5" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+    <text x="854" y="136.5" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="0.5" fill="#A32D2D">KEEP / DROP</text>
+    <text x="532" y="166" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">Not every principle becomes a standard</text>
+    <line x1="532" y1="182" x2="898" y2="182" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="539" cy="212" r="2.6" fill="#E24B4A"/><text x="552" y="216">Drop org-level → QMS, docs, registration</text>
+      <circle cx="539" cy="240" r="2.6" fill="#E24B4A"/><text x="552" y="244">Keep system-level → what a model implements</text>
+      <circle cx="539" cy="268" r="2.6" fill="#E24B4A"/><text x="552" y="272">Keep only GenAI-distinctive controls</text>
+    </g>
+    <rect x="526" y="330" width="378" height="192" rx="10" fill="#FCEFEF"/>
+    <text x="544" y="360" font-size="11" font-weight="700" letter-spacing="1" fill="#A32D2D">WHERE THE REST GOES</text>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="549" cy="388" r="2.6" fill="#E24B4A"/><text x="562" y="392">Org-level obligations → ISO 42001</text>
+      <circle cx="549" cy="416" r="2.6" fill="#E24B4A"/><text x="562" y="420">Generic infosec → already covered</text>
+    </g>
+    <text x="544" y="476" font-size="13.5" font-weight="700" font-style="italic" fill="#A32D2D">Filter before you build.</text>
+  </g>
+
+  <!-- ===== BOTTOM BANNER ===== -->
+  <rect x="40" y="562" width="880" height="120" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="562" width="7" height="120" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="606" text-anchor="middle" font-size="15" font-weight="700" fill="var(--color-text-primary, #141413)">You inherit principles, not standards.</text>
+  <text x="480" y="640" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Accept the obligation set, keep the system-level GenAI-distinctive ones — then convert.</text>
+</svg>

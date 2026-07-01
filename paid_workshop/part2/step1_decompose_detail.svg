@@ -1,0 +1,62 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="720">
+  <title id="ttl">Step 1 — Decompose the control into best practices</title>
+  <desc id="dsc">The control is decomposed into testable best practices, sourced from OWASP Top 10 for LLM Apps, MITRE ATLAS, and the NIST GenAI Profile — not ISO 42001. Art 15 yields six best practices B1 to B6.</desc>
+
+  <text x="480" y="44" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary, #141413)"><tspan fill="#378ADD">Step 1 · Decompose</tspan> — Break the Control into Best Practices</text>
+  <text x="480" y="70" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Turn the legal "must" into testable, enforceable BP statements</text>
+
+  <!-- input pill -->
+  <rect x="40" y="86" width="880" height="40" rx="10" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1.3"/>
+  <rect x="56" y="96" width="60" height="20" rx="10" fill="#E24B4A"/><text x="86" y="110" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">INPUT</text>
+  <text x="130" y="111" font-size="12.5" font-weight="700" fill="var(--color-text-primary, #141413)">Art 15 — "the system must resist prompt injection &amp; jailbreaks"</text>
+
+  <!-- ===== LEFT — SOURCE FRAMEWORKS ===== -->
+  <rect x="40" y="142" width="430" height="392" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.6"/>
+  <rect x="40" y="142" width="430" height="6" rx="3" fill="#378ADD"/>
+  <text x="62" y="174" font-size="13" font-weight="700" letter-spacing="0.5" fill="#185FA5">SOURCE FRAMEWORKS</text>
+  <text x="62" y="192" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">System-level technical frameworks the decomposition draws on</text>
+  <line x1="62" y1="202" x2="448" y2="202" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+  <g>
+    <text x="62" y="232" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">OWASP Top 10 for LLM Apps</text>
+    <text x="62" y="252" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">The common LLM failure classes — prompt injection,</text>
+    <text x="62" y="268" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">insecure output handling, excessive agency.</text>
+
+    <text x="62" y="308" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">MITRE ATLAS</text>
+    <text x="62" y="328" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">Adversarial ML tactics &amp; techniques — the</text>
+    <text x="62" y="344" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">"ATT&amp;CK" catalogue for attacks on AI systems.</text>
+
+    <text x="62" y="384" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">NIST GenAI Profile (AI 600-1)</text>
+    <text x="62" y="404" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">Risk-management actions specific to generative AI,</text>
+    <text x="62" y="420" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">mapped to the NIST AI RMF functions.</text>
+  </g>
+  <rect x="56" y="452" width="398" height="64" rx="10" fill="#FCEFEF"/>
+  <text x="72" y="476" font-size="12" font-weight="700" fill="#A32D2D">Not ISO 42001.</text>
+  <text x="72" y="496" font-size="11.5" fill="var(--color-text-primary, #141413)">That's the org-level management layer Governance already</text>
+  <text x="72" y="510" font-size="11.5" fill="var(--color-text-primary, #141413)">owns — using it here drags the work back up a level.</text>
+
+  <!-- ===== RIGHT — OUTPUT: BEST PRACTICES ===== -->
+  <rect x="490" y="142" width="430" height="392" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.6"/>
+  <rect x="490" y="142" width="430" height="6" rx="3" fill="#378ADD"/>
+  <text x="512" y="174" font-size="13" font-weight="700" letter-spacing="0.5" fill="#185FA5">OUTPUT · SIX BEST PRACTICES</text>
+  <text x="512" y="192" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">Each is a testable, enforceable control statement</text>
+  <line x1="512" y1="202" x2="898" y2="202" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+  <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+    <circle cx="522" cy="234" r="10" fill="#EAF3FC"/><text x="522" y="238" text-anchor="middle" font-size="10" font-weight="700" fill="#185FA5">B1</text><text x="542" y="238">Instruction hierarchy enforced</text>
+    <circle cx="522" cy="284" r="10" fill="#EAF3FC"/><text x="522" y="288" text-anchor="middle" font-size="10" font-weight="700" fill="#185FA5">B2</text><text x="542" y="282">Sanitise untrusted input —</text><text x="542" y="298">incl. indirect / RAG injection</text>
+    <circle cx="522" cy="334" r="10" fill="#EAF3FC"/><text x="522" y="338" text-anchor="middle" font-size="10" font-weight="700" fill="#185FA5">B3</text><text x="542" y="338">Output constrained to a schema / allow-list</text>
+    <circle cx="522" cy="384" r="10" fill="#EAF3FC"/><text x="522" y="388" text-anchor="middle" font-size="10" font-weight="700" fill="#185FA5">B4</text><text x="542" y="388">Downstream tools run least-privilege</text>
+    <circle cx="522" cy="434" r="10" fill="#EAF3FC"/><text x="522" y="438" text-anchor="middle" font-size="10" font-weight="700" fill="#185FA5">B5</text><text x="542" y="438">Adversarial red-team passes before deploy</text>
+    <circle cx="522" cy="484" r="10" fill="#EAF3FC"/><text x="522" y="488" text-anchor="middle" font-size="10" font-weight="700" fill="#185FA5">B6</text><text x="542" y="488">Injection attempts detected &amp; logged at runtime</text>
+  </g>
+
+  <!-- ===== BOTTOM BANNER ===== -->
+  <rect x="40" y="550" width="880" height="120" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="550" width="7" height="120" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="588" text-anchor="middle" font-size="14.5" font-weight="700" fill="var(--color-text-primary, #141413)">One legal "must" becomes six things you can actually test.</text>
+  <text x="480" y="618" text-anchor="middle" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">Decompose from OWASP / MITRE ATLAS / NIST — the frameworks that describe how AI systems fail.</text>
+  <text x="480" y="644" text-anchor="middle" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">These BPs are the raw material for Step 2, where each is crosswalked to the AWS GenAI Lens.</text>
+</svg>

@@ -1,0 +1,104 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Fix — the output grounding gate standard</title>
+<desc>The fix: route every user-facing answer through an output grounding gate with a declared fallback, so an answer unsupported by the retrieved context is blocked, not sent. The central team provides the standard guardrail wrapper, three pre-merge lints (guardrail declared, no raw output bypasses the wrapper, grounding on for every RAG path), a quarterly efficacy red-team, break-glass recourse, and one bar that no answer ships ungated. Each local team owns what grounded means for its answers, its fallback message, retrieval quality, and acting on trips and red-team findings. The standard GS2B1-01 is anchored in AWS Generative AI Lens GENSEC02-BP01, AIGP Domain IV.C, and EU AI Act Article 15.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:34px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:15px;}
+.cruxlbl{fill:#7D2FDB;font-size:12px;font-weight:700;letter-spacing:2px;}
+.crux{fill:#3A445C;font-size:18px;font-weight:700;}
+.ptitle{font-size:15px;font-weight:800;letter-spacing:1.2px;}
+.chipt{fill:#3A445C;font-size:16px;font-weight:700;}
+.chips{fill:#64748B;font-size:12.5px;}
+.fwlbl{fill:#7D2FDB;font-size:12px;font-weight:700;letter-spacing:1.5px;}
+.fwt{fill:#3A445C;font-size:12px;font-weight:700;}
+.fws{fill:#64748B;font-size:10.5px;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="84" fill="url(#hdr)"/>
+<text x="48" y="44" class="h1">Fix</text>
+<text x="48" y="70" class="hsub">Never send an unchecked answer — "people are never the test surface for harmful or misleading output."</text>
+
+<!-- crux strip -->
+<rect x="48" y="98" width="1184" height="80" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="70" y="124" class="cruxlbl">THE STANDARD, IN ONE LINE</text>
+<text x="70" y="148" class="crux">Route every user-facing answer through an output grounding gate with a declared fallback —</text>
+<text x="70" y="170" class="crux">an answer unsupported by the retrieved context is blocked and replaced, never sent.</text>
+
+<!-- ===== central panel ===== -->
+<rect x="48" y="194" width="568" height="426" rx="14" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.6"/>
+<text x="74" y="230" class="ptitle" fill="#7D2FDB">CENTRAL TEAM PROVIDES</text>
+<line x1="74" y1="242" x2="590" y2="242" stroke="#D6C6F2" stroke-width="1.2"/>
+<g>
+<circle cx="90" cy="276" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="274" class="chipt">The guardrail wrapper</text>
+<text x="112" y="294" class="chips">every response passes through it — grounding, PII, safety</text>
+<circle cx="90" cy="334" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="332" class="chipt">Three pre-merge lints</text>
+<text x="112" y="352" class="chips">declared · no raw output bypasses it · grounding on for RAG</text>
+<circle cx="90" cy="392" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="390" class="chipt">A quarterly efficacy red-team</text>
+<text x="112" y="410" class="chips">proves the gate actually catches fabrications — lints can't</text>
+<circle cx="90" cy="450" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="448" class="chipt">Break-glass + SLA'd review</text>
+<text x="112" y="468" class="chips">a false block never costs a weekend — recourse is owned</text>
+<circle cx="90" cy="508" r="5.5" fill="#7D2FDB"/>
+<text x="112" y="506" class="chipt">One bar: nothing ships ungated</text>
+<text x="112" y="526" class="chips">no user-facing answer reaches a customer unchecked</text>
+</g>
+
+<!-- center seam -->
+<line x1="640" y1="210" x2="640" y2="604" stroke="#E1E6F2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<circle cx="640" cy="407" r="24" fill="#fff" stroke="#E1E6F2" stroke-width="1.5"/>
+<path d="M640 383 A24 24 0 0 1 640 431 Z" fill="#E8B23A" opacity="0.85"/>
+<path d="M640 383 A24 24 0 0 0 640 431 Z" fill="#7D2FDB" opacity="0.85"/>
+<text x="640" y="411" text-anchor="middle" fill="#3A445C" font-size="11" font-weight="800">vs</text>
+
+<!-- ===== local panel ===== -->
+<rect x="664" y="194" width="568" height="426" rx="14" fill="#FBF6EC" stroke="#E8B23A" stroke-width="1.6"/>
+<text x="690" y="230" class="ptitle" fill="#B07D14">EACH LOCAL TEAM OWNS</text>
+<line x1="690" y1="242" x2="1206" y2="242" stroke="#EFD9A6" stroke-width="1.2"/>
+<g>
+<circle cx="706" cy="276" r="5.5" fill="#E8B23A"/>
+<text x="728" y="274" class="chipt">What "grounded" means here</text>
+<text x="728" y="294" class="chips">the retrieved context an answer must stick to</text>
+<circle cx="706" cy="334" r="5.5" fill="#E8B23A"/>
+<text x="728" y="332" class="chipt">The on-trip fallback</text>
+<text x="728" y="352" class="chips">what the customer sees when an answer is blocked</text>
+<circle cx="706" cy="392" r="5.5" fill="#E8B23A"/>
+<text x="728" y="390" class="chipt">Retrieval quality</text>
+<text x="728" y="410" class="chips">the gate can't ground an answer in the wrong documents</text>
+<circle cx="706" cy="450" r="5.5" fill="#E8B23A"/>
+<text x="728" y="448" class="chipt">Wiring grounding on</text>
+<text x="728" y="468" class="chips">every RAG path routed through the gate</text>
+<circle cx="706" cy="508" r="5.5" fill="#E8B23A"/>
+<text x="728" y="506" class="chipt">Acting on trips + red-team findings</text>
+<text x="728" y="526" class="chips">a rising block-rate is a signal, not noise</text>
+</g>
+
+<!-- ===== framework anchors strip ===== -->
+<rect x="48" y="634" width="1184" height="66" rx="12" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="70" y="662" class="fwlbl">ANCHORED IN</text>
+<text x="70" y="682" fill="#3A445C" font-size="13" font-weight="800">GS2B1-01</text>
+
+<rect x="190" y="648" width="330" height="40" rx="8" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.4"/>
+<text x="206" y="666" class="fwt" fill="#7D2FDB">AWS Generative AI Lens · GENSEC02-BP01</text>
+<text x="206" y="681" class="fws">primary — "guardrails to mitigate harmful or incorrect responses"</text>
+
+<rect x="532" y="648" width="230" height="40" rx="8" fill="#fff" stroke="#E1E6F2" stroke-width="1.4"/>
+<text x="548" y="666" class="fwt">AIGP · Domain IV.C</text>
+<text x="548" y="681" class="fws">governing deployment &amp; use</text>
+
+<rect x="774" y="648" width="320" height="40" rx="8" fill="#fff" stroke="#E1E6F2" stroke-width="1.4"/>
+<text x="790" y="666" class="fwt">EU AI Act · Article 15</text>
+<text x="790" y="681" class="fws">grounding (Ctrl #3) + output safety (Ctrl #4), high-risk</text>
+</svg>

@@ -1,0 +1,92 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="720">
+  <title id="ttl">Legal and Compliance — from inherited principles to convertible standards</title>
+  <desc id="dsc">A left-to-right pipeline: Risk and Legal produce an obligation set, which is handed to Enterprise Architecture; EA filters to the system-level, GenAI-distinctive obligations and converts them, while org-level obligations branch off to ISO 42001.</desc>
+
+  <text x="480" y="46" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary, #141413)">You Inherit Principles, Not Standards</text>
+  <text x="480" y="72" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">The obligation set crosses from Governance to EA — EA filters, then converts</text>
+
+  <!-- zone labels -->
+  <text x="240" y="112" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.8" fill="#544BB5">GOVERNANCE / RISK · OWNS THE "WHAT"</text>
+  <text x="672" y="112" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="0.8" fill="#A32D2D">ENTERPRISE ARCHITECTURE · OWNS THE "HOW"</text>
+
+  <!-- hand-off boundary -->
+  <line x1="450" y1="150" x2="450" y2="366" stroke="#7F77DD" stroke-width="1.6" stroke-dasharray="4 5"/>
+  <rect x="406" y="124" width="88" height="24" rx="12" fill="#EEEDFA" stroke="#7F77DD" stroke-width="1"/>
+  <text x="450" y="140" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="0.6" fill="#544BB5">HAND-OFF</text>
+
+  <!-- arrows -->
+  <g fill="#E24B4A" stroke="#E24B4A" stroke-width="2.4">
+    <line x1="222" y1="253" x2="240" y2="253"/>
+    <path d="M240 247 L251 253 L240 259 Z" stroke="none"/>
+    <line x1="654" y1="253" x2="670" y2="253"/>
+    <path d="M670 247 L681 253 L670 259 Z" stroke="none"/>
+    <!-- down branch to dropped -->
+    <line x1="562" y1="350" x2="562" y2="418"/>
+    <path d="M556 418 L562 429 L568 418 Z" stroke="none"/>
+  </g>
+  <!-- hand-off arrow (purple, crosses the boundary) -->
+  <g fill="#7F77DD" stroke="#7F77DD" stroke-width="2.4">
+    <line x1="424" y1="253" x2="462" y2="253"/>
+    <path d="M462 247 L473 253 L462 259 Z" stroke="none"/>
+  </g>
+
+  <!-- NODE 1 — RISK & LEGAL -->
+  <rect x="40" y="178" width="180" height="150" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.6"/>
+  <rect x="40" y="178" width="180" height="6" rx="3" fill="#7F77DD"/>
+  <text x="58" y="212" font-size="12.5" font-weight="700" letter-spacing="0.6" fill="#544BB5">RISK &amp; LEGAL</text>
+  <g font-size="12" fill="var(--color-text-primary, #141413)">
+    <text x="58" y="240">High-level principles</text>
+    <text x="58" y="258">&amp; obligations</text>
+  </g>
+  <text x="58" y="308" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">Owner: Governance</text>
+
+  <!-- NODE 2 — OBLIGATION SET -->
+  <rect x="252" y="178" width="168" height="150" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="270" y="212" font-size="12.5" font-weight="700" letter-spacing="0.6" fill="#544BB5">OBLIGATION SET</text>
+  <g font-size="12" fill="var(--color-text-primary, #141413)">
+    <text x="270" y="240">The concrete list of</text>
+    <text x="270" y="258">"musts"</text>
+  </g>
+  <text x="270" y="308" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">= the input EA receives</text>
+
+  <!-- NODE 3 — FILTER -->
+  <rect x="474" y="160" width="176" height="186" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.8"/>
+  <rect x="474" y="160" width="176" height="6" rx="3" fill="#E24B4A"/>
+  <text x="492" y="192" font-size="13" font-weight="700" letter-spacing="0.6" fill="#A32D2D">FILTER</text>
+  <line x1="492" y1="204" x2="632" y2="204" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+  <g font-size="11.5" fill="var(--color-text-primary, #141413)">
+    <text x="492" y="228" font-weight="700" fill="#1F7A46">KEEP</text>
+    <text x="492" y="246">system-level +</text>
+    <text x="492" y="262">GenAI-distinctive</text>
+    <text x="492" y="298" font-weight="700" fill="#A32D2D">DROP</text>
+    <text x="492" y="316">org-level +</text>
+    <text x="492" y="332">generic infosec</text>
+  </g>
+
+  <!-- NODE 4 — CONVERT -->
+  <rect x="682" y="178" width="198" height="150" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+  <rect x="682" y="178" width="198" height="6" rx="3" fill="#E24B4A"/>
+  <text x="700" y="212" font-size="12.5" font-weight="700" letter-spacing="0.6" fill="#A32D2D">CONVERT</text>
+  <g font-size="12" fill="var(--color-text-primary, #141413)">
+    <text x="700" y="240">Each obligation →</text>
+    <text x="700" y="258">a testable standard</text>
+  </g>
+  <text x="700" y="308" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">Owner: Enterprise Architecture</text>
+
+  <!-- DROP BOX -->
+  <rect x="412" y="430" width="300" height="132" rx="11" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="430" y="460" font-size="11.5" font-weight="700" letter-spacing="0.7" fill="#544BB5">DROPPED FROM THE CATALOGUE</text>
+  <g font-size="12" fill="var(--color-text-primary, #141413)">
+    <circle cx="437" cy="486" r="2.6" fill="#7F77DD"/><text x="450" y="490">Org-level → ISO 42001 (Governance)</text>
+    <circle cx="437" cy="512" r="2.6" fill="#7F77DD"/><text x="450" y="516">Generic infosec → already covered</text>
+    <circle cx="437" cy="538" r="2.6" fill="#7F77DD"/><text x="450" y="542">Don't re-litigate whether it applies</text>
+  </g>
+
+  <!-- BOTTOM BANNER -->
+  <rect x="40" y="600" width="880" height="84" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="600" width="7" height="84" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="634" text-anchor="middle" font-size="15" font-weight="700" fill="var(--color-text-primary, #141413)">You inherit principles, not standards.</text>
+  <text x="480" y="662" text-anchor="middle" font-size="13" fill="var(--color-text-secondary, #3d3d3a)">Accept the obligation set, keep the system-level GenAI-distinctive few — then convert.</text>
+</svg>

@@ -1,0 +1,95 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Issue — one fabricated answer about cover is a regulatory event</title>
+<desc>A fabricated answer that a customer is covered abroad, when the policy says otherwise, triggers a harm chain: the customer relies on it, the claim is refused, the firm may be bound to honour it or pay redress via the Financial Ombudsman, and at scale it is systemic rather than a one-off. It may breach FCA Consumer Duty (communications must be clear, fair and not misleading — the FCA confirms this covers chatbot output), FCA insurance conduct rules (ICOBS), the UK GDPR accuracy principle where it states something false about the customer's own cover, and contract/misrepresentation law. The FCA is technology-neutral: AI answers get no exemption.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:38px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:15px;}
+.ptitle{font-size:15px;font-weight:800;letter-spacing:1px;}
+.num{fill:#fff;font-size:13px;font-weight:800;}
+.step{fill:#3A445C;font-size:13.5px;font-weight:700;}
+.steps{fill:#64748B;font-size:12px;}
+.regt{fill:#3A445C;font-size:14px;font-weight:700;}
+.regs{fill:#64748B;font-size:11.5px;}
+.mut{fill:#94A3B8;font-size:11.5px;font-style:italic;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="96" fill="url(#hdr)"/>
+<text x="56" y="50" class="h1">Issue</text>
+<text x="56" y="78" class="hsub">One fabricated sentence about cover isn't a bad answer — it's a regulatory event.</text>
+
+<!-- ===== Left: the harm chain ===== -->
+<rect x="48" y="116" width="640" height="504" rx="14" fill="#FBEEEC" stroke="#C0392B" stroke-width="1.6"/>
+<text x="74" y="150" class="ptitle" fill="#C0392B">THE HARM CHAIN</text>
+<line x1="74" y1="162" x2="662" y2="162" stroke="#F2C9C2" stroke-width="1.2"/>
+
+<!-- quote -->
+<rect x="74" y="176" width="588" height="76" rx="10" fill="#fff" stroke="#C0392B" stroke-width="1.4"/>
+<text x="92" y="204" fill="#3A445C" font-size="16" font-weight="700" font-style="italic">"Yes — your policy covers you while abroad."</text>
+<text x="92" y="230" class="regs" fill="#C0392B">…the policy wording says it does not. Fluent, confident, and fabricated.</text>
+
+<!-- steps -->
+<circle cx="92" cy="292" r="14" fill="#C0392B"/><text x="92" y="297" text-anchor="middle" class="num">1</text>
+<text x="120" y="288" class="step">The customer relies on it</text>
+<text x="120" y="308" class="steps">books travel, or makes a claim, assuming they're covered</text>
+
+<circle cx="92" cy="356" r="14" fill="#C0392B"/><text x="92" y="361" text-anchor="middle" class="num">2</text>
+<text x="120" y="352" class="step">The claim is refused</text>
+<text x="120" y="372" class="steps">financial loss, distress, and a formal complaint</text>
+
+<circle cx="92" cy="420" r="14" fill="#C0392B"/><text x="92" y="425" text-anchor="middle" class="num">3</text>
+<text x="120" y="416" class="step">The firm may be on the hook</text>
+<text x="120" y="436" class="steps">bound to honour what it said, or pay redress (Financial Ombudsman)</text>
+
+<circle cx="92" cy="484" r="14" fill="#C0392B"/><text x="92" y="489" text-anchor="middle" class="num">4</text>
+<text x="120" y="480" class="step">At scale, it's systemic</text>
+<text x="120" y="500" class="steps">not one bad answer — thousands a day, the same silent flaw</text>
+
+<line x1="74" y1="536" x2="662" y2="536" stroke="#F2C9C2" stroke-width="1.2"/>
+<text x="74" y="564" fill="#C0392B" font-size="13.5" font-weight="800">The answer is effectively a statement about the customer's contract.</text>
+<text x="74" y="588" fill="#3A445C" font-size="13">Get it wrong and you haven't disappointed a customer — you've mis-stated cover,</text>
+<text x="74" y="608" fill="#3A445C" font-size="13">created liability, and produced a compliance breach — invisibly, at volume.</text>
+
+<!-- ===== Right: what it may violate ===== -->
+<rect x="704" y="116" width="528" height="504" rx="14" fill="#F4F6FB" stroke="#E1E6F2" stroke-width="1.5"/>
+<text x="728" y="150" class="ptitle" fill="#7D2FDB">WHAT IT MAY VIOLATE</text>
+<line x1="728" y1="162" x2="1208" y2="162" stroke="#E1E6F2" stroke-width="1.2"/>
+
+<rect x="728" y="176" width="480" height="70" rx="9" fill="#fff" stroke="#E1E6F2" stroke-width="1.3"/>
+<text x="746" y="200" class="regt">FCA Consumer Duty  <tspan class="regs">(PRIN 2A)</tspan></text>
+<text x="746" y="220" class="regs">Communications must be clear, fair &amp; not misleading —</text>
+<text x="746" y="236" class="regs">the FCA confirms this covers chatbot output directly.</text>
+
+<rect x="728" y="254" width="480" height="62" rx="9" fill="#fff" stroke="#E1E6F2" stroke-width="1.3"/>
+<text x="746" y="278" class="regt">FCA insurance conduct  <tspan class="regs">(ICOBS)</tspan></text>
+<text x="746" y="300" class="regs">A customer must not be misled about their cover.</text>
+
+<rect x="728" y="324" width="480" height="70" rx="9" fill="#fff" stroke="#E1E6F2" stroke-width="1.3"/>
+<text x="746" y="348" class="regt">UK GDPR accuracy  <tspan class="regs">(Art. 5(1)(d), Art. 16)</tspan></text>
+<text x="746" y="368" class="regs">A false statement about the customer's own cover is</text>
+<text x="746" y="384" class="regs">inaccurate personal data — must be accurate, rectified.</text>
+
+<rect x="728" y="402" width="480" height="62" rx="9" fill="#fff" stroke="#E1E6F2" stroke-width="1.3"/>
+<text x="746" y="426" class="regt">Contract law / misrepresentation</text>
+<text x="746" y="448" class="regs">The firm may be legally bound by what it told the customer.</text>
+
+<rect x="728" y="472" width="480" height="70" rx="9" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.4"/>
+<text x="746" y="496" class="regt" fill="#7D2FDB">The control that answers all of these</text>
+<text x="746" y="516" class="regs">Standard GS2B1-01 — output grounding gate</text>
+<text x="746" y="532" class="regs">AWS Generative AI Lens · GENSEC02-BP01</text>
+
+<text x="728" y="574" class="mut">The FCA is technology-neutral — no AI-specific rulebook.</text>
+<text x="728" y="594" class="mut">A chatbot's words are the firm's words; existing rules apply in full.</text>
+
+<!-- footer -->
+<text x="1208" y="656" text-anchor="end" class="mut">Regulatory positions verified against FCA &amp; ICO guidance, 2026 — not legal advice.</text>
+</svg>

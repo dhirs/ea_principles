@@ -1,0 +1,63 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="720">
+  <title id="ttl">The Lens gives structure — you set the line</title>
+  <desc id="dsc">Cost maps to the Lens's dedicated Cost Optimization pillar; Customer Experience is assembled from four pillars. The Lens supplies the checklist; you author the threshold.</desc>
+
+  <text x="480" y="46" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary, #141413)">AWS GenAI Lens — Structure for Cost &amp; CX, You Set the Line</text>
+  <text x="480" y="72" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">For Cost and CX, adopt the checklist; author the threshold yourself</text>
+
+  <!-- ===== LEFT — COST ===== -->
+  <g>
+    <rect x="40" y="100" width="410" height="438" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#EF9F27" stroke-width="1.6"/>
+    <rect x="40" y="100" width="410" height="6" rx="3" fill="#EF9F27"/>
+    <text x="62" y="138" font-size="13" font-weight="700" letter-spacing="0.8" fill="#854F0B">COST</text>
+    <rect x="330" y="122" width="102" height="21" rx="10.5" fill="#FDF1DD" stroke="#EF9F27" stroke-width="1"/>
+    <text x="381" y="136.5" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="0.5" fill="#854F0B">ONE PILLAR</text>
+    <text x="62" y="166" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">Dedicated Cost Optimization pillar → ready-made slots</text>
+    <line x1="62" y1="182" x2="428" y2="182" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="69" cy="212" r="2.6" fill="#EF9F27"/><text x="82" y="216">Select cost-optimized models</text>
+      <circle cx="69" cy="240" r="2.6" fill="#EF9F27"/><text x="82" y="244">Balance cost vs. inference performance</text>
+      <circle cx="69" cy="268" r="2.6" fill="#EF9F27"/><text x="82" y="272">Engineer prompts for cost (length / size)</text>
+      <circle cx="69" cy="296" r="2.6" fill="#EF9F27"/><text x="82" y="300">Optimize vector stores &amp; agent workflows</text>
+    </g>
+    <rect x="56" y="330" width="378" height="192" rx="10" fill="#FDF1DD"/>
+    <text x="74" y="360" font-size="11" font-weight="700" letter-spacing="1" fill="#854F0B">YOU SET THE LINE</text>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="79" cy="388" r="2.6" fill="#EF9F27"/><text x="92" y="392">e.g. ≤ 2k tokens per call</text>
+      <circle cx="79" cy="416" r="2.6" fill="#EF9F27"/><text x="92" y="420">e.g. premium tier must be justified</text>
+    </g>
+    <text x="74" y="476" font-size="13.5" font-weight="700" font-style="italic" fill="#854F0B">Adopt the checklist · author the gate</text>
+  </g>
+
+  <!-- ===== RIGHT — CUSTOMER EXPERIENCE ===== -->
+  <g>
+    <rect x="510" y="100" width="410" height="438" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.6"/>
+    <rect x="510" y="100" width="410" height="6" rx="3" fill="#378ADD"/>
+    <text x="532" y="138" font-size="13" font-weight="700" letter-spacing="0.8" fill="#185FA5">CUSTOMER EXPERIENCE</text>
+    <rect x="810" y="122" width="92" height="21" rx="10.5" fill="#EAF3FC" stroke="#378ADD" stroke-width="1"/>
+    <text x="856" y="136.5" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="0.5" fill="#185FA5">ASSEMBLED</text>
+    <text x="532" y="166" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">No single pillar → gather structure from four</text>
+    <line x1="532" y1="182" x2="898" y2="182" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="539" cy="212" r="2.6" fill="#378ADD"/><text x="552" y="216">Performance Efficiency → latency</text>
+      <circle cx="539" cy="240" r="2.6" fill="#378ADD"/><text x="552" y="244">Operational Excellence → output quality, drift</text>
+      <circle cx="539" cy="268" r="2.6" fill="#378ADD"/><text x="552" y="272">Reliability → consistency, degradation</text>
+      <circle cx="539" cy="296" r="2.6" fill="#378ADD"/><text x="552" y="300">Responsible AI → hallucination, safety, trust</text>
+    </g>
+    <rect x="526" y="330" width="378" height="192" rx="10" fill="#EAF3FC"/>
+    <text x="544" y="360" font-size="11" font-weight="700" letter-spacing="1" fill="#185FA5">YOU SET THE LINE</text>
+    <g font-size="12.5" fill="var(--color-text-primary, #141413)">
+      <circle cx="549" cy="388" r="2.6" fill="#378ADD"/><text x="562" y="392">e.g. p95 latency &lt; 3s</text>
+      <circle cx="549" cy="416" r="2.6" fill="#378ADD"/><text x="562" y="420">e.g. hallucination rate &lt; 1%</text>
+    </g>
+    <text x="544" y="476" font-size="13.5" font-weight="700" font-style="italic" fill="#185FA5">Adopt the checklist · author the gate</text>
+  </g>
+
+  <!-- ===== BOTTOM BANNER ===== -->
+  <rect x="40" y="562" width="880" height="120" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="562" width="7" height="120" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="606" text-anchor="middle" font-size="15" font-weight="700" fill="var(--color-text-primary, #141413)">The Lens gives you the shape and the checklist — never your org-specific number.</text>
+  <text x="480" y="640" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Structure is inherited; the threshold is authored. Adopt the pattern, then set the gate.</text>
+</svg>

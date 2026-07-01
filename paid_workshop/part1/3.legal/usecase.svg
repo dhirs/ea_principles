@@ -1,0 +1,101 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img">
+<title>Use Case background — Legal &amp; Risk: RAG policy-support bot at a large insurer</title>
+<desc>Background for the Legal and Risk use case. The client is a large UK life and pensions insurer (illustrative, not based on any specific company): ~12M customers, ~£280bn assets under administration, document- and contact-driven. The AI is a RAG policy-support bot that retrieves passages from the insurer's document store and generates answers about a customer's cover. Because its answers are effectively statements about a customer's contract, a fabricated answer is a legal and regulatory exposure — the risk this use case exists to contain.</desc>
+
+<defs>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#7D2FDB"/><stop offset="1" stop-color="#9B57E8"/>
+</linearGradient>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+<path d="M0,0 L8,3 L0,6 Z" fill="#64748B"/></marker>
+</defs>
+
+<style>
+.h1{fill:#fff;font-size:32px;font-weight:800;}
+.hsub{fill:#E7D8FB;font-size:15px;}
+.card{fill:#F4F6FB;stroke:#E1E6F2;stroke-width:1.5;}
+.ptitle{font-size:15px;font-weight:800;letter-spacing:1px;}
+.chip{fill:#64748B;font-size:11.5px;font-style:italic;}
+.k{fill:#3A445C;font-size:15px;font-weight:700;}
+.v{fill:#64748B;font-size:13px;}
+.step{fill:#3A445C;font-size:12.5px;font-weight:700;}
+.steps{fill:#64748B;font-size:11px;}
+.redt{fill:#C0392B;font-size:15px;font-weight:800;letter-spacing:1px;}
+.red{fill:#3A445C;font-size:13.5px;}
+.mut{fill:#94A3B8;font-size:11.5px;font-style:italic;}
+</style>
+
+<rect width="1280" height="720" fill="#fff"/>
+
+<!-- header -->
+<rect x="0" y="0" width="1280" height="96" fill="url(#hdr)"/>
+<text x="56" y="44" class="h1">Use Case — Legal &amp; Risk: the policy bot</text>
+<text x="56" y="72" class="hsub">Background · who the client is, and what the AI is trying to do · Standard GS2B1-01</text>
+
+<!-- ===== Left: the client ===== -->
+<rect x="48" y="116" width="560" height="376" rx="14" class="card"/>
+<text x="74" y="150" class="ptitle" fill="#7D2FDB">THE CLIENT</text>
+<text x="74" y="170" class="chip">illustrative — a large UK life &amp; pensions insurer (not a specific company)</text>
+<line x1="74" y1="184" x2="582" y2="184" stroke="#E1E6F2" stroke-width="1.2"/>
+
+<circle cx="88" cy="214" r="5" fill="#7D2FDB"/>
+<text x="108" y="212" class="k">~12M customers</text>
+<text x="108" y="231" class="v">life, pensions &amp; savings</text>
+
+<circle cx="88" cy="262" r="5" fill="#7D2FDB"/>
+<text x="108" y="260" class="k">~£280bn assets under administration</text>
+<text x="108" y="279" class="v">document- &amp; contact-heavy business</text>
+
+<circle cx="88" cy="310" r="5" fill="#7D2FDB"/>
+<text x="108" y="308" class="k">Products governed by policy wordings</text>
+<text x="108" y="327" class="v">terms, conditions &amp; regulatory rules</text>
+
+<circle cx="88" cy="358" r="5" fill="#7D2FDB"/>
+<text x="108" y="356" class="k">Same client as the CE &amp; Cost cases</text>
+<text x="108" y="375" class="v">one enterprise, three very different AI shapes</text>
+
+<text x="74" y="430" class="v" font-weight="700" fill="#7D2FDB">Why legal exposure is real here:</text>
+<text x="74" y="452" class="v">what the bot tells a customer about their cover is</text>
+<text x="74" y="472" class="v">a statement about their contract — not just support.</text>
+
+<!-- ===== Right: what the AI does ===== -->
+<rect x="660" y="116" width="572" height="376" rx="14" class="card"/>
+<text x="686" y="150" class="ptitle" fill="#7D2FDB">WHAT THE AI DOES</text>
+<text x="686" y="170" class="chip">a RAG policy-support bot — retrieve, then answer</text>
+<line x1="686" y1="184" x2="1206" y2="184" stroke="#E1E6F2" stroke-width="1.2"/>
+
+<!-- RAG mini-flow -->
+<rect x="686" y="200" width="150" height="56" rx="9" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="761" y="224" text-anchor="middle" class="step">Customer asks</text>
+<text x="761" y="242" text-anchor="middle" class="steps">"am I covered abroad?"</text>
+<line x1="836" y1="228" x2="864" y2="228" stroke="#64748B" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="866" y="200" width="150" height="56" rx="9" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="941" y="220" text-anchor="middle" class="step">1 · Retrieve</text>
+<text x="941" y="238" text-anchor="middle" class="steps">policy passages from</text>
+<text x="941" y="251" text-anchor="middle" class="steps">the document store</text>
+<line x1="1016" y1="228" x2="1044" y2="228" stroke="#64748B" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="1046" y="200" width="158" height="56" rx="9" fill="#EFEAFA" stroke="#7D2FDB" stroke-width="1.3"/>
+<text x="1125" y="220" text-anchor="middle" class="step">2 · Generate</text>
+<text x="1125" y="238" text-anchor="middle" class="steps">an answer grounded</text>
+<text x="1125" y="251" text-anchor="middle" class="steps">in those passages</text>
+
+<text x="686" y="292" class="k">It handles routine policy questions:</text>
+<circle cx="700" cy="316" r="4.5" fill="#7D2FDB"/><text x="716" y="320" class="v">"is dental included?"</text>
+<circle cx="700" cy="342" r="4.5" fill="#7D2FDB"/><text x="716" y="346" class="v">"what's my excess?"</text>
+<circle cx="700" cy="368" r="4.5" fill="#7D2FDB"/><text x="716" y="372" class="v">"am I covered abroad?"</text>
+
+<text x="686" y="430" class="v" font-weight="700" fill="#7D2FDB">Goal:</text>
+<text x="724" y="430" class="v">instant, accurate answers on cover, so customers</text>
+<text x="686" y="452" class="v">don't wait for an advisor — at scale, over the</text>
+<text x="686" y="472" class="v">insurer's own policy documents.</text>
+
+<!-- ===== Bottom: the risk ===== -->
+<rect x="48" y="508" width="1184" height="168" rx="14" fill="#FBEEEC" stroke="#C0392B" stroke-width="1.6"/>
+<text x="74" y="542" class="redt">THE RISK  —  why this is a Legal &amp; Risk case</text>
+<line x1="74" y1="556" x2="1206" y2="556" stroke="#F2C9C2" stroke-width="1.2"/>
+
+<text x="74" y="586" class="red"><tspan fill="#C0392B" font-weight="800">›</tspan>  The bot's answers are effectively <tspan font-weight="700">statements about a customer's contract</tspan> — get it wrong and the business may be liable, or has mis-stated cover.</text>
+<text x="74" y="616" class="red"><tspan fill="#C0392B" font-weight="800">›</tspan>  The RAG danger is a <tspan font-weight="700">fabricated (hallucinated) answer</tspan>: a fluent, confident reply that isn't supported by the retrieved documents.</text>
+<text x="74" y="646" class="red"><tspan fill="#C0392B" font-weight="800">›</tspan>  Asked about travel, it states cover applies abroad — when the policy says no. It looks authoritative and is completely wrong.</text>
+<text x="1206" y="668" text-anchor="end" class="mut">that single sentence is the risk this use case exists to contain</text>
+</svg>
