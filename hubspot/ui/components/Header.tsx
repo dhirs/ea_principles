@@ -1,7 +1,24 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Header() {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // No chrome on the login screen.
+  if (pathname === "/login") return null;
+
+  async function logout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/login");
+    router.refresh();
+  }
+
   return (
     <header className="h-16 bg-card flex items-center px-8 sticky top-0 z-30 shadow-md">
       <Link
@@ -19,7 +36,9 @@ export function Header() {
         />
       </Link>
       <div className="flex-1" />
-      <span className="text-sm text-muted-foreground">Leads database</span>
+      <Button variant="ghost" size="sm" onClick={logout} className="text-muted-foreground">
+        <LogOut className="h-4 w-4" /> Log out
+      </Button>
     </header>
   );
 }

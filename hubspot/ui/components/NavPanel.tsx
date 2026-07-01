@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, CalendarDays } from "lucide-react";
+import { Users, CalendarDays, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
   { href: "/", label: "Leads", icon: Users },
   { href: "/events", label: "Events", icon: CalendarDays },
+  { href: "/reports", label: "Reports", icon: BarChart3 },
 ];
 
 // Slim left menu. Only Leads / Events. When the already-active item is clicked,
