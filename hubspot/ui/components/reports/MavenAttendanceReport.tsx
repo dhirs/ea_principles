@@ -10,7 +10,7 @@ const PAGE_SIZES = [10, 50, 100];
 
 type EventOpt = { id: string; event_name: string; date_of_event: string | null };
 
-type Record = {
+type AttendanceRecord = {
   email: string;
   name: string;
   company: string | null;
@@ -25,7 +25,7 @@ type Record = {
 export function MavenAttendanceReport() {
   const [events, setEvents] = useState<EventOpt[]>([]);
   const [eventId, setEventId] = useState("");
-  const [records, setRecords] = useState<Record[]>([]);
+  const [records, setRecords] = useState<AttendanceRecord[]>([]);
   const [attendedCount, setAttendedCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [q, setQ] = useState("");

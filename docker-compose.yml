@@ -8,3 +8,19 @@ services:
       - "127.0.0.1:3000:3000"
     env_file:
       - ./s3-json-viewer/.env.local
+
+  crm:
+    build:
+      context: .
+      dockerfile: Dockerfile.crm
+    image: crm_leads:latest
+    container_name: crm_leads
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3005:3001"
+    env_file:
+      - ./.env
+    # lib/supabase.ts reads the repo-root .env by FILE (process.cwd()/../../.env),
+    # not process.env. In-container cwd is /app, so that path is /.env — mount it.
+    volumes:
+      - ./.env:/.env:ro

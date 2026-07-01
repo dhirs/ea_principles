@@ -46,7 +46,8 @@ export async function PATCH(req: NextRequest) {
   }
 
   // Invalidate the cached list/stats so the table reflects the new seg.
-  revalidateTag("leads");
+  // Next 16 requires a cache-life profile; "max" invalidates all "leads" entries.
+  revalidateTag("leads", "max");
 
   // Return the recomputed row (incl. generated `seg`).
   return NextResponse.json(rows[0]);
