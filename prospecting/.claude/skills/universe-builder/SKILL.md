@@ -52,10 +52,20 @@ Read `references/apollo-notes.md` for field-level behavior before pruning. Drop 
 - Wrong geography: HQ location is loose (foreign HQs with US offices pass the filter) — verify on keepers
 - Obvious junk: staffing agencies, media, associations that slipped through
 
-### Deliver
-Write survivors to a spreadsheet (xlsx, or the user's existing universe file if one exists — append and dedupe by domain). Columns: company, domain, employee count, revenue, NAICS, HQ location, parent (if any), 6/12/24-month headcount growth, Apollo org id, status (qualified / flagged + reason), date added.
+### Deliver & store — three sinks, then denormalize
+The audit trail and the target list are NOT the same artifact. Keep everything locally; put only clean rows in the database.
 
-Report: searched N pages, X raw, Y survived, hit rate, what was dropped and why. Real numbers, never summaries of what you "would" do.
+1. **Raw JSON (local, EVERYTHING):** every organization Apollo returned, all fields verbatim, append-only, at `apollo_companies/<date>/page-N.json`. Never filtered.
+2. **CSV (local, EVERYTHING):** every company — qualified AND flagged AND dropped — each with `status` and `reason` columns, at `apollo_companies/<date>/universe_all_<date>.csv`. The human-review artifact. Columns: company, domain, employee count, revenue, NAICS, HQ location, parent (if any), 6/12/24-month headcount growth, Apollo org id, status, reason, date added.
+3. **Supabase `apollo_company_universe` (QUALIFIED ONLY):** insert ONLY rows whose status is `qualified` (in-band revenue, independent, right geography, NAICS confirmed). NEVER insert dropped or flagged rows — the DB is the clean target list, not the audit trail. Set `raw_file` to the source page and `products.<product>` to `{"status":"qualified","reason":"...","matched_naics":"...","added":"<date>"}`. Upsert on `apollo_org_id` with ON CONFLICT DO NOTHING.
+
+**After every insert, denormalize NAICS category text onto the new rows** — NAICS codes never change, so store the text on the row and skip the join at read time. From reference table `apollo_naics` (full 2022 NAICS + the legacy 2017 codes Apollo still returns), set on each newly inserted company:
+- `matched_naics_title` and `matched_naics_sector` — join `apollo_naics` on `products->'<product>'->>'matched_naics'`;
+- `naics_titles` (text[]) — aligned to `naics[]` via `unnest(naics) WITH ORDINALITY` + `array_agg(title ORDER BY ord)`.
+- **NAICS hierarchy of the matched code (10 cols):** decompose `matched_naics` into its 5 levels and store code+title for each — `sector_code`/`sector_title`, `subsector_code`/`subsector_title`, `industry_group_code`/`industry_group_title`, `naics_industry_code`/`naics_industry_title`, `national_industry_code`/`national_industry_title`. Derive each level code by prefix length (sector = range-aware first 2 digits: 31-33, 44-45, 48-49; subsector = first 3; industry group = first 4; NAICS industry = first 5; national industry = first 6, NULL when the matched code is only 5 digits) and LEFT JOIN `apollo_naics` per level for the title.
+If `apollo_naics` does not exist yet, build/refresh it first (see `naics_reference/README.md`), then denormalize. This step is not optional — a row is not "done" until its category text is populated.
+
+Report: searched N pages, X raw, Y qualified (→ DB), Z flagged/dropped (→ CSV only), hit rate, what was dropped and why. Real numbers, never summaries of what you "would" do.
 
 ## Standing exclusions
 
