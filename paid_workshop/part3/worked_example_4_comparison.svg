@@ -1,0 +1,92 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 780" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="780">
+  <title id="ttl">Prioritization Verdict — GS1B3-01 vs GC3B3-01</title>
+  <desc id="dsc">Side-by-side scores. GS1B3-01: criticality 5, reusability 5 (worth 10); difficulty 4, enforcement 4 (cost 8). GC3B3-01: criticality 2, reusability 3 (worth 5); difficulty 2, enforcement 2 (cost 4). Verdict: GS1B3-01 builds first because criticality gates the queue; GC3B3-01 is a cheap fast-follow that fills leftover capacity. Criticality decides what must be built; cost only decides how much capacity it eats.</desc>
+
+  <text x="480" y="42" text-anchor="middle" font-size="23" font-weight="700" fill="var(--color-text-primary, #141413)">Prioritization Verdict — GS1B3-01 vs GC3B3-01</text>
+  <text x="480" y="66" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Criticality gates the queue; cost only sizes it  ·  each dimension scored 1–5</text>
+
+  <!-- ===== SCORE TABLE ===== -->
+  <rect x="40" y="90" width="880" height="278" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="var(--color-border-secondary, #E1E6F2)" stroke-width="1.4"/>
+  <!-- header band -->
+  <rect x="40" y="90" width="880" height="46" rx="12" fill="var(--color-background-secondary, #f7f6f3)"/>
+  <rect x="40" y="124" width="880" height="12" fill="var(--color-background-secondary, #f7f6f3)"/>
+  <text x="66" y="119" font-size="12" font-weight="700" letter-spacing="0.4" fill="#8a8a85">DIMENSION</text>
+  <text x="610" y="119" text-anchor="middle" font-size="14" font-weight="700" fill="#A32D2D">ST-GS1B3-01</text>
+  <text x="610" y="132" text-anchor="middle" font-size="9.5" fill="#8a8a85">retrieval auth</text>
+  <text x="820" y="119" text-anchor="middle" font-size="14" font-weight="700" fill="#185FA5">ST-GC3B3-01</text>
+  <text x="820" y="132" text-anchor="middle" font-size="9.5" fill="#8a8a85">prompt caching</text>
+
+  <!-- column dividers -->
+  <line x1="500" y1="90" x2="500" y2="368" stroke="var(--color-border-secondary, #E1E6F2)" stroke-width="1"/>
+  <line x1="720" y1="90" x2="720" y2="368" stroke="var(--color-border-secondary, #E1E6F2)" stroke-width="1"/>
+
+  <!-- rows -->
+  <!-- Criticality -->
+  <polygon points="66,156 61,164 71,164" fill="#7F77DD"/>
+  <text x="80" y="163" font-size="13.5" font-weight="700" fill="#544BB5">Criticality</text>
+  <text x="610" y="165" text-anchor="middle" font-size="20" font-weight="700" fill="#A32D2D">5<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+  <text x="820" y="165" text-anchor="middle" font-size="20" font-weight="700" fill="#185FA5">2<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+  <line x1="52" y1="178" x2="908" y2="178" stroke="var(--color-border-secondary, rgba(31,30,29,0.10))" stroke-width="1"/>
+
+  <!-- Reusability -->
+  <polygon points="66,194 61,202 71,202" fill="#7F77DD"/>
+  <text x="80" y="201" font-size="13.5" font-weight="700" fill="#544BB5">Reusability</text>
+  <text x="610" y="203" text-anchor="middle" font-size="20" font-weight="700" fill="#A32D2D">5<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+  <text x="820" y="203" text-anchor="middle" font-size="20" font-weight="700" fill="#185FA5">3<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+
+  <!-- Worth subtotal band -->
+  <rect x="52" y="214" width="856" height="34" rx="8" fill="#EEEDFA"/>
+  <text x="80" y="236" font-size="13" font-weight="700" fill="#544BB5">WORTH ▲ (pull)</text>
+  <text x="610" y="237" text-anchor="middle" font-size="19" font-weight="700" fill="#544BB5">10<tspan font-size="11" font-weight="400" fill="#8a8a85"> /10</tspan></text>
+  <text x="820" y="237" text-anchor="middle" font-size="19" font-weight="700" fill="#544BB5">5<tspan font-size="11" font-weight="400" fill="#8a8a85"> /10</tspan></text>
+
+  <!-- Difficulty -->
+  <polygon points="66,266 61,258 71,258" fill="#EF9F27"/>
+  <text x="80" y="273" font-size="13.5" font-weight="700" fill="#854F0B">Difficulty</text>
+  <text x="610" y="275" text-anchor="middle" font-size="20" font-weight="700" fill="#A32D2D">4<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+  <text x="820" y="275" text-anchor="middle" font-size="20" font-weight="700" fill="#185FA5">2<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+  <line x1="52" y1="288" x2="908" y2="288" stroke="var(--color-border-secondary, rgba(31,30,29,0.10))" stroke-width="1"/>
+
+  <!-- Enforcement -->
+  <polygon points="66,304 61,296 71,296" fill="#EF9F27"/>
+  <text x="80" y="311" font-size="13.5" font-weight="700" fill="#854F0B">Enforcement cost</text>
+  <text x="610" y="313" text-anchor="middle" font-size="20" font-weight="700" fill="#A32D2D">4<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+  <text x="820" y="313" text-anchor="middle" font-size="20" font-weight="700" fill="#185FA5">2<tspan font-size="12" font-weight="400" fill="#8a8a85"> /5</tspan></text>
+
+  <!-- Cost subtotal band -->
+  <rect x="52" y="324" width="856" height="34" rx="8" fill="#FDF1DD"/>
+  <text x="80" y="346" font-size="13" font-weight="700" fill="#854F0B">COST ▼ (drag)</text>
+  <text x="610" y="347" text-anchor="middle" font-size="19" font-weight="700" fill="#854F0B">8<tspan font-size="11" font-weight="400" fill="#8a8a85"> /10</tspan></text>
+  <text x="820" y="347" text-anchor="middle" font-size="19" font-weight="700" fill="#854F0B">4<tspan font-size="11" font-weight="400" fill="#8a8a85"> /10</tspan></text>
+
+  <!-- ===== VERDICT PANELS ===== -->
+  <rect x="40" y="386" width="430" height="150" rx="12" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1.5"/>
+  <rect x="40" y="386" width="6" height="150" rx="3" fill="#E24B4A"/>
+  <text x="66" y="414" font-size="15" font-weight="700" fill="#A32D2D">GS1B3-01 → BUILD FIRST</text>
+  <text x="66" y="434" font-size="11.5" font-weight="700" fill="var(--color-text-secondary, #3d3d3a)">this quarter, funded fully</text>
+  <text x="66" y="458" font-size="12" fill="var(--color-text-primary, #141413)">Criticality 5 is a legal/security veto — it is</text>
+  <text x="66" y="475" font-size="12" fill="var(--color-text-primary, #141413)">mandatory. Cost 8 is high, but cost never</text>
+  <text x="66" y="492" font-size="12" fill="var(--color-text-primary, #141413)">demotes a critical item; you absorb it and</text>
+  <text x="66" y="509" font-size="12" fill="var(--color-text-primary, #141413)">pull its hard prerequisites in alongside.</text>
+
+  <rect x="490" y="386" width="430" height="150" rx="12" fill="#EAF3FC" stroke="#378ADD" stroke-width="1.5"/>
+  <rect x="490" y="386" width="6" height="150" rx="3" fill="#378ADD"/>
+  <text x="516" y="414" font-size="15" font-weight="700" fill="#185FA5">GC3B3-01 → FAST FOLLOW</text>
+  <text x="516" y="434" font-size="11.5" font-weight="700" fill="var(--color-text-secondary, #3d3d3a)">fills leftover capacity</text>
+  <text x="516" y="458" font-size="12" fill="var(--color-text-primary, #141413)">Criticality 2 keeps it out of the top slot. But</text>
+  <text x="516" y="475" font-size="12" fill="var(--color-text-primary, #141413)">cost 4 and fair reuse make it a cheap win —</text>
+  <text x="516" y="492" font-size="12" fill="var(--color-text-primary, #141413)">slot it in after the critical builds, once its</text>
+  <text x="516" y="509" font-size="12" fill="var(--color-text-primary, #141413)">GO3B1-01 prerequisite exists.</text>
+
+  <!-- ===== TEACHING FOOTER ===== -->
+  <rect x="40" y="552" width="880" height="176" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.5"/>
+  <rect x="40" y="552" width="7" height="176" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="586" text-anchor="middle" font-size="15" font-weight="700" fill="var(--color-text-primary, #141413)">The lesson: the two costs never bought GC3B3-01 ahead of GS1B3-01.</text>
+  <text x="92" y="616" font-size="12.5" fill="var(--color-text-primary, #141413)"><tspan font-weight="700" fill="#544BB5">Criticality gates the queue</tspan> — it decides what MUST be built. A legal/security veto is non-negotiable.</text>
+  <text x="92" y="640" font-size="12.5" fill="var(--color-text-primary, #141413)"><tspan font-weight="700" fill="#854F0B">Cost only sizes it</tspan> — difficulty + enforcement decide how much of the quarter each winner eats, not whether it wins.</text>
+  <text x="92" y="664" font-size="12.5" fill="var(--color-text-primary, #141413)"><tspan font-weight="700" fill="#544BB5">Reusability</tspan> breaks ties and justifies central build; a cheap, easy standard fills the gaps around the critical ones.</text>
+  <line x1="220" y1="682" x2="740" y2="682" stroke="var(--color-border-secondary, rgba(31,30,29,0.14))" stroke-width="1"/>
+  <text x="480" y="706" text-anchor="middle" font-size="12.5" font-weight="700" fill="#544BB5">A cheap, easy standard never outranks a legally-critical one — it just waits its turn.</text>
+</svg>

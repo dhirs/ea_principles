@@ -1,0 +1,120 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">Scoring GS1B3-01 — Permission-Aware Retrieval</title>
+  <desc id="dsc">Two-column landscape slide. Left column outlines the use case: a RAG app over a shared multi-tenant vector store must scope every retrieval to the caller; embedding strips source permissions so a confidential contract and a public FAQ become identical vectors, and an unfiltered top-k leaks chunks the user cannot see; IAM and model-layer classification both miss this. Right column scores the four dimensions — criticality 5, reusability 5, difficulty 4, enforcement cost 4 — verdict build first.</desc>
+
+  <text x="640" y="40" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary, #141413)">Scoring GS1B3-01 — Permission-Aware Retrieval</text>
+  <text x="640" y="64" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Example 1 of 2 · the use case, and what it costs us to NOT have it</text>
+
+  <!-- faint column divider -->
+  <line x1="620" y1="90" x2="620" y2="694" stroke="var(--color-border-secondary, rgba(31,30,29,0.10))" stroke-width="1"/>
+
+  <!-- ============================================================= -->
+  <!-- LEFT COLUMN — THE USE CASE -->
+  <!-- ============================================================= -->
+  <rect x="40" y="86" width="566" height="610" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+  <rect x="40" y="86" width="566" height="6" rx="3" fill="#E24B4A"/>
+
+  <text x="64" y="128" font-size="19" font-weight="700" fill="#A32D2D">ST-GS1B3-01</text>
+  <g font-size="10.5" font-weight="700" text-anchor="middle">
+    <rect x="64" y="140" width="120" height="22" rx="11" fill="#FCEFEF"/><text x="124" y="155" fill="#A32D2D">P2 · Security</text>
+    <rect x="190" y="140" width="70" height="22" rx="11" fill="#FCEFEF"/><text x="225" y="155" fill="#A32D2D">scaling</text>
+    <rect x="266" y="140" width="108" height="22" rx="11" fill="#FCEFEF"/><text x="320" y="155" fill="#A32D2D">impact: High</text>
+  </g>
+  <line x1="64" y1="172" x2="582" y2="172" stroke="var(--color-border-secondary, rgba(31,30,29,0.14))" stroke-width="1"/>
+
+  <text x="64" y="194" font-size="14.5" font-weight="700" fill="var(--color-text-primary, #141413)">Never let a user retrieve what they</text>
+  <text x="64" y="212" font-size="14.5" font-weight="700" fill="var(--color-text-primary, #141413)">aren't allowed to see</text>
+  <text x="64" y="234" font-size="11.5" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">"No one should learn through an AI system what</text>
+  <text x="64" y="250" font-size="11.5" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">they couldn't learn directly."</text>
+  <line x1="64" y1="264" x2="582" y2="264" stroke="var(--color-border-secondary, rgba(31,30,29,0.14))" stroke-width="1"/>
+
+  <!-- SECTION 1 -->
+  <text x="64" y="286" font-size="11" font-weight="700" letter-spacing="0.5" fill="#A32D2D">WHAT IT MEANS</text>
+  <text x="64" y="306" font-size="11.5" fill="var(--color-text-primary, #141413)">A RAG app retrieves from a shared vector store that indexes</text>
+  <text x="64" y="322" font-size="11.5" fill="var(--color-text-primary, #141413)">many tenants and teams into one index. This standard scopes</text>
+  <text x="64" y="338" font-size="11.5" fill="var(--color-text-primary, #141413)">every retrieval to the caller: documents are ACL-labelled at</text>
+  <text x="64" y="354" font-size="11.5" fill="var(--color-text-primary, #141413)">ingestion, and a central SDK applies an identity pre-filter.</text>
+
+  <!-- SECTION 2 -->
+  <text x="64" y="380" font-size="11" font-weight="700" letter-spacing="0.5" fill="#A32D2D">THE FAILURE IT PREVENTS</text>
+  <text x="64" y="400" font-size="11.5" fill="var(--color-text-primary, #141413)">Embedding strips a document's source permissions — a</text>
+  <text x="64" y="416" font-size="11.5" fill="var(--color-text-primary, #141413)">confidential contract and a public FAQ become vectors that</text>
+  <text x="64" y="432" font-size="11.5" fill="var(--color-text-primary, #141413)">look identical. An unfiltered top-k then hands the user (and</text>
+  <text x="64" y="448" font-size="11.5" fill="var(--color-text-primary, #141413)">the model answers from) chunks they may never read.</text>
+
+  <!-- SECTION 3 -->
+  <text x="64" y="474" font-size="11" font-weight="700" letter-spacing="0.5" fill="#A32D2D">WHY IAM &amp; CLASSIFICATION MISS IT</text>
+  <circle cx="70" cy="491" r="2.6" fill="#E24B4A"/>
+  <text x="84" y="495" font-size="11.5" fill="var(--color-text-primary, #141413)">IAM gates whether the <tspan font-weight="700">app</tspan> can reach the store — not</text>
+  <text x="84" y="511" font-size="11.5" fill="var(--color-text-primary, #141413)">which chunks within it a given user's query may surface.</text>
+  <circle cx="70" cy="531" r="2.6" fill="#E24B4A"/>
+  <text x="84" y="535" font-size="11.5" fill="var(--color-text-primary, #141413)">Model-layer classification is too late: the leak is at</text>
+  <text x="84" y="551" font-size="11.5" fill="var(--color-text-primary, #141413)">retrieval, before the model ever reasons over the text.</text>
+
+  <!-- EXAMPLE CALLOUT -->
+  <rect x="64" y="566" width="518" height="66" rx="8" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+  <text x="80" y="586" font-size="10" font-weight="700" letter-spacing="0.5" fill="#A32D2D">CONCRETE EXAMPLE</text>
+  <text x="80" y="604" font-size="11" fill="var(--color-text-primary, #141413)">A support agent's query must never surface another tenant's</text>
+  <text x="80" y="620" font-size="11" fill="var(--color-text-primary, #141413)">contract — even though its vector sits right beside the public FAQ they may see.</text>
+
+  <!-- ============================================================= -->
+  <!-- RIGHT COLUMN — THE SCORING -->
+  <!-- ============================================================= -->
+  <text x="630" y="106" font-size="11" font-weight="700" letter-spacing="0.8" fill="var(--color-text-secondary, #3d3d3a)">SCORED ON THE FOUR DIMENSIONS</text>
+
+  <!-- CARD 1 — CRITICALITY -->
+  <rect x="630" y="116" width="610" height="104" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#B9B5E6" stroke-width="1.3"/>
+  <rect x="630" y="116" width="5" height="104" rx="2.5" fill="#7F77DD"/>
+  <polygon points="656,138 651,146 661,146" fill="#7F77DD"/>
+  <text x="670" y="146" font-size="15" font-weight="700" fill="#544BB5">Criticality</text>
+  <g><circle cx="1086" cy="141" r="5" fill="#7F77DD"/><circle cx="1102" cy="141" r="5" fill="#7F77DD"/><circle cx="1118" cy="141" r="5" fill="#7F77DD"/><circle cx="1134" cy="141" r="5" fill="#7F77DD"/><circle cx="1150" cy="141" r="5" fill="#7F77DD"/></g>
+  <text x="1168" y="146" font-size="14" font-weight="700" fill="#544BB5">5 / 5</text>
+  <text x="650" y="170" font-size="11.5" fill="var(--color-text-primary, #141413)">Cross-tenant retrieval of PII / confidential data is direct legal exposure —</text>
+  <text x="650" y="187" font-size="11.5" fill="var(--color-text-primary, #141413)">GDPR, OWASP broken access control. The catalogue's first legal-exposure veto.</text>
+  <text x="650" y="208" font-size="10" font-style="italic" fill="#8a8a85">evidence: RI tier mandatory_centralise (D1 legal_exposure = yes) · impact High</text>
+
+  <!-- CARD 2 — REUSABILITY -->
+  <rect x="630" y="228" width="610" height="104" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#B9B5E6" stroke-width="1.3"/>
+  <rect x="630" y="228" width="5" height="104" rx="2.5" fill="#7F77DD"/>
+  <polygon points="656,250 651,258 661,258" fill="#7F77DD"/>
+  <text x="670" y="258" font-size="15" font-weight="700" fill="#544BB5">Reusability</text>
+  <g><circle cx="1086" cy="253" r="5" fill="#7F77DD"/><circle cx="1102" cy="253" r="5" fill="#7F77DD"/><circle cx="1118" cy="253" r="5" fill="#7F77DD"/><circle cx="1134" cy="253" r="5" fill="#7F77DD"/><circle cx="1150" cy="253" r="5" fill="#7F77DD"/></g>
+  <text x="1168" y="258" font-size="14" font-weight="700" fill="#544BB5">5 / 5</text>
+  <text x="650" y="282" font-size="11.5" fill="var(--color-text-primary, #141413)">Every workload retrieving from a shared / multi-tenant vector store. One</text>
+  <text x="650" y="299" font-size="11.5" fill="var(--color-text-primary, #141413)">retrieval SDK + acl schema serves all RAG apps — the failure recurs everywhere.</text>
+  <text x="650" y="320" font-size="10" font-style="italic" fill="#8a8a85">evidence: central retrieve() SDK + pinecone / opensearch / pgvector / bedrock adapters</text>
+
+  <!-- CARD 3 — DIFFICULTY -->
+  <rect x="630" y="340" width="610" height="104" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#F0C877" stroke-width="1.3"/>
+  <rect x="630" y="340" width="5" height="104" rx="2.5" fill="#EF9F27"/>
+  <polygon points="656,368 651,360 661,360" fill="#EF9F27"/>
+  <text x="670" y="370" font-size="15" font-weight="700" fill="#854F0B">Difficulty</text>
+  <g><circle cx="1086" cy="365" r="5" fill="#EF9F27"/><circle cx="1102" cy="365" r="5" fill="#EF9F27"/><circle cx="1118" cy="365" r="5" fill="#EF9F27"/><circle cx="1134" cy="365" r="5" fill="#EF9F27"/><circle cx="1150" cy="365" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/></g>
+  <text x="1168" y="370" font-size="14" font-weight="700" fill="#854F0B">4 / 5</text>
+  <text x="650" y="394" font-size="11.5" fill="var(--color-text-primary, #141413)">Identity pre-filter inside the ANN search (not a post-filter), IdP entitlement</text>
+  <text x="650" y="411" font-size="11.5" fill="var(--color-text-primary, #141413)">resolution, per-backend adapters, acl labelling, 3 CI lints — weeks of work.</text>
+  <text x="650" y="432" font-size="10" font-style="italic" fill="#8a8a85">evidence: RI D2 repeatability_cost = 3 (high) · rebuilt locally = weeks per project</text>
+
+  <!-- CARD 4 — ENFORCEMENT COST -->
+  <rect x="630" y="452" width="610" height="104" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#F0C877" stroke-width="1.3"/>
+  <rect x="630" y="452" width="5" height="104" rx="2.5" fill="#EF9F27"/>
+  <polygon points="656,480 651,472 661,472" fill="#EF9F27"/>
+  <text x="670" y="482" font-size="15" font-weight="700" fill="#854F0B">Enforcement cost</text>
+  <g><circle cx="1086" cy="477" r="5" fill="#EF9F27"/><circle cx="1102" cy="477" r="5" fill="#EF9F27"/><circle cx="1118" cy="477" r="5" fill="#EF9F27"/><circle cx="1134" cy="477" r="5" fill="#EF9F27"/><circle cx="1150" cy="477" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/></g>
+  <text x="1168" y="482" font-size="14" font-weight="700" fill="#854F0B">4 / 5</text>
+  <text x="650" y="506" font-size="11.5" fill="var(--color-text-primary, #141413)">The lints are mechanical, but the residual label-correctness gap needs a</text>
+  <text x="650" y="523" font-size="11.5" fill="var(--color-text-primary, #141413)">security-owned quarterly audit + central review at the gate. Not fire-and-forget.</text>
+  <text x="650" y="544" font-size="10" font-style="italic" fill="#8a8a85">evidence: audit_mode central_review_at_gate · validator enterprise_security</text>
+
+  <!-- VERDICT -->
+  <rect x="630" y="566" width="610" height="128" rx="10" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1.5"/>
+  <rect x="630" y="566" width="6" height="128" rx="3" fill="#E24B4A"/>
+  <text x="654" y="594" font-size="12.5" font-weight="700" fill="#544BB5">Worth ▲ 10 / 10<tspan fill="#8a8a85" font-weight="400"> (crit 5 + reuse 5)</tspan><tspan fill="#854F0B">    Cost ▼ 8 / 10</tspan><tspan fill="#8a8a85" font-weight="400"> (diff 4 + enf 4)</tspan></text>
+  <line x1="654" y1="606" x2="1216" y2="606" stroke="#E7C9C6" stroke-width="1"/>
+  <text x="654" y="632" font-size="15" font-weight="700" fill="#A32D2D">Verdict: BUILD FIRST — fund it fully this quarter.</text>
+  <text x="654" y="656" font-size="11.5" fill="var(--color-text-primary, #141413)">The criticality-5 legal / security veto makes it mandatory. High difficulty and</text>
+  <text x="654" y="673" font-size="11.5" fill="var(--color-text-primary, #141413)">enforcement cost do NOT demote it — you absorb the cost and pull its soft-</text>
+  <text x="654" y="690" font-size="11.5" fill="var(--color-text-primary, #141413)">dependency observability (GO3B2-01) in alongside.</text>
+</svg>

@@ -1,0 +1,26 @@
+{
+  "skill_name": "universe-builder",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "cdp-consultancy-ranking",
+      "prompt": "We sell a customer data platform architecture selection service — vendor-neutral consulting that helps mid-market companies pick and design their CDP stack. Who should I sell to? Give me the industries to target.",
+      "expected_output": "Top 10 ranked industries with NAICS codes and one-line reasoning, presented as a selectable list; standing exclusions stated; no search run.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "eval_name": "warranty-saas-ranking",
+      "prompt": "our product is a warranty and service-claims management saas for manufacturers who sell through dealer networks. we want to build a target account list in north america, 201-1000 employees. what industries should we go after?",
+      "expected_output": "Top 10 NAICS-coded industries reasoned from dealer-channel warranty pain (machinery, transportation equipment, appliances etc.), selectable list, exclusions stated, no search.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "eval_name": "vague-input-elicitation",
+      "prompt": "I run a marketing agency. help me find companies to target",
+      "expected_output": "Asks one round of clarifying questions (what service exactly, who buys, pain, geography/size) BEFORE producing any industry ranking; does not fabricate a top-10 list from nothing and does not run a search.",
+      "files": []
+    }
+  ]
+}

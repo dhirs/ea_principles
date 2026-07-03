@@ -1,0 +1,175 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 780" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="780">
+  <title id="ttl">The Prioritization Gate — Scoring the Blueprints</title>
+  <desc id="dsc">The cheap-many blueprint backlog runs continuously. A four-dimension score ranks each sized blueprint: two dimensions raise priority (criticality, reusability = what it's worth) and two weigh against it (difficulty = one-time build cost, enforcement cost = ongoing run cost). Top scorers fill the quarter's fixed build list; each winner becomes one funded, owned mini-project — a concrete RI (HLD) for Engineering.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="480" y="44" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary, #141413)">The Prioritization Gate — Scoring the Blueprints</text>
+  <text x="480" y="70" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">Four dimensions rank the sized backlog into the quarter's fixed build list</text>
+
+  <!-- ===== LEFT — BLUEPRINT BACKLOG (cheap, many) ===== -->
+  <g>
+    <rect x="40" y="96" width="160" height="490" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.6"/>
+    <rect x="40" y="96" width="160" height="6" rx="3" fill="#378ADD"/>
+
+    <circle cx="120" cy="138" r="24" fill="#378ADD"/>
+    <rect x="108" y="126" width="24" height="24" rx="4" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4 3"/>
+
+    <text x="120" y="180" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#185FA5">BLUEPRINT</text>
+    <text x="120" y="196" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#185FA5">BACKLOG</text>
+    <text x="120" y="214" text-anchor="middle" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Cheap · many</text>
+    <line x1="56" y1="226" x2="184" y2="226" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+    <!-- stack of sized (but skeletal) blueprint chips -->
+    <g>
+      <rect x="56" y="240" width="128" height="22" rx="6" fill="#EAF3FC" stroke="#378ADD" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="68" cy="251" r="1.6" fill="#378ADD"/><circle cx="77" cy="251" r="1.6" fill="#378ADD"/><circle cx="86" cy="251" r="1.6" fill="#378ADD"/><circle cx="95" cy="251" r="1.6" fill="#378ADD"/>
+      <line x1="150" y1="251" x2="176" y2="251" stroke="#8FBFE9" stroke-width="1.4" stroke-linecap="round"/>
+
+      <rect x="56" y="268" width="128" height="22" rx="6" fill="#EAF3FC" stroke="#378ADD" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="68" cy="279" r="1.6" fill="#378ADD"/><circle cx="77" cy="279" r="1.6" fill="#378ADD"/><circle cx="86" cy="279" r="1.6" fill="#378ADD"/><circle cx="95" cy="279" r="1.6" fill="#378ADD"/>
+      <line x1="150" y1="279" x2="176" y2="279" stroke="#8FBFE9" stroke-width="1.4" stroke-linecap="round"/>
+
+      <rect x="56" y="296" width="128" height="22" rx="6" fill="#EAF3FC" stroke="#378ADD" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="68" cy="307" r="1.6" fill="#378ADD"/><circle cx="77" cy="307" r="1.6" fill="#378ADD"/><circle cx="86" cy="307" r="1.6" fill="#378ADD"/><circle cx="95" cy="307" r="1.6" fill="#378ADD"/>
+      <line x1="150" y1="307" x2="176" y2="307" stroke="#8FBFE9" stroke-width="1.4" stroke-linecap="round"/>
+
+      <rect x="56" y="324" width="128" height="22" rx="6" fill="#EAF3FC" stroke="#378ADD" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="68" cy="335" r="1.6" fill="#378ADD"/><circle cx="77" cy="335" r="1.6" fill="#378ADD"/><circle cx="86" cy="335" r="1.6" fill="#378ADD"/><circle cx="95" cy="335" r="1.6" fill="#378ADD"/>
+      <line x1="150" y1="335" x2="176" y2="335" stroke="#8FBFE9" stroke-width="1.4" stroke-linecap="round"/>
+
+      <rect x="56" y="352" width="128" height="22" rx="6" fill="#EAF3FC" stroke="#378ADD" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="68" cy="363" r="1.6" fill="#378ADD"/><circle cx="77" cy="363" r="1.6" fill="#378ADD"/><circle cx="86" cy="363" r="1.6" fill="#378ADD"/><circle cx="95" cy="363" r="1.6" fill="#378ADD"/>
+      <line x1="150" y1="363" x2="176" y2="363" stroke="#8FBFE9" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+    <text x="120" y="390" text-anchor="middle" font-size="10" font-style="italic" fill="#8a8a85">+ many more</text>
+
+    <text x="120" y="416" text-anchor="middle" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">Sized · rankable</text>
+    <text x="120" y="430" text-anchor="middle" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">not yet built</text>
+
+    <rect x="56" y="520" width="128" height="40" rx="8" fill="#EAF3FC"/>
+    <text x="120" y="536" text-anchor="middle" font-size="10.5" font-weight="700" fill="#185FA5">Catalogue runs</text>
+    <text x="120" y="551" text-anchor="middle" font-size="10.5" font-weight="700" fill="#185FA5">continuously (BAU)</text>
+  </g>
+
+  <!-- feed arrow: backlog -> scoring -->
+  <line x1="202" y1="341" x2="222" y2="341" stroke="#378ADD" stroke-width="2.2" marker-end="url(#arrow)"/>
+
+  <!-- ===== CENTRE — PRIORITIZATION SCORING (the gate) ===== -->
+  <g>
+    <rect x="224" y="96" width="480" height="490" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.8"/>
+    <rect x="224" y="96" width="480" height="6" rx="3" fill="#7F77DD"/>
+
+    <circle cx="464" cy="138" r="26" fill="#7F77DD"/>
+    <rect x="452" y="131" width="6" height="17" fill="#ffffff"/>
+    <rect x="461" y="135" width="6" height="13" fill="#ffffff"/>
+    <rect x="470" y="139" width="6" height="9" fill="#ffffff"/>
+
+    <text x="464" y="184" text-anchor="middle" font-size="15" font-weight="700" letter-spacing="0.3" fill="#544BB5">PRIORITIZATION SCORING</text>
+    <text x="464" y="202" text-anchor="middle" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">Rank the sized blueprints — top scorers set the quarter's agenda</text>
+    <line x1="246" y1="216" x2="682" y2="216" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+    <!-- value group -->
+    <polygon points="252,231 247,239 257,239" fill="#7F77DD"/>
+    <text x="264" y="242" font-size="12" font-weight="700" fill="#544BB5">Raises priority — what it's worth</text>
+
+    <rect x="246" y="248" width="210" height="92" rx="10" fill="#EEEDFA" stroke="#B9B5E6" stroke-width="1.2"/>
+    <text x="262" y="274" font-size="13" font-weight="700" fill="#544BB5">Criticality</text>
+    <text x="262" y="295" font-size="10.5" fill="var(--color-text-primary, #141413)">Risk / value riding on it</text>
+    <text x="262" y="322" font-size="9.5" font-style="italic" fill="#8a8a85">impact × exposure, in one score</text>
+
+    <rect x="472" y="248" width="210" height="92" rx="10" fill="#EEEDFA" stroke="#B9B5E6" stroke-width="1.2"/>
+    <text x="488" y="274" font-size="13" font-weight="700" fill="#544BB5">Reusability</text>
+    <text x="488" y="295" font-size="10.5" fill="var(--color-text-primary, #141413)">Projects the standard serves</text>
+    <text x="488" y="322" font-size="9.5" font-style="italic" fill="#8a8a85">build once, many consumers</text>
+
+    <!-- cost group -->
+    <polygon points="252,356 247,348 257,348" fill="#EF9F27"/>
+    <text x="264" y="362" font-size="12" font-weight="700" fill="#854F0B">Weighs against — what it costs</text>
+
+    <rect x="246" y="372" width="210" height="92" rx="10" fill="#FDF1DD" stroke="#F0C877" stroke-width="1.2"/>
+    <text x="262" y="398" font-size="13" font-weight="700" fill="#854F0B">Difficulty</text>
+    <text x="262" y="419" font-size="10.5" fill="var(--color-text-primary, #141413)">How hard the RI is to build</text>
+    <text x="262" y="446" font-size="9.5" font-style="italic" fill="#8a8a85">one-time build cost</text>
+
+    <rect x="472" y="372" width="210" height="92" rx="10" fill="#FDF1DD" stroke="#F0C877" stroke-width="1.2"/>
+    <text x="488" y="398" font-size="13" font-weight="700" fill="#854F0B">Enforcement cost</text>
+    <text x="488" y="419" font-size="10.5" fill="var(--color-text-primary, #141413)">Cost to gate + operate it</text>
+    <text x="488" y="446" font-size="9.5" font-style="italic" fill="#8a8a85">ongoing run cost</text>
+
+    <line x1="246" y1="476" x2="682" y2="476" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+    <!-- score summary -->
+    <rect x="246" y="486" width="436" height="50" rx="10" fill="#F4F1FB" stroke="#7F77DD" stroke-width="1.2"/>
+    <text x="464" y="508" text-anchor="middle" font-size="12.5" fill="var(--color-text-primary, #141413)">Rank = <tspan font-weight="700" fill="#544BB5">worth</tspan> weighed against <tspan font-weight="700" fill="#854F0B">cost</tspan></text>
+    <text x="464" y="526" text-anchor="middle" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">top scorers fill the quarter's fixed build list</text>
+
+    <text x="464" y="558" text-anchor="middle" font-size="10" font-style="italic" fill="#8a8a85">fixed capacity — the gate stops at the funded few</text>
+  </g>
+
+  <!-- select arrow: scoring -> build list -->
+  <line x1="706" y1="341" x2="738" y2="341" stroke="#E24B4A" stroke-width="2.2" marker-end="url(#arrow)"/>
+
+  <!-- ===== RIGHT — QUARTERLY BUILD LIST (expensive, few) ===== -->
+  <g>
+    <rect x="740" y="96" width="180" height="490" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.6"/>
+    <rect x="740" y="96" width="180" height="6" rx="3" fill="#E24B4A"/>
+
+    <circle cx="830" cy="138" r="24" fill="#E24B4A"/>
+    <g stroke="#ffffff" stroke-width="1.6" stroke-linecap="round">
+      <circle cx="820" cy="131" r="1.4" fill="#ffffff" stroke="none"/><line x1="825" y1="131" x2="842" y2="131"/>
+      <circle cx="820" cy="138" r="1.4" fill="#ffffff" stroke="none"/><line x1="825" y1="138" x2="842" y2="138"/>
+      <circle cx="820" cy="145" r="1.4" fill="#ffffff" stroke="none"/><line x1="825" y1="145" x2="842" y2="145"/>
+    </g>
+
+    <text x="830" y="180" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#A32D2D">QUARTERLY</text>
+    <text x="830" y="196" text-anchor="middle" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#A32D2D">BUILD LIST</text>
+    <text x="830" y="214" text-anchor="middle" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Expensive · few</text>
+    <line x1="756" y1="226" x2="904" y2="226" stroke="var(--color-border-secondary, rgba(31,30,29,0.18))" stroke-width="1"/>
+
+    <!-- ranked winners -->
+    <circle cx="770" cy="252" r="12" fill="#E24B4A"/>
+    <text x="770" y="252" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#ffffff">1</text>
+    <rect x="790" y="240" width="110" height="24" rx="6" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+    <text x="845" y="252" text-anchor="middle" dominant-baseline="central" font-size="10.5" font-weight="700" fill="#A32D2D">Concrete RI #1</text>
+    <text x="756" y="280" font-size="9.5" fill="#64748B">owner · budget · RACI</text>
+
+    <circle cx="770" cy="312" r="12" fill="#E24B4A"/>
+    <text x="770" y="312" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#ffffff">2</text>
+    <rect x="790" y="300" width="110" height="24" rx="6" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+    <text x="845" y="312" text-anchor="middle" dominant-baseline="central" font-size="10.5" font-weight="700" fill="#A32D2D">Concrete RI #2</text>
+    <text x="756" y="340" font-size="9.5" fill="#64748B">owner · budget · RACI</text>
+
+    <circle cx="770" cy="372" r="12" fill="#E24B4A"/>
+    <text x="770" y="372" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#ffffff">3</text>
+    <rect x="790" y="360" width="110" height="24" rx="6" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+    <text x="845" y="372" text-anchor="middle" dominant-baseline="central" font-size="10.5" font-weight="700" fill="#A32D2D">Concrete RI #3</text>
+    <text x="756" y="400" font-size="9.5" fill="#64748B">owner · budget · RACI</text>
+
+    <!-- the cut line -->
+    <line x1="756" y1="424" x2="904" y2="424" stroke="#C0392B" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <text x="830" y="440" text-anchor="middle" font-size="9.5" fill="#C0392B">below the line: deferred</text>
+
+    <circle cx="770" cy="462" r="11" fill="#E5E3DC"/>
+    <text x="770" y="462" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" fill="#8a8a85">4</text>
+    <rect x="790" y="451" width="110" height="22" rx="6" fill="#F1EFE8" stroke="#C2C1BC" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="845" y="462" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#8a8a85">next quarter</text>
+
+    <rect x="756" y="536" width="148" height="38" rx="8" fill="#FCEFEF"/>
+    <text x="830" y="552" text-anchor="middle" font-size="10.5" font-weight="700" fill="#A32D2D">Each = one funded</text>
+    <text x="830" y="567" text-anchor="middle" font-size="10.5" font-weight="700" fill="#A32D2D">mini-project → HLD</text>
+  </g>
+
+  <!-- ===== FOOTER TAKEAWAY ===== -->
+  <rect x="40" y="606" width="880" height="128" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="606" width="7" height="128" rx="3.5" fill="#7F77DD"/>
+  <text x="480" y="644" text-anchor="middle" font-size="15" font-weight="700" fill="var(--color-text-primary, #141413)">Prioritization is the gate — cheap-many in, funded-few out.</text>
+  <text x="480" y="674" text-anchor="middle" font-size="12.5" fill="var(--color-text-primary, #141413)">Rank each sized blueprint by its <tspan font-weight="700" fill="#544BB5">worth (criticality · reusability)</tspan> against its <tspan font-weight="700" fill="#854F0B">cost (difficulty · enforcement)</tspan>.</text>
+  <text x="480" y="702" text-anchor="middle" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">The quarter's winners each become one funded, owned mini-project — a concrete RI (HLD) for Engineering.</text>
+</svg>

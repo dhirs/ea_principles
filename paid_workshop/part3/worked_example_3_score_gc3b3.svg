@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 780" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="960" height="780">
+  <title id="ttl">Scoring GC3B3-01 — Prompt Caching</title>
+  <desc id="dsc">GC3B3-01 scored on the four dimensions. Criticality 2 of 5 (no legal exposure — pure cost discipline, harm is a late inference bill). Reusability 3 of 5 (any workload with a large stable prefix, but only pays off above cache TTL). Difficulty 2 of 5 (two lints on the existing llm-sdk suite, reuses GO3B1-01 tokenizers; hard-depends on GO3B1-01). Enforcement cost 2 of 5 (fully mechanical self-attestation, CI logs as evidence). Verdict: worth 5, cost 4 — low criticality means fast-follow, not build-first.</desc>
+
+  <text x="480" y="42" text-anchor="middle" font-size="23" font-weight="700" fill="var(--color-text-primary, #141413)">Scoring GC3B3-01 — Prompt Caching</text>
+  <text x="480" y="66" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Example 2 of 2 · same four dimensions, a very different profile</text>
+
+  <!-- identity strip -->
+  <rect x="40" y="86" width="880" height="56" rx="10" fill="var(--color-background-secondary, #f7f6f3)" stroke="#378ADD" stroke-width="1.3"/>
+  <rect x="40" y="86" width="7" height="56" rx="3.5" fill="#378ADD"/>
+  <text x="64" y="110" font-size="13.5" font-weight="700" fill="#185FA5">ST-GC3B3-01 · Don't pay twice for the same prompt content</text>
+  <text x="64" y="130" font-size="11.5" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">"The same work is never paid for twice."  ·  P5 Cost Optimization · scaling · impact Medium</text>
+
+  <!-- ===== TL — CRITICALITY (worth) ===== -->
+  <rect x="40" y="162" width="430" height="212" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#B9B5E6" stroke-width="1.4"/>
+  <rect x="40" y="162" width="6" height="212" rx="3" fill="#7F77DD"/>
+  <text x="66" y="196" font-size="16" font-weight="700" fill="#544BB5">Criticality</text>
+  <polygon points="146,186 141,194 151,194" fill="#7F77DD"/>
+  <g><circle cx="322" cy="191" r="5" fill="#7F77DD"/><circle cx="338" cy="191" r="5" fill="#7F77DD"/><circle cx="354" cy="191" r="5" fill="none" stroke="#C9C5E6" stroke-width="1.3"/><circle cx="370" cy="191" r="5" fill="none" stroke="#C9C5E6" stroke-width="1.3"/><circle cx="386" cy="191" r="5" fill="none" stroke="#C9C5E6" stroke-width="1.3"/></g>
+  <text x="404" y="196" font-size="14" font-weight="700" fill="#544BB5">2 / 5</text>
+  <text x="66" y="228" font-size="12" fill="var(--color-text-primary, #141413)">No legal or regulatory exposure — pure cost</text>
+  <text x="66" y="245" font-size="12" fill="var(--color-text-primary, #141413)">discipline. The only harm is a big fixed prefix re-</text>
+  <text x="66" y="262" font-size="12" fill="var(--color-text-primary, #141413)">billed at full rate, showing on the inference bill ~30</text>
+  <text x="66" y="279" font-size="12" fill="var(--color-text-primary, #141413)">days late. The output stays correct.</text>
+  <line x1="66" y1="300" x2="452" y2="300" stroke="var(--color-border-secondary, rgba(31,30,29,0.14))" stroke-width="1"/>
+  <text x="66" y="320" font-size="10" font-weight="700" letter-spacing="0.5" fill="#8a8a85">EVIDENCE</text>
+  <text x="66" y="338" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">RI D1 legal_exposure = no · impact_level Medium ·</text>
+  <text x="66" y="354" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">u_value: cost, not customer or regulator</text>
+
+  <!-- ===== TR — REUSABILITY (worth) ===== -->
+  <rect x="490" y="162" width="430" height="212" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#B9B5E6" stroke-width="1.4"/>
+  <rect x="490" y="162" width="6" height="212" rx="3" fill="#7F77DD"/>
+  <text x="516" y="196" font-size="16" font-weight="700" fill="#544BB5">Reusability</text>
+  <polygon points="606,186 601,194 611,194" fill="#7F77DD"/>
+  <g><circle cx="772" cy="191" r="5" fill="#7F77DD"/><circle cx="788" cy="191" r="5" fill="#7F77DD"/><circle cx="804" cy="191" r="5" fill="#7F77DD"/><circle cx="820" cy="191" r="5" fill="none" stroke="#C9C5E6" stroke-width="1.3"/><circle cx="836" cy="191" r="5" fill="none" stroke="#C9C5E6" stroke-width="1.3"/></g>
+  <text x="854" y="196" font-size="14" font-weight="700" fill="#544BB5">3 / 5</text>
+  <text x="516" y="228" font-size="12" fill="var(--color-text-primary, #141413)">Applies to any workload with a large, stable prompt</text>
+  <text x="516" y="245" font-size="12" fill="var(--color-text-primary, #141413)">prefix (system instructions, fixed schema, static</text>
+  <text x="516" y="262" font-size="12" fill="var(--color-text-primary, #141413)">context) — but only pays off where the prefix is big</text>
+  <text x="516" y="279" font-size="12" fill="var(--color-text-primary, #141413)">and reused often enough to beat cache write cost.</text>
+  <line x1="516" y1="300" x2="900" y2="300" stroke="var(--color-border-secondary, rgba(31,30,29,0.14))" stroke-width="1"/>
+  <text x="516" y="320" font-size="10" font-weight="700" letter-spacing="0.5" fill="#8a8a85">EVIDENCE</text>
+  <text x="516" y="338" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">extends GO3B1-01 registry · eligibility keyed to per-</text>
+  <text x="516" y="354" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">model cache minimums (cache_minimums.yaml)</text>
+
+  <!-- ===== BL — DIFFICULTY (cost) ===== -->
+  <rect x="40" y="388" width="430" height="212" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#F0C877" stroke-width="1.4"/>
+  <rect x="40" y="388" width="6" height="212" rx="3" fill="#EF9F27"/>
+  <text x="66" y="422" font-size="16" font-weight="700" fill="#854F0B">Difficulty</text>
+  <polygon points="146,420 141,412 151,412" fill="#EF9F27"/>
+  <g><circle cx="322" cy="417" r="5" fill="#EF9F27"/><circle cx="338" cy="417" r="5" fill="#EF9F27"/><circle cx="354" cy="417" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/><circle cx="370" cy="417" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/><circle cx="386" cy="417" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/></g>
+  <text x="404" y="422" font-size="14" font-weight="700" fill="#854F0B">2 / 5</text>
+  <text x="66" y="454" font-size="12" fill="var(--color-text-primary, #141413)">Two lints (cache-eligibility + recompute-variance)</text>
+  <text x="66" y="471" font-size="12" fill="var(--color-text-primary, #141413)">bolted onto the existing llm-sdk suite; reuses</text>
+  <text x="66" y="488" font-size="12" fill="var(--color-text-primary, #141413)">GO3B1-01's tokenizers and manifest. Thin build —</text>
+  <text x="66" y="505" font-size="12" fill="var(--color-text-primary, #141413)">no new spine to stand up.</text>
+  <line x1="66" y1="526" x2="452" y2="526" stroke="var(--color-border-secondary, rgba(31,30,29,0.14))" stroke-width="1"/>
+  <text x="66" y="546" font-size="10" font-weight="700" letter-spacing="0.5" fill="#8a8a85">EVIDENCE · SEQUENCING</text>
+  <text x="66" y="564" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">RI D2 = 2 · but HARD-depends on GO3B1-01 (prompt</text>
+  <text x="66" y="580" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">registry) — that prereq must be built first</text>
+
+  <!-- ===== BR — ENFORCEMENT COST (cost) ===== -->
+  <rect x="490" y="388" width="430" height="212" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#F0C877" stroke-width="1.4"/>
+  <rect x="490" y="388" width="6" height="212" rx="3" fill="#EF9F27"/>
+  <text x="516" y="422" font-size="16" font-weight="700" fill="#854F0B">Enforcement cost</text>
+  <polygon points="686,420 681,412 691,412" fill="#EF9F27"/>
+  <g><circle cx="772" cy="417" r="5" fill="#EF9F27"/><circle cx="788" cy="417" r="5" fill="#EF9F27"/><circle cx="804" cy="417" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/><circle cx="820" cy="417" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/><circle cx="836" cy="417" r="5" fill="none" stroke="#D9CBA6" stroke-width="1.3"/></g>
+  <text x="854" y="422" font-size="14" font-weight="700" fill="#854F0B">2 / 5</text>
+  <text x="516" y="454" font-size="12" fill="var(--color-text-primary, #141413)">Fully mechanical: self-attestation with the CI logs</text>
+  <text x="516" y="471" font-size="12" fill="var(--color-text-primary, #141413)">as evidence, no central human review at the gate.</text>
+  <text x="516" y="488" font-size="12" fill="var(--color-text-primary, #141413)">Ongoing cost is quarterly cache_minimums.yaml</text>
+  <text x="516" y="505" font-size="12" fill="var(--color-text-primary, #141413)">upkeep + a shared tokenizer-accuracy review.</text>
+  <line x1="516" y1="526" x2="900" y2="526" stroke="var(--color-border-secondary, rgba(31,30,29,0.14))" stroke-width="1"/>
+  <text x="516" y="546" font-size="10" font-weight="700" letter-spacing="0.5" fill="#8a8a85">EVIDENCE</text>
+  <text x="516" y="564" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">audit_mode: self_attestation_with_mechanical_</text>
+  <text x="516" y="580" font-size="11" font-style="italic" fill="var(--color-text-secondary, #3d3d3a)">evidence · validator: project_architect</text>
+
+  <!-- ===== VERDICT ===== -->
+  <rect x="40" y="612" width="880" height="120" rx="12" fill="#EAF3FC" stroke="#378ADD" stroke-width="1.5"/>
+  <rect x="40" y="612" width="7" height="120" rx="3.5" fill="#378ADD"/>
+  <text x="66" y="644" font-size="13" font-weight="700" fill="#544BB5">Worth ▲ 5 / 10<tspan fill="#8a8a85" font-weight="400">   (criticality 2 + reusability 3)</tspan></text>
+  <text x="66" y="666" font-size="13" font-weight="700" fill="#854F0B">Cost ▼ 4 / 10<tspan fill="#8a8a85" font-weight="400">   (difficulty 2 + enforcement 2)</tspan></text>
+  <line x1="360" y1="628" x2="360" y2="716" stroke="#C9DCEF" stroke-width="1.2"/>
+  <text x="392" y="648" font-size="15" font-weight="700" fill="#185FA5">Verdict: FAST FOLLOW — a cheap win, but it waits.</text>
+  <text x="392" y="674" font-size="12" fill="var(--color-text-primary, #141413)">Criticality 2 means it can't jump the queue. Its low cost and fair reuse make</text>
+  <text x="392" y="692" font-size="12" fill="var(--color-text-primary, #141413)">it easy to slot in after the critical builds — and only once its GO3B1-01</text>
+  <text x="392" y="710" font-size="12" fill="var(--color-text-primary, #141413)">prerequisite (the prompt registry) is in place.</text>
+</svg>

@@ -56,3 +56,6 @@ hubspot/import_data_platform_signups.mjs
 
 # bare env file with secrets
 env
+
+# prospecting secrets
+prospecting/.env
