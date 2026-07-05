@@ -1,0 +1,133 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">The Four Owners — Roles &amp; Responsibilities</title>
+  <desc id="dsc">The companion to the AI CoE org chart. Four heads, one duty each. Lead AI Architect DEFINES — owns the reference architectures and the standards catalogue, holds the pen on content; does not build, run, or sign off; accountable for technical correctness and a coherent estate. Head of Engineering BUILDS — owns the AI platform (gateway, SDK, MLOps) and the pods that build standards into reference implementations; does not define the standard, run the SLA, or certify; accountable for shipping operable builds through the readiness gate. Head of Product OPERATES — owns run and SLA, adoption and brownfield SDK migration, and FinOps chargeback; does not own standard content, the SDK build, or waiver authority; accountable for adoption and reliability, enable before enforce. Head of Governance JUDGES — reports on a solid line out to the CRO for independence; owns responsible-AI policy, certification, change-control and the audit trail; does not own standard content or final sign-off; accountable for certification credible to a regulator. The rule: the AI function authors and prepares, the Enterprise ARB approves — they never collapse into one body.</desc>
+
+  <!-- ============ HEADER ============ -->
+  <text x="640" y="46" text-anchor="middle" font-size="26" font-weight="700" fill="var(--color-text-primary, #141413)">The Four Owners — Roles &amp; Responsibilities</text>
+  <text x="640" y="72" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">The companion to the org chart — what each head owns, and the independence that keeps the verdict honest.</text>
+
+  <!-- ============================================================ -->
+  <!-- CARD 1 — LEAD AI ARCHITECT · DEFINE (purple) -->
+  <!-- ============================================================ -->
+  <rect x="40" y="100" width="285" height="384" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.6"/>
+  <rect x="40" y="100" width="285" height="6" rx="3" fill="#7F77DD"/>
+  <text x="58" y="132" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#544BB5">DEFINE · THE WHAT</text>
+  <text x="58" y="149" font-size="10.5" font-style="italic" fill="#8a8a85">the design authority</text>
+  <line x1="56" y1="160" x2="309" y2="160" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="58" y="184" font-size="15.5" font-weight="700" fill="var(--color-text-primary, #141413)">Lead AI Architect</text>
+  <text x="58" y="202" font-size="10" fill="var(--color-text-secondary, #3d3d3a)">Reports to Head of AI CoE · dotted to Chief EA</text>
+
+  <text x="58" y="234" font-size="11" font-weight="700" letter-spacing="1.2" fill="#544BB5">OWNS</text>
+  <circle cx="62" cy="252" r="2.6" fill="#7F77DD"/><text x="74" y="256" font-size="11" fill="var(--color-text-primary, #141413)">Reference architectures — the</text>
+  <text x="74" y="270" font-size="11" fill="var(--color-text-primary, #141413)">blessed AI patterns.</text>
+  <circle cx="62" cy="290" r="2.6" fill="#7F77DD"/><text x="74" y="294" font-size="11" fill="var(--color-text-primary, #141413)">The standards catalogue —</text>
+  <text x="74" y="308" font-size="11" fill="var(--color-text-primary, #141413)">holds the pen on content.</text>
+  <circle cx="62" cy="328" r="2.6" fill="#7F77DD"/><text x="74" y="332" font-size="11" fill="var(--color-text-primary, #141413)">Tech &amp; model selection —</text>
+  <text x="74" y="346" font-size="11" fill="var(--color-text-primary, #141413)">recommend and ratify.</text>
+
+  <text x="58" y="384" font-size="10" font-weight="700" letter-spacing="0.6" fill="#8a8a85">DOESN'T OWN</text>
+  <text x="58" y="400" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">build, run, or governance sign-off.</text>
+
+  <rect x="50" y="426" width="265" height="48" rx="8" fill="#EEEDFE"/>
+  <text x="62" y="446" font-size="9.5" font-weight="700" letter-spacing="0.6" fill="#544BB5">ACCOUNTABLE FOR</text>
+  <text x="62" y="464" font-size="10" font-weight="600" fill="#3C3489">Technical correctness &amp; a coherent estate.</text>
+
+  <!-- ============================================================ -->
+  <!-- CARD 2 — HEAD OF ENGINEERING · BUILD (green) -->
+  <!-- ============================================================ -->
+  <rect x="345" y="100" width="285" height="384" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#1D9E75" stroke-width="1.6"/>
+  <rect x="345" y="100" width="285" height="6" rx="3" fill="#1D9E75"/>
+  <text x="363" y="132" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#0F6E56">BUILD · THE MACHINE</text>
+  <text x="363" y="149" font-size="10.5" font-style="italic" fill="#8a8a85">the delivery muscle</text>
+  <line x1="361" y1="160" x2="614" y2="160" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="363" y="184" font-size="15.5" font-weight="700" fill="var(--color-text-primary, #141413)">Head of Engineering</text>
+  <text x="363" y="202" font-size="10" fill="var(--color-text-secondary, #3d3d3a)">Reports to Head of AI CoE</text>
+
+  <text x="363" y="234" font-size="11" font-weight="700" letter-spacing="1.2" fill="#0F6E56">OWNS</text>
+  <circle cx="367" cy="252" r="2.6" fill="#1D9E75"/><text x="379" y="256" font-size="11" fill="var(--color-text-primary, #141413)">The AI platform — gateway,</text>
+  <text x="379" y="270" font-size="11" fill="var(--color-text-primary, #141413)">SDK, MLOps.</text>
+  <circle cx="367" cy="290" r="2.6" fill="#1D9E75"/><text x="379" y="294" font-size="11" fill="var(--color-text-primary, #141413)">Pods that build standards</text>
+  <text x="379" y="308" font-size="11" fill="var(--color-text-primary, #141413)">into enforceable RIs.</text>
+  <circle cx="367" cy="328" r="2.6" fill="#1D9E75"/><text x="379" y="332" font-size="11" fill="var(--color-text-primary, #141413)">Eng quality, CI/CD, the</text>
+  <text x="379" y="346" font-size="11" fill="var(--color-text-primary, #141413)">delivery schedule.</text>
+
+  <text x="363" y="384" font-size="10" font-weight="700" letter-spacing="0.6" fill="#8a8a85">DOESN'T OWN</text>
+  <text x="363" y="400" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">the standard, the SLA, or certifying.</text>
+
+  <rect x="355" y="426" width="265" height="48" rx="8" fill="#E5F5EE"/>
+  <text x="367" y="446" font-size="9.5" font-weight="700" letter-spacing="0.6" fill="#0F6E56">ACCOUNTABLE FOR</text>
+  <text x="367" y="464" font-size="10" font-weight="600" fill="#0F6E56">Shipping operable builds — the readiness gate.</text>
+
+  <!-- ============================================================ -->
+  <!-- CARD 3 — HEAD OF PRODUCT · OPERATE (blue) -->
+  <!-- ============================================================ -->
+  <rect x="650" y="100" width="285" height="384" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.6"/>
+  <rect x="650" y="100" width="285" height="6" rx="3" fill="#378ADD"/>
+  <text x="668" y="132" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#185FA5">OPERATE · THE RUN</text>
+  <text x="668" y="149" font-size="10.5" font-style="italic" fill="#8a8a85">platform as a product</text>
+  <line x1="666" y1="160" x2="919" y2="160" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="668" y="184" font-size="15.5" font-weight="700" fill="var(--color-text-primary, #141413)">Head of Product</text>
+  <text x="668" y="202" font-size="10" fill="var(--color-text-secondary, #3d3d3a)">Reports to Head of AI CoE</text>
+
+  <text x="668" y="234" font-size="11" font-weight="700" letter-spacing="1.2" fill="#185FA5">OWNS</text>
+  <circle cx="672" cy="252" r="2.6" fill="#378ADD"/><text x="684" y="256" font-size="11" fill="var(--color-text-primary, #141413)">Run &amp; SLA — uptime,</text>
+  <text x="684" y="270" font-size="11" fill="var(--color-text-primary, #141413)">lifecycle, support.</text>
+  <circle cx="672" cy="290" r="2.6" fill="#378ADD"/><text x="684" y="294" font-size="11" fill="var(--color-text-primary, #141413)">Adoption + brownfield</text>
+  <text x="684" y="308" font-size="11" fill="var(--color-text-primary, #141413)">SDK migration.</text>
+  <circle cx="672" cy="328" r="2.6" fill="#378ADD"/><text x="684" y="332" font-size="11" fill="var(--color-text-primary, #141413)">FinOps / chargeback —</text>
+  <text x="684" y="346" font-size="11" fill="var(--color-text-primary, #141413)">cheaper than DIY.</text>
+
+  <text x="668" y="384" font-size="10" font-weight="700" letter-spacing="0.6" fill="#8a8a85">DOESN'T OWN</text>
+  <text x="668" y="400" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">standard content, SDK build, waivers.</text>
+
+  <rect x="660" y="426" width="265" height="48" rx="8" fill="#E4F0FB"/>
+  <text x="672" y="446" font-size="9.5" font-weight="700" letter-spacing="0.6" fill="#185FA5">ACCOUNTABLE FOR</text>
+  <text x="672" y="464" font-size="10" font-weight="600" fill="#185FA5">Adoption &amp; reliability — enable before enforce.</text>
+
+  <!-- ============================================================ -->
+  <!-- CARD 4 — HEAD OF GOVERNANCE · JUDGE (red) -->
+  <!-- ============================================================ -->
+  <rect x="955" y="100" width="285" height="384" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="2"/>
+  <rect x="955" y="100" width="285" height="6" rx="3" fill="#E24B4A"/>
+  <text x="973" y="132" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#A32D2D">JUDGE · CERTIFY</text>
+  <text x="973" y="149" font-size="10.5" font-style="italic" fill="#8a8a85">independent — solid line to CRO</text>
+  <line x1="971" y1="160" x2="1224" y2="160" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="973" y="184" font-size="15.5" font-weight="700" fill="var(--color-text-primary, #141413)">Head of Governance</text>
+  <text x="973" y="202" font-size="10" fill="var(--color-text-secondary, #3d3d3a)">Reports to CRO — outside AI · dotted to CoE</text>
+
+  <text x="973" y="234" font-size="11" font-weight="700" letter-spacing="1.2" fill="#A32D2D">OWNS</text>
+  <circle cx="977" cy="252" r="2.6" fill="#E24B4A"/><text x="989" y="256" font-size="11" fill="var(--color-text-primary, #141413)">Responsible-AI policy &amp;</text>
+  <text x="989" y="270" font-size="11" fill="var(--color-text-primary, #141413)">regulatory mapping.</text>
+  <circle cx="977" cy="290" r="2.6" fill="#E24B4A"/><text x="989" y="294" font-size="11" fill="var(--color-text-primary, #141413)">Certification, change-control</text>
+  <text x="989" y="308" font-size="11" fill="var(--color-text-primary, #141413)">&amp; the audit trail.</text>
+  <circle cx="977" cy="328" r="2.6" fill="#E24B4A"/><text x="989" y="332" font-size="11" fill="var(--color-text-primary, #141413)">Model risk, waivers, the</text>
+  <text x="989" y="346" font-size="11" fill="var(--color-text-primary, #141413)">risk register.</text>
+
+  <text x="973" y="384" font-size="10" font-weight="700" letter-spacing="0.6" fill="#8a8a85">DOESN'T OWN</text>
+  <text x="973" y="400" font-size="10.5" fill="var(--color-text-secondary, #3d3d3a)">standard content or final sign-off (ARB).</text>
+
+  <rect x="965" y="426" width="265" height="48" rx="8" fill="#FBE7E7"/>
+  <text x="977" y="446" font-size="9.5" font-weight="700" letter-spacing="0.6" fill="#A32D2D">ACCOUNTABLE FOR</text>
+  <text x="977" y="464" font-size="10" font-weight="600" fill="#A32D2D">Certification credible to a regulator.</text>
+
+  <!-- ============================================================ -->
+  <!-- INDEPENDENCE BANNER -->
+  <!-- ============================================================ -->
+  <rect x="40" y="504" width="1200" height="192" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#E24B4A" stroke-width="1.4"/>
+  <rect x="40" y="504" width="7" height="192" rx="3.5" fill="#E24B4A"/>
+  <text x="640" y="542" text-anchor="middle" font-size="18" font-weight="700" fill="var(--color-text-primary, #141413)">Four owners, on purpose — define · build · operate · judge.</text>
+  <line x1="360" y1="562" x2="920" y2="562" stroke="#EAD9D9" stroke-width="1"/>
+
+  <!-- duty chips -->
+  <g font-size="11.5" font-weight="700" text-anchor="middle">
+    <rect x="150" y="576" width="220" height="30" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.1"/><text x="260" y="595" fill="#3C3489">Architecture DEFINES the bar</text>
+    <rect x="390" y="576" width="220" height="30" rx="8" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1.1"/><text x="500" y="595" fill="#0F6E56">Engineering BUILDS the machine</text>
+    <rect x="670" y="576" width="220" height="30" rx="8" fill="#E4F0FB" stroke="#378ADD" stroke-width="1.1"/><text x="780" y="595" fill="#185FA5">Product RUNS it as a service</text>
+    <rect x="910" y="576" width="220" height="30" rx="8" fill="#FBE7E7" stroke="#E24B4A" stroke-width="1.1"/><text x="1020" y="595" fill="#A32D2D">Governance OWNS the verdict</text>
+  </g>
+
+  <text x="640" y="638" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">The AI function authors and prepares; the Enterprise ARB approves — they never merge.</text>
+  <text x="640" y="666" text-anchor="middle" font-size="12" font-style="italic" fill="#8a8a85">The moment the team that writes the standard also signs it off, the independence that made governance worth anything is gone.</text>
+</svg>

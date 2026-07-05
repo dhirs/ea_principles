@@ -1,0 +1,151 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">Level 2 · Verify — Trust, but Verify</title>
+  <desc id="dsc">The second rung of the enforcement journey. EA attacks the running system rather than the paperwork. What it is: EA fires an adversarial corpus at the deployed endpoint and scores the responses; the project can't fake it, and only probe-testable controls qualify. The gate: zero successful overrides on the central corpus and a false-positive rate under threshold — efficacy, not paperwork. Who does what at Level 2: Architecture defines pass — the threshold, what counts as an override, and which controls are probe-testable; Governance owns the verdict and gate, consumes the report, certifies, and blocks release, independently; Engineering builds the harness, corpus library and generator, and the scoring/oracle engine, and keeps the corpus current; Product runs it as a service — scheduling, SLA, cost pool, reporting, coverage; the Project supplies a staging endpoint and credentials, the invariants/oracle, and a fifteen-line adapter, and fixes what fails. What Verify buys: proof the control actually holds under attack, failures caught before release, and an independent evidence-backed verdict. Its cost and ceiling: it is point-in-time not runtime, only probe-testable controls qualify, and it needs a built central platform and a maintained corpus — the costly leap most organisations stall before. The runtime guarantee comes at Level 3, Provide.</desc>
+
+  <!-- ============ HEADER ============ -->
+  <text x="640" y="46" text-anchor="middle" font-size="26" font-weight="700" fill="var(--color-text-primary, #141413)">Level 2 · Verify — Trust, but Verify</text>
+  <text x="640" y="72" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Rung 2 of 3 · EA attacks the running system, not the paperwork — the claim is replaced by proof. Costs a central platform.</text>
+
+  <!-- ============================================================ -->
+  <!-- IDENTITY CARD — LEVEL 2 (purple) -->
+  <!-- ============================================================ -->
+  <rect x="40" y="90" width="270" height="240" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.8"/>
+  <rect x="40" y="90" width="270" height="6" rx="3" fill="#7F77DD"/>
+  <text x="58" y="132" font-size="30" font-weight="800" fill="#544BB5">LEVEL 2</text>
+  <text x="58" y="156" font-size="18" font-weight="700" letter-spacing="1" fill="#6A5FC8">VERIFY</text>
+  <text x="58" y="176" font-size="10" font-weight="700" letter-spacing="1.5" fill="#8F86C9">RUNG 2 OF 3</text>
+
+  <text x="58" y="200" font-size="9.5" font-weight="700" letter-spacing="0.8" fill="#8a8a85">ENFORCEMENT STRENGTH</text>
+  <rect x="58" y="207" width="64" height="12" rx="3" fill="#7F77DD"/>
+  <rect x="132" y="207" width="64" height="12" rx="3" fill="#7F77DD"/>
+  <rect x="206" y="207" width="64" height="12" rx="3" fill="#E3E0F6"/>
+
+  <line x1="58" y1="238" x2="292" y2="238" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="58" y="262" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Adversarial test</text>
+  <text x="58" y="280" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">EA attacks the running</text>
+  <text x="58" y="294" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">system, not the paperwork.</text>
+  <rect x="50" y="304" width="250" height="22" rx="6" fill="#EEEDFE"/>
+  <text x="62" y="319" font-size="10" font-weight="700" fill="#544BB5">EFFORT: HIGH · needs a central platform</text>
+
+  <!-- ============================================================ -->
+  <!-- WHAT IT IS -->
+  <!-- ============================================================ -->
+  <rect x="326" y="90" width="430" height="112" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#E1E6F2" stroke-width="1.4"/>
+  <text x="344" y="114" font-size="11" font-weight="700" letter-spacing="0.6" fill="#64748B">WHAT IT IS</text>
+  <text x="344" y="138" font-size="12" fill="var(--color-text-primary, #141413)">EA fires an adversarial corpus at the deployed</text>
+  <text x="344" y="156" font-size="12" fill="var(--color-text-primary, #141413)">endpoint and scores the responses. The project</text>
+  <text x="344" y="174" font-size="12" fill="var(--color-text-primary, #141413)">can't fake it — only probe-testable controls qualify.</text>
+  <text x="344" y="192" font-size="10.5" font-style="italic" fill="#8a8a85">The claim is replaced by proof that the control actually holds.</text>
+
+  <!-- ============================================================ -->
+  <!-- THE GATE (purple, load-bearing) -->
+  <!-- ============================================================ -->
+  <rect x="326" y="214" width="430" height="116" rx="12" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.6"/>
+  <text x="344" y="238" font-size="12" font-weight="700" letter-spacing="0.5" fill="#544BB5">&#9733; THE GATE</text>
+  <text x="344" y="260" font-size="11.5" fill="var(--color-text-primary, #141413)">Zero successful overrides on the central corpus,</text>
+  <text x="344" y="277" font-size="11.5" fill="var(--color-text-primary, #141413)">and a false-positive rate under threshold.</text>
+  <text x="344" y="300" font-size="11.5" font-weight="700" fill="#0F6E56">Efficacy, not paperwork — it has to actually hold.</text>
+  <text x="344" y="320" font-size="11" font-style="italic" fill="#544BB5">Point-in-time proof: true at the moment of the run.</text>
+
+  <!-- ============================================================ -->
+  <!-- VERIFICATION REPORT EXAMPLE -->
+  <!-- ============================================================ -->
+  <rect x="772" y="90" width="468" height="240" rx="12" fill="#FBFAFE" stroke="#E1E6F2" stroke-width="1.4"/>
+  <rect x="772" y="90" width="468" height="28" rx="12" fill="#EEEDFE"/>
+  <rect x="772" y="106" width="468" height="12" fill="#EEEDFE"/>
+  <circle cx="788" cy="104" r="3.5" fill="#7F77DD"/>
+  <text x="802" y="108" font-size="11" font-weight="700" font-family="var(--font-mono), ui-monospace, monospace" fill="#544BB5">verify-run · adversarial corpus</text>
+  <text x="1224" y="108" text-anchor="end" font-size="10" font-style="italic" fill="#8a8a85">point-in-time</text>
+  <g font-family="var(--font-mono), ui-monospace, monospace" font-size="11.5">
+    <text x="790" y="142" fill="#3A445C">target: <tspan fill="#185FA5">claims-triage-agent</tspan> <tspan fill="#8a8a85">(staging)</tspan></text>
+    <text x="790" y="160" fill="#3A445C">suite:  <tspan fill="#185FA5">prompt-injection v14</tspan></text>
+    <text x="790" y="178" fill="#3A445C">corpus: <tspan fill="#185FA5">480</tspan> adversarial prompts</text>
+    <line x1="790" y1="190" x2="1222" y2="190" stroke="#E3E0F6" stroke-width="1"/>
+    <text x="790" y="210" fill="#3A445C">successful_overrides: <tspan fill="#0F6E56" font-weight="700">0</tspan> <tspan fill="#8a8a85"># gate: must be 0</tspan></text>
+    <text x="790" y="228" fill="#3A445C">false_positive_rate: <tspan fill="#0F6E56" font-weight="700">1.8%</tspan> <tspan fill="#8a8a85"># &lt; 3%</tspan></text>
+    <text x="790" y="246" fill="#3A445C">probe_testable: <tspan fill="#0F6E56" font-weight="700">true</tspan></text>
+    <line x1="790" y1="258" x2="1222" y2="258" stroke="#E3E0F6" stroke-width="1"/>
+    <text x="790" y="280" fill="#3A445C">verdict: <tspan fill="#0F6E56" font-weight="700">PASS</tspan> <tspan fill="#8a8a85">&#8594; certified, release unblocked</tspan></text>
+  </g>
+  <text x="790" y="312" font-size="10.5" font-style="italic" fill="#8a8a85">One override in the corpus = FAIL. Governance owns this verdict, not the project.</text>
+
+  <!-- ============================================================ -->
+  <!-- WHO DOES WHAT — LEVEL 2 (5 owners) -->
+  <!-- ============================================================ -->
+  <text x="40" y="360" font-size="12" font-weight="700" letter-spacing="0.6" fill="var(--color-text-primary, #141413)">WHO DOES WHAT — AT LEVEL 2</text>
+  <line x1="248" y1="356" x2="1240" y2="356" stroke="#E1E6F2" stroke-width="1"/>
+
+  <!-- Architect (purple) -->
+  <rect x="40" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.5"/>
+  <rect x="40" y="372" width="228" height="5" rx="2.5" fill="#7F77DD"/>
+  <text x="58" y="398" font-size="13" font-weight="700" fill="#544BB5">Architecture</text>
+  <text x="58" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">DEFINE</text>
+  <text x="58" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Defines &#8220;pass&#8221;: the</text>
+  <text x="58" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">threshold (0), what counts</text>
+  <text x="58" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">as an override, and which</text>
+  <text x="58" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">controls are</text>
+  <text x="58" y="494" font-size="10.5" fill="var(--color-text-primary, #141413)">probe-testable.</text>
+
+  <!-- Governance (red) -->
+  <rect x="283" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.5"/>
+  <rect x="283" y="372" width="228" height="5" rx="2.5" fill="#E24B4A"/>
+  <text x="301" y="398" font-size="13" font-weight="700" fill="#A32D2D">Governance</text>
+  <text x="301" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">JUDGE</text>
+  <text x="301" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Owns the verdict + gate.</text>
+  <text x="301" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">Consumes the report,</text>
+  <text x="301" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">certifies, blocks release.</text>
+  <text x="301" y="479" font-size="10" font-style="italic" fill="#8a8a85">Independent.</text>
+
+  <!-- Engineering (green) -->
+  <rect x="526" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#1D9E75" stroke-width="1.5"/>
+  <rect x="526" y="372" width="228" height="5" rx="2.5" fill="#1D9E75"/>
+  <text x="544" y="398" font-size="13" font-weight="700" fill="#0F6E56">Engineering</text>
+  <text x="544" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">BUILD</text>
+  <text x="544" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Builds the harness, corpus</text>
+  <text x="544" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">library + generator, and the</text>
+  <text x="544" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">scoring / oracle engine;</text>
+  <text x="544" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">keeps the corpus current.</text>
+
+  <!-- Product (blue) -->
+  <rect x="769" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.5"/>
+  <rect x="769" y="372" width="228" height="5" rx="2.5" fill="#378ADD"/>
+  <text x="787" y="398" font-size="13" font-weight="700" fill="#185FA5">Product</text>
+  <text x="787" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">OPERATE</text>
+  <text x="787" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Runs it as a service:</text>
+  <text x="787" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">schedules runs, SLA, cost</text>
+  <text x="787" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">pool, reporting; tracks</text>
+  <text x="787" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">verification coverage.</text>
+
+  <!-- Project (slate) -->
+  <rect x="1012" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#64748B" stroke-width="1.5"/>
+  <rect x="1012" y="372" width="228" height="5" rx="2.5" fill="#64748B"/>
+  <text x="1030" y="398" font-size="13" font-weight="700" fill="#3A445C">Project</text>
+  <text x="1030" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">SURFACE + FIX</text>
+  <text x="1030" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Staging endpoint + creds,</text>
+  <text x="1030" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">the invariants / oracle, a</text>
+  <text x="1030" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">~15-line adapter; fixes</text>
+  <text x="1030" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">what fails.</text>
+
+  <!-- ============================================================ -->
+  <!-- BOTTOM BANNER — buys / cost -->
+  <!-- ============================================================ -->
+  <rect x="40" y="540" width="1200" height="158" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="540" width="7" height="158" rx="3.5" fill="#7F77DD"/>
+  <text x="70" y="570" font-size="16" font-weight="700" fill="var(--color-text-primary, #141413)">What Verify buys you — and what it costs</text>
+
+  <text x="70" y="596" font-size="11" font-weight="700" letter-spacing="0.6" fill="#0F6E56">BUYS &#10003;</text>
+  <text x="70" y="614" font-size="11.5" fill="var(--color-text-primary, #141413)">Proof the control actually holds under attack · failures caught before release · an</text>
+  <text x="70" y="631" font-size="11.5" fill="var(--color-text-primary, #141413)">independent, evidence-backed verdict the ARB can trust — not a self-signed claim.</text>
+
+  <text x="70" y="658" font-size="11" font-weight="700" letter-spacing="0.6" fill="#A32D2D">CEILING &#10007;</text>
+  <text x="70" y="676" font-size="11.5" fill="var(--color-text-primary, #141413)">Point-in-time, not runtime — nothing stops a bypass between runs. Only probe-testable controls qualify.</text>
+
+  <line x1="815" y1="560" x2="815" y2="678" stroke="#D8D3EC" stroke-width="1"/>
+  <rect x="840" y="576" width="380" height="104" rx="10" fill="#FDF1DD" stroke="#EF9F27" stroke-width="1.2"/>
+  <text x="1030" y="602" text-anchor="middle" font-size="12" font-weight="700" fill="#854F0B">&#9881; The costly leap.</text>
+  <text x="1030" y="624" text-anchor="middle" font-size="11" fill="var(--color-text-primary, #141413)">Verify needs a built platform + a living</text>
+  <text x="1030" y="640" text-anchor="middle" font-size="11" fill="var(--color-text-primary, #141413)">corpus — the investment most orgs stall before.</text>
+  <text x="1030" y="664" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0F6E56">The runtime guarantee is next: Provide &#8594;</text>
+</svg>

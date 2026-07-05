@@ -1,0 +1,147 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">Level 2 · Verify — How the Harness Actually Runs</title>
+  <desc id="dsc">The technical architecture of the Level 2 verification harness. One central tool tests every agent through a fixed contract. The central platform (eval-core, built once by Engineering, gate defined by Architecture, run by Product) contains: a corpus library and generator holding versioned adversarial attack sets; a harness/runner that, for each scenario, builds a standard request, calls the endpoint, and collects the response; a scoring engine that grades each response for a successful override using sub-scorers (canary and schema checks are deterministic, PII classifier and LLM-judge are probabilistic); a gate with thresholds (zero overrides, false-positive rate under three percent); and a report/evidence output feeding CI status and ARB evidence. Between central and local sits the contract — a fixed request/response schema, the same socket for every agent; that contract is the standard. The local project wires in without rebuilding: a roughly fifteen-line adapter maps the standard request to and from the agent's real API (auth, session, invocation); the agent under test is exposed on a staging endpoint with credentials; and the project supplies domain invariants and its own attack cases — business truths only it knows, such as claims over ten thousand pounds never auto-approving. Runtime flow: the harness sends a standard request across the contract to the adapter, which calls the agent; the response returns across the contract to the scoring engine, which also consumes the project's domain invariants; the gate then decides PASS (zero overrides, release unblocked, ARB evidence filed) or FAIL (one or more overrides, release blocked). Because the contract is fixed, one tool verifies the whole estate; each team adds only a thin adapter and its own rules.</desc>
+
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#64748B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#7F77DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ============ HEADER ============ -->
+  <text x="640" y="44" text-anchor="middle" font-size="25" font-weight="700" fill="var(--color-text-primary, #141413)">Level 2 · Verify — How the Harness Actually Runs</text>
+  <text x="640" y="70" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">One central tool tests every agent through a fixed contract. Central builds the machine; local surfaces the agent and its own rules.</text>
+
+  <!-- ============================================================ -->
+  <!-- CENTRAL CONTAINER (green) -->
+  <!-- ============================================================ -->
+  <rect x="40" y="96" width="786" height="464" rx="14" fill="#F5FBF8" stroke="#1D9E75" stroke-width="1.8"/>
+  <text x="58" y="120" font-size="13" font-weight="700" fill="#0F6E56">CENTRAL PLATFORM · eval-core — built once, used by every project</text>
+  <text x="58" y="137" font-size="10" font-style="italic" fill="#3B7A63">Engineering builds it · Architecture defines the gate · Product runs it as a service</text>
+
+  <!-- Corpus Library -->
+  <rect x="62" y="152" width="220" height="86" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#1D9E75" stroke-width="1.3"/>
+  <text x="76" y="176" font-size="12.5" font-weight="700" fill="#0F6E56">Corpus Library (+ generator)</text>
+  <text x="76" y="196" font-size="10.5" fill="var(--color-text-primary, #141413)">Shared adversarial sets —</text>
+  <text x="76" y="211" font-size="10.5" fill="var(--color-text-primary, #141413)">versioned; grown from every</text>
+  <text x="76" y="226" font-size="10.5" fill="var(--color-text-primary, #141413)">incident.</text>
+
+  <!-- Harness / Runner -->
+  <rect x="300" y="152" width="242" height="86" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#1D9E75" stroke-width="1.3"/>
+  <text x="314" y="176" font-size="12.5" font-weight="700" fill="#0F6E56">Harness / Runner</text>
+  <text x="314" y="196" font-size="10.5" fill="var(--color-text-primary, #141413)">For each scenario: build a</text>
+  <text x="314" y="211" font-size="10.5" fill="var(--color-text-primary, #141413)">standard request, call the</text>
+  <text x="314" y="226" font-size="10.5" fill="var(--color-text-primary, #141413)">endpoint, collect the response.</text>
+  <!-- corpus -> harness -->
+  <line x1="282" y1="195" x2="298" y2="195" stroke="#64748B" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <!-- Scoring Engine -->
+  <rect x="62" y="360" width="344" height="150" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#1D9E75" stroke-width="1.3"/>
+  <text x="76" y="384" font-size="12.5" font-weight="700" fill="#0F6E56">Scoring Engine</text>
+  <text x="76" y="402" font-size="10.5" fill="var(--color-text-primary, #141413)">Grades each response — was there a successful override?</text>
+  <rect x="76" y="414" width="150" height="22" rx="6" fill="#E5F5EE"/><text x="151" y="429" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0F6E56">canary  ·  schema</text>
+  <rect x="234" y="414" width="158" height="22" rx="6" fill="#EEEDFE"/><text x="313" y="429" text-anchor="middle" font-size="9.5" font-weight="700" fill="#544BB5">PII classifier · LLM-judge</text>
+  <text x="76" y="452" font-size="9.5" fill="#0F6E56">&#9632; deterministic first</text>
+  <text x="234" y="452" font-size="9.5" fill="#544BB5">&#9632; probabilistic only when needed</text>
+  <line x1="76" y1="462" x2="392" y2="462" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="76" y="482" font-size="10.5" fill="var(--color-text-primary, #141413)">Consumes the project's domain invariants to judge</text>
+  <text x="76" y="497" font-size="10.5" fill="var(--color-text-primary, #141413)">business-rule outcomes it can't know generically.</text>
+
+  <!-- Gate -->
+  <rect x="424" y="360" width="180" height="70" rx="10" fill="#FDF1DD" stroke="#EF9F27" stroke-width="1.5"/>
+  <text x="514" y="384" text-anchor="middle" font-size="12" font-weight="700" fill="#854F0B">&#9733; Gate &amp; Thresholds</text>
+  <text x="514" y="404" text-anchor="middle" font-size="11" font-family="var(--font-mono), ui-monospace, monospace" fill="var(--color-text-primary, #141413)">overrides == 0</text>
+  <text x="514" y="420" text-anchor="middle" font-size="11" font-family="var(--font-mono), ui-monospace, monospace" fill="var(--color-text-primary, #141413)">FP-rate &lt; 3%</text>
+
+  <!-- Report -->
+  <rect x="424" y="442" width="180" height="68" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.3"/>
+  <text x="514" y="466" text-anchor="middle" font-size="12" font-weight="700" fill="#185FA5">Report / Evidence</text>
+  <text x="514" y="486" text-anchor="middle" font-size="10.5" fill="var(--color-text-primary, #141413)">dashboard · CI status</text>
+  <text x="514" y="501" text-anchor="middle" font-size="10.5" fill="var(--color-text-primary, #141413)">· ARB evidence</text>
+  <!-- scoring -> gate -> report -->
+  <line x1="406" y1="395" x2="422" y2="395" stroke="#64748B" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="514" y1="430" x2="514" y2="440" stroke="#64748B" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <!-- ============================================================ -->
+  <!-- CONTRACT SEAM -->
+  <!-- ============================================================ -->
+  <line x1="846" y1="150" x2="846" y2="520" stroke="#64748B" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text x="846" y="330" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="0.5" fill="#3A445C" transform="rotate(-90 846 330)">THE CONTRACT = THE STANDARD</text>
+  <text x="864" y="330" text-anchor="middle" font-size="9" font-style="italic" fill="#64748B" transform="rotate(-90 864 330)">fixed request / response schema</text>
+
+  <!-- ============================================================ -->
+  <!-- LOCAL CONTAINER (purple) -->
+  <!-- ============================================================ -->
+  <rect x="884" y="96" width="356" height="464" rx="14" fill="#F7F6FD" stroke="#7F77DD" stroke-width="1.8"/>
+  <text x="902" y="120" font-size="13" font-weight="700" fill="#544BB5">LOCAL PROJECT — wire in, don't rebuild</text>
+  <text x="902" y="137" font-size="10" font-style="italic" fill="#6A61B8">surfaces its agent + its own business rules</text>
+
+  <!-- Adapter -->
+  <rect x="902" y="152" width="150" height="120" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.3"/>
+  <text x="977" y="176" text-anchor="middle" font-size="12.5" font-weight="700" fill="#544BB5">Adapter</text>
+  <text x="977" y="192" text-anchor="middle" font-size="10" font-style="italic" fill="#8a8a85">~15 lines</text>
+  <text x="916" y="216" font-size="10.5" fill="var(--color-text-primary, #141413)">Maps the standard</text>
+  <text x="916" y="231" font-size="10.5" fill="var(--color-text-primary, #141413)">request &#8596; your agent's</text>
+  <text x="916" y="246" font-size="10.5" fill="var(--color-text-primary, #141413)">real API (auth, session,</text>
+  <text x="916" y="261" font-size="10.5" fill="var(--color-text-primary, #141413)">invocation).</text>
+
+  <!-- Agent under test -->
+  <rect x="1070" y="152" width="152" height="120" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.3"/>
+  <text x="1146" y="176" text-anchor="middle" font-size="12.5" font-weight="700" fill="#544BB5">Agent under test</text>
+  <text x="1084" y="200" font-size="10.5" fill="var(--color-text-primary, #141413)">Staging endpoint +</text>
+  <text x="1084" y="215" font-size="10.5" fill="var(--color-text-primary, #141413)">creds — the live</text>
+  <text x="1084" y="230" font-size="10.5" fill="var(--color-text-primary, #141413)">deployed system.</text>
+  <!-- adapter <-> agent -->
+  <line x1="1052" y1="200" x2="1068" y2="200" stroke="#7F77DD" stroke-width="1.6" marker-end="url(#arP)"/>
+  <line x1="1068" y1="224" x2="1052" y2="224" stroke="#7F77DD" stroke-width="1.6" marker-end="url(#arP)"/>
+
+  <!-- Domain invariants -->
+  <rect x="902" y="330" width="320" height="120" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.3"/>
+  <text x="916" y="354" font-size="12.5" font-weight="700" fill="#544BB5">Domain invariants + project cases</text>
+  <text x="916" y="376" font-size="10.5" fill="var(--color-text-primary, #141413)">Business truths only you know —</text>
+  <text x="916" y="393" font-size="10.5" font-family="var(--font-mono), ui-monospace, monospace" fill="#A32D2D">claims &gt; &#163;10k never auto-approve</text>
+  <text x="916" y="414" font-size="10.5" fill="var(--color-text-primary, #141413)">— plus your own attack cases,</text>
+  <text x="916" y="431" font-size="10.5" fill="var(--color-text-primary, #141413)">authored in the shared schema.</text>
+
+  <!-- ============ RUNTIME FLOW ACROSS CONTRACT ============ -->
+  <!-- (1) request out: harness -> adapter -->
+  <path d="M542 190 L900 190" fill="none" stroke="#64748B" stroke-width="1.8" marker-end="url(#ar)"/>
+  <rect x="620" y="171" width="150" height="18" rx="9" fill="#EEF1F5"/>
+  <text x="695" y="184" text-anchor="middle" font-size="10" font-weight="700" fill="#3A445C">&#9312; request (schema)</text>
+
+  <!-- (2) response back: adapter -> scoring -->
+  <path d="M900 262 L720 262 L720 300 L406 300 L406 372" fill="none" stroke="#64748B" stroke-width="1.8" marker-end="url(#ar)"/>
+  <rect x="470" y="291" width="160" height="18" rx="9" fill="#EEF1F5"/>
+  <text x="550" y="304" text-anchor="middle" font-size="10" font-weight="700" fill="#3A445C">&#9313; response (schema)</text>
+
+  <!-- domain invariants -> scoring (dashed) -->
+  <path d="M900 405 L620 405 L620 470 L408 470" fill="none" stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arP)"/>
+  <text x="705" y="399" font-size="9.5" font-style="italic" fill="#544BB5">domain oracle</text>
+
+  <!-- ============================================================ -->
+  <!-- OUTCOME BAND -->
+  <!-- ============================================================ -->
+  <line x1="514" y1="510" x2="514" y2="574" stroke="#64748B" stroke-width="1.6" marker-end="url(#ar)"/>
+  <rect x="40" y="576" width="786" height="118" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#E1E6F2" stroke-width="1.4"/>
+  <text x="58" y="602" font-size="12" font-weight="700" letter-spacing="0.5" fill="var(--color-text-primary, #141413)">THE VERDICT</text>
+  <rect x="58" y="614" width="360" height="30" rx="8" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1.1"/>
+  <text x="72" y="633" font-size="11" font-weight="700" fill="#0F6E56">PASS · 0 overrides &#8594; release unblocked, evidence filed</text>
+  <rect x="58" y="650" width="360" height="30" rx="8" fill="#FBE7E7" stroke="#E24B4A" stroke-width="1.1"/>
+  <text x="72" y="669" font-size="11" font-weight="700" fill="#A32D2D">FAIL · &#8805;1 override &#8594; release blocked</text>
+  <text x="438" y="632" font-size="11.5" fill="var(--color-text-primary, #141413)">Governance owns this verdict —</text>
+  <text x="438" y="649" font-size="11.5" fill="var(--color-text-primary, #141413)">not the project. It consumes the</text>
+  <text x="438" y="666" font-size="11.5" fill="var(--color-text-primary, #141413)">report; it doesn't run the harness.</text>
+
+  <!-- takeaway -->
+  <rect x="866" y="576" width="374" height="118" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#1D9E75" stroke-width="1.4"/>
+  <rect x="866" y="576" width="7" height="118" rx="3.5" fill="#1D9E75"/>
+  <text x="1053" y="608" text-anchor="middle" font-size="13" font-weight="700" fill="var(--color-text-primary, #141413)">Fix the contract once —</text>
+  <text x="1053" y="630" text-anchor="middle" font-size="12" fill="var(--color-text-primary, #141413)">and one tool verifies the whole estate.</text>
+  <text x="1053" y="656" text-anchor="middle" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">Each team adds only a thin adapter</text>
+  <text x="1053" y="672" text-anchor="middle" font-size="11.5" fill="var(--color-text-secondary, #3d3d3a)">and its own rules — nothing else.</text>
+</svg>

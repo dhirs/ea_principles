@@ -1,0 +1,96 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">The Anatomy of a Standard — the 12-field taxonomy</title>
+  <desc id="dsc">Every standard carries twelve fields, grouped into four clusters. What it is: Statement, Problem, Solution. How it's classified: Maturity Level, Applicability, Criticality. How it's governed: Ownership, Change Control, Framework Mappings. How it's enforced — the teeth: Enforcement Gate, ARB Evidence, Reference Implementation. Two fields carry the whole standard: the Enforcement Gate (an objective pass/fail test) and ARB Evidence (what proves it passed). No gate, no standard — just a wish.</desc>
+
+  <!-- ============ HEADER ============ -->
+  <text x="640" y="46" text-anchor="middle" font-size="26" font-weight="700" fill="var(--color-text-primary, #141413)">The Anatomy of a Standard</text>
+  <text x="640" y="72" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">Twelve fields — the metadata every standard carries. This is the template the room will fill in 4.2.</text>
+
+  <!-- ============================================================ -->
+  <!-- GROUP 1 — WHAT IT IS (purple) -->
+  <!-- ============================================================ -->
+  <rect x="40" y="110" width="285" height="350" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.6"/>
+  <rect x="40" y="110" width="285" height="6" rx="3" fill="#7F77DD"/>
+  <text x="58" y="140" font-size="13" font-weight="700" letter-spacing="0.6" fill="#544BB5">WHAT IT IS</text>
+  <text x="58" y="157" font-size="10.5" font-style="italic" fill="#8a8a85">the substance</text>
+  <line x1="56" y1="168" x2="309" y2="168" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="58" y="206" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Statement</text>
+  <text x="58" y="226" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The one sentence — what must be true.</text>
+  <text x="58" y="286" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Problem</text>
+  <text x="58" y="306" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The production failure it prevents.</text>
+  <text x="58" y="366" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Solution</text>
+  <text x="58" y="386" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The control, in concrete terms.</text>
+
+  <!-- ============================================================ -->
+  <!-- GROUP 2 — HOW IT'S CLASSIFIED (blue) -->
+  <!-- ============================================================ -->
+  <rect x="345" y="110" width="285" height="350" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.6"/>
+  <rect x="345" y="110" width="285" height="6" rx="3" fill="#378ADD"/>
+  <text x="363" y="140" font-size="13" font-weight="700" letter-spacing="0.6" fill="#185FA5">HOW IT'S CLASSIFIED</text>
+  <text x="363" y="157" font-size="10.5" font-style="italic" fill="#8a8a85">the metadata tags</text>
+  <line x1="361" y1="168" x2="614" y2="168" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="363" y="206" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Maturity Level</text>
+  <text x="363" y="226" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Where it sits today, and the target.</text>
+  <text x="363" y="286" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Applicability</text>
+  <text x="363" y="306" font-size="11" font-family="var(--font-mono), ui-monospace, monospace" fill="var(--color-text-secondary, #3d3d3a)">applies_to {ML, LLM, agent} — who it binds.</text>
+  <text x="363" y="366" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Criticality</text>
+  <text x="363" y="386" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The risk / value rating.</text>
+
+  <!-- ============================================================ -->
+  <!-- GROUP 3 — HOW IT'S GOVERNED (slate) -->
+  <!-- ============================================================ -->
+  <rect x="650" y="110" width="285" height="350" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#B8C0CE" stroke-width="1.6"/>
+  <rect x="650" y="110" width="285" height="6" rx="3" fill="#64748B"/>
+  <text x="668" y="140" font-size="13" font-weight="700" letter-spacing="0.6" fill="#3A445C">HOW IT'S GOVERNED</text>
+  <text x="668" y="157" font-size="10.5" font-style="italic" fill="#8a8a85">ownership &amp; anchoring</text>
+  <line x1="666" y1="168" x2="919" y2="168" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="668" y="206" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Ownership</text>
+  <text x="668" y="226" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The named owner accountable for it.</text>
+  <text x="668" y="286" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Change Control</text>
+  <text x="668" y="306" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">How it's versioned and revised.</text>
+  <text x="668" y="366" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Framework Mappings</text>
+  <text x="668" y="386" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Anchor to the AWS GenAI Lens; <tspan font-family="var(--font-mono), ui-monospace, monospace" font-style="italic">na</tspan> if beyond.</text>
+
+  <!-- ============================================================ -->
+  <!-- GROUP 4 — HOW IT'S ENFORCED / THE TEETH (red, emphasized) -->
+  <!-- ============================================================ -->
+  <rect x="955" y="110" width="285" height="350" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="2"/>
+  <rect x="955" y="110" width="285" height="6" rx="3" fill="#E24B4A"/>
+  <text x="973" y="140" font-size="13" font-weight="700" letter-spacing="0.6" fill="#A32D2D">HOW IT'S ENFORCED</text>
+  <text x="973" y="157" font-size="10.5" font-style="italic" fill="#8a8a85">the teeth — where the thesis lands</text>
+  <line x1="971" y1="168" x2="1224" y2="168" stroke="#E1E6F2" stroke-width="1"/>
+  <!-- gold highlight bands behind the two load-bearing fields -->
+  <rect x="965" y="184" width="265" height="60" rx="8" fill="#FDF1DD"/>
+  <rect x="965" y="264" width="265" height="60" rx="8" fill="#FDF1DD"/>
+  <text x="977" y="206" font-size="13.5" font-weight="700" fill="#854F0B"><tspan fill="#EF9F27">&#9733; </tspan>Enforcement Gate</text>
+  <text x="977" y="226" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The objective pass/fail test. No gate,</text>
+  <text x="977" y="240" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">no standard.</text>
+  <text x="977" y="286" font-size="13.5" font-weight="700" fill="#854F0B"><tspan fill="#EF9F27">&#9733; </tspan>ARB Evidence</text>
+  <text x="977" y="306" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">What proves the gate passed — the</text>
+  <text x="977" y="320" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">audit trail.</text>
+  <text x="977" y="366" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Reference Implementation</text>
+  <text x="977" y="386" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The concrete build it all points to.</text>
+
+  <!-- ============================================================ -->
+  <!-- FORESHADOW BANNER -->
+  <!-- ============================================================ -->
+  <rect x="40" y="482" width="1200" height="204" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#E24B4A" stroke-width="1.4"/>
+  <rect x="40" y="482" width="7" height="204" rx="3.5" fill="#E24B4A"/>
+  <text x="640" y="518" text-anchor="middle" font-size="18" font-weight="700" fill="var(--color-text-primary, #141413)">Twelve fields — but two carry the whole standard.</text>
+
+  <!-- chip: enforcement gate -->
+  <rect x="90" y="536" width="520" height="92" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#EF9F27" stroke-width="1.5"/>
+  <text x="350" y="566" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="#854F0B">&#9733; ENFORCEMENT GATE</text>
+  <text x="350" y="590" text-anchor="middle" font-size="11.5" fill="var(--color-text-primary, #141413)">An objective pass/fail test you could actually run —</text>
+  <text x="350" y="608" text-anchor="middle" font-size="11.5" fill="var(--color-text-primary, #141413)">not a vague intention.</text>
+
+  <!-- chip: arb evidence -->
+  <rect x="670" y="536" width="520" height="92" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#EF9F27" stroke-width="1.5"/>
+  <text x="930" y="566" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.5" fill="#854F0B">&#9733; ARB EVIDENCE</text>
+  <text x="930" y="590" text-anchor="middle" font-size="11.5" fill="var(--color-text-primary, #141413)">The artifact trail that proves the gate passed —</text>
+  <text x="930" y="608" text-anchor="middle" font-size="11.5" fill="var(--color-text-primary, #141413)">a gate with no evidence can't be audited.</text>
+
+  <text x="640" y="662" text-anchor="middle" font-size="13" font-weight="700" fill="#A32D2D">No gate, no standard — just a wish. The bulk of 4.2 lives on these two.</text>
+</svg>

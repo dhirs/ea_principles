@@ -1,0 +1,128 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">Level 3 · Provide — In-Band Gateway Architecture (and how it differs from Level 2)</title>
+  <desc id="dsc">The technical architecture of Level 3, Provide, and its difference from Level 2. In Level 3 the control lives in the request path. An application or agent can only reach a model through the sanctioned SDK/client, which routes every call to a central AI Gateway; the gateway runs inline controls on every call at runtime — input scanning for PII and injection, tool-auth, policy enforcement, output scanning, semantic cache, FinOps routing, and audit logging — then makes the sanctioned egress to the model provider. An egress/IAM policy denies all traffic to model endpoints except from the gateway, so any attempt at a direct model call is blocked at the network layer. Compliance becomes the question are you routed: routing proof of one hundred percent, plus signed build provenance and attestation, continuously. Central builds and operates the gateway, SDK, and egress policy; local routes every call through the sanctioned client and migrates legacy calls. The difference from Level 2: Level 2 runs at test time as an out-of-band harness beside the app, samples an adversarial corpus, is bypassable between runs, and only proves the control worked at the moment of the run — the control lives in a test harness. Level 3 runs at run time as an in-band gateway on the path, covers one hundred percent of live traffic, cannot be bypassed because egress is blocked, and proves the control cannot not work — the control lives in the data path.</desc>
+
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#64748B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="arG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="arX" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#E24B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+
+  <!-- ============ HEADER ============ -->
+  <text x="640" y="44" text-anchor="middle" font-size="25" font-weight="700" fill="var(--color-text-primary, #141413)">Level 3 · Provide — In-Band Gateway (the control is now in the request path)</text>
+  <text x="640" y="70" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Every model call is routed through a central gateway. A direct call is impossible — egress is blocked at the network. Compliance = &#8220;routed?&#8221;.</text>
+
+  <!-- zone labels -->
+  <text x="58" y="104" font-size="10.5" font-weight="700" letter-spacing="0.6" fill="#544BB5">LOCAL — routes every call through the sanctioned client</text>
+  <text x="470" y="104" font-size="10.5" font-weight="700" letter-spacing="0.6" fill="#0F6E56">CENTRAL — builds &amp; operates the gateway, SDK, and egress policy</text>
+
+  <!-- App / Agent -->
+  <rect x="56" y="150" width="150" height="88" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.5"/>
+  <text x="131" y="188" text-anchor="middle" font-size="12.5" font-weight="700" fill="#544BB5">Application / Agent</text>
+  <text x="131" y="208" text-anchor="middle" font-size="10.5" fill="var(--color-text-primary, #141413)">makes a model call</text>
+
+  <!-- SDK client -->
+  <rect x="232" y="150" width="176" height="88" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#1D9E75" stroke-width="1.5"/>
+  <text x="320" y="181" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0F6E56">Sanctioned SDK / client</text>
+  <text x="320" y="199" text-anchor="middle" font-size="10" font-style="italic" fill="#8a8a85">central-built · mandated</text>
+  <text x="320" y="217" text-anchor="middle" font-size="10.5" fill="var(--color-text-primary, #141413)">the only allowed way out</text>
+  <line x1="208" y1="194" x2="230" y2="194" stroke="#64748B" stroke-width="1.7" marker-end="url(#ar)"/>
+
+  <!-- AI Gateway -->
+  <rect x="452" y="140" width="340" height="212" rx="12" fill="#F5FBF8" stroke="#1D9E75" stroke-width="1.8"/>
+  <text x="622" y="166" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0F6E56">AI Gateway — in the request path</text>
+  <text x="622" y="183" text-anchor="middle" font-size="9.5" font-style="italic" fill="#3B7A63">every call · inline · at runtime</text>
+  <g font-size="10" font-weight="700" text-anchor="middle">
+    <rect x="466" y="194" width="150" height="24" rx="7" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1"/><text x="541" y="210" fill="#0F6E56">input scan · PII / injection</text>
+    <rect x="628" y="194" width="150" height="24" rx="7" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1"/><text x="703" y="210" fill="#0F6E56">tool-auth</text>
+    <rect x="466" y="226" width="150" height="24" rx="7" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1"/><text x="541" y="242" fill="#0F6E56">policy enforce</text>
+    <rect x="628" y="226" width="150" height="24" rx="7" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1"/><text x="703" y="242" fill="#0F6E56">output scan</text>
+    <rect x="466" y="258" width="98" height="24" rx="7" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1"/><text x="515" y="274" fill="#0F6E56">semantic cache</text>
+    <rect x="574" y="258" width="98" height="24" rx="7" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1"/><text x="623" y="274" fill="#0F6E56">FinOps routing</text>
+    <rect x="682" y="258" width="96" height="24" rx="7" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1"/><text x="730" y="274" fill="#0F6E56">audit log</text>
+  </g>
+  <text x="622" y="304" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #3d3d3a)">Compliance = &#8220;routed?&#8221; · routing proof (100%) + signed provenance + attestation</text>
+  <text x="622" y="320" text-anchor="middle" font-size="10" font-style="italic" fill="#0F6E56">continuous — a bypass is impossible, not merely detectable</text>
+  <!-- sdk -> gateway -->
+  <line x1="408" y1="194" x2="450" y2="194" stroke="#1D9E75" stroke-width="2" marker-end="url(#arG)"/>
+  <text x="430" y="185" text-anchor="middle" font-size="9" fill="#0F6E56">all calls</text>
+
+  <!-- Egress / IAM wall -->
+  <rect x="812" y="118" width="16" height="256" rx="4" fill="#FDF1DD" stroke="#EF9F27" stroke-width="1.5"/>
+  <text x="820" y="246" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#854F0B" text-anchor="middle" transform="rotate(-90 820 246)">EGRESS / IAM · deny-all except gateway</text>
+
+  <!-- Model provider -->
+  <rect x="858" y="150" width="164" height="88" rx="10" fill="var(--color-background-primary, #ffffff)" stroke="#64748B" stroke-width="1.5"/>
+  <text x="940" y="188" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3A445C">Model provider (LLM)</text>
+  <text x="940" y="208" text-anchor="middle" font-size="10.5" fill="var(--color-text-primary, #141413)">the model endpoint</text>
+  <!-- gateway -> (through wall) -> model : sanctioned egress -->
+  <line x1="792" y1="194" x2="856" y2="194" stroke="#1D9E75" stroke-width="2" marker-end="url(#arG)"/>
+  <text x="820" y="140" text-anchor="middle" font-size="9" font-weight="700" fill="#0F6E56">sanctioned egress</text>
+
+  <!-- BLOCKED direct path -->
+  <path d="M131 238 L131 336 L806 336" fill="none" stroke="#E24B4A" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arX)"/>
+  <circle cx="808" cy="336" r="9" fill="#FBE7E7" stroke="#E24B4A" stroke-width="1.5"/>
+  <text x="808" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#A32D2D">&#10007;</text>
+  <text x="400" y="330" font-size="10.5" font-weight="700" fill="#A32D2D">any direct model call &#8594; DENIED at IAM (no un-routed path exists)</text>
+
+  <!-- diff badge -->
+  <rect x="858" y="286" width="164" height="66" rx="10" fill="#FBFAFE" stroke="#7F77DD" stroke-width="1.3"/>
+  <text x="940" y="308" text-anchor="middle" font-size="10.5" font-weight="700" fill="#544BB5">vs Level 2</text>
+  <text x="940" y="325" text-anchor="middle" font-size="9.5" fill="var(--color-text-primary, #141413)">the control is IN the path</text>
+  <text x="940" y="339" text-anchor="middle" font-size="9.5" fill="var(--color-text-primary, #141413)">— not a test beside it</text>
+
+  <!-- ============================================================ -->
+  <!-- COMPARISON TABLE — L2 vs L3 -->
+  <!-- ============================================================ -->
+  <rect x="40" y="392" width="1200" height="300" rx="14" fill="var(--color-background-secondary, #f7f6f3)" stroke="#E1E6F2" stroke-width="1.4"/>
+  <text x="60" y="420" font-size="15" font-weight="700" fill="var(--color-text-primary, #141413)">Level 2 &#8594; Level 3 — what actually changes</text>
+
+  <!-- column tints -->
+  <rect x="336" y="432" width="448" height="244" rx="10" fill="#F7F6FD"/>
+  <rect x="792" y="432" width="432" height="244" rx="10" fill="#F1FAF6"/>
+
+  <!-- column headers -->
+  <rect x="348" y="440" width="424" height="30" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.1"/>
+  <text x="560" y="460" text-anchor="middle" font-size="12" font-weight="700" fill="#544BB5">LEVEL 2 · VERIFY — out-of-band test</text>
+  <rect x="804" y="440" width="408" height="30" rx="8" fill="#E5F5EE" stroke="#1D9E75" stroke-width="1.1"/>
+  <text x="1008" y="460" text-anchor="middle" font-size="12" font-weight="700" fill="#0F6E56">LEVEL 3 · PROVIDE — in-band gateway</text>
+
+  <!-- rows -->
+  <g font-size="11.5">
+    <text x="60" y="497" font-weight="700" fill="var(--color-text-primary, #141413)">When</text>
+    <text x="360" y="497" fill="var(--color-text-primary, #141413)">Test time — scheduled or pre-release</text>
+    <text x="816" y="497" fill="var(--color-text-primary, #141413)">Run time — on every single call</text>
+
+    <text x="60" y="531" font-weight="700" fill="var(--color-text-primary, #141413)">In the request path?</text>
+    <text x="360" y="531" fill="#A32D2D">No — a harness beside the app</text>
+    <text x="816" y="531" fill="#0F6E56">Yes — a gateway the call passes through</text>
+
+    <text x="60" y="565" font-weight="700" fill="var(--color-text-primary, #141413)">Coverage</text>
+    <text x="360" y="565" fill="var(--color-text-primary, #141413)">A sampled adversarial corpus</text>
+    <text x="816" y="565" fill="var(--color-text-primary, #141413)">100% of live production traffic</text>
+
+    <text x="60" y="599" font-weight="700" fill="var(--color-text-primary, #141413)">Bypassable?</text>
+    <text x="360" y="599" fill="#A32D2D">Yes — a direct call between runs slips by</text>
+    <text x="816" y="599" fill="#0F6E56">No — egress / IAM blocks any direct call</text>
+
+    <text x="60" y="633" font-weight="700" fill="var(--color-text-primary, #141413)">Proves</text>
+    <text x="360" y="633" fill="var(--color-text-primary, #141413)">It worked at the moment of the run</text>
+    <text x="816" y="633" fill="var(--color-text-primary, #141413)">It can't not work — enforced by infra</text>
+
+    <text x="60" y="667" font-weight="700" fill="var(--color-text-primary, #141413)">Control lives in</text>
+    <text x="360" y="667" fill="#544BB5">A test harness</text>
+    <text x="816" y="667" fill="#0F6E56">The data path (gateway + egress)</text>
+  </g>
+
+  <!-- row separators -->
+  <g stroke="#E1E6F2" stroke-width="1">
+    <line x1="56" y1="510" x2="1224" y2="510"/>
+    <line x1="56" y1="544" x2="1224" y2="544"/>
+    <line x1="56" y1="578" x2="1224" y2="578"/>
+    <line x1="56" y1="612" x2="1224" y2="612"/>
+    <line x1="56" y1="646" x2="1224" y2="646"/>
+  </g>
+  <line x1="330" y1="432" x2="330" y2="676" stroke="#E1E6F2" stroke-width="1"/>
+</svg>

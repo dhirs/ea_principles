@@ -1,0 +1,154 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">Level 1 · Attest — Self-Certification</title>
+  <desc id="dsc">The first rung of the enforcement journey. The project certifies itself against the standard — cheap, immediate, no tooling. What it is: a guardrail YAML per workload where every threat is dispositioned (mitigated, accepted, or not-applicable), with a named owner, signed at the ARB. The gate is a completeness check — every threat dispositioned and signed, run manually or by a 20-line CI linter — it proves the form is complete, not that the control works: claim, not efficacy. Who does what at Level 1: Architecture owns the threat taxonomy and standards and sets applicability metadata; Governance runs the ARB review, challenges dispositions, and certifies; Engineering is minimal, optionally a completeness linter; Product owns the attestation template and submission process; the Project authors the YAML, dispositions every relevant standard, names the owner, and signs. What Attest buys: coverage immediately, a named owner per workload, an audit trail, and the habit of dispositioning. Its ceiling: it proves the claim, not the control — and most enterprises stop here, at the cheapest rung, which is why AI fails beyond the demo.</desc>
+
+  <!-- ============ HEADER ============ -->
+  <text x="640" y="46" text-anchor="middle" font-size="26" font-weight="700" fill="var(--color-text-primary, #141413)">Level 1 · Attest — Self-Certification</text>
+  <text x="640" y="72" text-anchor="middle" font-size="13.5" fill="var(--color-text-secondary, #3d3d3a)">Rung 1 of 3 · the project certifies itself against the standard — cheap, immediate, no tooling. It proves the claim was made, not that the control works.</text>
+
+  <!-- ============================================================ -->
+  <!-- IDENTITY CARD — LEVEL 1 (gold) -->
+  <!-- ============================================================ -->
+  <rect x="40" y="90" width="270" height="240" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#EF9F27" stroke-width="1.8"/>
+  <rect x="40" y="90" width="270" height="6" rx="3" fill="#EF9F27"/>
+  <text x="58" y="132" font-size="30" font-weight="800" fill="#854F0B">LEVEL 1</text>
+  <text x="58" y="156" font-size="18" font-weight="700" letter-spacing="1" fill="#B4740C">ATTEST</text>
+  <text x="58" y="176" font-size="10" font-weight="700" letter-spacing="1.5" fill="#A98032">RUNG 1 OF 3</text>
+
+  <text x="58" y="200" font-size="9.5" font-weight="700" letter-spacing="0.8" fill="#8a8a85">ENFORCEMENT STRENGTH</text>
+  <rect x="58" y="207" width="64" height="12" rx="3" fill="#EF9F27"/>
+  <rect x="132" y="207" width="64" height="12" rx="3" fill="#F1E2C4"/>
+  <rect x="206" y="207" width="64" height="12" rx="3" fill="#F1E2C4"/>
+
+  <line x1="58" y1="238" x2="292" y2="238" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="58" y="262" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Self-certification</text>
+  <text x="58" y="280" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The project certifies itself</text>
+  <text x="58" y="294" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">against the standard.</text>
+  <rect x="50" y="304" width="250" height="22" rx="6" fill="#FDF1DD"/>
+  <text x="62" y="319" font-size="10" font-weight="700" fill="#854F0B">EFFORT: LOW · enforceable today, no tooling</text>
+
+  <!-- ============================================================ -->
+  <!-- WHAT IT IS -->
+  <!-- ============================================================ -->
+  <rect x="326" y="90" width="430" height="112" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#E1E6F2" stroke-width="1.4"/>
+  <text x="344" y="114" font-size="11" font-weight="700" letter-spacing="0.6" fill="#64748B">WHAT IT IS</text>
+  <text x="344" y="138" font-size="12" fill="var(--color-text-primary, #141413)">A guardrail YAML per workload — every threat</text>
+  <text x="344" y="156" font-size="12" fill="var(--color-text-primary, #141413)">dispositioned (mitigated / accepted / N-A), a named</text>
+  <text x="344" y="174" font-size="12" fill="var(--color-text-primary, #141413)">owner, and the whole file signed at the ARB.</text>
+  <text x="344" y="192" font-size="10.5" font-style="italic" fill="#8a8a85">Coverage first — every relevant standard gets a decision on the record.</text>
+
+  <!-- ============================================================ -->
+  <!-- THE GATE (gold, load-bearing) -->
+  <!-- ============================================================ -->
+  <rect x="326" y="214" width="430" height="116" rx="12" fill="#FDF1DD" stroke="#EF9F27" stroke-width="1.6"/>
+  <text x="344" y="238" font-size="12" font-weight="700" letter-spacing="0.5" fill="#854F0B">&#9733; THE GATE</text>
+  <text x="344" y="260" font-size="11.5" fill="var(--color-text-primary, #141413)">Every threat dispositioned + signed — a completeness</text>
+  <text x="344" y="277" font-size="11.5" fill="var(--color-text-primary, #141413)">check, run manually or by a ~20-line CI linter.</text>
+  <text x="344" y="300" font-size="11.5" font-weight="700" fill="#A32D2D">It checks the form is complete — not that the control works.</text>
+  <text x="344" y="320" font-size="11" font-style="italic" fill="#854F0B">Claim, not efficacy. That is the ceiling of this rung.</text>
+
+  <!-- ============================================================ -->
+  <!-- YAML EXAMPLE -->
+  <!-- ============================================================ -->
+  <rect x="772" y="90" width="468" height="240" rx="12" fill="#FBFAF7" stroke="#E1E6F2" stroke-width="1.4"/>
+  <rect x="772" y="90" width="468" height="28" rx="12" fill="#F2EEE6"/>
+  <rect x="772" y="106" width="468" height="12" fill="#F2EEE6"/>
+  <circle cx="788" cy="104" r="3.5" fill="#EF9F27"/>
+  <text x="802" y="108" font-size="11" font-weight="700" font-family="var(--font-mono), ui-monospace, monospace" fill="#854F0B">guardrail.yaml</text>
+  <text x="1224" y="108" text-anchor="end" font-size="10" font-style="italic" fill="#8a8a85">one per workload</text>
+  <g font-family="var(--font-mono), ui-monospace, monospace" font-size="11.5">
+    <text x="790" y="142" fill="#3A445C">workload: <tspan fill="#185FA5">claims-triage-agent</tspan></text>
+    <text x="790" y="160" fill="#3A445C">owner: <tspan fill="#185FA5">jane.doe@bank.com</tspan></text>
+    <text x="790" y="178" fill="#3A445C">standards:</text>
+    <text x="806" y="196" fill="#3A445C">GO1B1-01: <tspan fill="#8a8a85"># eval harness</tspan></text>
+    <text x="822" y="214" fill="#3A445C">disposition: <tspan fill="#0F6E56" font-weight="700">mitigated</tspan></text>
+    <text x="806" y="232" fill="#3A445C">GS1B3-02: <tspan fill="#8a8a85"># prompt-injection</tspan></text>
+    <text x="822" y="250" fill="#3A445C">disposition: <tspan fill="#854F0B" font-weight="700">accepted</tspan></text>
+    <text x="822" y="268" fill="#3A445C">rationale: <tspan fill="#8a8a85">low blast radius</tspan></text>
+    <text x="806" y="286" fill="#3A445C">GC2B2-01: <tspan fill="#8a8a85"># cost ceiling</tspan></text>
+    <text x="822" y="304" fill="#3A445C">disposition: <tspan fill="#A32D2D" font-weight="700">na</tspan></text>
+    <text x="790" y="322" fill="#3A445C">arb_signoff: <tspan fill="#185FA5">2026-06-14</tspan></text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- WHO DOES WHAT — LEVEL 1 (5 owners) -->
+  <!-- ============================================================ -->
+  <text x="40" y="360" font-size="12" font-weight="700" letter-spacing="0.6" fill="var(--color-text-primary, #141413)">WHO DOES WHAT — AT LEVEL 1</text>
+  <line x1="248" y1="356" x2="1240" y2="356" stroke="#E1E6F2" stroke-width="1"/>
+
+  <!-- Architect (purple) -->
+  <rect x="40" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#7F77DD" stroke-width="1.5"/>
+  <rect x="40" y="372" width="228" height="5" rx="2.5" fill="#7F77DD"/>
+  <text x="58" y="398" font-size="13" font-weight="700" fill="#544BB5">Architecture</text>
+  <text x="58" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">DEFINE</text>
+  <text x="58" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Owns the threat taxonomy</text>
+  <text x="58" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">&amp; standards; sets the</text>
+  <text x="58" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">applicability metadata that</text>
+  <text x="58" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">filters the list to what</text>
+  <text x="58" y="494" font-size="10.5" fill="var(--color-text-primary, #141413)">actually applies.</text>
+
+  <!-- Governance (red) -->
+  <rect x="283" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.5"/>
+  <rect x="283" y="372" width="228" height="5" rx="2.5" fill="#E24B4A"/>
+  <text x="301" y="398" font-size="13" font-weight="700" fill="#A32D2D">Governance</text>
+  <text x="301" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">JUDGE</text>
+  <text x="301" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Runs the ARB review;</text>
+  <text x="301" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">challenges N-A &amp; accepted</text>
+  <text x="301" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">dispositions; certifies;</text>
+  <text x="301" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">wires to post-incident.</text>
+  <text x="301" y="494" font-size="10" font-style="italic" fill="#8a8a85">Independent.</text>
+
+  <!-- Engineering (green) -->
+  <rect x="526" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#1D9E75" stroke-width="1.5"/>
+  <rect x="526" y="372" width="228" height="5" rx="2.5" fill="#1D9E75"/>
+  <text x="544" y="398" font-size="13" font-weight="700" fill="#0F6E56">Engineering</text>
+  <text x="544" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">BUILD</text>
+  <text x="544" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Minimal at this rung —</text>
+  <text x="544" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">optionally a ~20-line</text>
+  <text x="544" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">completeness linter for</text>
+  <text x="544" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">the YAML.</text>
+  <text x="544" y="494" font-size="10" font-style="italic" fill="#8a8a85">No platform needed.</text>
+
+  <!-- Product (blue) -->
+  <rect x="769" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.5"/>
+  <rect x="769" y="372" width="228" height="5" rx="2.5" fill="#378ADD"/>
+  <text x="787" y="398" font-size="13" font-weight="700" fill="#185FA5">Product</text>
+  <text x="787" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">OPERATE</text>
+  <text x="787" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Owns the attestation</text>
+  <text x="787" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">template + submission</text>
+  <text x="787" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">process; tracks which</text>
+  <text x="787" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">workloads are signed.</text>
+
+  <!-- Project (slate) -->
+  <rect x="1012" y="372" width="228" height="152" rx="12" fill="var(--color-background-primary, #ffffff)" stroke="#64748B" stroke-width="1.5"/>
+  <rect x="1012" y="372" width="228" height="5" rx="2.5" fill="#64748B"/>
+  <text x="1030" y="398" font-size="13" font-weight="700" fill="#3A445C">Project</text>
+  <text x="1030" y="413" font-size="9" font-weight="700" letter-spacing="0.8" fill="#8a8a85">SURFACE + SIGN</text>
+  <text x="1030" y="434" font-size="10.5" fill="var(--color-text-primary, #141413)">Authors the YAML,</text>
+  <text x="1030" y="449" font-size="10.5" fill="var(--color-text-primary, #141413)">dispositions every relevant</text>
+  <text x="1030" y="464" font-size="10.5" fill="var(--color-text-primary, #141413)">standard, names the owner,</text>
+  <text x="1030" y="479" font-size="10.5" fill="var(--color-text-primary, #141413)">and signs.</text>
+
+  <!-- ============================================================ -->
+  <!-- BOTTOM BANNER — buys / ceiling / stall -->
+  <!-- ============================================================ -->
+  <rect x="40" y="540" width="1200" height="158" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#EF9F27" stroke-width="1.4"/>
+  <rect x="40" y="540" width="7" height="158" rx="3.5" fill="#EF9F27"/>
+  <text x="70" y="570" font-size="16" font-weight="700" fill="var(--color-text-primary, #141413)">What Attest buys you — and its ceiling</text>
+
+  <text x="70" y="596" font-size="11" font-weight="700" letter-spacing="0.6" fill="#0F6E56">BUYS &#10003;</text>
+  <text x="70" y="614" font-size="11.5" fill="var(--color-text-primary, #141413)">Coverage across the estate immediately · a named owner per workload · an audit</text>
+  <text x="70" y="631" font-size="11.5" fill="var(--color-text-primary, #141413)">trail the ARB can sign · the habit of dispositioning every relevant standard.</text>
+
+  <text x="70" y="658" font-size="11" font-weight="700" letter-spacing="0.6" fill="#A32D2D">CEILING &#10007;</text>
+  <text x="70" y="676" font-size="11.5" fill="var(--color-text-primary, #141413)">It proves the claim, not the control — a signed YAML can still describe a system that doesn't work.</text>
+
+  <line x1="815" y1="560" x2="815" y2="678" stroke="#EAD9D9" stroke-width="1"/>
+  <rect x="840" y="576" width="380" height="104" rx="10" fill="#FBE7E7" stroke="#E24B4A" stroke-width="1.2"/>
+  <text x="1030" y="602" text-anchor="middle" font-size="12" font-weight="700" fill="#A32D2D">&#9888; Most enterprises stop here.</text>
+  <text x="1030" y="624" text-anchor="middle" font-size="11" fill="var(--color-text-primary, #141413)">Commitment ends at the cheapest rung —</text>
+  <text x="1030" y="640" text-anchor="middle" font-size="11" fill="var(--color-text-primary, #141413)">and that is why AI fails beyond the demo.</text>
+  <text x="1030" y="664" text-anchor="middle" font-size="11.5" font-weight="700" fill="#854F0B">The floor, not the finish. Next: Verify &#8594;</text>
+</svg>

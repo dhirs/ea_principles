@@ -1,0 +1,102 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="var(--font-sans), 'Anthropic Sans', sans-serif" role="img" aria-labelledby="ttl dsc" width="1280" height="720">
+  <title id="ttl">Three candidates on the table — one per dimension</title>
+  <desc id="dsc">Three candidate standards, one per enterprise dimension. Legal and Risk: ST-GS1B3-01 Permission-Aware Retrieval — never let a user retrieve what they aren't allowed to see. Customer Experience: ST-GR2B1-01 Grounded Response — no answer ships without cited evidence. Cost: ST-GC3B3-01 Prompt Caching — cache the stable prompt prefix so you never pay to re-encode it twice. The room sees all three dimensions and will build one. Next step: score them on the Part 3 prioritization gate to pick the target.</desc>
+
+  <!-- ============ HEADER ============ -->
+  <text x="640" y="46" text-anchor="middle" font-size="26" font-weight="700" fill="var(--color-text-primary, #141413)">Three Candidates on the Table</text>
+  <text x="640" y="72" text-anchor="middle" font-size="14" fill="var(--color-text-secondary, #3d3d3a)">One per dimension — see all three, build one. We pick the target with the Part 3 gate next.</text>
+
+  <!-- ============================================================ -->
+  <!-- CARD 1 — LEGAL & RISK (red) -->
+  <!-- ============================================================ -->
+  <rect x="40" y="118" width="374" height="448" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#E24B4A" stroke-width="1.8"/>
+  <rect x="40" y="118" width="374" height="6" rx="3" fill="#E24B4A"/>
+  <circle cx="66" cy="146" r="5" fill="#E24B4A"/>
+  <text x="80" y="151" font-size="13" font-weight="700" letter-spacing="0.8" fill="#A32D2D">LEGAL &amp; RISK</text>
+  <text x="62" y="184" font-size="17" font-weight="700" font-family="var(--font-mono), ui-monospace, monospace" fill="var(--color-text-primary, #141413)">ST-GS1B3-01</text>
+  <g font-size="10.5" font-weight="700" text-anchor="middle">
+    <rect x="62" y="196" width="120" height="22" rx="11" fill="#FCEFEF"/><text x="122" y="211" fill="#A32D2D">P2 · Security</text>
+    <rect x="190" y="196" width="106" height="22" rx="11" fill="#FCEFEF"/><text x="243" y="211" fill="#A32D2D">impact: High</text>
+  </g>
+  <line x1="62" y1="230" x2="392" y2="230" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="62" y="252" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#A32D2D">PERMISSION-AWARE RETRIEVAL</text>
+  <text x="62" y="274" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Never let a user retrieve what</text>
+  <text x="62" y="292" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">they aren't allowed to see.</text>
+  <text x="62" y="322" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#545450">WHY IT'S A CANDIDATE</text>
+  <text x="62" y="342" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">Embedding strips source permissions — a confidential</text>
+  <text x="62" y="359" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">contract and a public FAQ become identical vectors, and</text>
+  <text x="62" y="376" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">an unfiltered top-k leaks chunks the user can't see.</text>
+  <rect x="62" y="392" width="330" height="94" rx="8" fill="#FCEFEF" stroke="#E24B4A" stroke-width="1"/>
+  <text x="76" y="412" font-size="9.5" font-weight="700" letter-spacing="0.5" fill="#A32D2D">THE EXPOSURE</text>
+  <text x="76" y="431" font-size="11" fill="var(--color-text-primary, #141413)">Cross-tenant PII leakage is direct legal liability —</text>
+  <text x="76" y="448" font-size="11" fill="var(--color-text-primary, #141413)">GDPR, OWASP broken access control. A support agent's</text>
+  <text x="76" y="465" font-size="11" fill="var(--color-text-primary, #141413)">query must never surface another tenant's contract.</text>
+  <line x1="62" y1="516" x2="392" y2="516" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="62" y="538" font-size="10.5" font-style="italic" fill="#8a8a85">candidate standard · already scored in Part 3</text>
+
+  <!-- ============================================================ -->
+  <!-- CARD 2 — CUSTOMER EXPERIENCE (blue) -->
+  <!-- ============================================================ -->
+  <rect x="453" y="118" width="374" height="448" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#378ADD" stroke-width="1.8"/>
+  <rect x="453" y="118" width="374" height="6" rx="3" fill="#378ADD"/>
+  <circle cx="479" cy="146" r="5" fill="#378ADD"/>
+  <text x="493" y="151" font-size="13" font-weight="700" letter-spacing="0.8" fill="#185FA5">CUSTOMER EXPERIENCE</text>
+  <text x="475" y="184" font-size="17" font-weight="700" font-family="var(--font-mono), ui-monospace, monospace" fill="var(--color-text-primary, #141413)">ST-GR2B1-01</text>
+  <g font-size="10.5" font-weight="700" text-anchor="middle">
+    <rect x="475" y="196" width="124" height="22" rx="11" fill="#EAF3FC"/><text x="537" y="211" fill="#185FA5">P3 · Reliability</text>
+    <rect x="607" y="196" width="106" height="22" rx="11" fill="#EAF3FC"/><text x="660" y="211" fill="#185FA5">impact: High</text>
+  </g>
+  <line x1="475" y1="230" x2="805" y2="230" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="475" y="252" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#185FA5">GROUNDED RESPONSE</text>
+  <text x="475" y="274" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">No answer ships without cited</text>
+  <text x="475" y="292" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">evidence — ungrounded is blocked.</text>
+  <text x="475" y="322" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#545450">WHY IT'S A CANDIDATE</text>
+  <text x="475" y="342" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">A fluent, confident, wrong answer is worse than none —</text>
+  <text x="475" y="359" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">it erodes trust and drives churn. Without a grounding</text>
+  <text x="475" y="376" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">check the model free-associates past its evidence.</text>
+  <rect x="475" y="392" width="330" height="94" rx="8" fill="#EAF3FC" stroke="#378ADD" stroke-width="1"/>
+  <text x="489" y="412" font-size="9.5" font-weight="700" letter-spacing="0.5" fill="#185FA5">THE STAKE</text>
+  <text x="489" y="431" font-size="11" fill="var(--color-text-primary, #141413)">Reputational / quality risk, not legal exposure — high</text>
+  <text x="489" y="448" font-size="11" fill="var(--color-text-primary, #141413)">value, lower criticality. A policy chatbot cites the</text>
+  <text x="489" y="465" font-size="11" fill="var(--color-text-primary, #141413)">clause it quotes, or says "I don't know."</text>
+  <line x1="475" y1="516" x2="805" y2="516" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="475" y="538" font-size="10.5" font-style="italic" fill="#8a8a85">candidate standard · one per dimension</text>
+
+  <!-- ============================================================ -->
+  <!-- CARD 3 — COST (gold) -->
+  <!-- ============================================================ -->
+  <rect x="866" y="118" width="374" height="448" rx="14" fill="var(--color-background-primary, #ffffff)" stroke="#EF9F27" stroke-width="1.8"/>
+  <rect x="866" y="118" width="374" height="6" rx="3" fill="#EF9F27"/>
+  <circle cx="892" cy="146" r="5" fill="#EF9F27"/>
+  <text x="906" y="151" font-size="13" font-weight="700" letter-spacing="0.8" fill="#854F0B">COST</text>
+  <text x="888" y="184" font-size="17" font-weight="700" font-family="var(--font-mono), ui-monospace, monospace" fill="var(--color-text-primary, #141413)">ST-GC3B3-01</text>
+  <g font-size="10.5" font-weight="700" text-anchor="middle">
+    <rect x="888" y="196" width="118" height="22" rx="11" fill="#FDF1DD"/><text x="947" y="211" fill="#854F0B">P4 · Cost Opt</text>
+    <rect x="1014" y="196" width="102" height="22" rx="11" fill="#FDF1DD"/><text x="1065" y="211" fill="#854F0B">impact: Med</text>
+  </g>
+  <line x1="888" y1="230" x2="1218" y2="230" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="888" y="252" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#854F0B">PROMPT CACHING</text>
+  <text x="888" y="274" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">Cache the stable prompt prefix —</text>
+  <text x="888" y="292" font-size="13.5" font-weight="700" fill="var(--color-text-primary, #141413)">never pay to re-encode it twice.</text>
+  <text x="888" y="322" font-size="10.5" font-weight="700" letter-spacing="0.5" fill="#545450">WHY IT'S A CANDIDATE</text>
+  <text x="888" y="342" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">The same system prompt + tool schema is re-encoded on</text>
+  <text x="888" y="359" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">every call. At scale that static prefix is pure, repeated</text>
+  <text x="888" y="376" font-size="11" fill="var(--color-text-secondary, #3d3d3a)">token spend the cache eliminates.</text>
+  <rect x="888" y="392" width="330" height="94" rx="8" fill="#FDF1DD" stroke="#EF9F27" stroke-width="1"/>
+  <text x="902" y="412" font-size="9.5" font-weight="700" letter-spacing="0.5" fill="#854F0B">THE SAVING</text>
+  <text x="902" y="431" font-size="11" fill="var(--color-text-primary, #141413)">Efficiency, not risk — real money, low stakes. A 4k-token</text>
+  <text x="902" y="448" font-size="11" fill="var(--color-text-primary, #141413)">preamble, cached once, stops being re-billed on every</text>
+  <text x="902" y="465" font-size="11" fill="var(--color-text-primary, #141413)">one of 100k daily calls.</text>
+  <line x1="888" y1="516" x2="1218" y2="516" stroke="#E1E6F2" stroke-width="1"/>
+  <text x="888" y="538" font-size="10.5" font-style="italic" fill="#8a8a85">candidate standard · already scored in Part 3</text>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER BANNER -->
+  <!-- ============================================================ -->
+  <rect x="40" y="590" width="1200" height="96" rx="12" fill="var(--color-background-secondary, #f7f6f3)" stroke="#7F77DD" stroke-width="1.4"/>
+  <rect x="40" y="590" width="7" height="96" rx="3.5" fill="#7F77DD"/>
+  <text x="640" y="626" text-anchor="middle" font-size="16" font-weight="700" fill="var(--color-text-primary, #141413)">See all three dimensions — build one.</text>
+  <text x="640" y="656" text-anchor="middle" font-size="12.5" fill="var(--color-text-secondary, #3d3d3a)">Next: score them on the Part 3 gate — <tspan font-weight="700" fill="#544BB5">worth ▲ (criticality · reusability)</tspan> against <tspan font-weight="700" fill="#854F0B">cost ▼ (difficulty · enforcement)</tspan> — and pick the target.</text>
+</svg>
