@@ -1,35 +1,37 @@
-# Stage 1 — Service to NAICS
+# Stage 1 Output — Targeting Requirements
 
-**Input:** user describes their product/service.
-**Output:** ranked list of NAICS codes to target. Nothing else — no searching, no filters.
+The inputs to the Apollo query, collected here and passed to Stage 2 (where the query actually runs). Two parts: the target NAICS sectors, and the firmographic / native-ICP requirements.
 
-## Process
+## Target sectors (NAICS)
 
-1. Ask the user:
-   - What is the product/service?
-   - Who buys it (role/department)?
-   - What pain does it solve?
-   - Any verticals already selling into, or explicitly out of scope?
-2. From the answers, identify which industries feel that pain hardest. Reason from the pain, not from generic industry lists.
-3. Output a ranked table: NAICS code (3-digit), industry name, one-line why.
-4. Include a standing exclusion list (NAICS to always exclude).
-5. Confirm with the user before any code is used in a search.
+Flat list of the top-level NAICS sectors to target.
 
-## Current answer for this project (CDP architecture selection service)
+| Code | Sector |
+|---|---|
+| 11 | Agriculture, Forestry, Fishing & Hunting |
+| 21 | Mining, Quarrying & Oil & Gas Extraction |
+| 22 | Utilities |
+| 23 | Construction |
+| 31–33 | Manufacturing |
+| 44–45 | Retail Trade |
+| 48–49 | Transportation & Warehousing |
+| 51 | Information (media, telecom, software/IT) |
+| 52 | Finance & Insurance |
+| 53 | Real Estate & Rental & Leasing |
+| 54 | Professional, Scientific & Technical Services |
+| 56 | Administrative, Support & Waste Management |
+| 61 | Educational Services |
+| 62 | Health Care & Social Assistance |
+| 71 | Arts, Entertainment & Recreation |
+| 72 | Accommodation & Food Services |
 
-Pain targeted: customer data fragmented across channels the company doesn't control.
+## Firmographic & native-ICP requirements
 
-| Rank | NAICS | Industry | Why |
-|---|---|---|---|
-| 1 | 423 | Durable-goods wholesale/distribution | Data chaos on both sides of the channel |
-| 2 | 333 | Machinery manufacturing | Dealer channel, no view of end customer |
-| 3 | 335 | Electrical equipment & appliances | Same channel structure |
-| 4 | 326 | Plastics & rubber products | Mid-market dense, distributor blindness |
+Apollo-native filters, applied in Stage 2.
 
-Expansion and opportunistic tiers: see `naics-target-industries.md`.
-
-**Exclusions (always):** 813 nonprofits/associations, 51 media, 61 education, 92 public admin.
-
-## Stage boundary
-
-Stage 1 ends when the user confirms the NAICS list. Stage 2 (firmographic query: geo + headcount + these NAICS codes, revenue pruned from results) starts only after that confirmation.
+| Requirement | Value |
+|---|---|
+| Geography | United States, Canada |
+| Headcount | 201–1,000 employees |
+| Revenue | $50M–$100M |
+| Native ICP filter | Marketing department 5–20 |
