@@ -26,4 +26,4 @@ Continue my prospecting universe build. Context:
 - Show real hit rates, flag data quality problems, no summaries of what you "would" do.
 - Don't touch `.env` except AWS/Supabase vars if needed; never echo values.
 
-**Later:** people search (2–3 buyers per hot account), Layer 2 weekly signal scan (job postings, new CMO, headcount growth, funding) as re-rank of universe, Monday brief, outreach drafts. See `targeting-architecture.md`, `tier1.md`, `naics-target-industries.md` in this folder.
+**Later:** people search (2–3 buyers per hot account), Layer 2 weekly signal scan (job postings, new CMO, headcount growth, funding) as re-rank of universe, Monday brief, outreach drafts. See `targeting-architecture.md`, `stage1_output.md`, `naics-target-industries.md` in this folder.
