@@ -3,8 +3,8 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Leads — Datawhistl",
-  description: "Lead database viewer",
+  title: "Datawhistl.com CRM",
+  description: "Datawhistl CRM — leads, events, and target companies",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
