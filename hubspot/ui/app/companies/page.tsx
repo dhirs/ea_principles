@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronDown,
   ChevronLeft,
@@ -9,6 +9,7 @@ import {
   ChevronUp,
   Loader2,
   Search,
+  X,
 } from "lucide-react";
 import { NavPanel } from "@/components/NavPanel";
 import { CompanyDetail, type CompanyRow } from "@/components/CompanyDetail";
@@ -17,7 +18,7 @@ import { Input } from "@/components/ui/input";
 const PAGE_SIZES = [25, 50, 75, 100];
 
 // Numeric columns that can be sorted.
-type SortKey = "revenue" | "growth_6m" | "growth_12m";
+type SortKey = "revenue" | "growth_12m";
 type SortDir = "asc" | "desc";
 
 // The 5 NAICS hierarchy levels, each surfaced as a dropdown filter (by title).
@@ -50,6 +51,10 @@ function growthPct(v: number | null) {
   return `${v > 0 ? "+" : ""}${(v * 100).toFixed(1)}%`;
 }
 
+// One org<->technology row from /api/technologies (the apollo_company_technology view).
+type TechRow = { apollo_org_id: string; technology_uid: string; technology_name: string };
+type TechOption = { uid: string; name: string; count: number };
+
 export default function CompaniesPage() {
   const [rows, setRows] = useState<CompanyRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,6 +67,8 @@ export default function CompaniesPage() {
   const [naicsFilters, setNaicsFilters] = useState<Record<NaicsKey, string>>(EMPTY_FILTERS);
   const [revMin, setRevMin] = useState("");
   const [revMax, setRevMax] = useState("");
+  const [techRows, setTechRows] = useState<TechRow[]>([]);
+  const [techFilter, setTechFilter] = useState(""); // selected technology_uid, "" = all
   const [selected, setSelected] = useState<CompanyRow | null>(null);
 
   function toggleSort(key: SortKey) {
@@ -87,18 +94,42 @@ export default function CompaniesPage() {
     })();
   }, []);
 
-  // Text search (name / domain / location / all NAICS titles).
+  // The org<->technology mapping is small (~200 rows) and non-critical, so it loads
+  // independently — a failure here just leaves the Apollo Technologies filter empty.
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/technologies");
+      if (res.ok) setTechRows(((await res.json()).rows ?? []) as TechRow[]);
+    })();
+  }, []);
+
+  // Distinct technologies for the dropdown, most-populated first.
+  const techOptions = useMemo<TechOption[]>(() => {
+    const byUid = new Map<string, TechOption>();
+    for (const t of techRows) {
+      const o = byUid.get(t.technology_uid) ?? { uid: t.technology_uid, name: t.technology_name, count: 0 };
+      o.count += 1;
+      byUid.set(t.technology_uid, o);
+    }
+    return [...byUid.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  }, [techRows]);
+
+  // uid -> set of org ids running it, for O(1) membership in the filter.
+  const techOrgSets = useMemo(() => {
+    const m = new Map<string, Set<string>>();
+    for (const t of techRows) {
+      if (!m.has(t.technology_uid)) m.set(t.technology_uid, new Set());
+      m.get(t.technology_uid)!.add(t.apollo_org_id);
+    }
+    return m;
+  }, [techRows]);
+
+  // Text search (name / domain / parent / all NAICS titles).
   const searched = useMemo(() => {
     const term = q.trim().toLowerCase();
     if (!term) return rows;
     return rows.filter((r) =>
-      [
-        r.company,
-        r.domain,
-        r.hq_location,
-        r.parent_company,
-        ...NAICS_LEVELS.map((l) => r[l.key]),
-      ]
+      [r.company, r.domain, r.parent_company, ...NAICS_LEVELS.map((l) => r[l.key])]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(term)),
     );
@@ -120,10 +151,13 @@ export default function CompaniesPage() {
   const matchesFilters = (r: CompanyRow, filters: Record<NaicsKey, string>) =>
     NAICS_LEVELS.every((l) => !filters[l.key] || r[l.key] === filters[l.key]);
 
-  const filtered = useMemo(
-    () => scoped.filter((r) => matchesFilters(r, naicsFilters)),
-    [scoped, naicsFilters],
-  );
+  const filtered = useMemo(() => {
+    const techSet = techFilter ? techOrgSets.get(techFilter) : null;
+    return scoped.filter(
+      (r) =>
+        matchesFilters(r, naicsFilters) && (!techSet || techSet.has(r.apollo_org_id)),
+    );
+  }, [scoped, naicsFilters, techFilter, techOrgSets]);
 
   // Faceted dropdown options: each level's choices reflect the search + revenue
   // range + the OTHER active level filters, so selections stay consistent (a cascade).
@@ -163,18 +197,20 @@ export default function CompaniesPage() {
       return next;
     });
   }
-  const anyFilter = Object.values(naicsFilters).some(Boolean) || !!revMin || !!revMax;
+  const anyFilter =
+    Object.values(naicsFilters).some(Boolean) || !!revMin || !!revMax || !!techFilter;
 
   function clearFilters() {
     setNaicsFilters(EMPTY_FILTERS);
     setRevMin("");
     setRevMax("");
+    setTechFilter("");
   }
 
   // Reset to the first page whenever the result set, sort, or page size changes.
   useEffect(() => {
     setPage(1);
-  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax]);
+  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax, techFilter]);
 
   const pageCount = Math.max(1, Math.ceil(sorted.length / pageSize));
   const clampedPage = Math.min(page, pageCount);
@@ -250,6 +286,13 @@ export default function CompaniesPage() {
                 />
               </div>
             </div>
+
+            <div className="mb-3 border-b pb-3">
+              <span className="mb-1 block text-xs font-medium text-muted-foreground">
+                Apollo Technologies
+              </span>
+              <TechCombobox options={techOptions} value={techFilter} onChange={setTechFilter} />
+            </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
               {NAICS_LEVELS.map(({ key, label }) => (
                 <label key={key} className="block">
@@ -288,26 +331,27 @@ export default function CompaniesPage() {
         )}
 
         <div className="overflow-x-auto rounded-xl border bg-card">
-          <table className="w-full min-w-[900px] text-sm">
+          <table className="w-full min-w-[1100px] text-sm">
             <thead className="border-b bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Company</th>
+                <th className="px-4 py-3 font-medium">Sector</th>
+                <th className="px-4 py-3 font-medium">Subsector</th>
                 <th className="px-4 py-3 font-medium">Employees</th>
                 <SortHeader label="Revenue" col="revenue" active={sortKey} dir={sortDir} onClick={toggleSort} />
-                <SortHeader label="6m" col="growth_6m" active={sortKey} dir={sortDir} onClick={toggleSort} />
                 <SortHeader label="12m" col="growth_12m" active={sortKey} dir={sortDir} onClick={toggleSort} />
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-16 text-center text-muted-foreground">
+                  <td colSpan={6} className="px-4 py-16 text-center text-muted-foreground">
                     <Loader2 className="mx-auto h-6 w-6 animate-spin" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-16 text-center text-muted-foreground">
+                  <td colSpan={6} className="px-4 py-16 text-center text-muted-foreground">
                     {rows.length === 0 ? "No companies in the universe yet." : "No matches."}
                   </td>
                 </tr>
@@ -330,14 +374,17 @@ export default function CompaniesPage() {
                         </div>
                       )}
                     </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {c.sector_title || "—"}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {c.subsector_title || "—"}
+                    </td>
                     <td className="px-4 py-3 tabular-nums text-muted-foreground">
                       {c.employee_range || "—"}
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums">
                       {c.revenue_printed || "—"}
-                    </td>
-                    <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
-                      {growthPct(c.growth_6m) ?? "—"}
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
                       {growthPct(c.growth_12m) ?? "—"}
@@ -432,6 +479,96 @@ function Pager({
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Searchable single-select for the Apollo Technologies filter. Type to narrow the
+// list; the options are only the technologies we actually have company data for
+// (the apollo_company_technology view), so this list is short by design.
+function TechCombobox({
+  options,
+  value,
+  onChange,
+}: {
+  options: TechOption[];
+  value: string;
+  onChange: (uid: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const selected = options.find((o) => o.uid === value) ?? null;
+
+  // Close on outside click.
+  useEffect(() => {
+    if (!open) return;
+    function onDoc(e: MouseEvent) {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+
+  const term = query.trim().toLowerCase();
+  const matches = term ? options.filter((o) => o.name.toLowerCase().includes(term)) : options;
+
+  function pick(uid: string) {
+    onChange(uid);
+    setQuery("");
+    setOpen(false);
+  }
+
+  return (
+    <div ref={wrapRef} className="relative w-full max-w-md">
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <input
+          value={open ? query : selected?.name ?? ""}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (!open) setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          placeholder={selected ? selected.name : "Search a technology…"}
+          className="h-9 w-full rounded-lg border bg-card pl-9 pr-8 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        />
+        {value && (
+          <button
+            type="button"
+            onClick={() => pick("")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            aria-label="Clear technology filter"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
+      {open && (
+        <ul className="absolute z-20 mt-1 max-h-72 w-full overflow-auto rounded-lg border bg-card py-1 shadow-lg">
+          {matches.length === 0 ? (
+            <li className="px-3 py-2 text-sm text-muted-foreground">No technology matches.</li>
+          ) : (
+            matches.map((o) => (
+              <li key={o.uid}>
+                <button
+                  type="button"
+                  onClick={() => pick(o.uid)}
+                  className={`flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-accent ${
+                    o.uid === value ? "font-medium text-primary" : ""
+                  }`}
+                >
+                  <span className="truncate">{o.name}</span>
+                  <span className="shrink-0 tabular-nums text-xs text-muted-foreground">
+                    {o.count}
+                  </span>
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
     </div>
   );
 }

@@ -13,7 +13,6 @@ export type CompanyRow = {
   employee_range: string | null;
   revenue: number | null;
   revenue_printed: string | null;
-  hq_location: string | null;
   parent_company: string | null;
   growth_6m: number | null;
   growth_12m: number | null;

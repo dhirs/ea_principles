@@ -1,0 +1,184 @@
+{
+ "_note": "page-3 reconstructed from an inline API response (not captured verbatim). Stage 2/3 fields kept; cosmetic fields (logo/social/phone/growth) dropped. Re-fetchable for 1 credit.",
+ "pagination": {
+  "page": 3,
+  "per_page": 100,
+  "total_entries": 216,
+  "total_pages": 3
+ },
+ "organizations": [
+  {
+   "id": "5d0a5c3ff651254e08fbfc51",
+   "name": "Milken Community School",
+   "primary_domain": "milkenschool.org",
+   "naics_codes": [
+    "611110"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 89331000.0
+  },
+  {
+   "id": "5fca2eed406a860001c871d8",
+   "name": "Texas Health Hospital Mansfield",
+   "primary_domain": "texashealthmansfield.org",
+   "naics_codes": [
+    "622110"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 84713000.0
+  },
+  {
+   "id": "5a9ec7c4a6da98d977fd2576",
+   "name": "Splitsville Bowl",
+   "primary_domain": "splitsvillebowl.ca",
+   "naics_codes": [
+    "71312",
+    "713990",
+    "722511"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 50000000.0
+  },
+  {
+   "id": "54a1287b69702d9548e61301",
+   "name": "Jefferson County Public Library",
+   "primary_domain": "jeffcolibrary.org",
+   "naics_codes": [
+    "51921"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 65652000.0
+  },
+  {
+   "id": "57c4e5a5a6da986a8f41ce12",
+   "name": "Little Sunshine's Playhouse",
+   "primary_domain": "littlesunshine.com",
+   "naics_codes": [
+    "61111",
+    "624410"
+   ],
+   "owned_by_organization_id": "55f16529f3e5bb069c002203",
+   "organization_revenue": 73000000.0
+  },
+  {
+   "id": "5e3af9c218c9b90098f8627f",
+   "name": "Allstar",
+   "primary_domain": "allstar.gg",
+   "naics_codes": [
+    "51321"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 99400000.0
+  },
+  {
+   "id": "54a11bea69702d9a8bc37000",
+   "name": "Blue Ridge Health",
+   "primary_domain": "brchs.com",
+   "naics_codes": [
+    "62141",
+    "621498"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 52174000.0
+  },
+  {
+   "id": "54a134b269702d3e837d4600",
+   "name": "Tractor Central, LLC.",
+   "primary_domain": "tractorcentral.com",
+   "naics_codes": [
+    "33311",
+    "444230",
+    "811310"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 63600000.0
+  },
+  {
+   "id": "54a11fdd69702d7fe6892d02",
+   "name": "Lakewinds Food Co-op",
+   "primary_domain": "lakewinds.coop",
+   "naics_codes": [
+    "445110"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 83570000.0
+  },
+  {
+   "id": "5d012bec2c9ab610005d786d",
+   "name": "Caliber Smart",
+   "primary_domain": "caliberreps.com",
+   "naics_codes": [
+    "54161",
+    "517122",
+    "454390"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 54100000.0
+  },
+  {
+   "id": "54a11e4c69702d88c4f34b01",
+   "name": "HDIS",
+   "primary_domain": "hdis.com",
+   "naics_codes": [
+    "33911",
+    "45619"
+   ],
+   "owned_by_organization_id": "54a1a77a74686945fa011005",
+   "organization_revenue": 67900000.0
+  },
+  {
+   "id": "54a1396969702dc8e4423c00",
+   "name": "City of Oak Creek",
+   "primary_domain": "oakcreekwi.gov",
+   "naics_codes": [
+    "23611",
+    "921110"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 97878000.0
+  },
+  {
+   "id": "5b860fa5324d4461e9e5a8a5",
+   "name": "Community National Bank",
+   "primary_domain": "cnbtx.bank",
+   "naics_codes": [
+    "522110"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 78614000.0
+  },
+  {
+   "id": "60b3198908c65500017a8509",
+   "name": "BaseLang",
+   "primary_domain": "baselang.com",
+   "naics_codes": [
+    "61169"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 68100000.0
+  },
+  {
+   "id": "55ee9257f3e5bb226700258e",
+   "name": "City of New Berlin",
+   "primary_domain": "newberlinwi.gov",
+   "naics_codes": [
+    "23711",
+    "921140"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 73274000.0
+  },
+  {
+   "id": "54a12a0069702d8b198e6202",
+   "name": "Valley Opportunity Council",
+   "primary_domain": "valleyopp.com",
+   "naics_codes": [
+    "62411",
+    "624190",
+    "813410"
+   ],
+   "owned_by_organization_id": null,
+   "organization_revenue": 71434000.0
+  }
+ ]
+}

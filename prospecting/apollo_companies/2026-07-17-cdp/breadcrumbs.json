@@ -1,0 +1,215 @@
+[
+ {
+  "label": "# Employees",
+  "signal_field_name": "organization_num_employees_ranges",
+  "value": "201,500",
+  "display_name": "201-500"
+ },
+ {
+  "label": "# Employees",
+  "signal_field_name": "organization_num_employees_ranges",
+  "value": "501,1000",
+  "display_name": "501-1000"
+ },
+ {
+  "label": "Company Locations",
+  "signal_field_name": "organization_locations",
+  "value": "United States",
+  "display_name": "United States"
+ },
+ {
+  "label": "Company Locations",
+  "signal_field_name": "organization_locations",
+  "value": "Canada",
+  "display_name": "Canada"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "11",
+  "display_name": "11"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "21",
+  "display_name": "21"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "22",
+  "display_name": "22"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "23",
+  "display_name": "23"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "31",
+  "display_name": "31"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "32",
+  "display_name": "32"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "33",
+  "display_name": "33"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "44",
+  "display_name": "44"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "45",
+  "display_name": "45"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "48",
+  "display_name": "48"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "49",
+  "display_name": "49"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "51",
+  "display_name": "51"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "52",
+  "display_name": "52"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "53",
+  "display_name": "53"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "54",
+  "display_name": "54"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "56",
+  "display_name": "56"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "61",
+  "display_name": "61"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "62",
+  "display_name": "62"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "71",
+  "display_name": "71"
+ },
+ {
+  "label": "NAICS Codes",
+  "signal_field_name": "organization_naics_codes",
+  "value": "72",
+  "display_name": "72"
+ },
+ {
+  "label": "Annual Revenue",
+  "signal_field_name": "revenue_range",
+  "value": 50000000,
+  "display_name": "> 50000000"
+ },
+ {
+  "label": "Annual Revenue",
+  "signal_field_name": "revenue_range",
+  "value": 100000000,
+  "display_name": "< 100000000"
+ },
+ {
+  "label": "Include Unknown Founded Year",
+  "signal_field_name": "organization_include_unknown_founded_year",
+  "value": false,
+  "display_name": null
+ },
+ {
+  "label": "Use at least one of",
+  "signal_field_name": "currently_using_any_of_technology_uids",
+  "value": [
+   "able_cdp",
+   "acquia_customer_data_platform",
+   "adobe_experience_platform",
+   "adobe_realtime_cdp",
+   "amperity",
+   "antsomi_cdp_365",
+   "blueconic",
+   "blueshift",
+   "cleverdata",
+   "cooladata",
+   "custobar",
+   "datatrics",
+   "exponea",
+   "firsthive",
+   "hightouch",
+   "klaviyo_data_platform",
+   "leadspace",
+   "lexer",
+   "lytics",
+   "mparticle",
+   "netcore_cloud",
+   "optimove",
+   "rudderstack",
+   "salesforce_customer_data_platform_cdp",
+   "segment",
+   "simon_data",
+   "sitecore_engagement_cloud",
+   "snowplow",
+   "spotler_activate",
+   "tealium_customer_data_hub",
+   "treasure_data",
+   "twilio_segment",
+   "zeotap"
+  ],
+  "display_name": "Able CDP, Acquia Customer Data Platform and 31 other"
+ },
+ {
+  "label": "Department Sizes",
+  "signal_field_name": "organization_department_or_subdepartment_counts",
+  "value": {
+   "master_marketing": {
+    "min": 5,
+    "max": 20
+   }
+  },
+  "display_name": "Master marketing >= 5, Master marketing <= 20"
+ }
+]

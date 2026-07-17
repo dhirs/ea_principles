@@ -1,0 +1,4973 @@
+{
+ "breadcrumbs": [
+  {
+   "label": "# Employees",
+   "signal_field_name": "organization_num_employees_ranges",
+   "value": "201,500",
+   "display_name": "201-500"
+  },
+  {
+   "label": "# Employees",
+   "signal_field_name": "organization_num_employees_ranges",
+   "value": "501,1000",
+   "display_name": "501-1000"
+  },
+  {
+   "label": "Company Locations",
+   "signal_field_name": "organization_locations",
+   "value": "United States",
+   "display_name": "United States"
+  },
+  {
+   "label": "Company Locations",
+   "signal_field_name": "organization_locations",
+   "value": "Canada",
+   "display_name": "Canada"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "11",
+   "display_name": "11"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "21",
+   "display_name": "21"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "22",
+   "display_name": "22"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "23",
+   "display_name": "23"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "31",
+   "display_name": "31"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "32",
+   "display_name": "32"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "33",
+   "display_name": "33"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "44",
+   "display_name": "44"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "45",
+   "display_name": "45"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "48",
+   "display_name": "48"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "49",
+   "display_name": "49"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "51",
+   "display_name": "51"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "52",
+   "display_name": "52"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "53",
+   "display_name": "53"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "54",
+   "display_name": "54"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "56",
+   "display_name": "56"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "61",
+   "display_name": "61"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "62",
+   "display_name": "62"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "71",
+   "display_name": "71"
+  },
+  {
+   "label": "NAICS Codes",
+   "signal_field_name": "organization_naics_codes",
+   "value": "72",
+   "display_name": "72"
+  },
+  {
+   "label": "Annual Revenue",
+   "signal_field_name": "revenue_range",
+   "value": 50000000,
+   "display_name": "> 50000000"
+  },
+  {
+   "label": "Annual Revenue",
+   "signal_field_name": "revenue_range",
+   "value": 100000000,
+   "display_name": "< 100000000"
+  },
+  {
+   "label": "Include Unknown Founded Year",
+   "signal_field_name": "organization_include_unknown_founded_year",
+   "value": false,
+   "display_name": null
+  },
+  {
+   "label": "Use at least one of",
+   "signal_field_name": "currently_using_any_of_technology_uids",
+   "value": [
+    "able_cdp",
+    "acquia_customer_data_platform",
+    "adobe_experience_platform",
+    "adobe_realtime_cdp",
+    "amperity",
+    "antsomi_cdp_365",
+    "blueconic",
+    "blueshift",
+    "cleverdata",
+    "cooladata",
+    "custobar",
+    "datatrics",
+    "exponea",
+    "firsthive",
+    "hightouch",
+    "klaviyo_data_platform",
+    "leadspace",
+    "lexer",
+    "lytics",
+    "mparticle",
+    "netcore_cloud",
+    "optimove",
+    "rudderstack",
+    "salesforce_customer_data_platform_cdp",
+    "segment",
+    "simon_data",
+    "sitecore_engagement_cloud",
+    "snowplow",
+    "spotler_activate",
+    "tealium_customer_data_hub",
+    "treasure_data",
+    "twilio_segment",
+    "zeotap"
+   ],
+   "display_name": "Able CDP, Acquia Customer Data Platform and 31 other"
+  },
+  {
+   "label": "Department Sizes",
+   "signal_field_name": "organization_department_or_subdepartment_counts",
+   "value": {
+    "master_marketing": {
+     "min": 5,
+     "max": 20
+    }
+   },
+   "display_name": "Master marketing >= 5, Master marketing <= 20"
+  }
+ ],
+ "partial_results_only": false,
+ "has_join": false,
+ "disable_eu_prospecting": false,
+ "partial_results_limit": 10000,
+ "pagination": {
+  "page": 2,
+  "per_page": 100,
+  "total_entries": 216,
+  "total_pages": 3
+ },
+ "accounts": [],
+ "organizations": [
+  {
+   "id": "556de2eb736964124bc0c601",
+   "name": "YOOBIC",
+   "website_url": "http://www.yoobic.com",
+   "angellist_url": "http://angel.co/yoobic-1",
+   "linkedin_url": "http://www.linkedin.com/company/yoobic",
+   "twitter_url": "https://twitter.com/YOOBIC",
+   "facebook_url": "https://facebook.com/yoobicapp?fref=ts",
+   "primary_phone": {
+    "number": "+44 20 3621 5233",
+    "source": "Owler",
+    "sanitized_number": "+442036215233"
+   },
+   "languages": [
+    "English",
+    "French"
+   ],
+   "alexa_ranking": 665718,
+   "phone": "+44 20 3621 5233",
+   "linkedin_uid": "5143366",
+   "founded_year": 2014,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69abc34b83b8330001ac2e39/picture",
+   "crunchbase_url": null,
+   "primary_domain": "yoobic.com",
+   "sic_codes": [
+    "7375",
+    "7372"
+   ],
+   "naics_codes": [
+    "54161",
+    "513210"
+   ],
+   "sanitized_phone": "+442036215233",
+   "owned_by_organization_id": null,
+   "num_languages": 2,
+   "organization_revenue_printed": "57.5M",
+   "organization_revenue": 57500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.05,
+   "organization_headcount_twelve_month_growth": 0.01612903225806452,
+   "organization_headcount_twenty_four_month_growth": 0.06779661016949153
+  },
+  {
+   "id": "5ed1ffcdabf8dd0001a353b5",
+   "name": "Intellistack",
+   "website_url": "http://www.intellistack.com",
+   "angellist_url": "http://angel.co/formstack",
+   "linkedin_url": "http://www.linkedin.com/company/formstack",
+   "twitter_url": "http://twitter.com/formstack",
+   "facebook_url": "https://facebook.com/openraven/",
+   "primary_phone": {
+    "number": "+1 904-414-2670",
+    "source": "Owler",
+    "sanitized_number": "+19044142670"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 904-414-2670",
+   "linkedin_uid": "294140",
+   "founded_year": 2006,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69aa8ea1622c670001bbb79a/picture",
+   "crunchbase_url": null,
+   "primary_domain": "intellistack.com",
+   "sic_codes": [
+    "7375",
+    "7372"
+   ],
+   "naics_codes": [
+    "54151",
+    "513210"
+   ],
+   "sanitized_phone": "+19044142670",
+   "owned_by_organization_id": "5e3c067d01266b00f0abafb5",
+   "owned_by_organization": {
+    "id": "5e3c067d01266b00f0abafb5",
+    "name": "Formstack Documents (formerly WebMerge)",
+    "website_url": null
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "55.3M",
+   "organization_revenue": 55300000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.01754385964912281,
+   "organization_headcount_twelve_month_growth": 0.0,
+   "organization_headcount_twenty_four_month_growth": -0.01754385964912281
+  },
+  {
+   "id": "5d095f2ca3ae614ec5e95138",
+   "name": "Fresche Solutions",
+   "website_url": "http://www.freschesolutions.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/fresche-solutions",
+   "twitter_url": "https://twitter.com/freschesolution",
+   "facebook_url": "https://facebook.com/FrescheSolutions/",
+   "primary_phone": {
+    "number": "+1 800-361-6782",
+    "source": "Owler",
+    "sanitized_number": "+18003616782"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 800-361-6782",
+   "linkedin_uid": "6225",
+   "founded_year": 1976,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69adfe9e527ee70001530857/picture",
+   "crunchbase_url": null,
+   "primary_domain": "freschesolutions.com",
+   "sic_codes": [
+    "7375",
+    "7373",
+    "7371",
+    "7372"
+   ],
+   "naics_codes": [
+    "541512",
+    "513210"
+   ],
+   "sanitized_phone": "+18003616782",
+   "owned_by_organization_id": "5e575c67feb36f00019d2e68",
+   "owned_by_organization": {
+    "id": "5e575c67feb36f00019d2e68",
+    "name": "American Pacific Group",
+    "website_url": "http://www.americanpacificgroup.com"
+   },
+   "num_languages": 0,
+   "organization_revenue_printed": "67M",
+   "organization_revenue": 67000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03294117647058824,
+   "organization_headcount_twelve_month_growth": 0.08933002481389578,
+   "organization_headcount_twenty_four_month_growth": 0.1402597402597403
+  },
+  {
+   "id": "5a9d5115a6da98d954d8d7fb",
+   "name": "The MJ Companies",
+   "website_url": "http://www.themjcos.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/themjcompanies",
+   "twitter_url": "https://twitter.com/mj_insurance",
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 317-805-7515",
+    "source": "Scraped",
+    "sanitized_number": "+13178057515"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 317-805-7515",
+   "linkedin_uid": "118747",
+   "founded_year": 1964,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/695b35b0092e3f00013dc389/picture",
+   "crunchbase_url": null,
+   "primary_domain": "themjcos.com",
+   "sic_codes": [
+    "6361",
+    "6411",
+    "8742"
+   ],
+   "naics_codes": [
+    "524210",
+    "541612"
+   ],
+   "sanitized_phone": "+13178057515",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.04081632653061224,
+   "organization_headcount_twelve_month_growth": 0.08896797153024912,
+   "organization_headcount_twenty_four_month_growth": 0.2
+  },
+  {
+   "id": "5d8113a2e4e7d101f06afbf0",
+   "name": "Vouch Insurance",
+   "website_url": "http://www.vouch.us",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/vouch-group",
+   "twitter_url": "https://twitter.com/vouch_group",
+   "facebook_url": "https://facebook.com/vouchgroup/",
+   "primary_phone": {
+    "number": "+1 844-488-6728",
+    "source": "Owler",
+    "sanitized_number": "+18444886728"
+   },
+   "languages": [],
+   "alexa_ranking": 293392,
+   "phone": "+1 844-488-6728",
+   "linkedin_uid": "20358430",
+   "founded_year": 2018,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69adc65a64723f00017649fe/picture",
+   "crunchbase_url": null,
+   "primary_domain": "vouch.us",
+   "sic_codes": [
+    "6331",
+    "6411"
+   ],
+   "naics_codes": [
+    "524210"
+   ],
+   "sanitized_phone": "+18444886728",
+   "owned_by_organization_id": "54a118e369702d66239b0200",
+   "owned_by_organization": {
+    "id": "54a118e369702d66239b0200",
+    "name": "Hiscox",
+    "website_url": "http://www.hiscoxgroup.com"
+   },
+   "num_languages": 0,
+   "organization_revenue_printed": "50M",
+   "organization_revenue": 50000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02580645161290323,
+   "organization_headcount_twelve_month_growth": -0.04216867469879518,
+   "organization_headcount_twenty_four_month_growth": -0.1358695652173913
+  },
+  {
+   "id": "5d345d5a80f93e24b191c46f",
+   "name": "MONO",
+   "website_url": "http://www.mono-1.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/mono",
+   "twitter_url": "https://twitter.com/monoagency",
+   "facebook_url": "https://facebook.com/MONOadagency/",
+   "primary_phone": {
+    "number": "+1 612-454-4900",
+    "source": "Owler",
+    "sanitized_number": "+16124544900"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 612-454-4900",
+   "linkedin_uid": "53835",
+   "founded_year": 2003,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a3d5865307d00001298f0c/picture",
+   "crunchbase_url": null,
+   "primary_domain": "mono-1.com",
+   "sic_codes": [
+    "7311",
+    "7336",
+    "7812"
+   ],
+   "naics_codes": [
+    "541810",
+    "541430",
+    "512110"
+   ],
+   "sanitized_phone": "+16124544900",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "79M",
+   "organization_revenue": 79000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02127659574468085,
+   "organization_headcount_twelve_month_growth": 0.0,
+   "organization_headcount_twenty_four_month_growth": 0.04347826086956522
+  },
+  {
+   "id": "559231bd736964186fc8c300",
+   "name": "SmartAsset",
+   "website_url": "http://www.smartasset.com",
+   "angellist_url": "http://angel.co/smartasset",
+   "linkedin_url": "http://www.linkedin.com/company/smartasset-com",
+   "twitter_url": "http://twitter.com/@thesmartassetteam",
+   "facebook_url": "http://facebook.com/smartasset",
+   "primary_phone": {
+    "number": "+1 646-360-0802",
+    "source": "Owler",
+    "sanitized_number": "+16463600802"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 9551,
+   "phone": "+1 646-360-0802",
+   "linkedin_uid": "2326545",
+   "founded_year": 2012,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69ad102168badc00018a6fe0/picture",
+   "crunchbase_url": null,
+   "primary_domain": "smartasset.com",
+   "sic_codes": [
+    "7389"
+   ],
+   "naics_codes": [
+    "54161",
+    "51929",
+    "523999"
+   ],
+   "sanitized_phone": "+16463600802",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0364963503649635,
+   "organization_headcount_twelve_month_growth": 0.1314741035856574,
+   "organization_headcount_twenty_four_month_growth": 0.240174672489083
+  },
+  {
+   "id": "5b868bdaf874f7617ad79ab9",
+   "name": "Client Solution Architects",
+   "website_url": "http://www.csaassociates.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/csa-client-solution-architects",
+   "twitter_url": "https://twitter.com/csaassociates",
+   "facebook_url": "https://facebook.com/ClientSolutionArchitects",
+   "primary_phone": {
+    "number": "+1 717-795-9104",
+    "source": "Owler",
+    "sanitized_number": "+17177959104"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 717-795-9104",
+   "linkedin_uid": "11681331",
+   "founded_year": 2003,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69adbb634ca0750001be6430/picture",
+   "crunchbase_url": null,
+   "primary_domain": "csaassociates.com",
+   "sic_codes": [
+    "8731"
+   ],
+   "naics_codes": [
+    "54133",
+    "541512",
+    "541611",
+    "541519"
+   ],
+   "sanitized_phone": "+17177959104",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "79.8M",
+   "organization_revenue": 79763000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.01038961038961039,
+   "organization_headcount_twelve_month_growth": -0.005115089514066497,
+   "organization_headcount_twenty_four_month_growth": -0.08899297423887588
+  },
+  {
+   "id": "614b48d662ba82000178df35",
+   "name": "Payworks Payroll Services Canada",
+   "website_url": "http://www.payworks.ca",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/payworks",
+   "twitter_url": "https://twitter.com/payworks",
+   "facebook_url": "https://facebook.com/payworks",
+   "primary_phone": {
+    "number": "+1 204-779-0537",
+    "source": "Owler",
+    "sanitized_number": "+12047790537"
+   },
+   "languages": [
+    "English",
+    "French"
+   ],
+   "alexa_ranking": 42315,
+   "phone": "+1 204-779-0537",
+   "linkedin_uid": "226307",
+   "founded_year": 2000,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69aa96b85deddf00019c3d8a/picture",
+   "crunchbase_url": null,
+   "primary_domain": "payworks.ca",
+   "sic_codes": [
+    "7375"
+   ],
+   "naics_codes": [
+    "541214",
+    "513210"
+   ],
+   "sanitized_phone": "+12047790537",
+   "owned_by_organization_id": null,
+   "num_languages": 2,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0535405872193437,
+   "organization_headcount_twelve_month_growth": 0.08540925266903915,
+   "organization_headcount_twenty_four_month_growth": 0.196078431372549
+  },
+  {
+   "id": "54a1baf67468694f8f051c0c",
+   "name": "Hampden-Sydney College",
+   "website_url": "http://www.hsc.edu",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/school/hampden-sydney-college",
+   "twitter_url": "https://twitter.com/hsc1776",
+   "facebook_url": "https://facebook.com/HampdenSydneyCollege",
+   "primary_phone": {
+    "number": "+1 434-223-6000",
+    "source": "Owler",
+    "sanitized_number": "+14342236000"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 786973,
+   "phone": "+1 434-223-6000",
+   "linkedin_uid": "25659",
+   "founded_year": 1775,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69b24238509eda000113eda7/picture",
+   "crunchbase_url": null,
+   "primary_domain": "hsc.edu",
+   "sic_codes": [
+    "8221"
+   ],
+   "naics_codes": [
+    "611310"
+   ],
+   "sanitized_phone": "+14342236000",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "62.3M",
+   "organization_revenue": 62333000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.005305039787798408,
+   "organization_headcount_twelve_month_growth": 0.05932203389830509,
+   "organization_headcount_twenty_four_month_growth": 0.1160714285714286
+  },
+  {
+   "id": "5a9e0306a6da98d9a8d805ff",
+   "name": "Soleo Health",
+   "website_url": "http://www.soleohealth.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/soleohealth",
+   "twitter_url": "https://twitter.com/soleohealth",
+   "facebook_url": "https://facebook.com/soleohealth",
+   "primary_phone": {
+    "number": "+1 214-592-0852",
+    "source": "Owler",
+    "sanitized_number": "+12145920852"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 214-592-0852",
+   "linkedin_uid": "1684870",
+   "founded_year": 2014,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a45d7582bd8d0001b2e0c1/picture",
+   "crunchbase_url": null,
+   "primary_domain": "soleohealth.com",
+   "sic_codes": [
+    "8099"
+   ],
+   "naics_codes": [
+    "62142",
+    "621999"
+   ],
+   "sanitized_phone": "+12145920852",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "76.7M",
+   "organization_revenue": 76700000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.01814882032667877,
+   "organization_headcount_twelve_month_growth": 0.06049149338374291,
+   "organization_headcount_twenty_four_month_growth": 0.1519507186858316
+  },
+  {
+   "id": "5b13d797a6da98dcdbc9e7a0",
+   "name": "Sidecar Health",
+   "website_url": "http://www.sidecarhealth.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/sidecarhealth",
+   "twitter_url": "https://twitter.com/sidecarhealth",
+   "facebook_url": "https://facebook.com/sidecarhealth/",
+   "primary_phone": {
+    "number": "+1 877-653-6440",
+    "source": "Owler",
+    "sanitized_number": "+18776536440"
+   },
+   "languages": [],
+   "alexa_ranking": 333721,
+   "phone": "+1 877-653-6440",
+   "linkedin_uid": "11355601",
+   "founded_year": 2018,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a445b59eaccd500012ead2f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "sidecarhealth.com",
+   "sic_codes": [
+    "6361",
+    "6324"
+   ],
+   "naics_codes": [
+    "52421",
+    "524114"
+   ],
+   "sanitized_phone": "+18776536440",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "83.9M",
+   "organization_revenue": 83928000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.007407407407407408,
+   "organization_headcount_twelve_month_growth": 0.05019305019305019,
+   "organization_headcount_twenty_four_month_growth": 0.3268292682926829
+  },
+  {
+   "id": "54a1186e69702d530b1f0700",
+   "name": "Caring",
+   "website_url": "http://www.caring.com",
+   "angellist_url": "http://angel.co/caring-com",
+   "linkedin_url": "http://www.linkedin.com/company/caring-com",
+   "twitter_url": "http://www.twitter.com/caring",
+   "facebook_url": "http://www.facebook.com/caringcom",
+   "primary_phone": {
+    "number": "+1 800-973-1540",
+    "source": "Owler",
+    "sanitized_number": "+18009731540"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 160849,
+   "phone": "+1 800-973-1540",
+   "linkedin_uid": "265272",
+   "founded_year": 2007,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a6b683b8e8cd00010f4d0e/picture",
+   "crunchbase_url": null,
+   "primary_domain": "caring.com",
+   "sic_codes": [
+    "8082"
+   ],
+   "naics_codes": [
+    "62412",
+    "519290"
+   ],
+   "sanitized_phone": "+18009731540",
+   "owned_by_organization_id": "62b4445f86caf60001997468",
+   "owned_by_organization": {
+    "id": "62b4445f86caf60001997468",
+    "name": "SilverAssist",
+    "website_url": "http://www.silverassist.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "60.4M",
+   "organization_revenue": 60400000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.04419889502762431,
+   "organization_headcount_twelve_month_growth": -0.1519607843137255,
+   "organization_headcount_twenty_four_month_growth": -0.1642512077294686
+  },
+  {
+   "id": "54a1292269702db648f46701",
+   "name": "Hendrix College",
+   "website_url": "http://www.hendrix.edu",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/school/hendrix-college",
+   "twitter_url": "https://twitter.com/hendrixcollege",
+   "facebook_url": "https://facebook.com/hendrixcollege",
+   "primary_phone": {
+    "number": "+1 501-329-6811",
+    "source": "Owler",
+    "sanitized_number": "+15013296811"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 307310,
+   "phone": "+1 501-329-6811",
+   "linkedin_uid": "20527",
+   "founded_year": 1876,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/687dde285cba7100015eaf46/picture",
+   "crunchbase_url": null,
+   "primary_domain": "hendrix.edu",
+   "sic_codes": [
+    "8221"
+   ],
+   "naics_codes": [
+    "611310"
+   ],
+   "sanitized_phone": "+15013296811",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "98.4M",
+   "organization_revenue": 98400000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.007194244604316547,
+   "organization_headcount_twelve_month_growth": 0.06598984771573604,
+   "organization_headcount_twenty_four_month_growth": -0.007092198581560284
+  },
+  {
+   "id": "55f8adbcf3e5bb15e3000e8d",
+   "name": "Trans Ova",
+   "website_url": "http://www.transova.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/trans-ova",
+   "twitter_url": "https://twitter.com/transova",
+   "facebook_url": "https://facebook.com/TransOvaGenetics/",
+   "primary_phone": {
+    "number": "+1 800-999-3586",
+    "source": "Owler",
+    "sanitized_number": "+18009993586"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 512390,
+   "phone": "+1 800-999-3586",
+   "linkedin_uid": "9433443",
+   "founded_year": 1980,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a46126264e11100012e0eb3/picture",
+   "crunchbase_url": null,
+   "primary_domain": "transova.com",
+   "sic_codes": [
+    "2836"
+   ],
+   "naics_codes": [
+    "11119",
+    "541714",
+    "115210"
+   ],
+   "sanitized_phone": "+18009993586",
+   "owned_by_organization_id": "5da4d5a388c2a100de302431",
+   "owned_by_organization": {
+    "id": "5da4d5a388c2a100de302431",
+    "name": "URUS Group",
+    "website_url": "http://www.urus.org"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "77M",
+   "organization_revenue": 77000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02734375,
+   "organization_headcount_twelve_month_growth": 0.04780876494023904,
+   "organization_headcount_twenty_four_month_growth": 0.1239316239316239
+  },
+  {
+   "id": "6546af7508854e0001b18c0b",
+   "name": "UC Davis Continuing and Professional Education",
+   "website_url": "http://cpe.ucdavis.edu",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/school/ucdaviscpe",
+   "twitter_url": null,
+   "facebook_url": "https://www.facebook.com//UCPRC",
+   "primary_phone": {
+    "number": "+1 530-752-1011",
+    "source": "Scraped",
+    "sanitized_number": "+15307521011"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 530-752-1011",
+   "linkedin_uid": "2293249",
+   "founded_year": 1960,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6960b648e302190001e88f1b/picture",
+   "crunchbase_url": null,
+   "primary_domain": "cpe.ucdavis.edu",
+   "sic_codes": [
+    "8221",
+    "8299"
+   ],
+   "naics_codes": [
+    "611430",
+    "611310"
+   ],
+   "sanitized_phone": "+15307521011",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "72.1M",
+   "organization_revenue": 72051000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.04049844236760124,
+   "organization_headcount_twelve_month_growth": 0.0245398773006135,
+   "organization_headcount_twenty_four_month_growth": 0.05696202531645569
+  },
+  {
+   "id": "54a11c3f69702d8aa1a28200",
+   "name": "Tennessee Oncology",
+   "website_url": "http://www.tnoncology.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/tennessee-oncology",
+   "twitter_url": "https://twitter.com/tnoncology",
+   "facebook_url": "https://facebook.com/tennesseeoncology/",
+   "primary_phone": {
+    "number": "+1 877-836-6662",
+    "source": "Owler",
+    "sanitized_number": "+18778366662"
+   },
+   "languages": [],
+   "alexa_ranking": 657865,
+   "phone": "+1 877-836-6662",
+   "linkedin_uid": "1958421",
+   "founded_year": 1976,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69ae29f855cc360001fd06ed/picture",
+   "crunchbase_url": null,
+   "primary_domain": "tnoncology.com",
+   "sic_codes": [
+    "8011"
+   ],
+   "naics_codes": [
+    "621111",
+    "541714"
+   ],
+   "sanitized_phone": "+18778366662",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "97.5M",
+   "organization_revenue": 97500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.005571030640668524,
+   "organization_headcount_twelve_month_growth": 0.0463768115942029,
+   "organization_headcount_twenty_four_month_growth": 0.1352201257861635
+  },
+  {
+   "id": "5d655fb60d663509c09a4d11",
+   "name": "Exavalu",
+   "website_url": "http://www.exavalu.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/exavalu-inc",
+   "twitter_url": "https://twitter.com/exavalu",
+   "facebook_url": "https://facebook.com/ExaValu",
+   "primary_phone": {
+    "number": "+1 888-392-8258",
+    "source": "Owler",
+    "sanitized_number": "+18883928258"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 888-392-8258",
+   "linkedin_uid": "33165060",
+   "founded_year": 2018,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a4ab13647a8e000178fe78/picture",
+   "crunchbase_url": null,
+   "primary_domain": "exavalu.com",
+   "sic_codes": [
+    "8742",
+    "7373"
+   ],
+   "naics_codes": [
+    "541611",
+    "541512"
+   ],
+   "sanitized_phone": "+18883928258",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "89.9M",
+   "organization_revenue": 89900000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02529182879377432,
+   "organization_headcount_twelve_month_growth": 0.1896162528216704,
+   "organization_headcount_twenty_four_month_growth": 0.3478260869565217
+  },
+  {
+   "id": "54a13a9869702d2185eb0701",
+   "name": "The Fortune Society",
+   "website_url": "http://www.fortunesociety.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/the-fortune-society",
+   "twitter_url": "https://twitter.com/thefortunesoc",
+   "facebook_url": "https://facebook.com/fortunesociety",
+   "primary_phone": {
+    "number": "+1 212-691-7554",
+    "source": "Owler",
+    "sanitized_number": "+12126917554"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 613515,
+   "phone": "+1 212-691-7554",
+   "linkedin_uid": "1148920",
+   "founded_year": 1967,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/67167f764d45ed00018de4f9/picture",
+   "crunchbase_url": null,
+   "primary_domain": "fortunesociety.org",
+   "sic_codes": [
+    "8399",
+    "8322"
+   ],
+   "naics_codes": [
+    "81331",
+    "624190"
+   ],
+   "sanitized_phone": "+12126917554",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "83.5M",
+   "organization_revenue": 83468000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.01534526854219949,
+   "organization_headcount_twelve_month_growth": 0.02583979328165375,
+   "organization_headcount_twenty_four_month_growth": 0.08469945355191257
+  },
+  {
+   "id": "54a1c92674686942d318f210",
+   "name": "Ballast Point Brewing Company",
+   "website_url": "http://www.ballastpoint.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/ballast-point-brewing-&-spirits",
+   "twitter_url": "https://twitter.com/ballastpoint",
+   "facebook_url": "https://facebook.com/ballastpoint",
+   "primary_phone": {
+    "number": "+1 858-790-6900",
+    "source": "Owler",
+    "sanitized_number": "+18587906900"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 858-790-6900",
+   "linkedin_uid": "6432522",
+   "founded_year": 1996,
+   "publicly_traded_symbol": "PINT",
+   "publicly_traded_exchange": "nasdaq",
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69abd3129675710001191e69/picture",
+   "crunchbase_url": null,
+   "primary_domain": "ballastpoint.com",
+   "sic_codes": [
+    "2082",
+    "5812"
+   ],
+   "naics_codes": [
+    "312120",
+    "722511"
+   ],
+   "sanitized_phone": "+18587906900",
+   "owned_by_organization_id": "5d5ec034be3c1c008d1e2002",
+   "owned_by_organization": {
+    "id": "5d5ec034be3c1c008d1e2002",
+    "name": "Kings and Convicts Brewing Co.",
+    "website_url": "http://www.kingsandconvicts.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "55M",
+   "organization_revenue": 55000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.01652892561983471,
+   "organization_headcount_twelve_month_growth": 0.025,
+   "organization_headcount_twenty_four_month_growth": -0.06818181818181818
+  },
+  {
+   "id": "57c4ee17a6da986ac743689c",
+   "name": "Automox",
+   "website_url": "http://www.automox.com",
+   "angellist_url": "http://angel.co/automox",
+   "linkedin_url": "http://www.linkedin.com/company/automox",
+   "twitter_url": "https://twitter.com/Automox",
+   "facebook_url": "https://facebook.com/automox/",
+   "primary_phone": {
+    "number": "+1 720-334-8473",
+    "source": "Owler",
+    "sanitized_number": "+17203348473"
+   },
+   "languages": [
+    "English",
+    "English"
+   ],
+   "alexa_ranking": 306174,
+   "phone": "+1 720-334-8473",
+   "linkedin_uid": "7941257",
+   "founded_year": 2015,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69acda4867f61f00015414de/picture",
+   "crunchbase_url": null,
+   "primary_domain": "automox.com",
+   "sic_codes": [
+    "7375",
+    "7372",
+    "7379"
+   ],
+   "naics_codes": [
+    "513210",
+    "541512"
+   ],
+   "sanitized_phone": "+17203348473",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "73M",
+   "organization_revenue": 73000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.00847457627118644,
+   "organization_headcount_twelve_month_growth": -0.08235294117647059,
+   "organization_headcount_twenty_four_month_growth": -0.08949416342412451
+  },
+  {
+   "id": "54a11bf969702d97c12c7800",
+   "name": "Strata Decision Technology",
+   "website_url": "http://www.stratadecision.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/strata-decision-technology",
+   "twitter_url": "https://twitter.com/Syntellis",
+   "facebook_url": "https://facebook.com/Syntellis",
+   "primary_phone": {
+    "number": "+1 847-441-0022",
+    "source": "Owler",
+    "sanitized_number": "+18474410022"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 464143,
+   "phone": "+1 847-441-0022",
+   "linkedin_uid": "29193",
+   "founded_year": 1996,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69abc4c3f317e600018ec5fa/picture",
+   "crunchbase_url": null,
+   "primary_domain": "stratadecision.com",
+   "sic_codes": [
+    "7375"
+   ],
+   "naics_codes": [
+    "54161",
+    "51321"
+   ],
+   "sanitized_phone": "+18474410022",
+   "owned_by_organization_id": "5569c1977369642541f18b00",
+   "owned_by_organization": {
+    "id": "5569c1977369642541f18b00",
+    "name": "Roper Technologies, Inc.",
+    "website_url": "http://www.ropertech.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "84.4M",
+   "organization_revenue": 84444000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.007159904534606206,
+   "organization_headcount_twelve_month_growth": 0.04197530864197531,
+   "organization_headcount_twenty_four_month_growth": 0.1223404255319149
+  },
+  {
+   "id": "54a11d8e69702da10f811e01",
+   "name": "Blue Acorn iCi",
+   "website_url": "http://www.blueacornici.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/blue-acorn-ici",
+   "twitter_url": "https://twitter.com/blueacornici",
+   "facebook_url": "https://facebook.com/BlueAcorniCi/",
+   "primary_phone": {
+    "number": "+1 877-944-2583",
+    "source": "Owler",
+    "sanitized_number": "+18779442583"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 877-944-2583",
+   "linkedin_uid": "288803",
+   "founded_year": 2008,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69b3d52c06ec6c0001f89b1c/picture",
+   "crunchbase_url": null,
+   "primary_domain": "blueacornici.com",
+   "sic_codes": [
+    "7375"
+   ],
+   "naics_codes": [
+    "541512",
+    "541611"
+   ],
+   "sanitized_phone": "+18779442583",
+   "owned_by_organization_id": "54a1a1507468695860d04e03",
+   "owned_by_organization": {
+    "id": "54a1a1507468695860d04e03",
+    "name": "Infosys",
+    "website_url": "http://www.infosys.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "70M",
+   "organization_revenue": 70000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.07662835249042145,
+   "organization_headcount_twelve_month_growth": 0.124,
+   "organization_headcount_twenty_four_month_growth": 0.04850746268656717
+  },
+  {
+   "id": "5b846186f874f764c4601867",
+   "name": "Virginia Tile Company",
+   "website_url": "http://www.virginiatile.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/virginia-tile-company",
+   "twitter_url": null,
+   "facebook_url": "https://facebook.com/VirginiaTileCompany/",
+   "primary_phone": {
+    "number": "+1 734-762-2400",
+    "source": "Owler",
+    "sanitized_number": "+17347622400"
+   },
+   "languages": [],
+   "alexa_ranking": 238202,
+   "phone": "+1 734-762-2400",
+   "linkedin_uid": "4721761",
+   "founded_year": 1928,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69aa7912fb825200013896f5/picture",
+   "crunchbase_url": null,
+   "primary_domain": "virginiatile.com",
+   "sic_codes": [
+    "5082"
+   ],
+   "naics_codes": [
+    "42322",
+    "423390",
+    "444180"
+   ],
+   "sanitized_phone": "+17347622400",
+   "owned_by_organization_id": "54a1a0a374686949e7900903",
+   "owned_by_organization": {
+    "id": "54a1a0a374686949e7900903",
+    "name": "Transom Capital Group",
+    "website_url": "http://www.transomcap.com"
+   },
+   "num_languages": 0,
+   "organization_revenue_printed": "60M",
+   "organization_revenue": 60000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.04365079365079365,
+   "organization_headcount_twelve_month_growth": -0.0398406374501992,
+   "organization_headcount_twenty_four_month_growth": -0.01229508196721311
+  },
+  {
+   "id": "556e393d73696410cb9d4a01",
+   "name": "Bluecrew",
+   "website_url": "http://www.bluecrewjobs.com",
+   "angellist_url": "http://angel.co/bluecrew",
+   "linkedin_url": "http://www.linkedin.com/company/bluecrew",
+   "twitter_url": "https://twitter.com/BlueCrewJobs",
+   "facebook_url": "https://www.facebook.com/Bluecrewjobs/",
+   "primary_phone": {
+    "number": "+1 888-381-7248",
+    "source": "Scraped",
+    "sanitized_number": "+18883817248"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 888-381-7248",
+   "linkedin_uid": "4819648",
+   "founded_year": 2014,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/66f0cb4055f73800017725f3/picture",
+   "crunchbase_url": null,
+   "primary_domain": "bluecrewjobs.com",
+   "sic_codes": [
+    "7361",
+    "7363"
+   ],
+   "naics_codes": [
+    "561320"
+   ],
+   "sanitized_phone": "+18883817248",
+   "owned_by_organization_id": "54a1227869702d8aa1550903",
+   "owned_by_organization": {
+    "id": "54a1227869702d8aa1550903",
+    "name": "Employbridge",
+    "website_url": "http://www.employbridge.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "85.8M",
+   "organization_revenue": 85800000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02272727272727273,
+   "organization_headcount_twelve_month_growth": -0.01714285714285714,
+   "organization_headcount_twenty_four_month_growth": -0.1924882629107981
+  },
+  {
+   "id": "54a11bcf69702d8ccc556100",
+   "name": "Curant Health",
+   "website_url": "http://www.curanthealth.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/curant-health",
+   "twitter_url": "https://twitter.com/curanthealth",
+   "facebook_url": "https://facebook.com/curanthealth",
+   "primary_phone": {
+    "number": "+1 770-437-8040",
+    "source": "Owler",
+    "sanitized_number": "+17704378040"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 770-437-8040",
+   "linkedin_uid": "5001964",
+   "founded_year": 2000,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69b4eaa3de057b00018bee44/picture",
+   "crunchbase_url": null,
+   "primary_domain": "curanthealth.com",
+   "sic_codes": [
+    "8099",
+    "5912"
+   ],
+   "naics_codes": [
+    "62151",
+    "45611"
+   ],
+   "sanitized_phone": "+17704378040",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "68.6M",
+   "organization_revenue": 68600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0267379679144385,
+   "organization_headcount_twelve_month_growth": 0.1228070175438596,
+   "organization_headcount_twenty_four_month_growth": 0.2387096774193548
+  },
+  {
+   "id": "54a13c7769702d28516ef101",
+   "name": "IAPMO",
+   "website_url": "http://www.iapmo.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/iapmo",
+   "twitter_url": "https://twitter.com/IAPMO",
+   "facebook_url": "https://facebook.com/IAPMO/",
+   "primary_phone": {
+    "number": "+1 909-472-4100",
+    "source": "Owler",
+    "sanitized_number": "+19094724100"
+   },
+   "languages": [
+    "English",
+    "English"
+   ],
+   "alexa_ranking": 620697,
+   "phone": "+1 909-472-4100",
+   "linkedin_uid": "115809",
+   "founded_year": 1926,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a90aaaa3533e0001fd5575/picture",
+   "crunchbase_url": null,
+   "primary_domain": "iapmo.org",
+   "sic_codes": [
+    "8699"
+   ],
+   "naics_codes": [
+    "81399",
+    "813910",
+    "611430",
+    "541715"
+   ],
+   "sanitized_phone": "+19094724100",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "94M",
+   "organization_revenue": 94000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.009852216748768473,
+   "organization_headcount_twelve_month_growth": 0.05128205128205128,
+   "organization_headcount_twenty_four_month_growth": 0.07894736842105263
+  },
+  {
+   "id": "54a128f869702d9548b04f01",
+   "name": "Bunkhouse",
+   "website_url": "http://www.bunkhousehotels.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/bunkhouse-group-llc",
+   "twitter_url": null,
+   "facebook_url": "https://www.facebook.com/bunkhousehotels/",
+   "primary_phone": {
+    "number": "+1 888-344-9288",
+    "source": "Scraped",
+    "sanitized_number": "+18883449288"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 888-344-9288",
+   "linkedin_uid": "216425",
+   "founded_year": null,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a4ecb81a8b530001350fa4/picture",
+   "crunchbase_url": null,
+   "primary_domain": "bunkhousehotels.com",
+   "sic_codes": [
+    "7011"
+   ],
+   "naics_codes": [
+    "721110"
+   ],
+   "sanitized_phone": "+18883449288",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "62.6M",
+   "organization_revenue": 62600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0,
+   "organization_headcount_twelve_month_growth": -0.07,
+   "organization_headcount_twenty_four_month_growth": -0.1545454545454545
+  },
+  {
+   "id": "5da28ab658968b000174d92c",
+   "name": "Form Health",
+   "website_url": "http://www.formhealth.co",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/form-health",
+   "twitter_url": "https://twitter.com/formhealthus",
+   "facebook_url": "https://www.facebook.com/formhealthofficial",
+   "primary_phone": {
+    "number": "+1 617-505-1520",
+    "source": "Owler",
+    "sanitized_number": "+16175051520"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 617-505-1520",
+   "linkedin_uid": "40728768",
+   "founded_year": 2019,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69adb706f6866800014bb15b/picture",
+   "crunchbase_url": null,
+   "primary_domain": "formhealth.co",
+   "sic_codes": [
+    "8011"
+   ],
+   "naics_codes": [
+    "621111"
+   ],
+   "sanitized_phone": "+16175051520",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "58.5M",
+   "organization_revenue": 58500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.1481481481481481,
+   "organization_headcount_twelve_month_growth": 0.3854748603351955,
+   "organization_headcount_twenty_four_month_growth": 1.275229357798165
+  },
+  {
+   "id": "54a13c0069702d048608ce01",
+   "name": "The Zebra",
+   "website_url": "http://www.thezebra.com",
+   "angellist_url": "http://angel.co/the-zebra-3",
+   "linkedin_url": "http://www.linkedin.com/company/thezebraco",
+   "twitter_url": "https://twitter.com/TheZebraCo",
+   "facebook_url": "https://facebook.com/TheZebraCo",
+   "primary_phone": {
+    "number": "+1 888-255-4364",
+    "source": "Owler",
+    "sanitized_number": "+18882554364"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 39136,
+   "phone": "+1 888-255-4364",
+   "linkedin_uid": "2536387",
+   "founded_year": 2012,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a7e0894313e4000111126a/picture",
+   "crunchbase_url": null,
+   "primary_domain": "thezebra.com",
+   "sic_codes": [
+    "6361",
+    "6411"
+   ],
+   "naics_codes": [
+    "52421"
+   ],
+   "sanitized_phone": "+18882554364",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "60.8M",
+   "organization_revenue": 60800000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.064,
+   "organization_headcount_twelve_month_growth": 0.08571428571428572,
+   "organization_headcount_twenty_four_month_growth": 0.1271186440677966
+  },
+  {
+   "id": "54a1d4267468694f8f11c014",
+   "name": "MIM Software",
+   "website_url": "http://www.mimsoftware.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/mim-software-inc-",
+   "twitter_url": "https://twitter.com/mimsoftware",
+   "facebook_url": "https://facebook.com/MimSoftwareInc",
+   "primary_phone": {
+    "number": "+1 866-421-2536",
+    "source": "Scraped",
+    "sanitized_number": "+18664212536"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 866-421-2536",
+   "linkedin_uid": "1206628",
+   "founded_year": 2003,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6962a7fe65817e00018d131d/picture",
+   "crunchbase_url": null,
+   "primary_domain": "mimsoftware.com",
+   "sic_codes": [
+    "3829",
+    "7372"
+   ],
+   "naics_codes": [
+    "54171",
+    "513210"
+   ],
+   "sanitized_phone": "+18664212536",
+   "owned_by_organization_id": "5f4db889765eb10001a333aa",
+   "owned_by_organization": {
+    "id": "5f4db889765eb10001a333aa",
+    "name": "GE HealthCare",
+    "website_url": "http://www.gehealthcare.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "58.7M",
+   "organization_revenue": 58700000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.003787878787878788,
+   "organization_headcount_twelve_month_growth": -0.02592592592592593,
+   "organization_headcount_twenty_four_month_growth": 0.01153846153846154
+  },
+  {
+   "id": "5a9e2ee4a6da98d96643bec0",
+   "name": "Curio Wellness",
+   "website_url": "http://www.curiowellness.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/curio-wellness",
+   "twitter_url": "https://twitter.com/curiowellness",
+   "facebook_url": "https://www.facebook.com/curiowellnessbrand",
+   "primary_phone": {
+    "number": "+1 410-525-6420",
+    "source": "Owler",
+    "sanitized_number": "+14105256420"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 410-525-6420",
+   "linkedin_uid": "11063720",
+   "founded_year": 2016,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/68bdbf15fa7b200001992a5c/picture",
+   "crunchbase_url": null,
+   "primary_domain": "curiowellness.com",
+   "sic_codes": [
+    "2834",
+    "5999"
+   ],
+   "naics_codes": [
+    "325411",
+    "459999"
+   ],
+   "sanitized_phone": "+14105256420",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "71.6M",
+   "organization_revenue": 71600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02564102564102564,
+   "organization_headcount_twelve_month_growth": 0.0738255033557047,
+   "organization_headcount_twenty_four_month_growth": 0.03225806451612903
+  },
+  {
+   "id": "54fca56a7369640198322d00",
+   "name": "VSP Optics",
+   "website_url": "http://www.vspoptics.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/vsp-optics",
+   "twitter_url": null,
+   "facebook_url": "https://facebook.com/VSPOpticsGroup/",
+   "primary_phone": {
+    "number": "+1 800-877-7195",
+    "source": "Owler",
+    "sanitized_number": "+18008777195"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-877-7195",
+   "linkedin_uid": "3053342",
+   "founded_year": 2018,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/676734625a0019000147e507/picture",
+   "crunchbase_url": null,
+   "primary_domain": "vspoptics.com",
+   "sic_codes": [
+    "3671",
+    "3851"
+   ],
+   "naics_codes": [
+    "339115"
+   ],
+   "sanitized_phone": "+18008777195",
+   "owned_by_organization_id": "54a12b1669702dcef9357302",
+   "owned_by_organization": {
+    "id": "54a12b1669702dcef9357302",
+    "name": "VSP Vision Care",
+    "website_url": "http://www.vsp.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "94.6M",
+   "organization_revenue": 94600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.03875968992248062,
+   "organization_headcount_twelve_month_growth": -0.02362204724409449,
+   "organization_headcount_twenty_four_month_growth": -0.1788079470198675
+  },
+  {
+   "id": "5b86db36324d44621d6944fb",
+   "name": "Garaventa Lift",
+   "website_url": null,
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/garaventa-lift",
+   "twitter_url": "https://twitter.com/Garaventalift",
+   "facebook_url": "https://facebook.com/Garaventa-Lift-USA-71789426257/",
+   "primary_phone": {
+    "number": "+1 800-663-6556",
+    "source": "Owler",
+    "sanitized_number": "+18006636556"
+   },
+   "languages": [
+    "English",
+    "Spanish"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-663-6556",
+   "linkedin_uid": "433110",
+   "founded_year": 1928,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/68236fa19d4abe0001350744/picture",
+   "crunchbase_url": null,
+   "primary_domain": null,
+   "sic_codes": [
+    "3560"
+   ],
+   "naics_codes": [
+    "333921"
+   ],
+   "sanitized_phone": "+18006636556",
+   "owned_by_organization_id": "559205a173696418c9622200",
+   "owned_by_organization": {
+    "id": "559205a173696418c9622200",
+    "name": "Savaria",
+    "website_url": "http://www.savaria.com"
+   },
+   "num_languages": 2,
+   "organization_revenue_printed": "84.0M",
+   "organization_revenue": 83987000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.007575757575757576,
+   "organization_headcount_twelve_month_growth": -0.02205882352941177,
+   "organization_headcount_twenty_four_month_growth": 0.05555555555555555
+  },
+  {
+   "id": "54a138dd69702d2bfdaf0f00",
+   "name": "ARM Group",
+   "website_url": "http://www.armgroup.net",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/armgroup",
+   "twitter_url": "https://twitter.com/armgroupinc",
+   "facebook_url": "https://facebook.com/armgroupinc/?ref=bookmarks",
+   "primary_phone": {
+    "number": "+1 717-533-8600",
+    "source": "Owler",
+    "sanitized_number": "+17175338600"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 547569,
+   "phone": "+1 717-533-8600",
+   "linkedin_uid": "139770",
+   "founded_year": 1998,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69b5017fa7c25900018e772c/picture",
+   "crunchbase_url": null,
+   "primary_domain": "armgroup.net",
+   "sic_codes": [
+    "8711"
+   ],
+   "naics_codes": [
+    "541330",
+    "541620"
+   ],
+   "sanitized_phone": "+17175338600",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "66.5M",
+   "organization_revenue": 66500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.05208333333333334,
+   "organization_headcount_twelve_month_growth": 0.1284916201117318,
+   "organization_headcount_twenty_four_month_growth": 0.3289473684210527
+  },
+  {
+   "id": "62f6724148d98b0001cc5736",
+   "name": "Caribou Financial, Inc.",
+   "website_url": "http://www.caribou.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/gocaribou",
+   "twitter_url": "https://twitter.com/gocaribou",
+   "facebook_url": "https://facebook.com/gocaribou",
+   "primary_phone": {
+    "number": "+1 877-445-0070",
+    "source": "Owler",
+    "sanitized_number": "+18774450070"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 877-445-0070",
+   "linkedin_uid": "11091726",
+   "founded_year": 2016,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a4df75812d8f0001434aee/picture",
+   "crunchbase_url": null,
+   "primary_domain": "caribou.com",
+   "sic_codes": [
+    "5331",
+    "5990"
+   ],
+   "naics_codes": [
+    "52239",
+    "522310"
+   ],
+   "sanitized_phone": "+18774450070",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "68.4M",
+   "organization_revenue": 68400000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.04641350210970464,
+   "organization_headcount_twelve_month_growth": 0.169811320754717,
+   "organization_headcount_twenty_four_month_growth": 0.55
+  },
+  {
+   "id": "5569d40073696425b2869e00",
+   "name": "UNC Eshelman School of Pharmacy",
+   "website_url": "http://pharmacy.unc.edu",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/school/unc-eshelman-school-of-pharmacy",
+   "twitter_url": "http://www.twitter.com/AmDiplomacy",
+   "facebook_url": "https://www.facebook.com/American-Diplomacy-91710803770/",
+   "primary_phone": {
+    "number": "+1 919-445-6956",
+    "source": "Scraped",
+    "sanitized_number": "+19194456956"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 919-445-6956",
+   "linkedin_uid": "5781622",
+   "founded_year": null,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/695b7c9c083c7c0001beceed/picture",
+   "crunchbase_url": null,
+   "primary_domain": "pharmacy.unc.edu",
+   "naics_codes": [
+    "611310",
+    "541714"
+   ],
+   "sanitized_phone": "+19194456956",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "99.3M",
+   "organization_revenue": 99300000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.004024144869215292,
+   "organization_headcount_twelve_month_growth": 0.05319148936170213,
+   "organization_headcount_twenty_four_month_growth": 0.1275626423690205
+  },
+  {
+   "id": "5d33a1d9f65125135d054d78",
+   "name": "Shoppa's Material Handling",
+   "website_url": "http://www.shoppasmaterialhandling.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/shoppa-s-material-handling",
+   "twitter_url": "https://twitter.com/Shoppas",
+   "facebook_url": "https://facebook.com/shoppas",
+   "primary_phone": {
+    "number": "+1 866-506-2200",
+    "source": "Owler",
+    "sanitized_number": "+18665062200"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 866-506-2200",
+   "linkedin_uid": "148714",
+   "founded_year": 1981,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a2a5d211cb9b500014e7893/picture",
+   "crunchbase_url": null,
+   "primary_domain": "shoppasmaterialhandling.com",
+   "sic_codes": [
+    "5084"
+   ],
+   "naics_codes": [
+    "33299",
+    "42383",
+    "541512",
+    "541614"
+   ],
+   "sanitized_phone": "+18665062200",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "50M",
+   "organization_revenue": 50000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03592814371257485,
+   "organization_headcount_twelve_month_growth": 0.108974358974359,
+   "organization_headcount_twenty_four_month_growth": 0.09841269841269841
+  },
+  {
+   "id": "56d3828df3e5bb228100152f",
+   "name": "Sure",
+   "website_url": "http://www.sureapp.com",
+   "angellist_url": "http://angel.co/sure",
+   "linkedin_url": "http://www.linkedin.com/company/sure-insurance",
+   "twitter_url": "https://twitter.com/surehq",
+   "facebook_url": "https://www.facebook.com/surehq",
+   "primary_phone": {
+    "number": "+1 916-445-1254",
+    "source": "Owler",
+    "sanitized_number": "+19164451254"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 916-445-1254",
+   "linkedin_uid": "7580977",
+   "founded_year": 2016,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a2c4c228ba1bb00012d3931/picture",
+   "crunchbase_url": null,
+   "primary_domain": "sureapp.com",
+   "sic_codes": [
+    "7375",
+    "6411",
+    "7372"
+   ],
+   "naics_codes": [
+    "52421",
+    "541512"
+   ],
+   "sanitized_phone": "+19164451254",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "52.6M",
+   "organization_revenue": 52600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.1925465838509317,
+   "organization_headcount_twelve_month_growth": -0.2261904761904762,
+   "organization_headcount_twenty_four_month_growth": -0.3596059113300493
+  },
+  {
+   "id": "5a9e3fe6a6da98d9a8d9caae",
+   "name": "Dig Inn",
+   "website_url": "http://www.diginn.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/dig-inn",
+   "twitter_url": "https://twitter.com/diginn",
+   "facebook_url": "https://facebook.com/diginnmarket",
+   "primary_phone": {
+    "number": "+1 617-904-3711",
+    "source": "Owler",
+    "sanitized_number": "+16179043711"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 617-904-3711",
+   "linkedin_uid": "4992418",
+   "founded_year": 2011,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a50fd00e6da98000181a555/picture",
+   "crunchbase_url": null,
+   "primary_domain": "diginn.com",
+   "sic_codes": [
+    "5812"
+   ],
+   "naics_codes": [
+    "722513"
+   ],
+   "sanitized_phone": "+16179043711",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "66.1M",
+   "organization_revenue": 66117000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02,
+   "organization_headcount_twelve_month_growth": -0.02857142857142857,
+   "organization_headcount_twenty_four_month_growth": -0.02857142857142857
+  },
+  {
+   "id": "54a1213069702d86b6477a02",
+   "name": "Canal Insurance Company",
+   "website_url": "http://www.canalinsurance.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/canal-insurance-company",
+   "twitter_url": "https://twitter.com/canalins?lang=en",
+   "facebook_url": "https://facebook.com/CanalIns/",
+   "primary_phone": {
+    "number": "+1 800-452-6911",
+    "source": "Owler",
+    "sanitized_number": "+18004526911"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-452-6911",
+   "linkedin_uid": "794164",
+   "founded_year": 1939,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69ae446e64723f00017a7955/picture",
+   "crunchbase_url": null,
+   "primary_domain": "canalinsurance.com",
+   "sic_codes": [
+    "4412",
+    "6331"
+   ],
+   "naics_codes": [
+    "524126"
+   ],
+   "sanitized_phone": "+18004526911",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "64.9M",
+   "organization_revenue": 64900000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.003717472118959108,
+   "organization_headcount_twelve_month_growth": 0.03474903474903475,
+   "organization_headcount_twenty_four_month_growth": 0.09836065573770492
+  },
+  {
+   "id": "54a13a1a69702d267af0b900",
+   "name": "ARKANCE USA",
+   "website_url": "http://www.arkance.us",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/arkanceusa",
+   "twitter_url": "https://twitter.com/cadd",
+   "facebook_url": "https://facebook.com/arkanceusa",
+   "primary_phone": {
+    "number": "+1 703-719-0500",
+    "source": "Owler",
+    "sanitized_number": "+17037190500"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 703-719-0500",
+   "linkedin_uid": "91827",
+   "founded_year": 1999,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69ae4d736138a6000137cc6f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "arkance.us",
+   "sic_codes": [
+    "8711",
+    "7372",
+    "7371"
+   ],
+   "naics_codes": [
+    "54133",
+    "513210",
+    "541512"
+   ],
+   "sanitized_phone": "+17037190500",
+   "owned_by_organization_id": "61ec4009e6849e000125be15",
+   "owned_by_organization": {
+    "id": "61ec4009e6849e000125be15",
+    "name": "Arkance Development BH, d.o.o.",
+    "website_url": "http://www.arkance.net"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "53M",
+   "organization_revenue": 53000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.01,
+   "organization_headcount_twelve_month_growth": 0.004975124378109453,
+   "organization_headcount_twenty_four_month_growth": 0.1542857142857143
+  },
+  {
+   "id": "54a135f469702d46f0f6e700",
+   "name": "PROtect LLC",
+   "website_url": "http://www.protect.llc",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/protectllc",
+   "twitter_url": null,
+   "facebook_url": "https://facebook.com/PROtectLLC",
+   "primary_phone": {
+    "number": "+1 316-927-4290",
+    "source": "Owler",
+    "sanitized_number": "+13169274290"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 642694,
+   "phone": "+1 316-927-4290",
+   "linkedin_uid": "925785",
+   "founded_year": 2020,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a49cd424471200014b4e77/picture",
+   "crunchbase_url": null,
+   "primary_domain": "protect.llc",
+   "sic_codes": [
+    "8734",
+    "8742",
+    "8711"
+   ],
+   "naics_codes": [
+    "54133",
+    "541611",
+    "541620",
+    "541380"
+   ],
+   "sanitized_phone": "+13169274290",
+   "owned_by_organization_id": "54a1c67f74686949e7481f10",
+   "owned_by_organization": {
+    "id": "54a1c67f74686949e7481f10",
+    "name": "Sterling Investment Partners",
+    "website_url": "http://www.sterlinglp.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "68.1M",
+   "organization_revenue": 68100000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.04444444444444445,
+   "organization_headcount_twelve_month_growth": 0.1114864864864865,
+   "organization_headcount_twenty_four_month_growth": 0.418103448275862
+  },
+  {
+   "id": "59e55efaa6da9875255482ae",
+   "name": "Matic",
+   "website_url": "http://www.matic.com",
+   "angellist_url": "http://angel.co/matic-insurance-services",
+   "linkedin_url": "http://www.linkedin.com/company/matic-insurance",
+   "twitter_url": "http://twitter.com/maticinsurance",
+   "facebook_url": "https://facebook.com/maticinsurance",
+   "primary_phone": {
+    "number": "+1 833-382-1304",
+    "source": "Owler",
+    "sanitized_number": "+18333821304"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 630267,
+   "phone": "+1 833-382-1304",
+   "linkedin_uid": "6402921",
+   "founded_year": 2014,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69575c23693cad00014904bb/picture",
+   "crunchbase_url": null,
+   "primary_domain": "matic.com",
+   "sic_codes": [
+    "6361",
+    "6411"
+   ],
+   "naics_codes": [
+    "524210"
+   ],
+   "sanitized_phone": "+18333821304",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02008032128514056,
+   "organization_headcount_twelve_month_growth": 0.04273504273504274,
+   "organization_headcount_twenty_four_month_growth": -0.05058365758754864
+  },
+  {
+   "id": "54a1351d69702d44943e6a00",
+   "name": "Anders",
+   "website_url": "http://www.anderscpa.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/anders-cpa",
+   "twitter_url": "https://twitter.com/anderscpa",
+   "facebook_url": "https://facebook.com/anderscpa",
+   "primary_phone": {
+    "number": "+1 314-655-5500",
+    "source": "Owler",
+    "sanitized_number": "+13146555500"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 466209,
+   "phone": "+1 314-655-5500",
+   "linkedin_uid": "79912",
+   "founded_year": 1965,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6985d3ea6f36f400011ec60d/picture",
+   "crunchbase_url": null,
+   "primary_domain": "anderscpa.com",
+   "sic_codes": [
+    "8111",
+    "8721"
+   ],
+   "naics_codes": [
+    "541211"
+   ],
+   "sanitized_phone": "+13146555500",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "94.7M",
+   "organization_revenue": 94700000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.004514672686230248,
+   "organization_headcount_twelve_month_growth": 0.09975062344139651,
+   "organization_headcount_twenty_four_month_growth": 0.2082191780821918
+  },
+  {
+   "id": "5d331afb80f93ec65ebc1c59",
+   "name": "Miller Kaplan",
+   "website_url": "http://www.millerkaplan.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/miller-kaplan",
+   "twitter_url": "https://twitter.com/miller_kaplan",
+   "facebook_url": "https://www.facebook.com/MillerKaplan",
+   "primary_phone": {
+    "number": "+1 818-769-2010",
+    "source": "Owler",
+    "sanitized_number": "+18187692010"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 818-769-2010",
+   "linkedin_uid": "92484",
+   "founded_year": 1941,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6963dcdb7eb09700018f6b95/picture",
+   "crunchbase_url": null,
+   "primary_domain": "millerkaplan.com",
+   "sic_codes": [
+    "8721",
+    "8742"
+   ],
+   "naics_codes": [
+    "541211",
+    "541611"
+   ],
+   "sanitized_phone": "+18187692010",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "75M",
+   "organization_revenue": 75000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.06024096385542169,
+   "organization_headcount_twelve_month_growth": 0.07755102040816327,
+   "organization_headcount_twenty_four_month_growth": 0.2110091743119266
+  },
+  {
+   "id": "5d324d37f65125322eb7a25e",
+   "name": "Channellock, Inc.",
+   "website_url": "http://www.channellock.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/channellock",
+   "twitter_url": "https://twitter.com/CHANNELLOCK",
+   "facebook_url": "http://facebook.com/channellockauto",
+   "primary_phone": {
+    "number": "+1 800-724-3018",
+    "source": "Owler",
+    "sanitized_number": "+18007243018"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 520602,
+   "phone": "+1 800-724-3018",
+   "linkedin_uid": "271422",
+   "founded_year": 1886,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a08d88f6451d100012b8de4/picture",
+   "crunchbase_url": null,
+   "primary_domain": "channellock.com",
+   "sic_codes": [
+    "3546",
+    ""
+   ],
+   "naics_codes": [
+    "33221",
+    "332510",
+    "423840"
+   ],
+   "sanitized_phone": "+18007243018",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "80M",
+   "organization_revenue": 80000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02941176470588235,
+   "organization_headcount_twelve_month_growth": -0.04347826086956522,
+   "organization_headcount_twenty_four_month_growth": -0.08333333333333333
+  },
+  {
+   "id": "5569d7d27369642549faa100",
+   "name": "Threat Tec, LLC",
+   "website_url": "http://www.threattec.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/threat-tec",
+   "twitter_url": "https://twitter.com/threattec",
+   "facebook_url": "https://facebook.com/ThreatTec/",
+   "primary_phone": {
+    "number": "+1 757-240-4305",
+    "source": "Owler",
+    "sanitized_number": "+17572404305"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 757-240-4305",
+   "linkedin_uid": "3490503",
+   "founded_year": 2012,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69186e8fd5664e0001c5ca24/picture",
+   "crunchbase_url": null,
+   "primary_domain": "threattec.com",
+   "sic_codes": [
+    "8731"
+   ],
+   "naics_codes": [
+    "54171",
+    "611430",
+    "541690",
+    "541512"
+   ],
+   "sanitized_phone": "+17572404305",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "84.4M",
+   "organization_revenue": 84439000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.04721030042918455,
+   "organization_headcount_twelve_month_growth": -0.06329113924050633,
+   "organization_headcount_twenty_four_month_growth": 0.07246376811594203
+  },
+  {
+   "id": "5fcc142f40506600011f7980",
+   "name": "Bellhop",
+   "website_url": "http://www.getbellhops.com",
+   "angellist_url": "http://angel.co/bellhops",
+   "linkedin_url": "http://www.linkedin.com/company/bellhopmoving",
+   "twitter_url": "https://twitter.com/BellhopsMoving",
+   "facebook_url": "https://www.facebook.com/BellhopsMoving",
+   "primary_phone": {
+    "number": "+1 888-836-3939",
+    "source": "Owler",
+    "sanitized_number": "+18888363939"
+   },
+   "languages": [],
+   "alexa_ranking": 615353,
+   "phone": "+1 888-836-3939",
+   "linkedin_uid": "2733884",
+   "founded_year": 2011,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/695a9e8b7924f30001c04b15/picture",
+   "crunchbase_url": null,
+   "primary_domain": "getbellhops.com",
+   "sic_codes": [
+    "4731"
+   ],
+   "naics_codes": [
+    "484210"
+   ],
+   "sanitized_phone": "+18888363939",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "54.8M",
+   "organization_revenue": 54800000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.009950248756218905,
+   "organization_headcount_twelve_month_growth": -0.1036036036036036,
+   "organization_headcount_twenty_four_month_growth": -0.2656826568265683
+  },
+  {
+   "id": "54a1285c69702dc128d2d900",
+   "name": "Jenne, Inc",
+   "website_url": "http://www.jenne.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/jenne-inc",
+   "twitter_url": "https://twitter.com/jenneinc",
+   "facebook_url": "https://www.facebook.com/Jenne-Inc-274253285932139/",
+   "primary_phone": {
+    "number": "+1 800-422-6191",
+    "source": "Owler",
+    "sanitized_number": "+18004226191"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-422-6191",
+   "linkedin_uid": "59391",
+   "founded_year": 1986,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69aa705a7e58f300014bdb95/picture",
+   "crunchbase_url": null,
+   "primary_domain": "jenne.com",
+   "sic_codes": [
+    "7375",
+    "5045",
+    "7373"
+   ],
+   "naics_codes": [
+    "42369",
+    "423430",
+    "541512"
+   ],
+   "sanitized_phone": "+18004226191",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "88.3M",
+   "organization_revenue": 88300000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0160427807486631,
+   "organization_headcount_twelve_month_growth": 0.04972375690607735,
+   "organization_headcount_twenty_four_month_growth": 0.03825136612021858
+  },
+  {
+   "id": "54a13c7669702d24d3b41202",
+   "name": "Farber Debt Solutions",
+   "website_url": "http://www.farber.ca",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/farber-debt-solutions",
+   "twitter_url": "https://twitter.com/farberfinancial",
+   "facebook_url": "https://www.facebook.com/farberdebtsolutions",
+   "primary_phone": {
+    "number": "+1 855-775-8777",
+    "source": "Owler",
+    "sanitized_number": "+18557758777"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 855-775-8777",
+   "linkedin_uid": "1966802",
+   "founded_year": 1979,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/68736b18d8f9ea0001ceaa25/picture",
+   "crunchbase_url": null,
+   "primary_domain": "farber.ca",
+   "sic_codes": [
+    "6282"
+   ],
+   "naics_codes": [
+    "62419",
+    "52"
+   ],
+   "sanitized_phone": "+18557758777",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "52.8M",
+   "organization_revenue": 52800000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.06547619047619048,
+   "organization_headcount_twelve_month_growth": 0.1118012422360248,
+   "organization_headcount_twenty_four_month_growth": 0.4206349206349206
+  },
+  {
+   "id": "54a1356b69702d4b2e368f00",
+   "name": "Urban Barn",
+   "website_url": "http://www.urbanbarn.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/urban-barn",
+   "twitter_url": "https://twitter.com/urban_barn",
+   "facebook_url": "https://facebook.com/urbanbarn?ref=ts",
+   "primary_phone": {
+    "number": "+1 604-456-2200",
+    "source": "Owler",
+    "sanitized_number": "+16044562200"
+   },
+   "languages": [
+    "English",
+    "French"
+   ],
+   "alexa_ranking": 169815,
+   "phone": "+1 604-456-2200",
+   "linkedin_uid": "1041665",
+   "founded_year": 1990,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6872653c9c928500012c5b93/picture",
+   "crunchbase_url": null,
+   "primary_domain": "urbanbarn.com",
+   "sic_codes": [
+    "5712"
+   ],
+   "naics_codes": [
+    "449110"
+   ],
+   "sanitized_phone": "+16044562200",
+   "owned_by_organization_id": null,
+   "num_languages": 2,
+   "organization_revenue_printed": "55.5M",
+   "organization_revenue": 55500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.01230769230769231,
+   "organization_headcount_twelve_month_growth": 0.01904761904761905,
+   "organization_headcount_twenty_four_month_growth": 0.08080808080808081
+  },
+  {
+   "id": "5f49ff96f024b100018986ef",
+   "name": "Portacool, LLC",
+   "website_url": "http://www.portacool.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/port-a-cool-llc",
+   "twitter_url": "https://twitter.com/portacoolllc",
+   "facebook_url": "https://www.facebook.com/PortacoolEvaporativeCoolers/",
+   "primary_phone": {
+    "number": "+1 800-695-2942",
+    "source": "Owler",
+    "sanitized_number": "+18006952942"
+   },
+   "languages": [
+    "English",
+    "Spanish"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-695-2942",
+   "linkedin_uid": "1034016",
+   "founded_year": 1990,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a7e3f7b34df80001451997/picture",
+   "crunchbase_url": null,
+   "primary_domain": "portacool.com",
+   "sic_codes": [
+    "3589",
+    "3585"
+   ],
+   "naics_codes": [
+    "333415"
+   ],
+   "sanitized_phone": "+18006952942",
+   "owned_by_organization_id": null,
+   "num_languages": 2,
+   "organization_revenue_printed": "87.5M",
+   "organization_revenue": 87500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.0303030303030303,
+   "organization_headcount_twelve_month_growth": 0.0,
+   "organization_headcount_twenty_four_month_growth": -0.02040816326530612
+  },
+  {
+   "id": "5dc32426f2ac0000e86c5a7a",
+   "name": "LifeSource",
+   "website_url": "http://www.life-source.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/lifesourcemndak",
+   "twitter_url": "https://twitter.com/LifeSourceMNDAK",
+   "facebook_url": "https://www.facebook.com/lifesourcemndak/",
+   "primary_phone": {
+    "number": "+1 612-800-6100",
+    "source": "Owler",
+    "sanitized_number": "+16128006100"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 612-800-6100",
+   "linkedin_uid": "1249406",
+   "founded_year": 1989,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/66f0b501b0196400017baa1c/picture",
+   "crunchbase_url": null,
+   "primary_domain": "life-source.org",
+   "sic_codes": [
+    "3663",
+    ""
+   ],
+   "naics_codes": [
+    "62199"
+   ],
+   "sanitized_phone": "+16128006100",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "95.5M",
+   "organization_revenue": 95527000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.008438818565400843,
+   "organization_headcount_twelve_month_growth": 0.06222222222222222,
+   "organization_headcount_twenty_four_month_growth": 0.1490384615384615
+  },
+  {
+   "id": "5d09a2b8f65125b4b74ef761",
+   "name": "WRI",
+   "website_url": null,
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/tnc",
+   "twitter_url": "https://twitter.com/worldresources",
+   "facebook_url": "https://facebook.com/pages/World-Resources-Institute/61863318139",
+   "primary_phone": {
+    "number": "+1 202-729-7600",
+    "source": "Owler",
+    "sanitized_number": "+12027297600"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 202-729-7600",
+   "linkedin_uid": "166463",
+   "founded_year": 1984,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6461a86277285600010d0fd2/picture",
+   "crunchbase_url": null,
+   "primary_domain": null,
+   "sic_codes": [
+    "8300"
+   ],
+   "naics_codes": [
+    "541720"
+   ],
+   "sanitized_phone": "+12027297600",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "74M",
+   "organization_revenue": 74000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0,
+   "organization_headcount_twelve_month_growth": 0.0,
+   "organization_headcount_twenty_four_month_growth": 0.0
+  },
+  {
+   "id": "5c2ae2f680f93e5b1b0fd29e",
+   "name": "ROCK",
+   "website_url": "http://www.rock.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/rock-family-office",
+   "twitter_url": null,
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 313-373-7700",
+    "source": "Owler",
+    "sanitized_number": "+13133737700"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 313-373-7700",
+   "linkedin_uid": "7971677",
+   "founded_year": 2007,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69aab113e0749300011c753c/picture",
+   "crunchbase_url": null,
+   "primary_domain": "rock.com",
+   "sic_codes": [
+    "6199"
+   ],
+   "naics_codes": [
+    "523940",
+    "551112"
+   ],
+   "sanitized_phone": "+13133737700",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "71.7M",
+   "organization_revenue": 71700000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03883495145631068,
+   "organization_headcount_twelve_month_growth": 0.009433962264150943,
+   "organization_headcount_twenty_four_month_growth": 0.09183673469387756
+  },
+  {
+   "id": "600976e10d9a2a00e63cbb82",
+   "name": "AVer Information",
+   "website_url": "http://www.aver.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/aver-information",
+   "twitter_url": null,
+   "facebook_url": null,
+   "primary_phone": {},
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": null,
+   "linkedin_uid": "3881342",
+   "founded_year": 2008,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/671569ef5c951900012a27ee/picture",
+   "crunchbase_url": null,
+   "primary_domain": "aver.com",
+   "naics_codes": [
+    "334310",
+    "334118"
+   ],
+   "owned_by_organization_id": "5fdb3124ede7c60001f7fd21",
+   "owned_by_organization": {
+    "id": "5fdb3124ede7c60001f7fd21",
+    "name": "AVer USA",
+    "website_url": "http://www.averusa.com"
+   },
+   "num_languages": 0,
+   "organization_revenue_printed": "81M",
+   "organization_revenue": 81000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.008403361344537815,
+   "organization_headcount_twelve_month_growth": 0.02564102564102564,
+   "organization_headcount_twenty_four_month_growth": 0.05263157894736842
+  },
+  {
+   "id": "54a13a3069702d231f16da00",
+   "name": "NuAxis Innovations",
+   "website_url": "http://www.nuaxis.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/nuaxis",
+   "twitter_url": "https://twitter.com/nuaxis",
+   "facebook_url": "https://facebook.com/NuAxis/",
+   "primary_phone": {
+    "number": "+1 703-481-7400",
+    "source": "Owler",
+    "sanitized_number": "+17034817400"
+   },
+   "languages": [
+    "English",
+    "English",
+    "German"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 703-481-7400",
+   "linkedin_uid": "259492",
+   "founded_year": 2002,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a4ea7f650fbe0001e1706a/picture",
+   "crunchbase_url": null,
+   "primary_domain": "nuaxis.com",
+   "sic_codes": [
+    "7375",
+    "7373",
+    "7372"
+   ],
+   "naics_codes": [
+    "541512",
+    "513210"
+   ],
+   "sanitized_phone": "+17034817400",
+   "owned_by_organization_id": null,
+   "num_languages": 2,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.01602564102564102,
+   "organization_headcount_twelve_month_growth": 0.02258064516129032,
+   "organization_headcount_twenty_four_month_growth": 0.01277955271565495
+  },
+  {
+   "id": "54a1345f69702d48e2de0500",
+   "name": "TEAM Software by WorkWave",
+   "website_url": "http://www.teamsoftware.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/team-software-by-workwave",
+   "twitter_url": "https://twitter.com/innoviseplc",
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 800-500-4499",
+    "source": "Scraped",
+    "sanitized_number": "+18005004499"
+   },
+   "languages": [
+    "English",
+    "English",
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-500-4499",
+   "linkedin_uid": "107509",
+   "founded_year": 1989,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a438618272b8d00018efaac/picture",
+   "crunchbase_url": null,
+   "primary_domain": "teamsoftware.com",
+   "sic_codes": [
+    "7375",
+    "7372"
+   ],
+   "naics_codes": [
+    "54151",
+    "51321"
+   ],
+   "sanitized_phone": "+18005004499",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "66.5M",
+   "organization_revenue": 66500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.006802721088435374,
+   "organization_headcount_twelve_month_growth": -0.05806451612903226,
+   "organization_headcount_twenty_four_month_growth": -0.1461988304093567
+  },
+  {
+   "id": "54a25d1674686930c2d0031d",
+   "name": "BBQGuys",
+   "website_url": "http://www.bbqguys.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/bbqguys",
+   "twitter_url": "https://twitter.com/ShoChoLLC",
+   "facebook_url": "https://facebook.com/shopperschoicecom",
+   "primary_phone": {
+    "number": "+1 225-296-0043",
+    "source": "Owler",
+    "sanitized_number": "+12252960043"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 132816,
+   "phone": "+1 225-296-0043",
+   "linkedin_uid": "148715",
+   "founded_year": 1998,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69b28ee5d880dc00015ffee5/picture",
+   "crunchbase_url": null,
+   "primary_domain": "bbqguys.com",
+   "sic_codes": [
+    "5099",
+    "5961"
+   ],
+   "naics_codes": [
+    "454110"
+   ],
+   "sanitized_phone": "+12252960043",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "74.8M",
+   "organization_revenue": 74808000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03726708074534162,
+   "organization_headcount_twelve_month_growth": 0.0308641975308642,
+   "organization_headcount_twenty_four_month_growth": 0.09868421052631579
+  },
+  {
+   "id": "54a12a4969702dc12895c601",
+   "name": "Winn-Marion Companies",
+   "website_url": "http://www.winn-marion.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/winn-marion-companies",
+   "twitter_url": "https://twitter.com/winnmarion",
+   "facebook_url": "https://facebook.com/pages/Winn-Marion-Barber-LLC/352369920605",
+   "primary_phone": {
+    "number": "+1 303-778-6767",
+    "source": "Account",
+    "sanitized_number": "+13037786767"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 303-778-6767",
+   "linkedin_uid": "1805883",
+   "founded_year": 1972,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69b24c7906e2950001da89ac/picture",
+   "crunchbase_url": null,
+   "primary_domain": "winn-marion.com",
+   "sic_codes": [
+    "3621",
+    "8711",
+    "1731"
+   ],
+   "naics_codes": [
+    "33361",
+    "541330",
+    "238210"
+   ],
+   "sanitized_phone": "+13037786767",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "97.9M",
+   "organization_revenue": 97900000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02793296089385475,
+   "organization_headcount_twelve_month_growth": -0.01075268817204301,
+   "organization_headcount_twenty_four_month_growth": 0.01657458563535912
+  },
+  {
+   "id": "5a9d65e4a6da98d977f39c95",
+   "name": "AION Management",
+   "website_url": "http://www.aionmanagement.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/aion-management",
+   "twitter_url": "https://twitter.com/AIONPartners",
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 215-999-2849",
+    "source": "Scraped",
+    "sanitized_number": "+12159992849"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 215-999-2849",
+   "linkedin_uid": "11170976",
+   "founded_year": 2017,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a2d09ecd6923f000181e8e8/picture",
+   "crunchbase_url": null,
+   "primary_domain": "aionmanagement.com",
+   "sic_codes": [
+    "6513"
+   ],
+   "naics_codes": [
+    "531311"
+   ],
+   "sanitized_phone": "+12159992849",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "62.5M",
+   "organization_revenue": 62500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.01807228915662651,
+   "organization_headcount_twelve_month_growth": -0.04678362573099415,
+   "organization_headcount_twenty_four_month_growth": -0.07386363636363637
+  },
+  {
+   "id": "5d0a6055a3ae613c11e1a78d",
+   "name": "Kaiser Permanente Washington Health Research Institute",
+   "website_url": "http://www.kpwashingtonresearch.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/kaiserpermanentewashingtonresearch",
+   "twitter_url": "https://twitter.com/kpmedschool",
+   "facebook_url": "https://www.facebook.com/KPMedSchool/",
+   "primary_phone": {
+    "number": "+1 206-287-2900",
+    "source": "Scraped",
+    "sanitized_number": "+12062872900"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 206-287-2900",
+   "linkedin_uid": "9503329",
+   "founded_year": 1983,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/66f8be9c80f5c8000128afca/picture",
+   "crunchbase_url": null,
+   "primary_domain": "kpwashingtonresearch.org",
+   "sic_codes": [
+    "8731"
+   ],
+   "naics_codes": [
+    "54172",
+    "541715"
+   ],
+   "sanitized_phone": "+12062872900",
+   "owned_by_organization_id": "5e577769feb36f00019dc53a",
+   "owned_by_organization": {
+    "id": "5e577769feb36f00019dc53a",
+    "name": "Kaiser Permanente",
+    "website_url": "http://www.kaiserpermanente.org"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "55.6M",
+   "organization_revenue": 55600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02272727272727273,
+   "organization_headcount_twelve_month_growth": -0.02272727272727273,
+   "organization_headcount_twenty_four_month_growth": -0.1078838174273859
+  },
+  {
+   "id": "54a135a269702d48e2aaae00",
+   "name": "Lukos",
+   "website_url": "http://www.lukos.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/lukos",
+   "twitter_url": "https://twitter.com/lukosllc",
+   "facebook_url": "https://facebook.com/pages/Lukos/110865972280209",
+   "primary_phone": {
+    "number": "+1 813-699-3717",
+    "source": "Owler",
+    "sanitized_number": "+18136993717"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 813-699-3717",
+   "linkedin_uid": "1589489",
+   "founded_year": 2008,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a51e556f06880001b0c1a4/picture",
+   "crunchbase_url": null,
+   "primary_domain": "lukos.com",
+   "sic_codes": [
+    "8742",
+    "8741",
+    "8711",
+    "8299"
+   ],
+   "naics_codes": [
+    "541611",
+    "611430",
+    "541715"
+   ],
+   "sanitized_phone": "+18136993717",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "57.9M",
+   "organization_revenue": 57900000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.00641025641025641,
+   "organization_headcount_twelve_month_growth": 0.03973509933774835,
+   "organization_headcount_twenty_four_month_growth": 0.1544117647058824
+  },
+  {
+   "id": "5b15a8b6a6da9871592ca480",
+   "name": "City of Lancaster, Pennsylvania",
+   "website_url": "http://www.cityoflancasterpa.gov",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/cityoflancasterpa",
+   "twitter_url": "https://twitter.com/CityofLancPa",
+   "facebook_url": "https://facebook.com/CityOfLancasterPA",
+   "primary_phone": {
+    "number": "+1 717-291-4711",
+    "source": "Owler",
+    "sanitized_number": "+17172914711"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 717-291-4711",
+   "linkedin_uid": "11213850",
+   "founded_year": 1742,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/66da77e9c436ae00012205c8/picture",
+   "crunchbase_url": null,
+   "primary_domain": "cityoflancasterpa.gov",
+   "sic_codes": [
+    "9199"
+   ],
+   "naics_codes": [
+    "921110",
+    "221310"
+   ],
+   "sanitized_phone": "+17172914711",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "81.9M",
+   "organization_revenue": 81920000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02127659574468085,
+   "organization_headcount_twelve_month_growth": 0.07865168539325842,
+   "organization_headcount_twenty_four_month_growth": 0.06666666666666667
+  },
+  {
+   "id": "54a13c0769702d267a75c001",
+   "name": "Kent School",
+   "website_url": "http://www.kent-school.edu",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/school/kent-school",
+   "twitter_url": "https://twitter.com/Kent_School",
+   "facebook_url": "https://facebook.com/Kent.School",
+   "primary_phone": {
+    "number": "+1 860-927-6000",
+    "source": "Scraped",
+    "sanitized_number": "+18609276000"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 860-927-6000",
+   "linkedin_uid": "700998",
+   "founded_year": 1906,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/671b591f03e83a00018321e5/picture",
+   "crunchbase_url": null,
+   "primary_domain": "kent-school.edu",
+   "sic_codes": [
+    "8211"
+   ],
+   "naics_codes": [
+    "611110"
+   ],
+   "sanitized_phone": "+18609276000",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "56.7M",
+   "organization_revenue": 56703000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02580645161290323,
+   "organization_headcount_twelve_month_growth": 0.006666666666666667,
+   "organization_headcount_twenty_four_month_growth": 0.04137931034482759
+  },
+  {
+   "id": "54a11cbb69702d9d7ececb00",
+   "name": "Herrero Builders",
+   "website_url": "http://www.herrero.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/herrero-builders",
+   "twitter_url": "https://twitter.com/herrerobuilders",
+   "facebook_url": "https://facebook.com/HerreroBuilders/",
+   "primary_phone": {
+    "number": "+1 415-824-7675",
+    "source": "Owler",
+    "sanitized_number": "+14158247675"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 415-824-7675",
+   "linkedin_uid": "134761",
+   "founded_year": 1955,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6959502157cc440001c39a8b/picture",
+   "crunchbase_url": null,
+   "primary_domain": "herrero.com",
+   "sic_codes": [
+    "1542"
+   ],
+   "naics_codes": [
+    "23621",
+    "236220"
+   ],
+   "sanitized_phone": "+14158247675",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "84.1M",
+   "organization_revenue": 84079000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.07792207792207792,
+   "organization_headcount_twelve_month_growth": 0.1773049645390071,
+   "organization_headcount_twenty_four_month_growth": 0.3387096774193548
+  },
+  {
+   "id": "54a11ba769702da753145d00",
+   "name": "Tabor Academy",
+   "website_url": "http://www.taboracademy.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/school/tabor-academy",
+   "twitter_url": "https://twitter.com/taboracademy",
+   "facebook_url": "https://facebook.com/taboracademy",
+   "primary_phone": {
+    "number": "+1 508-748-2000",
+    "source": "Owler",
+    "sanitized_number": "+15087482000"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 508-748-2000",
+   "linkedin_uid": "45289",
+   "founded_year": 1876,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/687f40b7d104820001dcaa0b/picture",
+   "crunchbase_url": null,
+   "primary_domain": "taboracademy.org",
+   "sic_codes": [
+    "8211"
+   ],
+   "naics_codes": [
+    "611110"
+   ],
+   "sanitized_phone": "+15087482000",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "66.1M",
+   "organization_revenue": 66116000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02484472049689441,
+   "organization_headcount_twelve_month_growth": -0.05988023952095808,
+   "organization_headcount_twenty_four_month_growth": -0.07100591715976332
+  },
+  {
+   "id": "54a1cc947468694012e9db11",
+   "name": "A-MAX Insurance",
+   "website_url": "http://www.amaxinsurance.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/a-max-auto-insurance",
+   "twitter_url": "https://twitter.com/amaxinsurance",
+   "facebook_url": "https://facebook.com/amaxinsurance",
+   "primary_phone": {
+    "number": "+1 800-921-2629",
+    "source": "Owler",
+    "sanitized_number": "+18009212629"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-921-2629",
+   "linkedin_uid": "3491531",
+   "founded_year": 2002,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69adbc8fb7c66600011ffdc4/picture",
+   "crunchbase_url": null,
+   "primary_domain": "amaxinsurance.com",
+   "sic_codes": [
+    "6361",
+    "6411"
+   ],
+   "naics_codes": [
+    "524210"
+   ],
+   "sanitized_phone": "+18009212629",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "85.3M",
+   "organization_revenue": 85300000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.007518796992481203,
+   "organization_headcount_twelve_month_growth": 0.06349206349206349,
+   "organization_headcount_twenty_four_month_growth": 0.1754385964912281
+  },
+  {
+   "id": "54a1292d69702d9b8b3f8501",
+   "name": "PVA",
+   "website_url": "http://www.pva.net",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/pva",
+   "twitter_url": "https://twitter.com/pvatalk",
+   "facebook_url": "https://facebook.com/PVATalk",
+   "primary_phone": {
+    "number": "+1 518-371-2684",
+    "source": "Owler",
+    "sanitized_number": "+15183712684"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 518-371-2684",
+   "linkedin_uid": "824375",
+   "founded_year": 1992,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/68be8cab2e032e00015387b6/picture",
+   "crunchbase_url": null,
+   "primary_domain": "pva.net",
+   "sic_codes": [
+    "3559"
+   ],
+   "naics_codes": [
+    "333248"
+   ],
+   "sanitized_phone": "+15183712684",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "74.7M",
+   "organization_revenue": 74670000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02797202797202797,
+   "organization_headcount_twelve_month_growth": 0.08088235294117647,
+   "organization_headcount_twenty_four_month_growth": 0.08088235294117647
+  },
+  {
+   "id": "54a135ed69702d4494b5f000",
+   "name": "Twin Cities Habitat for Humanity",
+   "website_url": "http://www.tchabitat.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/twin-cities-habitat-for-humanity",
+   "twitter_url": "https://twitter.com/tchabitat",
+   "facebook_url": "https://facebook.com/tchabitat",
+   "primary_phone": {
+    "number": "+1 651-207-1700",
+    "source": "Owler",
+    "sanitized_number": "+16512071700"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 651-207-1700",
+   "linkedin_uid": "86577",
+   "founded_year": 1985,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6710c6bbbbd7400001c030ba/picture",
+   "crunchbase_url": null,
+   "primary_domain": "tchabitat.org",
+   "sic_codes": [
+    "1521"
+   ],
+   "naics_codes": [
+    "813410",
+    "236117"
+   ],
+   "sanitized_phone": "+16512071700",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "50.6M",
+   "organization_revenue": 50616000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.04545454545454546,
+   "organization_headcount_twelve_month_growth": 0.03205128205128205,
+   "organization_headcount_twenty_four_month_growth": 0.08053691275167785
+  },
+  {
+   "id": "54a1c1d57468695860c96e0e",
+   "name": "First Entertainment Credit Union",
+   "website_url": "http://www.firstent.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/first-entertainment-credit-union",
+   "twitter_url": "https://twitter.com/firstent",
+   "facebook_url": "https://facebook.com/FirstEntertainment/",
+   "primary_phone": {
+    "number": "+1 888-800-3328",
+    "source": "Owler",
+    "sanitized_number": "+18888003328"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 236398,
+   "phone": "+1 888-800-3328",
+   "linkedin_uid": "114294",
+   "founded_year": 1967,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a44c9e8d7d901000162d33f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "firstent.org",
+   "sic_codes": [
+    "6061"
+   ],
+   "naics_codes": [
+    "522130"
+   ],
+   "sanitized_phone": "+18888003328",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "91.7M",
+   "organization_revenue": 91749000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.04891304347826087,
+   "organization_headcount_twelve_month_growth": 0.0782122905027933,
+   "organization_headcount_twenty_four_month_growth": 0.1286549707602339
+  },
+  {
+   "id": "5d092b56a3ae61d7c7bb797d",
+   "name": "Office of the Minnesota Attorney General",
+   "website_url": "http://ag.state.mn.us",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/minnesota-attorney-general",
+   "twitter_url": "https://twitter.com/MnPCA",
+   "facebook_url": "https://www.facebook.com/MNPCA",
+   "primary_phone": {
+    "number": "+1 800-627-3529",
+    "source": "Scraped",
+    "sanitized_number": "+18006273529"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 800-627-3529",
+   "linkedin_uid": "8295201",
+   "founded_year": null,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a55b3d97ea2040001296a63/picture",
+   "crunchbase_url": null,
+   "primary_domain": "ag.state.mn.us",
+   "naics_codes": [
+    "92213",
+    "54111"
+   ],
+   "sanitized_phone": "+18006273529",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "65.8M",
+   "organization_revenue": 65797000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02622950819672131,
+   "organization_headcount_twelve_month_growth": -0.006688963210702341,
+   "organization_headcount_twenty_four_month_growth": 0.1292775665399239
+  },
+  {
+   "id": "54a126df69702d90a24d6900",
+   "name": "RANDYS Worldwide",
+   "website_url": "http://www.randysworldwide.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/randysworldwide",
+   "twitter_url": "https://twitter.com/Diff_Expert",
+   "facebook_url": "https://facebook.com/randysringpinion",
+   "primary_phone": {
+    "number": "+1 866-631-0196",
+    "source": "Owler",
+    "sanitized_number": "+18666310196"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 866-631-0196",
+   "linkedin_uid": "47574",
+   "founded_year": 1982,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/690c8b22c3c9e30001df91d0/picture",
+   "crunchbase_url": null,
+   "primary_domain": "randysworldwide.com",
+   "sic_codes": [
+    "3599"
+   ],
+   "naics_codes": [
+    "33299",
+    "336350",
+    "423120",
+    "441330"
+   ],
+   "sanitized_phone": "+18666310196",
+   "owned_by_organization_id": "57c4ef6da6da986aa0d35d19",
+   "owned_by_organization": {
+    "id": "57c4ef6da6da986aa0d35d19",
+    "name": "Linsalata Capital Partners",
+    "website_url": "http://www.linsalatacapital.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03409090909090909,
+   "organization_headcount_twelve_month_growth": 0.05813953488372093,
+   "organization_headcount_twenty_four_month_growth": 0.3382352941176471
+  },
+  {
+   "id": "556cfb9f73696411fd016500",
+   "name": "BOLAND",
+   "website_url": "http://www.boland.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/boland",
+   "twitter_url": null,
+   "facebook_url": "https://facebook.com/Boland.Trane.Commercial",
+   "primary_phone": {
+    "number": "+1 240-306-3000",
+    "source": "Owler",
+    "sanitized_number": "+12403063000"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 240-306-3000",
+   "linkedin_uid": "30634",
+   "founded_year": 1960,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6959a406ae33300001580b6f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "boland.com",
+   "sic_codes": [
+    "3585",
+    "1711",
+    "7349"
+   ],
+   "naics_codes": [
+    "561210",
+    "238220"
+   ],
+   "sanitized_phone": "+12403063000",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "56M",
+   "organization_revenue": 56000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0234375,
+   "organization_headcount_twelve_month_growth": 0.048,
+   "organization_headcount_twenty_four_month_growth": 0.07377049180327869
+  },
+  {
+   "id": "54a11ce969702d9a8b72e000",
+   "name": "GSFSGroup",
+   "website_url": "http://www.gsfsgroup.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/gulf-states-financial-services",
+   "twitter_url": null,
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 800-569-6536",
+    "source": "Owler",
+    "sanitized_number": "+18005696536"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-569-6536",
+   "linkedin_uid": "91255",
+   "founded_year": 1982,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/690d6d714e609700016de6f7/picture",
+   "crunchbase_url": null,
+   "primary_domain": "gsfsgroup.com",
+   "sic_codes": [
+    "6351",
+    "6141",
+    "6411",
+    "8742"
+   ],
+   "naics_codes": [
+    "522220",
+    "524210",
+    "611430"
+   ],
+   "sanitized_phone": "+18005696536",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "94M",
+   "organization_revenue": 94000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0,
+   "organization_headcount_twelve_month_growth": -0.04615384615384616,
+   "organization_headcount_twenty_four_month_growth": 0.07514450867052024
+  },
+  {
+   "id": "55f9e256f3e5bb718e00008d",
+   "name": "NCMIC",
+   "website_url": "http://www.ncmic.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/ncmic",
+   "twitter_url": "https://twitter.com/ncmic",
+   "facebook_url": "https://www.facebook.com/NCMIC",
+   "primary_phone": {
+    "number": "+1 515-313-4500",
+    "source": "Owler",
+    "sanitized_number": "+15153134500"
+   },
+   "languages": [
+    "English",
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 515-313-4500",
+   "linkedin_uid": "10077927",
+   "founded_year": 1946,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/66d6af9908dbd70001a4c41f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "ncmic.com",
+   "sic_codes": [
+    "6331",
+    "6141"
+   ],
+   "naics_codes": [
+    "524126",
+    "522320",
+    "522390"
+   ],
+   "sanitized_phone": "+15153134500",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "59.4M",
+   "organization_revenue": 59368000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.05405405405405406,
+   "organization_headcount_twelve_month_growth": 0.1142857142857143,
+   "organization_headcount_twenty_four_month_growth": 0.1538461538461539
+  },
+  {
+   "id": "54a121b369702d86b6aeaf02",
+   "name": "Japs-Olson Company (JO)",
+   "website_url": "http://www.japsolson.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/japs-olson-company",
+   "twitter_url": "https://twitter.com/JapsOlson",
+   "facebook_url": "https://facebook.com/JapsOlson",
+   "primary_phone": {
+    "number": "+1 952-932-9393",
+    "source": "Owler",
+    "sanitized_number": "+19529329393"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 952-932-9393",
+   "linkedin_uid": "42461",
+   "founded_year": 1907,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6a002a9a3775230001931a3f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "japsolson.com",
+   "sic_codes": [
+    "2752",
+    "7311"
+   ],
+   "naics_codes": [
+    "323111",
+    "541810"
+   ],
+   "sanitized_phone": "+19529329393",
+   "owned_by_organization_id": "55920954736964185f3f2f00",
+   "owned_by_organization": {
+    "id": "55920954736964185f3f2f00",
+    "name": "Monomoy Capital Partners",
+    "website_url": "http://www.mcpfunds.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "80M",
+   "organization_revenue": 80000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.005494505494505495,
+   "organization_headcount_twelve_month_growth": -0.01630434782608696,
+   "organization_headcount_twenty_four_month_growth": 0.09036144578313253
+  },
+  {
+   "id": "54a12aba69702dc841b7f101",
+   "name": "Cartridge World North America",
+   "website_url": "http://www.cartridgeworldusa.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/cartridge-world",
+   "twitter_url": null,
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 888-891-4004",
+    "source": "Scraped",
+    "sanitized_number": "+18888914004"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 888-891-4004",
+   "linkedin_uid": "9549",
+   "founded_year": 1998,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69356e514bf05900011763f2/picture",
+   "crunchbase_url": null,
+   "primary_domain": "cartridgeworldusa.com",
+   "sic_codes": [
+    "2752"
+   ],
+   "naics_codes": [
+    "459410",
+    "541519"
+   ],
+   "sanitized_phone": "+18888914004",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "75M",
+   "organization_revenue": 75000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.004291845493562232,
+   "organization_headcount_twelve_month_growth": 0.004329004329004329,
+   "organization_headcount_twenty_four_month_growth": -0.01694915254237288
+  },
+  {
+   "id": "54a12ab569702d90a2195e02",
+   "name": "By The Bay Health",
+   "website_url": "http://www.bythebayhealth.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/by-the-bay-health",
+   "twitter_url": "https://twitter.com/bythebayhealth",
+   "facebook_url": "https://facebook.com/ByTheBayHealth.org?fref=ts",
+   "primary_phone": {
+    "number": "+1 415-526-5500",
+    "source": "Owler",
+    "sanitized_number": "+14155265500"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 415-526-5500",
+   "linkedin_uid": "1947045",
+   "founded_year": 1975,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a7b93aa36064000130d31b/picture",
+   "crunchbase_url": null,
+   "primary_domain": "bythebayhealth.org",
+   "sic_codes": [
+    "8099",
+    "8082"
+   ],
+   "naics_codes": [
+    "621610"
+   ],
+   "sanitized_phone": "+14155265500",
+   "owned_by_organization_id": "54a13bc469702d24d3f0c501",
+   "owned_by_organization": {
+    "id": "54a13bc469702d24d3f0c501",
+    "name": "Hope Hospice",
+    "website_url": "http://www.hopehospice.net"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "74.7M",
+   "organization_revenue": 74710000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03278688524590164,
+   "organization_headcount_twelve_month_growth": 0.06329113924050633,
+   "organization_headcount_twenty_four_month_growth": 0.02439024390243903
+  },
+  {
+   "id": "55ec95b6f3e5bb12d600264d",
+   "name": "Marshall Health",
+   "website_url": "http://www.marshallhealth.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/marshall-health",
+   "twitter_url": "https://twitter.com/marshall_health",
+   "facebook_url": "https://www.facebook.com/MarshallHealth",
+   "primary_phone": {
+    "number": "+1 304-691-1600",
+    "source": "Owler",
+    "sanitized_number": "+13046911600"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 528906,
+   "phone": "+1 304-691-1600",
+   "linkedin_uid": "9450286",
+   "founded_year": 1977,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/686eb7ff71184c0001e30c2e/picture",
+   "crunchbase_url": null,
+   "primary_domain": "marshallhealth.org",
+   "sic_codes": [
+    "8011"
+   ],
+   "naics_codes": [
+    "621111"
+   ],
+   "sanitized_phone": "+13046911600",
+   "owned_by_organization_id": "5ed247e725029d0001d0ca01",
+   "owned_by_organization": {
+    "id": "5ed247e725029d0001d0ca01",
+    "name": "Marshall University",
+    "website_url": "http://www.marshall.edu"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "57.0M",
+   "organization_revenue": 56991000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.02134146341463415,
+   "organization_headcount_twelve_month_growth": -0.006191950464396285,
+   "organization_headcount_twenty_four_month_growth": 0.01582278481012658
+  },
+  {
+   "id": "54a1346969702d46f00d0d00",
+   "name": "Schumacher Electric Corporation",
+   "website_url": "http://www.schumacherelectric.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/schumacher-electric-corp.",
+   "twitter_url": "https://twitter.com/BatteryChargrs",
+   "facebook_url": "https://facebook.com/schumacherelectric",
+   "primary_phone": {
+    "number": "+1 800-621-5485",
+    "source": "Owler",
+    "sanitized_number": "+18006215485"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-621-5485",
+   "linkedin_uid": "155034",
+   "founded_year": 1947,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69b12aee86f6e6000119613c/picture",
+   "crunchbase_url": null,
+   "primary_domain": "schumacherelectric.com",
+   "sic_codes": [
+    "3694"
+   ],
+   "naics_codes": [
+    "33591",
+    "335311",
+    "335999"
+   ],
+   "sanitized_phone": "+18006215485",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.009259259259259259,
+   "organization_headcount_twelve_month_growth": 0.009259259259259259,
+   "organization_headcount_twenty_four_month_growth": 0.06862745098039216
+  },
+  {
+   "id": "54fca63e7369640130223a00",
+   "name": "HGreg.com",
+   "website_url": "http://www.hgreg.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/hgreg-com",
+   "twitter_url": "https://twitter.com/hgregauto",
+   "facebook_url": "https://www.facebook.com/HGregAuto",
+   "primary_phone": {
+    "number": "+1 833-253-6808",
+    "source": "Owler",
+    "sanitized_number": "+18332536808"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 162982,
+   "phone": "+1 833-253-6808",
+   "linkedin_uid": "3793667",
+   "founded_year": 1993,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/686e15a760961e000105645b/picture",
+   "crunchbase_url": null,
+   "primary_domain": "hgreg.com",
+   "sic_codes": [
+    "5511"
+   ],
+   "naics_codes": [
+    "441110",
+    "441120"
+   ],
+   "sanitized_phone": "+18332536808",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "100M",
+   "organization_revenue": 100000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.01935483870967742,
+   "organization_headcount_twelve_month_growth": -0.03184713375796178,
+   "organization_headcount_twenty_four_month_growth": -0.006535947712418301
+  },
+  {
+   "id": "54a1a7d874686949e78b3605",
+   "name": "Vienna Beef",
+   "website_url": "http://www.viennabeef.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/vienna-beef",
+   "twitter_url": "https://twitter.com/viennabeef",
+   "facebook_url": "https://facebook.com/ViennaBeef",
+   "primary_phone": {
+    "number": "+1 800-366-3647",
+    "source": "Owler",
+    "sanitized_number": "+18003663647"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-366-3647",
+   "linkedin_uid": "71517",
+   "founded_year": 1893,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/68bf9918869ce3000180c467/picture",
+   "crunchbase_url": null,
+   "primary_domain": "viennabeef.com",
+   "sic_codes": [
+    "2011",
+    "2013"
+   ],
+   "naics_codes": [
+    "31111",
+    "311612"
+   ],
+   "sanitized_phone": "+18003663647",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "72.8M",
+   "organization_revenue": 72800000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02521008403361345,
+   "organization_headcount_twelve_month_growth": 0.03389830508474576,
+   "organization_headcount_twenty_four_month_growth": 0.02521008403361345
+  },
+  {
+   "id": "54a12afc69702db648534f02",
+   "name": "Community Health Centers, Inc.",
+   "website_url": "http://www.chcfl.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/community-health-centers-inc.",
+   "twitter_url": null,
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 407-905-8827",
+    "source": "Owler",
+    "sanitized_number": "+14079058827"
+   },
+   "languages": [
+    "English",
+    "Spanish"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 407-905-8827",
+   "linkedin_uid": "1214909",
+   "founded_year": 1972,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/66e696a2cc18b50001d8ea60/picture",
+   "crunchbase_url": null,
+   "primary_domain": "chcfl.org",
+   "sic_codes": [
+    "8011"
+   ],
+   "naics_codes": [
+    "62141",
+    "621498"
+   ],
+   "sanitized_phone": "+14079058827",
+   "owned_by_organization_id": null,
+   "num_languages": 2,
+   "organization_revenue_printed": "82.1M",
+   "organization_revenue": 82064000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.01463414634146342,
+   "organization_headcount_twelve_month_growth": -0.0380952380952381,
+   "organization_headcount_twenty_four_month_growth": -0.01941747572815534
+  },
+  {
+   "id": "5f42fc46ec0ce70001ec4d64",
+   "name": "J&P Cycles",
+   "website_url": "http://www.jpcycles.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/j&p-cycles",
+   "twitter_url": null,
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 800-318-4823",
+    "source": "Scraped",
+    "sanitized_number": "+18003184823"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 121977,
+   "phone": "+1 800-318-4823",
+   "linkedin_uid": "92233",
+   "founded_year": 1979,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/670ae206cc2d4b000116f5bf/picture",
+   "crunchbase_url": null,
+   "primary_domain": "jpcycles.com",
+   "sic_codes": [
+    "5099",
+    "5531"
+   ],
+   "naics_codes": [
+    "441330"
+   ],
+   "sanitized_phone": "+18003184823",
+   "owned_by_organization_id": "5e8b5e777758e100c2753734",
+   "owned_by_organization": {
+    "id": "5e8b5e777758e100c2753734",
+    "name": "Comoto Family of Brands",
+    "website_url": "http://www.ridecomoto.com"
+   },
+   "num_languages": 1,
+   "organization_revenue_printed": "50M",
+   "organization_revenue": 50000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.03508771929824561,
+   "organization_headcount_twelve_month_growth": -0.05172413793103448,
+   "organization_headcount_twenty_four_month_growth": -0.08333333333333333
+  },
+  {
+   "id": "55e17afdf3e5bb4a4200014d",
+   "name": "Scott Credit Union",
+   "website_url": "http://www.scu.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/scott-credit-union",
+   "twitter_url": "https://twitter.com/ScottCU",
+   "facebook_url": "https://www.facebook.com/ScottCreditUnion",
+   "primary_phone": {
+    "number": "+1 618-345-1000",
+    "source": "Owler",
+    "sanitized_number": "+16183451000"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 182826,
+   "phone": "+1 618-345-1000",
+   "linkedin_uid": "1146947",
+   "founded_year": 1943,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a530e7e898bb0001a88f4f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "scu.org",
+   "sic_codes": [
+    "6061"
+   ],
+   "naics_codes": [
+    "522130"
+   ],
+   "sanitized_phone": "+16183451000",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "76.8M",
+   "organization_revenue": 76791000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.01041666666666667,
+   "organization_headcount_twelve_month_growth": 0.02150537634408602,
+   "organization_headcount_twenty_four_month_growth": 0.07954545454545454
+  },
+  {
+   "id": "54a11b3c69702d86b6372000",
+   "name": "Extraco Banks",
+   "website_url": "http://www.extracobanks.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/extraco-banks",
+   "twitter_url": "https://twitter.com/extracobanks",
+   "facebook_url": "https://www.facebook.com/extracobanks1902",
+   "primary_phone": {
+    "number": "+1 254-761-2000",
+    "source": "Owler",
+    "sanitized_number": "+12547612000"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 196587,
+   "phone": "+1 254-761-2000",
+   "linkedin_uid": "67925",
+   "founded_year": 1902,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/68be138cac9833000112f76d/picture",
+   "crunchbase_url": null,
+   "primary_domain": "extracobanks.com",
+   "sic_codes": [
+    "6021"
+   ],
+   "naics_codes": [
+    "522110"
+   ],
+   "sanitized_phone": "+12547612000",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "93.5M",
+   "organization_revenue": 93500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03942652329749104,
+   "organization_headcount_twelve_month_growth": 0.05072463768115942,
+   "organization_headcount_twenty_four_month_growth": 0.006944444444444444
+  },
+  {
+   "id": "5b8332d2324d446bfd33922d",
+   "name": "Lyon",
+   "website_url": "http://www.lyonworkspace.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/lyon-llc",
+   "twitter_url": "https://twitter.com/lyon_llc",
+   "facebook_url": "https://facebook.com/lyonllc",
+   "primary_phone": {
+    "number": "+1 800-433-8448",
+    "source": "Owler",
+    "sanitized_number": "+18004338448"
+   },
+   "languages": [],
+   "alexa_ranking": 493517,
+   "phone": "+1 800-433-8448",
+   "linkedin_uid": "117928",
+   "founded_year": 1901,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69c423de35a146000147b06b/picture",
+   "crunchbase_url": null,
+   "primary_domain": "lyonworkspace.com",
+   "sic_codes": [
+    "3999"
+   ],
+   "naics_codes": [
+    "33231",
+    "337214"
+   ],
+   "sanitized_phone": "+18004338448",
+   "owned_by_organization_id": null,
+   "num_languages": 0,
+   "organization_revenue_printed": "75M",
+   "organization_revenue": 75000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.008403361344537815,
+   "organization_headcount_twelve_month_growth": 0.008547008547008548,
+   "organization_headcount_twenty_four_month_growth": 0.05357142857142857
+  },
+  {
+   "id": "54a1345a69702d4494510c00",
+   "name": "F.H. Furr Plumbing, Heating, Air Conditioning, & Electrical",
+   "website_url": "http://www.fhfurr.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/f.h.-furr-plumbing-heating-&-air-conditioning-inc.",
+   "twitter_url": "https://twitter.com/fhfurr",
+   "facebook_url": "https://facebook.com/fhfurr",
+   "primary_phone": {
+    "number": "+1 888-603-6405",
+    "source": "Owler",
+    "sanitized_number": "+18886036405"
+   },
+   "languages": [
+    "English",
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 888-603-6405",
+   "linkedin_uid": "1111433",
+   "founded_year": 1981,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69abb80d0d33d80001042a52/picture",
+   "crunchbase_url": null,
+   "primary_domain": "fhfurr.com",
+   "sic_codes": [
+    "1711",
+    "1731"
+   ],
+   "naics_codes": [
+    "238210",
+    "238220"
+   ],
+   "sanitized_phone": "+18886036405",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "72.6M",
+   "organization_revenue": 72600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.02962962962962963,
+   "organization_headcount_twelve_month_growth": 0.0145985401459854,
+   "organization_headcount_twenty_four_month_growth": 0.112
+  },
+  {
+   "id": "54a1299969702d95487ba501",
+   "name": "Missouri Star Quilt Company",
+   "website_url": "http://www.missouriquiltco.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/missouri-star-quilt-co",
+   "twitter_url": "https://twitter.com/missouriquiltco",
+   "facebook_url": "https://facebook.com/quiltingdeals",
+   "primary_phone": {
+    "number": "+1 888-571-1122",
+    "source": "Account",
+    "sanitized_number": "+18885711122"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 61524,
+   "phone": "+1 888-571-1122",
+   "linkedin_uid": "1955068",
+   "founded_year": 2008,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/68244837f61ccb00011f7ee0/picture",
+   "crunchbase_url": null,
+   "primary_domain": "missouriquiltco.com",
+   "sic_codes": [
+    "2399"
+   ],
+   "naics_codes": [
+    "454110"
+   ],
+   "sanitized_phone": "+18885711122",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "71.2M",
+   "organization_revenue": 71200000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0,
+   "organization_headcount_twelve_month_growth": -0.007246376811594203,
+   "organization_headcount_twenty_four_month_growth": -0.07432432432432433
+  },
+  {
+   "id": "54a13b6569702db45da07601",
+   "name": "Cenergistic",
+   "website_url": "http://www.cenergistic.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/cenergistic",
+   "twitter_url": "https://twitter.com/cenergistic",
+   "facebook_url": "https://facebook.com/Cenergistic",
+   "primary_phone": {
+    "number": "+1 855-798-7779",
+    "source": "Owler",
+    "sanitized_number": "+18557987779"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 855-798-7779",
+   "linkedin_uid": "2764167",
+   "founded_year": 1986,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6823eb23d6cdb70001416fbd/picture",
+   "crunchbase_url": null,
+   "primary_domain": "cenergistic.com",
+   "sic_codes": [
+    "8734"
+   ],
+   "naics_codes": [
+    "54169",
+    "541620",
+    "541611"
+   ],
+   "sanitized_phone": "+18557987779",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "54.7M",
+   "organization_revenue": 54700000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.005649717514124294,
+   "organization_headcount_twelve_month_growth": 0.01136363636363636,
+   "organization_headcount_twenty_four_month_growth": 0.08536585365853659
+  },
+  {
+   "id": "54a1292169702d9ebc695401",
+   "name": "Nordic Ware",
+   "website_url": "http://www.nordicware.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/nordic-ware",
+   "twitter_url": "https://twitter.com/NordicWare",
+   "facebook_url": "https://facebook.com/NordicWare/",
+   "primary_phone": {
+    "number": "+1 952-920-2888",
+    "source": "Owler",
+    "sanitized_number": "+19529202888"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": 328970,
+   "phone": "+1 952-920-2888",
+   "linkedin_uid": "1233366",
+   "founded_year": 1946,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a9445f3371f7000131560f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "nordicware.com",
+   "sic_codes": [
+    "3630"
+   ],
+   "naics_codes": [
+    "33221",
+    "33152"
+   ],
+   "sanitized_phone": "+19529202888",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "80M",
+   "organization_revenue": 80000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.03571428571428571,
+   "organization_headcount_twelve_month_growth": 0.03571428571428571,
+   "organization_headcount_twenty_four_month_growth": 0.1012658227848101
+  },
+  {
+   "id": "54a12ace69702d8eeb299402",
+   "name": "HealthSource of Ohio",
+   "website_url": "http://www.healthsourceofohio.org",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/healthsource-of-ohio",
+   "twitter_url": "https://twitter.com/HealthSourceOH",
+   "facebook_url": null,
+   "primary_phone": {
+    "number": "+1 513-576-7700",
+    "source": "Owler",
+    "sanitized_number": "+15135767700"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 513-576-7700",
+   "linkedin_uid": "1372537",
+   "founded_year": 1976,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6842c2f61d5da60001ed2a78/picture",
+   "crunchbase_url": null,
+   "primary_domain": "healthsourceofohio.org",
+   "sic_codes": [
+    "8011"
+   ],
+   "naics_codes": [
+    "621498"
+   ],
+   "sanitized_phone": "+15135767700",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "73.6M",
+   "organization_revenue": 73600000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0130718954248366,
+   "organization_headcount_twelve_month_growth": 0.09929078014184398,
+   "organization_headcount_twenty_four_month_growth": 0.2301587301587301
+  },
+  {
+   "id": "5fcb9261f16e8f0001732ad6",
+   "name": "Steiner",
+   "website_url": "http://www.steinerturf.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/steiner",
+   "twitter_url": "https://twitter.com/steinerturf",
+   "facebook_url": "https://facebook.com/SteinerTractors",
+   "primary_phone": {
+    "number": "+1 920-699-2000",
+    "source": "Owler",
+    "sanitized_number": "+19206992000"
+   },
+   "languages": [],
+   "alexa_ranking": null,
+   "phone": "+1 920-699-2000",
+   "linkedin_uid": "57040",
+   "founded_year": 1975,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/637b66d2f243e000016de97d/picture",
+   "crunchbase_url": null,
+   "primary_domain": "steinerturf.com",
+   "sic_codes": [
+    "3531",
+    "3523"
+   ],
+   "naics_codes": [
+    "333111"
+   ],
+   "sanitized_phone": "+19206992000",
+   "owned_by_organization_id": "66bfe1c26fb2c40001bb1612",
+   "owned_by_organization": {
+    "id": "66bfe1c26fb2c40001bb1612",
+    "name": "Doosan Bobcat UK Ltd",
+    "website_url": "http://www.doosanbobcat.com"
+   },
+   "num_languages": 0,
+   "organization_revenue_printed": "70M",
+   "organization_revenue": 70000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.01123595505617977,
+   "organization_headcount_twelve_month_growth": 0.0,
+   "organization_headcount_twenty_four_month_growth": 0.01123595505617977
+  },
+  {
+   "id": "57c4c31ea6da98368281505d",
+   "name": "NEO Home Loans",
+   "website_url": "http://www.neohomeloans.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/neohomeloans",
+   "twitter_url": "https://twitter.com/apexhomeloans",
+   "facebook_url": "https://facebook.com/NEOHomeLoans/",
+   "primary_phone": {
+    "number": "+1 801-893-0697",
+    "source": "Owler",
+    "sanitized_number": "+18018930697"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 801-893-0697",
+   "linkedin_uid": "71640827",
+   "founded_year": 2021,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/693679ceaac61700013b3e5d/picture",
+   "crunchbase_url": null,
+   "primary_domain": "neohomeloans.com",
+   "sic_codes": [
+    "6162"
+   ],
+   "naics_codes": [
+    "522310"
+   ],
+   "sanitized_phone": "+18018930697",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "62.1M",
+   "organization_revenue": 62100000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.0660377358490566,
+   "organization_headcount_twelve_month_growth": 0.1832460732984293,
+   "organization_headcount_twenty_four_month_growth": 0.2349726775956284
+  },
+  {
+   "id": "54a1274a69702d9313708a00",
+   "name": "StraCon Services Group, LLC.",
+   "website_url": "http://www.stracongroup.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/stracongroup",
+   "twitter_url": "https://twitter.com/StraConServices",
+   "facebook_url": "https://www.facebook.com/stracongroup/",
+   "primary_phone": {
+    "number": "+1 817-698-0100",
+    "source": "Owler",
+    "sanitized_number": "+18176980100"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 817-698-0100",
+   "linkedin_uid": "398204",
+   "founded_year": 2008,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/698602ac3ea80b000161747f/picture",
+   "crunchbase_url": null,
+   "primary_domain": "stracongroup.com",
+   "sic_codes": [
+    "8731",
+    "8711",
+    "8748"
+   ],
+   "naics_codes": [
+    "541330",
+    "541611"
+   ],
+   "sanitized_phone": "+18176980100",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "63.4M",
+   "organization_revenue": 63400000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.08108108108108109,
+   "organization_headcount_twelve_month_growth": 0.2121212121212121,
+   "organization_headcount_twenty_four_month_growth": 0.4084507042253521
+  },
+  {
+   "id": "5f48be558f766600019fe52c",
+   "name": "Haas Door",
+   "website_url": "http://www.haasdoor.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/haasdoor",
+   "twitter_url": null,
+   "facebook_url": "https://facebook.com/haas-door-126419420745977",
+   "primary_phone": {
+    "number": "+1 419-337-9900",
+    "source": "Account",
+    "sanitized_number": "+14193379900"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 419-337-9900",
+   "linkedin_uid": "2487029",
+   "founded_year": 1954,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6880777ed0d0430001c1f591/picture",
+   "crunchbase_url": null,
+   "primary_domain": "haasdoor.com",
+   "sic_codes": [
+    "1751",
+    "3442"
+   ],
+   "naics_codes": [
+    "332321"
+   ],
+   "sanitized_phone": "+14193379900",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "62.5M",
+   "organization_revenue": 62500000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.04301075268817205,
+   "organization_headcount_twelve_month_growth": 0.01041666666666667,
+   "organization_headcount_twenty_four_month_growth": 0.02105263157894737
+  },
+  {
+   "id": "54a12a9069702db87819eb01",
+   "name": "Carmel Valley Ranch",
+   "website_url": "http://www.carmelvalleyranch.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/carmel-valley-ranch",
+   "twitter_url": "https://twitter.com/carmelvranch",
+   "facebook_url": "https://facebook.com/carmelvalleyranch",
+   "primary_phone": {
+    "number": "+1 855-687-7262",
+    "source": "Owler",
+    "sanitized_number": "+18556877262"
+   },
+   "languages": [
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 855-687-7262",
+   "linkedin_uid": "780405",
+   "founded_year": 2009,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/671746c4e2c57000014d72da/picture",
+   "crunchbase_url": null,
+   "primary_domain": "carmelvalleyranch.com",
+   "sic_codes": [
+    "7011",
+    "7997"
+   ],
+   "naics_codes": [
+    "721110",
+    "713910"
+   ],
+   "sanitized_phone": "+18556877262",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "61.7M",
+   "organization_revenue": 61700000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": 0.008130081300813009,
+   "organization_headcount_twelve_month_growth": -0.01587301587301587,
+   "organization_headcount_twenty_four_month_growth": 0.05084745762711865
+  },
+  {
+   "id": "5da3ca2a31023c00019f0e7d",
+   "name": "SumnerOne",
+   "website_url": "http://www.sumnerone.com",
+   "angellist_url": null,
+   "linkedin_url": "http://www.linkedin.com/company/sumnerone",
+   "twitter_url": "https://twitter.com/sumner_one",
+   "facebook_url": "https://facebook.com/imagetechmo/",
+   "primary_phone": {
+    "number": "+1 800-874-4911",
+    "source": "Owler",
+    "sanitized_number": "+18008744911"
+   },
+   "languages": [
+    "English",
+    "English"
+   ],
+   "alexa_ranking": null,
+   "phone": "+1 800-874-4911",
+   "linkedin_uid": "3836975",
+   "founded_year": 1952,
+   "publicly_traded_symbol": null,
+   "publicly_traded_exchange": null,
+   "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69ae27ebe0c9cd0001ecbc3e/picture",
+   "crunchbase_url": null,
+   "primary_domain": "sumnerone.com",
+   "sic_codes": [
+    "3571",
+    "5045",
+    "7379"
+   ],
+   "naics_codes": [
+    "423430",
+    "541512"
+   ],
+   "sanitized_phone": "+18008744911",
+   "owned_by_organization_id": null,
+   "num_languages": 1,
+   "organization_revenue_printed": "60M",
+   "organization_revenue": 60000000.0,
+   "intent_strength": null,
+   "show_intent": true,
+   "has_intent_signal_account": false,
+   "intent_signal_account": null,
+   "organization_headcount_six_month_growth": -0.004329004329004329,
+   "organization_headcount_twelve_month_growth": 0.01769911504424779,
+   "organization_headcount_twenty_four_month_growth": -0.0128755364806867
+  }
+ ],
+ "model_ids": [
+  "556de2eb736964124bc0c601",
+  "5ed1ffcdabf8dd0001a353b5",
+  "5d095f2ca3ae614ec5e95138",
+  "5a9d5115a6da98d954d8d7fb",
+  "5d8113a2e4e7d101f06afbf0",
+  "5d345d5a80f93e24b191c46f",
+  "559231bd736964186fc8c300",
+  "5b868bdaf874f7617ad79ab9",
+  "614b48d662ba82000178df35",
+  "54a1baf67468694f8f051c0c",
+  "5a9e0306a6da98d9a8d805ff",
+  "5b13d797a6da98dcdbc9e7a0",
+  "54a1186e69702d530b1f0700",
+  "54a1292269702db648f46701",
+  "55f8adbcf3e5bb15e3000e8d",
+  "6546af7508854e0001b18c0b",
+  "54a11c3f69702d8aa1a28200",
+  "5d655fb60d663509c09a4d11",
+  "54a13a9869702d2185eb0701",
+  "54a1c92674686942d318f210",
+  "57c4ee17a6da986ac743689c",
+  "54a11bf969702d97c12c7800",
+  "54a11d8e69702da10f811e01",
+  "5b846186f874f764c4601867",
+  "556e393d73696410cb9d4a01",
+  "54a11bcf69702d8ccc556100",
+  "54a13c7769702d28516ef101",
+  "54a128f869702d9548b04f01",
+  "5da28ab658968b000174d92c",
+  "54a13c0069702d048608ce01",
+  "54a1d4267468694f8f11c014",
+  "5a9e2ee4a6da98d96643bec0",
+  "54fca56a7369640198322d00",
+  "5b86db36324d44621d6944fb",
+  "54a138dd69702d2bfdaf0f00",
+  "62f6724148d98b0001cc5736",
+  "5569d40073696425b2869e00",
+  "5d33a1d9f65125135d054d78",
+  "56d3828df3e5bb228100152f",
+  "5a9e3fe6a6da98d9a8d9caae",
+  "54a1213069702d86b6477a02",
+  "54a13a1a69702d267af0b900",
+  "54a135f469702d46f0f6e700",
+  "59e55efaa6da9875255482ae",
+  "54a1351d69702d44943e6a00",
+  "5d331afb80f93ec65ebc1c59",
+  "5d324d37f65125322eb7a25e",
+  "5569d7d27369642549faa100",
+  "5fcc142f40506600011f7980",
+  "54a1285c69702dc128d2d900",
+  "54a13c7669702d24d3b41202",
+  "54a1356b69702d4b2e368f00",
+  "5f49ff96f024b100018986ef",
+  "5dc32426f2ac0000e86c5a7a",
+  "5d09a2b8f65125b4b74ef761",
+  "5c2ae2f680f93e5b1b0fd29e",
+  "600976e10d9a2a00e63cbb82",
+  "54a13a3069702d231f16da00",
+  "54a1345f69702d48e2de0500",
+  "54a25d1674686930c2d0031d",
+  "54a12a4969702dc12895c601",
+  "5a9d65e4a6da98d977f39c95",
+  "5d0a6055a3ae613c11e1a78d",
+  "54a135a269702d48e2aaae00",
+  "5b15a8b6a6da9871592ca480",
+  "54a13c0769702d267a75c001",
+  "54a11cbb69702d9d7ececb00",
+  "54a11ba769702da753145d00",
+  "54a1cc947468694012e9db11",
+  "54a1292d69702d9b8b3f8501",
+  "54a135ed69702d4494b5f000",
+  "54a1c1d57468695860c96e0e",
+  "5d092b56a3ae61d7c7bb797d",
+  "54a126df69702d90a24d6900",
+  "556cfb9f73696411fd016500",
+  "54a11ce969702d9a8b72e000",
+  "55f9e256f3e5bb718e00008d",
+  "54a121b369702d86b6aeaf02",
+  "54a12aba69702dc841b7f101",
+  "54a12ab569702d90a2195e02",
+  "55ec95b6f3e5bb12d600264d",
+  "54a1346969702d46f00d0d00",
+  "54fca63e7369640130223a00",
+  "54a1a7d874686949e78b3605",
+  "54a12afc69702db648534f02",
+  "5f42fc46ec0ce70001ec4d64",
+  "55e17afdf3e5bb4a4200014d",
+  "54a11b3c69702d86b6372000",
+  "5b8332d2324d446bfd33922d",
+  "54a1345a69702d4494510c00",
+  "54a1299969702d95487ba501",
+  "54a13b6569702db45da07601",
+  "54a1292169702d9ebc695401",
+  "54a12ace69702d8eeb299402",
+  "5fcb9261f16e8f0001732ad6",
+  "57c4c31ea6da98368281505d",
+  "54a1274a69702d9313708a00",
+  "5f48be558f766600019fe52c",
+  "54a12a9069702db87819eb01",
+  "5da3ca2a31023c00019f0e7d"
+ ],
+ "num_fetch_result": null,
+ "derived_params": {
+  "recommendation_config_id": "6a1949ed797bae000115c593"
+ }
+}

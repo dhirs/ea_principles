@@ -76,14 +76,15 @@ A Stage 5 run is a job-postings search restricted to the universe's shape, over 
 - Because these signals decay fast, **weight recency** and let scores fall off over time (a posting from 90 days ago is weaker than one from last week).
 - Combine into a single `intent_score`.
 
-## Output
+## Output — `apollo_company_scores`
 
-Write back to `apollo_company_universe`, keyed on `apollo_org_id`:
+Scores do **not** go on `apollo_company_universe`. They go in the shared scores table, one row per account per service per score type — full DDL and write contract in `stage4_fit.md` → *Output*; concept in `methodology.md` → *Where scores live*.
 
-- `intent_score` (numeric)
-- `intent_scored_at` (timestamptz)
+Stage 5 writes **only** `score_type = 'intent'` rows, upserting on `(apollo_org_id, product, score_type)`. Stage 4 owns `'fit'` and Stage 5 never touches it — that separation is why the two pipelines can run on different cadences without colliding.
 
-Add columns **only if not already present** — `ALTER TABLE apollo_company_universe ADD COLUMN IF NOT EXISTS intent_score numeric;` (and the timestamp). Never blind `ADD COLUMN`.
+- Put the decaying evidence in `signals` (which titles, how many postings, how recent) — it is what makes a score that moved explainable.
+- `rules_version` is required; pass the intent rule-set version, tracked separately from Stage 4's.
+- Idempotent: each run overwrites its own row, and because the date window moves, the score reflects the current window.
 
 ## Cadence & ops
 

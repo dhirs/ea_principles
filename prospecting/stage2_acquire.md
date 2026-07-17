@@ -63,12 +63,24 @@ A meaningful gap proves the filter was live during the sweep. Use `per_page: 1` 
 
 ```sql
 create table if not exists apollo_company_raw (
-  id            bigint generated always as identity primary key,
-  apollo_org_id text not null unique,
-  payload       jsonb not null,            -- full Apollo record, verbatim
-  last_refresh  timestamptz not null default now()
+  id               bigint generated always as identity primary key,
+  apollo_org_id    text not null unique,
+  payload          jsonb not null,            -- Stage 2 SEARCH record, verbatim (thin — no technographics/funding)
+  last_refresh     timestamptz not null default now(),
+  -- Stage 4 enrichment columns (added 2026-07-17). Null until the org is enriched.
+  enriched_payload jsonb,                      -- full organizations_enrich record, verbatim
+  last_enriched    timestamptz,                -- when enrichment last ran for this org
+  enrichment_query jsonb                       -- the discover filter set (fields+values) that surfaced this org
 );
+
+-- Existing table: additive, safe, idempotent migration.
+alter table apollo_company_raw
+  add column if not exists enriched_payload jsonb,
+  add column if not exists last_enriched    timestamptz,
+  add column if not exists enrichment_query jsonb;
 ```
+
+**Two payloads, two columns.** `payload` stays the thin Stage 2 search row; Stage 4 writes the full enrichment record to `enriched_payload` and never touches `payload`. `enrichment_query` gives each enriched row its own provenance — the same self-documenting idea as `breadcrumbs`, but per row.
 
 Upsert on `apollo_org_id`; every run refreshes `payload` + `last_refresh`:
 

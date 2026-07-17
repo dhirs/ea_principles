@@ -123,6 +123,26 @@ is the source of truth** for how it's built and what's currently in it.
 
 Current data: **2,983 companies** (2026-07-17).
 
+### `apollo_company_technology` (view, read-only) — the Apollo Technologies filter
+
+One row per **org + technology**, powering the **Apollo Technologies** dropdown on the
+Companies page. It's a plain `create view` over `apollo_company_scores` — it unnests
+`signals->matched_uids` / `matched_names` (kept positionally aligned by array index),
+scoped to `score_type='fit'`. Columns: `apollo_org_id`, `technology_uid`,
+`technology_name`.
+
+- **This is the ONLY org↔technology data that exists.** Apollo's company-search *and*
+  enrichment return **no technographics on this plan**, so `apollo_company_raw.payload`
+  has zero tech fields. The associations exist solely because the prospecting Stage 4
+  CDP **search probes** wrote them into `apollo_company_scores.signals`. See
+  `prospecting/README.md` (Stage 4) and `prospecting/stage4_fit.md`.
+- **Coverage is small and CDP-only by design: 198 pairs / 12 technologies / 167 orgs**
+  (Lytics 75, Segment 55, … RudderStack 1). All 167 orgs are in
+  `apollo_company_universe`, so the dropdown's per-tech count equals the filtered result
+  exactly. The list **grows only when new probes run** (e.g. probing the MAP set) — the
+  view auto-reflects whatever is in the scores table, nothing to maintain here.
+- Grants: `select` to `anon, authenticated, service_role` (needed for PostgREST).
+
 ### Enriched vs cold (important gotcha)
 
 A lead is "enriched" when it has an Apollo record. Un-enriched rows store
@@ -178,20 +198,51 @@ CSV columns → mapping: `Email→lead_email`, `Lesson Title→event_name`,
 - **Companies page** (`app/companies/page.tsx`) — read-only browse of
   `apollo_company_universe`. Fetches **every** row once from `/api/companies`, then does
   search, filtering, sorting, and pagination **client-side**. Columns: **Company ·
-  Employees · Revenue · 6m · 12m**. Debounced search; page sizes **25 / 50 / 75 / 100**;
-  sortable numeric columns (`revenue`, `growth_6m`, `growth_12m`); default order is
-  biggest revenue first, nulls last, then A→Z. Growth values are stored as fractions and
-  rendered as percentages (`0.12` → `+12.0%`).
+  Employees · Revenue · 12m**. Debounced search; page sizes **25 / 50 / 75 / 100**;
+  sortable numeric columns (`revenue`, `growth_12m`); default order is biggest revenue
+  first, nulls last, then A→Z. Growth values are stored as fractions and rendered as
+  percentages (`0.12` → `+12.0%`). `growth_6m` / `growth_24m` are list-payload only —
+  shown in the drawer, not the table.
   Clicking the **company name opens the detail drawer** — it does *not* navigate out.
-- **Filters panel** (on the companies page) — two filters, both client-side:
+- **Filters panel** (on the companies page) — three filters, all client-side:
   - **Revenue ($M)** — min/max inputs; blank is open-ended. Typed in **millions**, matched
     against the dollar-valued `revenue` column (`80` → `80_000_000`). A row with null
     revenue never matches a bound.
+  - **Apollo Technologies** — searchable single-select (`TechCombobox`). Loads the
+    `apollo_company_technology` view once via `/api/technologies`, builds a
+    `uid → Set<org_id>` map client-side, and keeps only rows whose `apollo_org_id` runs the
+    picked technology. Options show a company-count badge; **only the 12 technologies we
+    have data for are listed** (see the view's note above). Loads independently of
+    `/api/companies` — if it fails, the filter is just empty.
   - **Five cascading NAICS dropdowns** (Sector → Subsector → Industry Group → NAICS
     Industry → National Industry) — picking a level clears every level below it.
   Options are **faceted**: each dropdown's choices reflect the search + the revenue range
   + the *other* active levels, so a selection can never produce an empty list. Any change
   resets to page 1; "Clear all" resets every filter.
+
+> **Gotcha — 32 companies vanish once you filter below Sector.** Their `subsector_title`
+> and `industry_group_title` are null because Apollo returns **retired 2017 NAICS codes**
+> absent from the `apollo_naics` 2022 reference (26 are in Retail Trade, 4 Information,
+> 2 Manufacturing). Sector is populated on all rows, so they only disappear at level 3+.
+> Not a UI bug — fix by loading the 2017 codes into `apollo_naics`; see Trap 2 in
+> `prospecting/stage3_qualify.md`.
+
+### Companies page load — a deliberate trade-off
+
+The page ships **~2 MB of JSON (all 2,983 rows) on every load, taking ~1–2 s**. That is
+accepted on purpose: it buys instant client-side search, faceted filters, sort and
+pagination — **paging is a `slice()`, it fires no request.** The cost is one up-front
+load, not per interaction.
+
+`/api/companies` already does what it cheaply can: one `count=exact` request for the
+total, then the remaining 1,000-row pages **in parallel** (not a sequential walk), and
+`unstable_cache` (300 s, tag `companies`) since the universe only changes when the
+prospecting pipeline re-runs. **Note the cache does nothing in `next dev`** — Next 16
+keeps no `.next/cache`, so repeat loads still hit Supabase; it only pays off in a
+production build. If this ever needs to be genuinely fast, the options are
+dictionary-encoding the repeated NAICS title strings, or moving to server-side
+pagination like `/api/leads` (which costs a round-trip per filter/sort/page and makes
+faceting hard).
 - **Company drawer** (`components/CompanyDetail.tsx`) — right slide-over, same pattern as
   `LeadDetail` (Esc / backdrop to close). **Takes the already-fetched row as a prop —
   no API call.** Shows the full NAICS hierarchy (all 5 levels), revenue, headcount growth
@@ -245,6 +296,7 @@ repo-root `.env`, sets `apikey` / `Authorization`; takes optional `{ method, bod
 | `PATCH /api/events/[id]` | Update (partial; id validated as uuid). 404 if missing. |
 | `DELETE /api/events/[id]` | Delete by id (cascades to `maven_attendance`). |
 | `GET /api/companies` | **Every** row of `apollo_company_universe` (read-only), `revenue desc nullslast, company asc`. **Pages through `limit`/`offset` in a loop** — a single request would silently cap at 1,000. `{ rows }`, `no-store`. |
+| `GET /api/technologies` | The whole `apollo_company_technology` view (read-only) — `{ rows: [{apollo_org_id, technology_uid, technology_name}] }` (~200 rows, one unpaged pull). Powers the Apollo Technologies filter. Cached 300s (tag `technologies`). |
 | `GET /api/reports/attendance?event_id=` | All attendance for one event (uuid validated → 400), lead name/company/title embedded off the FK. Pages through `limit`/`offset`. Returns `{ count, attended, records }`, `no-store`. |
 | `POST /api/auth/login` | Body `{ email, password }` → sets the session cookie. 401 on bad credentials. **Open** (not gated). |
 | `POST /api/auth/logout` | Clears the session cookie. **Open** (not gated). |
