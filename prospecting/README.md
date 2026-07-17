@@ -1,6 +1,6 @@
-# Resume — CDP-selection service
+# Prospecting — CDP-selection service
 
-**START HERE.** Live operational state — the only source of truth for *what has actually happened*. Every other doc is written as work-to-do and says nothing about whether it ran.
+**START HERE.** This is both the entry point to `prospecting/` and the live operational state — the only source of truth for *what has actually happened*. Every other doc here is written as work-to-do and says nothing about whether it ran.
 
 **Where everything is:**
 

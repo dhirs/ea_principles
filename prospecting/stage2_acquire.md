@@ -1,6 +1,6 @@
 # Stage 2 — Acquire (Implementation)
 
-How to run Stage 2. Concept: `methodology.md`. Input: `stage1_output.md`. Next: `stage3_qualify.md`. State: `resume.md`.
+How to run Stage 2. Concept: `methodology.md`. Input: `stage1_output.md`. Next: `stage3_qualify.md`. State: `README.md`.
 
 Run the Stage 1 inputs as the Apollo query and store every result verbatim in `apollo_company_raw`. **This is where the query happens** — Stage 1 only collected the inputs. No qualifying, no field mapping.
 
@@ -34,7 +34,7 @@ Apply `stage1_output.md` as native filters, in two parts:
 4. **Paginate `page` 1…N**, saving each raw response to `apollo_companies/<date>/page-N.json`.
 5. **Persist `breadcrumbs`** (see below).
 6. **Load** with `stage2_load.py` — reads the page captures and upserts over PostgREST, batching 100 rows, deduping across pages. `python3 stage2_load.py [<dir>] [--dry-run]`.
-7. **Record the result in `resume.md`**: universe size, date, credits spent, anything reconstructed or degraded.
+7. **Record the result in `README.md`**: universe size, date, credits spent, anything reconstructed or degraded.
 
 ## Persist `breadcrumbs` — the only audit trail
 
@@ -95,4 +95,4 @@ Date-partitioned point-in-time snapshot of every swept company (the full superse
 - On demand / on refresh. The upsert is idempotent — re-running is safe and just refreshes payloads.
 - Display limit is 50,000 records (100/page × 500 pages). Add filters if a sweep approaches it.
 - **Never use a locked filter that errors on the plan**; prune from results instead.
-- Flag data-quality problems in `resume.md` — never hide them. If any page had to be reconstructed rather than captured verbatim, say so and note it is re-fetchable for 1 credit.
+- Flag data-quality problems in `README.md` — never hide them. If any page had to be reconstructed rather than captured verbatim, say so and note it is re-fetchable for 1 credit.

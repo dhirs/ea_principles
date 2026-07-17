@@ -1,6 +1,6 @@
 # Stage 3 — Qualify (Implementation)
 
-How to run Stage 3. Concept: `methodology.md`. Input: `apollo_company_raw` (see `stage2_acquire.md`). Output: `apollo_company_universe`. State: `resume.md`.
+How to run Stage 3. Concept: `methodology.md`. Input: `apollo_company_raw` (see `stage2_acquire.md`). Output: `apollo_company_universe`. State: `README.md`.
 
 Apply the filters the Apollo query **cannot express**. Pure SQL over data already pulled — **free, no credits**, so iterate freely.
 
@@ -126,7 +126,7 @@ Expect: `distinct_ids = qualified`, `orphans = 0`, `out_of_band = 0`, `null_doma
 
 ## Report honestly
 
-Record in `resume.md`: the attrition table (rows per screen, with dispositions), real hit rates, every open judgment call, and any data-quality problem. **Never hide a flag or silently cap coverage.**
+Record in `README.md`: the attrition table (rows per screen, with dispositions), real hit rates, every open judgment call, and any data-quality problem. **Never hide a flag or silently cap coverage.**
 
 ## Score columns (Stages 4/5)
 

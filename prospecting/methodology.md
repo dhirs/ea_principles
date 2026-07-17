@@ -2,7 +2,7 @@
 
 A generic, service-agnostic method for building and maintaining an outbound target-account universe. Only the *inputs* to each stage change per service/client; the structure is fixed.
 
-**This document is conceptual — what each stage does and why.** No SQL, no field names, no client values. Implementation lives in the per-stage docs; current state lives in `resume.md`.
+**This document is conceptual — what each stage does and why.** No SQL, no field names, no client values. Implementation lives in the per-stage docs; current state lives in `README.md`.
 
 ## Three pipelines, three cadences
 
@@ -72,6 +72,6 @@ Keep the registers separate — this doc stays free of run values so it survives
 | `methodology.md` (this) | **Concept — timeless** | What the stages do and why. The map. |
 | `stage1_requirements.md` … `stage5_intent.md` | **Implementation — per stage** | How to actually run each stage: filters, SQL, field mapping, gotchas. |
 | `stage1_output.md` | **Inputs — per service** | Stage 1's deliverable: the sectors + firmographics Stage 2 runs. |
-| `resume.md` | **State — now** | What has actually happened: confirmed query, universe size, credits, stage done/next, open items. **The only source of truth for status.** |
+| `README.md` | **State — now** | What has actually happened: confirmed query, universe size, credits, stage done/next, open items. **The only source of truth for status.** |
 
-A stage doc is written as work-to-do and says nothing about whether it ran — **check `resume.md`.**
+A stage doc is written as work-to-do and says nothing about whether it ran — **check `README.md`.**
