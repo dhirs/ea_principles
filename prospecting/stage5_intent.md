@@ -1,4 +1,4 @@
-# Stage 5 — Intent Pipeline (Agent Brief)
+# Stage 5 — Intent (Agent Brief)
 
 Instructions for an agentic AI running Stage 5. Context: `methodology.md` (Stage 5). This is an **independent, frequent** pipeline (higher cadence than Stage 4). It scores each account in `apollo_company_universe` on fast-decaying **behavioural intent** signals and writes an `intent_score`. It is **not** part of Stage 4 (fit/propensity) and must run in its own pipeline.
 

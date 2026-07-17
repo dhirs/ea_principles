@@ -1,6 +1,19 @@
-# Resume — Stage 2 sweep (CDP-selection service)
+# Resume — CDP-selection service
 
-Live operational state. Methodology lives in `methodology.md`; the industry universe in `stage1_output.md`.
+**START HERE.** Live operational state — the only source of truth for *what has actually happened*. Every other doc is written as work-to-do and says nothing about whether it ran.
+
+**Where everything is:**
+
+| Need | File |
+|---|---|
+| What the stages do, and why | `methodology.md` (concept only) |
+| How to run a stage | `stage1_requirements.md` → `stage2_acquire.md` → `stage3_qualify.md` → `stage4_fit.md` → `stage5_intent.md` |
+| The ICP inputs (sectors + firmographics) | `stage1_output.md` |
+| Raw sweep archive | `apollo_companies/<date>/page-N.json` |
+| NAICS reference table build | `naics_reference/README.md` |
+| Secrets (Apollo + Supabase keys) — **never echo** | `.env` |
+
+**Data:** Supabase project `thnxknvcahqktpbpqvbg` — `apollo_company_raw` (superset, 3,816) → `apollo_company_universe` (qualified, 3,029) + static `apollo_naics` reference.
 
 **Confirmed query — two parts, both native Apollo:**
 
@@ -12,15 +25,35 @@ Live operational state. Methodology lives in `methodology.md`; the industry univ
 
 **Universe size:** 3,816 companies / 39 pages (`pagination.total_entries`, measured 2026-07-16).
 
+**US/Canada filter — VERIFIED 2026-07-17 (2 credits).** Apollo's company-search returns *no location fields*, so no stored row proves its own HQ country; the check is done at the query level instead. Re-running the documented query returned **3,815** (vs 3,816 recorded — one day's drift); dropping `organization_locations` returned **7,948**. The filter more than halves the set, so it was demonstrably active during the sweep. Two further confirmations: the response's **`breadcrumbs`** array echoes every applied filter back (incl. "Company Locations: United States / Canada"), and the unfiltered control's top hit was Computrabajo (LatAm job board, UK phone) — absent from our set.
+- **`breadcrumbs` is the audit trail we were missing.** The saved `page-*.json` files hold only `pagination` + `organizations`, so the snapshot does *not* record what was queried. Any future sweep should persist `breadcrumbs` alongside the pages.
+
 **Store:** raw Apollo records → Supabase table `apollo_company_raw` (one row/company: `id`, `apollo_org_id`, `payload` jsonb, `last_refresh`; upsert on `apollo_org_id`, DB trigger stamps `last_refresh`). Base account set → `apollo_company_universe` after Stage 3. Project `thnxknvcahqktpbpqvbg`.
 
 **Credits:** paid plan, ~2,500 lead credits, cycle 2026-07-16 → 2026-08-16. No budget constraint.
 
-**State (2026-07-16): Stage 2 DONE.** Full 16-sector sweep pulled (39 pages, 40 credits) via the Apollo MCP → `apollo_companies/2026-07-16/page-1..39.json` → loaded with `stage2_load.py` into `apollo_company_raw` (**3,816 rows**, all distinct). Pages 1–38 verbatim; page-39 (last 16 orgs) reconstructed from an inline response — Stage 2/3 fields kept, cosmetic fields (logo/twitter) dropped; re-fetchable for 1 credit. The 35 old rows in `apollo_company_universe` are from the superseded 4-code query — stale; Stage 3 will repopulate.
+**State (2026-07-16): Stage 2 DONE.** Full 16-sector sweep pulled (39 pages, 40 credits) via the Apollo MCP → `apollo_companies/2026-07-16/page-1..39.json` → loaded with `stage2_load.py` into `apollo_company_raw` (**3,816 rows**, all distinct). Pages 1–38 verbatim; page-39 (last 16 orgs) reconstructed from an inline response — Stage 2/3 fields kept, cosmetic fields (logo/twitter) dropped; re-fetchable for 1 credit.
 
-**Data preview for Stage 3:** 692 rows have a parent org (`owned_by_organization_id` → subsidiary drops), 86 have null domain (→ flag), avg revenue $72.3M (in-band).
+**State (2026-07-17): Stage 3 DONE.** The 35 stale rows from the superseded 4-code query were deleted, then `apollo_company_raw` (3,816) was screened into `apollo_company_universe` (**3,029 qualified**, all distinct, 0 orphans, 0 out-of-band). Pure SQL, no credits. Attrition:
 
-**Next:** run **Stage 3** — manual SQL over `apollo_company_raw` → `apollo_company_universe` per `stage2_stage3_handoff.md` (subsidiary/junk/primary-business screens, then field-map + NAICS backfill). Free, no credits.
+| Screen | Rows | Disposition |
+|---|---|---|
+| Subsidiary (`owned_by_organization_id` non-null) | 692 | dropped |
+| Null `primary_domain` | 54 | dropped (flag) |
+| Junk — staffing (NAICS 5613) | 39 | dropped |
+| Brand-giant, null parent — Toshiba America Electronic Components ($79M) | 1 | dropped (flag) |
+| Revenue out of band — Zegin ($16M) | 1 | dropped (flag) |
+| **Qualified** | **3,029** | inserted |
+
+Every raw row carried ≥1 in-target-sector NAICS code, so the missing/ambiguous-NAICS screen caught nothing. Brand-giant name screen also hit *Sharp Decisions* and *Kellogg Community College* — both false positives, kept.
+
+**Open items from Stage 3:**
+- **49 agency/media rows kept pending review** — matched NAICS 5418/5121/5122/5152/5191. Not dropped as "junk" because the bucket is mixed: real ad agencies (Publicis Hawkeye, TANK Worldwide) sit alongside SaaS products (Sendoso, NextRoll, Lob). Find them with `products->'cdp-selection'->>'reason' like 'agency/media%'`; prune with one delete once decided.
+- **11 rows have a null `matched_naics_title`** — legacy *2017* NAICS codes Apollo still returns that are absent from `apollo_naics` (511210 Software Publishers → 2022's 513210; 442110 Furniture Stores → 449110; 443142, 446110, 441310, 451110, 453910, 448310). Sector is 100% backfilled; 32 rows lack subsector/industry-group titles for the same reason. Fix by adding the 2017 codes to `apollo_naics` (its comment says `naics_year=2017` marks exactly this case).
+- **`hq_location` and `employee_range` are not real data.** Apollo's company-search response carries no location or headcount fields (verified: payload keys are id/name/domain/revenue/naics/growth/phone/urls only). `employee_range` is hardcoded to the query bucket `'201-1000'`; `hq_location` is null. Populating either needs a per-org enrich call (~1 credit each) — see the TODO comment on the `hq_location` column.
+- **Gotcha for any future NAICS backfill:** sector codes in `apollo_naics` are *ranges* (`31-33`, `44-45`, `48-49`), so `left(code,2)` does NOT join for manufacturing/retail/transport — 619 rows silently missed sector on the first pass. Use `apollo_naics.sector_code`/`sector_title` from the matched row instead of deriving by prefix.
+
+**Next:** **Stage 4** — weekly fit/propensity scoring over the 3,029 qualified accounts (`stage4_fit.md`); technology filters live here, not Stage 2. Writes `propensity_score` / `propensity_scored_at` back to `apollo_company_universe`.
 
 ## Files — `apollo_companies/`
 

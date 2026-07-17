@@ -2,6 +2,8 @@
 
 A generic, service-agnostic method for building and maintaining an outbound target-account universe. Only the *inputs* to each stage change per service/client; the structure is fixed.
 
+**This document is conceptual — what each stage does and why.** No SQL, no field names, no client values. Implementation lives in the per-stage docs; current state lives in `resume.md`.
+
 ## Three pipelines, three cadences
 
 The work splits into three independent pipelines by how often the underlying data changes:
@@ -14,65 +16,41 @@ Guiding principle: **separate the stable from the volatile.** Qualification is b
 
 ---
 
-## Build pipeline (one-time, batch)
+## The stages
 
-### Stage 1 — Requirements (collect the inputs)
+| Stage | Does | Reads → Writes | Cadence | Cost | Implementation |
+|---|---|---|---|---|---|
+| **1 — Requirements** | Translates the service's pain into the *inputs* for the query. No querying. | service ICP → `stage1_output.md` | one-time | free | `stage1_requirements.md` |
+| **2 — Acquire** | Runs those inputs as the Apollo query; stores results verbatim. | `stage1_output.md` → `apollo_company_raw` | on refresh | credits | `stage2_acquire.md` |
+| **3 — Qualify** | Applies the filters Apollo *cannot* express; produces the base account set. | `apollo_company_raw` → `apollo_company_universe` | one-time | free | `stage3_qualify.md` |
+| **4 — Fit / propensity** | Scores slow, durable signals. | universe → `propensity_score` | weekly | credits | `stage4_fit.md` |
+| **5 — Intent** | Scores fast, behavioural signals. | universe → `intent_score` | frequent | credits | `stage5_intent.md` |
 
-Stage 1 does **no querying**. Its whole job is to translate the service's pain into the *inputs* for the Apollo query, then hand them to Stage 2 — where the query actually runs.
+### Build pipeline (one-time, batch)
 
-- **Output:** `stage1_output.md` — the full input set for Stage 2:
-  - the target NAICS sectors, and
-  - the firmographic requirements: geography, headcount, revenue, and any Apollo-native ICP filter (e.g. marketing-department size).
-- **Hands off to:** Stage 2, which runs this exact input set as the Apollo query.
-- **Cadence:** one-time per service; revisit only on a real ICP change.
+**Stage 1 — Requirements.** Collects the inputs only: the target sectors plus the firmographic requirements (geography, headcount, revenue) and any query-native ICP filter. It hands Stage 2 an exact input set and stops there. Revisit only on a real ICP change.
 
-### Stage 2 — Acquire (raw → `apollo_company_raw`)
+**Stage 2 — Acquire.** Where the query actually happens. Runs the Stage 1 inputs as native filters and stores every returned company untouched, one row each. Raw is a **durable superset** — it keeps flagged and dropped companies too, so any qualification mistake is replayable without re-spending credits. Never edit raw to fix a downstream error.
 
-Take the Stage 1 inputs, run them as the Apollo query, and store the raw results untouched, one row per company. **This is where the query happens** — Stage 1 only collected the inputs.
-
-- **Input — the Stage 1 output** (`stage1_output.md`), applied as Apollo-native filters in two parts:
-  - *Part 1 — base firmographics:* target sectors, geography, headcount, revenue.
-  - *Part 2 — native ICP filters:* e.g. marketing-department headcount. (Technology is **not** here — it moved to Stage 4.)
-- **Process:** paginate the full result set; confirm credit cost before spending.
-- **Output:** one row per company upserted into the Supabase table **`apollo_company_raw`** — `id`, `apollo_org_id`, `payload` (jsonb = full Apollo record, verbatim), `last_refresh` (timestamptz). Upsert on `apollo_org_id`; every run refreshes `payload` + `last_refresh`.
-- **Cadence:** on demand / on refresh (idempotent upsert). Costs credits.
-
-### Stage 3 — Custom filters (optional, manual SQL)
-
-Apply filters the client wants that Apollo's query *cannot* express.
-
-- **Input:** the raw records in `apollo_company_raw`.
-- **Process:** custom, usually **manual SQL manipulation** — subsidiary-of-giant / junk / primary-business judgment, plus any client-specific carve-outs.
-- **Output:** the **base account set** — the clean records in `apollo_company_universe`.
-- **Cadence:** one-time, optional. Free.
+**Stage 3 — Qualify.** Applies the judgment the query engine can't express — subsidiaries, junk, primary-business mismatch. Each company resolves to qualified / flagged / dropped with a reason; only qualified rows reach the universe. Free, so iterate freely.
 
 > End of the build pipeline: a base account set of qualified companies in `apollo_company_universe`.
 
----
+### Propensity pipeline (weekly)
 
-## Propensity pipeline (weekly)
+**Stage 4 — Fit / propensity signals.** Durable, account-level signals: technographics (uses SAP, Adobe, a given CDP/MAP) and corporate events (acquisitions, funding). True today, almost certainly true next week. An independent rule engine turns them into a single `propensity_score`.
 
-### Stage 4 — Fit / propensity signals
+### Intent pipeline (separate, frequent)
 
-Enrich each account with slow-moving, account-level *fit* signals and score it.
-
-- **Signals:** technographics (uses SAP, Adobe, a given CDP/MAP) and durable corporate events (acquisitions, funding). These change slowly — true today, almost certainly true next week.
-- **Process:** an independent **rule engine** evaluates the signals and produces a single score.
-- **Output:** a **`propensity_score`** (fit score) written to `apollo_company_universe`, at the account level.
-- **Cadence:** weekly. Independent pipeline.
+**Stage 5 — Intent signals.** Fast-decaying behavioural signals of active, in-market interest: job postings, new hires, social and web activity. Its own pipeline and rule engine at a higher cadence than Stage 4 — **never run inside Stage 4** — producing an `intent_score`.
 
 ---
 
-## Intent pipeline (separate, frequent)
+## Two principles that generalise
 
-### Stage 5 — Intent signals
+**Trust the query only where the data can prove it.** A filter constrains what gets pulled, but if the response carries no corresponding field, the stored rows hold *no evidence* it was applied — and no later query can confirm it. Know which filters are invisible in your data, verify those at the query level, and never populate a column from a filter you cannot see in the payload.
 
-Fast-decaying *behavioural* signals that indicate active, in-market buying interest.
-
-- **Signals:** job postings, new hires, social-media activity, web activity — things that can change week to week.
-- **Process:** its own pipeline and rule engine, at a higher cadence than Stage 4. **Not** run inside Stage 4.
-- **Output:** an **`intent_score`** at the account level.
-- **Cadence:** frequent, separate pipeline.
+**Prefer the reversible choice on judgment calls.** Where a screen is a matter of judgment rather than a rule, mark and keep rather than silently drop. Kept rows are one delete away from gone; dropped rows are a decision nobody can review. Surface the pile and let a human decide.
 
 ---
 
@@ -82,3 +60,18 @@ Fast-decaying *behavioural* signals that indicate active, in-market buying inter
 - **Stage 5 = intent signals** — fast, behavioural: postings, hiring, social → `intent_score`.
 
 Convention reserves "intent" for volatile behavioural signals; stable tech/event signals are "fit" or "propensity."
+
+---
+
+## Which file holds what
+
+Keep the registers separate — this doc stays free of run values so it survives the next service.
+
+| File | Register | Contains |
+|---|---|---|
+| `methodology.md` (this) | **Concept — timeless** | What the stages do and why. The map. |
+| `stage1_requirements.md` … `stage5_intent.md` | **Implementation — per stage** | How to actually run each stage: filters, SQL, field mapping, gotchas. |
+| `stage1_output.md` | **Inputs — per service** | Stage 1's deliverable: the sectors + firmographics Stage 2 runs. |
+| `resume.md` | **State — now** | What has actually happened: confirmed query, universe size, credits, stage done/next, open items. **The only source of truth for status.** |
+
+A stage doc is written as work-to-do and says nothing about whether it ran — **check `resume.md`.**

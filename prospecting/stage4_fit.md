@@ -1,4 +1,4 @@
-# Stage 4 — Fit / Propensity Pipeline (Agent Brief)
+# Stage 4 — Fit / Propensity (Agent Brief)
 
 Instructions for an agentic AI running Stage 4. Context: `methodology.md` (Stage 4). This is an **independent, weekly** pipeline. It scores each account in `apollo_company_universe` on slow-moving **fit** signals and writes a `propensity_score`. It does **not** touch the build pipeline (Stages 1–3), and it does **not** handle behavioural intent (that is Stage 5, a separate pipeline).
 
