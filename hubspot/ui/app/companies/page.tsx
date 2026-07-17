@@ -7,11 +7,11 @@ import {
   ChevronRight,
   ChevronsUpDown,
   ChevronUp,
-  ExternalLink,
   Loader2,
   Search,
 } from "lucide-react";
 import { NavPanel } from "@/components/NavPanel";
+import { CompanyDetail, type CompanyRow } from "@/components/CompanyDetail";
 import { Input } from "@/components/ui/input";
 
 const PAGE_SIZES = [25, 50, 75, 100];
@@ -35,27 +35,6 @@ const NAICS_LEVELS: { key: NaicsKey; label: string }[] = [
   { key: "naics_industry_title", label: "NAICS Industry" },
   { key: "national_industry_title", label: "National Industry" },
 ];
-
-type CompanyRow = {
-  apollo_org_id: string;
-  company: string;
-  domain: string | null;
-  linkedin_url: string | null;
-  employee_range: string | null;
-  revenue: number | null;
-  revenue_printed: string | null;
-  hq_location: string | null;
-  parent_company: string | null;
-  growth_6m: number | null;
-  growth_12m: number | null;
-  growth_24m: number | null;
-  added_at: string;
-  sector_title: string | null;
-  subsector_title: string | null;
-  industry_group_title: string | null;
-  naics_industry_title: string | null;
-  national_industry_title: string | null;
-};
 
 const EMPTY_FILTERS: Record<NaicsKey, string> = {
   sector_title: "",
@@ -81,6 +60,9 @@ export default function CompaniesPage() {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [naicsFilters, setNaicsFilters] = useState<Record<NaicsKey, string>>(EMPTY_FILTERS);
+  const [revMin, setRevMin] = useState("");
+  const [revMax, setRevMax] = useState("");
+  const [selected, setSelected] = useState<CompanyRow | null>(null);
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) {
@@ -122,28 +104,41 @@ export default function CompaniesPage() {
     );
   }, [rows, q]);
 
+  // Revenue bounds are typed in $M; the column is in dollars. Blank = open-ended.
+  const scoped = useMemo(() => {
+    const min = revMin.trim() === "" ? null : Number(revMin) * 1e6;
+    const max = revMax.trim() === "" ? null : Number(revMax) * 1e6;
+    if (min === null && max === null) return searched;
+    return searched.filter((r) => {
+      if (r.revenue === null || r.revenue === undefined) return false; // unknown revenue can't match a bound
+      if (min !== null && !Number.isNaN(min) && r.revenue < min) return false;
+      if (max !== null && !Number.isNaN(max) && r.revenue > max) return false;
+      return true;
+    });
+  }, [searched, revMin, revMax]);
+
   const matchesFilters = (r: CompanyRow, filters: Record<NaicsKey, string>) =>
     NAICS_LEVELS.every((l) => !filters[l.key] || r[l.key] === filters[l.key]);
 
   const filtered = useMemo(
-    () => searched.filter((r) => matchesFilters(r, naicsFilters)),
-    [searched, naicsFilters],
+    () => scoped.filter((r) => matchesFilters(r, naicsFilters)),
+    [scoped, naicsFilters],
   );
 
-  // Faceted dropdown options: each level's choices reflect the search + the
-  // OTHER active level filters, so selections stay consistent (a cascade).
+  // Faceted dropdown options: each level's choices reflect the search + revenue
+  // range + the OTHER active level filters, so selections stay consistent (a cascade).
   const naicsOptions = useMemo(() => {
     const out = {} as Record<NaicsKey, string[]>;
     for (const { key } of NAICS_LEVELS) {
       const others = { ...naicsFilters, [key]: "" };
       const values = new Set<string>();
-      for (const r of searched) {
+      for (const r of scoped) {
         if (matchesFilters(r, others) && r[key]) values.add(r[key] as string);
       }
       out[key] = [...values].sort((a, b) => a.localeCompare(b));
     }
     return out;
-  }, [searched, naicsFilters]);
+  }, [scoped, naicsFilters]);
 
   const sorted = useMemo(() => {
     if (!sortKey) return filtered;
@@ -168,12 +163,18 @@ export default function CompaniesPage() {
       return next;
     });
   }
-  const anyFilter = Object.values(naicsFilters).some(Boolean);
+  const anyFilter = Object.values(naicsFilters).some(Boolean) || !!revMin || !!revMax;
+
+  function clearFilters() {
+    setNaicsFilters(EMPTY_FILTERS);
+    setRevMin("");
+    setRevMax("");
+  }
 
   // Reset to the first page whenever the result set, sort, or page size changes.
   useEffect(() => {
     setPage(1);
-  }, [q, pageSize, sortKey, sortDir, naicsFilters]);
+  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax]);
 
   const pageCount = Math.max(1, Math.ceil(sorted.length / pageSize));
   const clampedPage = Math.min(page, pageCount);
@@ -214,16 +215,40 @@ export default function CompaniesPage() {
           <div className="mb-4 rounded-xl border bg-card p-4">
             <div className="mb-3 flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Filter by NAICS
+                Filters
               </span>
               {anyFilter && (
-                <button
-                  onClick={() => setNaicsFilters(EMPTY_FILTERS)}
-                  className="text-xs text-primary hover:underline"
-                >
+                <button onClick={clearFilters} className="text-xs text-primary hover:underline">
                   Clear all
                 </button>
               )}
+            </div>
+
+            <div className="mb-3 border-b pb-3">
+              <span className="mb-1 block text-xs font-medium text-muted-foreground">
+                Revenue ($M)
+              </span>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  value={revMin}
+                  onChange={(e) => setRevMin(e.target.value)}
+                  placeholder="Min"
+                  className="h-9 w-28"
+                  aria-label="Minimum revenue in millions"
+                />
+                <span className="text-sm text-muted-foreground">to</span>
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  value={revMax}
+                  onChange={(e) => setRevMax(e.target.value)}
+                  placeholder="Max"
+                  className="h-9 w-28"
+                  aria-label="Maximum revenue in millions"
+                />
+              </div>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
               {NAICS_LEVELS.map(({ key, label }) => (
@@ -267,7 +292,6 @@ export default function CompaniesPage() {
             <thead className="border-b bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Company</th>
-                <th className="px-4 py-3 font-medium">HQ</th>
                 <th className="px-4 py-3 font-medium">Employees</th>
                 <SortHeader label="Revenue" col="revenue" active={sortKey} dir={sortDir} onClick={toggleSort} />
                 <SortHeader label="6m" col="growth_6m" active={sortKey} dir={sortDir} onClick={toggleSort} />
@@ -277,13 +301,13 @@ export default function CompaniesPage() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-16 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-4 py-16 text-center text-muted-foreground">
                     <Loader2 className="mx-auto h-6 w-6 animate-spin" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-16 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-4 py-16 text-center text-muted-foreground">
                     {rows.length === 0 ? "No companies in the universe yet." : "No matches."}
                   </td>
                 </tr>
@@ -291,29 +315,14 @@ export default function CompaniesPage() {
                 paged.map((c) => (
                   <tr key={c.apollo_org_id} className="border-b last:border-0 align-top">
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2 font-medium">
+                      <button
+                        onClick={() => setSelected(c)}
+                        className="text-left font-medium hover:text-primary hover:underline"
+                      >
                         {c.company}
-                        {c.linkedin_url && (
-                          <a
-                            href={c.linkedin_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-muted-foreground hover:text-primary"
-                            title="LinkedIn"
-                          >
-                            <ExternalLink className="h-3.5 w-3.5" />
-                          </a>
-                        )}
-                      </div>
+                      </button>
                       {c.domain && (
-                        <a
-                          href={`https://${c.domain}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-primary hover:underline"
-                        >
-                          {c.domain}
-                        </a>
+                        <div className="text-xs text-muted-foreground">{c.domain}</div>
                       )}
                       {c.parent_company && (
                         <div className="text-xs text-muted-foreground">
@@ -321,7 +330,6 @@ export default function CompaniesPage() {
                         </div>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground">{c.hq_location || "—"}</td>
                     <td className="px-4 py-3 tabular-nums text-muted-foreground">
                       {c.employee_range || "—"}
                     </td>
@@ -354,6 +362,8 @@ export default function CompaniesPage() {
           />
         )}
       </main>
+
+      {selected && <CompanyDetail company={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }

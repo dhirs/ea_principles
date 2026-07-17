@@ -1,10 +1,26 @@
-# CRM — Leads + Events
+# CRM — Leads + Events + Companies + Reports
 
 Our own CRM (not HubSpot — the `hubspot/` folder name is a legacy misnomer; there
 is zero HubSpot API in here, it's all Supabase). A standalone Next.js app for
-browsing/editing `leads` and managing lightning-lesson `events` + `attendance` in
-Supabase. Lives in `hubspot/ui/`, separate from the principles app (port 3000).
-This one runs on **port 3001**.
+browsing/editing `leads`, managing lightning-lesson `events` + `attendance`, and
+browsing the Apollo target-company universe. Lives in `hubspot/ui/`, separate from
+the principles app (port 3000). This one runs on **port 3001**.
+
+**Four pages**, all behind a login gate: **Leads** (`/`), **Events** (`/events`),
+**Companies** (`/companies`), **Reports** (`/reports`).
+
+## Auth (login gate)
+
+`middleware.ts` gates **everything** except `/login` and `/api/auth/*` (static assets
+excluded via `matcher`). Unauthenticated: API routes get `401 {error:"unauthorized"}`,
+pages redirect to `/login?next=<path>`. Single hardcoded user — `checkCredentials()`
+in `lib/auth.ts` compares against `AUTH_EMAIL` / `AUTH_PASSWORD`; the session is a
+signed token in a cookie (`COOKIE_NAME`), created by `createSessionToken()` and
+checked by `verifySessionToken()`. `CRM_SESSION_SECRET` lives in the repo-root `.env`.
+Build/run/deploy + env details: **`hubspot/BUILD.md`**.
+
+> Hitting an API route with curl returns **401**, not data — that means the gate is
+> working, *not* that the server is down. Log in via `POST /api/auth/login` first.
 
 ## Run
 
@@ -31,8 +47,31 @@ server-side; the browser never sees it.
 
 ## Data model
 
-Three tables, all accessed **server-side over the Supabase REST API** (PostgREST).
+Four tables, all accessed **server-side over the Supabase REST API** (PostgREST).
 No direct Postgres connection (that host is IPv6-only), no client-side Supabase.
+
+> ### PostgREST caps every response at 1,000 rows (`max-rows`) — read this before adding a route
+>
+> A plain `select` returns **at most 1,000 rows with a `200 OK`** and no warning. Any
+> route that intends to return a whole table **must page** with `limit`/`offset` until a
+> short read, like `/api/reports/attendance` and `/api/companies` do:
+>
+> ```ts
+> const PAGE = 1000;
+> for (let offset = 0; ; offset += PAGE) {
+>   const res = await sb(table, `${base}&limit=${PAGE}&offset=${offset}`);
+>   const batch = await res.json();
+>   rows.push(...batch);
+>   if (batch.length < PAGE) break;
+> }
+> ```
+>
+> This bit `/api/companies` (fixed 2026-07-17): it fetched unbounded and ordered by
+> `revenue.desc`, so the page silently showed **the top 1,000 of 2,983** companies —
+> and because every count was computed client-side off that array, the UI looked
+> perfectly healthy while a third of the universe was missing. The same 1,000 cap
+> applies to the **Supabase Studio table editor**, so "1000" there is a pagination
+> limit, never a row count — confirm with `select count(*)`.
 
 ### `leads` (see `hubspot/leads_schema.sql`)
 - `email` (PK), `fname`, `lname`, `domain`, `updated_at`
@@ -61,6 +100,28 @@ One row per (event, lead) — a lead's signup/attendance for an event.
 - `UNIQUE (event_id, lead_email)`; indexed on `event_id` and `lead_email`.
 - **Note:** `leads` has no numeric id — its PK is `email`, so attendance links by
   `lead_email`, not a `lead_id`.
+
+### `apollo_company_universe` (read-only here)
+
+The **Apollo target-company universe** — built by the `prospecting/` workstream, not by
+this app. The CRM only reads it; nothing here writes to it. **`prospecting/README.md`
+is the source of truth** for how it's built and what's currently in it.
+
+- `apollo_org_id` (PK), `company`, `domain`, `linkedin_url`, `revenue`,
+  `revenue_printed`, `naics` (text[]), `parent_company`, `growth_6m` / `_12m` / `_24m`,
+  `added_at`, `products` (jsonb — per-service `{status, reason, matched_naics, added}`).
+- Denormalised NAICS: `matched_naics_title`, `matched_naics_sector`, `naics_titles[]`,
+  and the 5 hierarchy levels the UI filters on — `sector_title`, `subsector_title`,
+  `industry_group_title`, `naics_industry_title`, `national_industry_title` (+ their
+  `*_code` twins).
+- `propensity_score` / `intent_score` (+ `*_scored_at`) — written by prospecting
+  Stages 4/5, not yet surfaced in the UI.
+- **`hq_location` and `employee_range` are empty/placeholder by design** — Apollo's
+  company-search returns no location or headcount fields. The Companies table renders
+  them, so they read blank. Populating them needs a per-org Apollo enrich (~1 credit
+  each). See `prospecting/stage3_qualify.md`.
+
+Current data: **2,983 companies** (2026-07-17).
 
 ### Enriched vs cold (important gotcha)
 
@@ -96,7 +157,8 @@ CSV columns → mapping: `Email→lead_email`, `Lesson Title→event_name`,
 ## Layout
 
 - **Full-width header** (`components/Header.tsx`) — logo + "Leads database", sticky.
-- **Left menu** (`components/NavPanel.tsx`) — slim, only **Leads** and **Events**.
+- **Left menu** (`components/NavPanel.tsx`) — slim: **Leads** (`/`), **Events**
+  (`/events`), **Companies** (`/companies`), **Reports** (`/reports`).
   Clicking the already-active item fires `onActiveClick` instead of navigating
   (used on the leads page to toggle the filters panel). Hidden below `md`.
 - **Leads filters** (`components/LeadsFilters.tsx`) — a *separate* toggleable panel
@@ -113,6 +175,42 @@ CSV columns → mapping: `Email→lead_email`, `Lesson Title→event_name`,
 - **Events page** (`app/events/page.tsx`) — table of events with **New / Edit /
   Delete**. Add/edit via a modal dialog (name required; date, URL, description).
   Delete confirms, and cascades to that event's attendance rows.
+- **Companies page** (`app/companies/page.tsx`) — read-only browse of
+  `apollo_company_universe`. Fetches **every** row once from `/api/companies`, then does
+  search, filtering, sorting, and pagination **client-side**. Columns: **Company ·
+  Employees · Revenue · 6m · 12m**. Debounced search; page sizes **25 / 50 / 75 / 100**;
+  sortable numeric columns (`revenue`, `growth_6m`, `growth_12m`); default order is
+  biggest revenue first, nulls last, then A→Z. Growth values are stored as fractions and
+  rendered as percentages (`0.12` → `+12.0%`).
+  Clicking the **company name opens the detail drawer** — it does *not* navigate out.
+- **Filters panel** (on the companies page) — two filters, both client-side:
+  - **Revenue ($M)** — min/max inputs; blank is open-ended. Typed in **millions**, matched
+    against the dollar-valued `revenue` column (`80` → `80_000_000`). A row with null
+    revenue never matches a bound.
+  - **Five cascading NAICS dropdowns** (Sector → Subsector → Industry Group → NAICS
+    Industry → National Industry) — picking a level clears every level below it.
+  Options are **faceted**: each dropdown's choices reflect the search + the revenue range
+  + the *other* active levels, so a selection can never produce an empty list. Any change
+  resets to page 1; "Clear all" resets every filter.
+- **Company drawer** (`components/CompanyDetail.tsx`) — right slide-over, same pattern as
+  `LeadDetail` (Esc / backdrop to close). **Takes the already-fetched row as a prop —
+  no API call.** Shows the full NAICS hierarchy (all 5 levels), revenue, headcount growth
+  6/12/24m (green/red by sign), parent company, added date, `apollo_org_id`, and outbound
+  links to the domain + LinkedIn. It owns the exported `CompanyRow` type, which the page
+  imports.
+
+> **Dead columns — `hq_location` and `employee_range`.** `hq_location` was removed from
+> the table on 2026-07-17: it is null on **all** rows because Apollo's company-search
+> returns no location field. **`employee_range` is in exactly the same state** — it reads
+> `'201-1000'` on all 2,983 rows because Stage 3 hardcoded the query bucket into it, so
+> the Employees column carries zero information and is a candidate for the same removal.
+> Real values for either need a per-org Apollo enrich (~1 credit each).
+- **Reports page** (`app/reports/page.tsx`) — tabbed shell; add a report by appending to
+  the `REPORTS` array. Today there is one: **Maven Attendance**
+  (`components/reports/MavenAttendanceReport.tsx`) — pick an event, see every
+  signup/attendance record with the lead's name/company/title flattened off the FK,
+  an **enriched-only** toggle, client-side search, page sizes **10 / 50 / 100**, and a
+  row click that opens the lead.
 
 Name + company prefer the Apollo node and fall back to the top-level columns.
 
@@ -146,6 +244,10 @@ repo-root `.env`, sets `apikey` / `Authorization`; takes optional `{ method, bod
 | `POST /api/events` | Create. Body `{ event_name*, date_of_event, event_url, event_description }`. 201 with the new row. |
 | `PATCH /api/events/[id]` | Update (partial; id validated as uuid). 404 if missing. |
 | `DELETE /api/events/[id]` | Delete by id (cascades to `maven_attendance`). |
+| `GET /api/companies` | **Every** row of `apollo_company_universe` (read-only), `revenue desc nullslast, company asc`. **Pages through `limit`/`offset` in a loop** — a single request would silently cap at 1,000. `{ rows }`, `no-store`. |
+| `GET /api/reports/attendance?event_id=` | All attendance for one event (uuid validated → 400), lead name/company/title embedded off the FK. Pages through `limit`/`offset`. Returns `{ count, attended, records }`, `no-store`. |
+| `POST /api/auth/login` | Body `{ email, password }` → sets the session cookie. 401 on bad credentials. **Open** (not gated). |
+| `POST /api/auth/logout` | Clears the session cookie. **Open** (not gated). |
 
 ## File map
 
@@ -155,26 +257,37 @@ hubspot/
   load_leads_supabase.py      # earlier leads-only loader
   leads_schema.sql
   ui/
+    middleware.ts             # login gate: everything except /login + /api/auth/*
     app/
       globals.css
       layout.tsx              # html/body + <Header/>
       page.tsx                # leads: NavPanel + LeadsFilters + table + drawer
+      login/page.tsx          # login form
       events/page.tsx         # events CRUD (table + add/edit/delete dialog)
+      companies/page.tsx      # Apollo universe: NAICS filters, sort, pagination
+      reports/page.tsx        # tabbed report shell (REPORTS array)
       api/
+        auth/login/route.ts   # POST login -> session cookie (open)
+        auth/logout/route.ts  # POST logout (open)
         leads/route.ts        # list + search + filter + pagination + cache
         leads/detail/route.ts # full record by email
         leads/seg/route.ts    # PATCH seg_override
         stats/route.ts        # sidebar counts
         events/route.ts       # GET list, POST create
         events/[id]/route.ts  # PATCH update, DELETE
+        companies/route.ts    # full apollo_company_universe (paged loop)
+        reports/attendance/route.ts  # per-event attendance (paged loop)
     components/
       Header.tsx
-      NavPanel.tsx            # slim left menu: Leads / Events
+      NavPanel.tsx            # slim left menu: Leads / Events / Companies / Reports
       LeadsFilters.tsx        # toggleable leads filter panel
-      LeadDetail.tsx          # drawer
+      LeadDetail.tsx          # lead drawer
+      CompanyDetail.tsx       # company drawer (+ exports the CompanyRow type)
+      reports/MavenAttendanceReport.tsx
       ui/                     # card, badge, input, button
     lib/
       supabase.ts            # sb() REST helper, reads repo-root .env
+      auth.ts                # credential check + session token sign/verify
       utils.ts               # cn()
     public/img/logo.png
 ```
