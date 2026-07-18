@@ -5,15 +5,31 @@ import { sb } from "@/lib/supabase";
 // One row per org+technology, derived from apollo_company_scores.signals via the
 // `apollo_company_technology` view. This is the ONLY org<->technology evidence we
 // have: Apollo's search and enrichment return no technographics on this plan, so
-// the associations exist only because of the Stage 4 CDP search probes. Today that
-// is 198 pairs across 12 technologies / 167 orgs — it grows only when new probes run.
+// the associations exist only because of the Stage 4 search probes (CDP + MAP).
 const SELECT = "apollo_org_id,technology_uid,technology_name";
+const PAGE = 1000; // PostgREST caps a response at 1000 rows — must page past it
+
+type TechRow = { apollo_org_id: string; technology_uid: string; technology_name: string };
 
 async function fetchTechnologies() {
-  // The whole mapping is tiny (~200 rows), so one unpaged pull is fine.
-  const res = await sb("apollo_company_technology", `select=${SELECT}&order=technology_name.asc`);
-  if (!res.ok) throw new Error(`Supabase ${res.status} — ${await res.text()}`);
-  return (await res.json()) as { apollo_org_id: string; technology_uid: string; technology_name: string }[];
+  // MUST paginate: PostgREST returns at most 1000 rows per request. This mapping was
+  // ~200 pairs (CDP only) but grew past 1000 once Stage 4 added MAP technologies
+  // (~2,000 pairs). An unpaged pull silently truncated the alphabetical tail —
+  // Salesforce, Segment, Snowplow, Tealium… vanished from the dropdown. Page through
+  // with a stable total order until a short batch signals the end.
+  const all: TechRow[] = [];
+  for (let offset = 0; ; offset += PAGE) {
+    const res = await sb(
+      "apollo_company_technology",
+      `select=${SELECT}&order=technology_name.asc,apollo_org_id.asc,technology_uid.asc` +
+        `&limit=${PAGE}&offset=${offset}`,
+    );
+    if (!res.ok) throw new Error(`Supabase ${res.status} — ${await res.text()}`);
+    const batch = (await res.json()) as TechRow[];
+    all.push(...batch);
+    if (batch.length < PAGE) break;
+  }
+  return all;
 }
 
 // The mapping only changes when the prospecting pipeline probes new technologies

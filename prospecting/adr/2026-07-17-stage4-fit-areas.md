@@ -1,10 +1,12 @@
 # ADR — Stage 4 fit: the five areas fit is assessed in
 
-- **Status:** Accepted
-- **Date:** 2026-07-17
-- **Scope:** The *structure* of the fit model — which areas we look in, and the data points in each. Not the rules, not the weights, not the field-level detail. Each area's fields get their own record.
-- **Service:** CDP-selection. The areas are service-specific; the method of picking them is not.
-- **Context:** `methodology.md` (Stage 4). Implementation: `stage4_fit.md`. Area 1 detail: `2026-07-17-stage4-technology-category.md`.
+- **Status:** **SUPERSEDED (2026-07-18)** — Stage 4 is now **Area 1 (Technology Landscape) only**. Areas 2–5 (Customer-Data Estate, Organisational Capability, Financial Capacity, Structural Change) are **dropped, not deferred**.
+- **Superseded by:** the decision recorded in `stage4_fit.md` and `README.md` (2026-07-18): **technology is a strong-enough proxy for the other areas** to carry the fit score alone. Running a CDP/MAP already implies the need, the means, the capability and (usually) the trigger — an account that has bought and operates martech has demonstrated all four. So the fit score = the technology match; nothing else is collected. This also removes the enrichment/People/non-Apollo sourcing the five-area model required.
+- **Original date:** 2026-07-17
+- **Service:** CDP-selection.
+- **Context:** `methodology.md` (Stage 4). Implementation: `stage4_fit.md`. Area 1 detail (still live): `2026-07-17-stage4-technology-category.md`.
+
+> **The rest of this document is a historical record of the rejected five-area model, kept per the ADR convention (an ADR survives the change it justified). It is NOT current guidance — Stage 4 collects Area 1 only.**
 
 ## Problem
 

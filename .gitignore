@@ -65,3 +65,6 @@ prospecting/Bombora-Topic-Taxonomy-*.xlsx
 
 # Workshop video captures (large media — keep out of git)
 J22-Maven/*.mp4
+
+# Lambda build artifacts
+prospecting/lambda/**/function.zip

@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { unstable_cache } from "next/cache";
 import { sb } from "@/lib/supabase";
 
 // hq_location is deliberately absent: Apollo's company-search returns no location
@@ -39,18 +38,16 @@ async function fetchCompanies() {
   return rest.reduce((acc, batch) => acc.concat(batch), rows);
 }
 
-// The universe only changes when the prospecting pipeline re-runs (rarely), so a
-// long TTL is safe. Bust with revalidateTag("companies").
-const cachedCompanies = unstable_cache(fetchCompanies, ["companies-list"], {
-  revalidate: 300,
-  tags: ["companies"],
-});
-
+// NOTE: no unstable_cache here. The full universe payload is ~2.25MB, which exceeds
+// Next.js's hard 2MB data-cache limit — wrapping this in unstable_cache throws
+// "items over 2MB can not be cached" and 500s the route. The fetch already pulls
+// efficiently (parallel pages), and the Cache-Control header below gives the browser/
+// CDN a 60s cache with stale-while-revalidate, so a per-request Supabase read is fine.
 // GET /api/companies — the whole Apollo target-company universe (read-only).
 export async function GET() {
   try {
     return NextResponse.json(
-      { rows: await cachedCompanies() },
+      { rows: await fetchCompanies() },
       { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=300" } },
     );
   } catch (e) {
