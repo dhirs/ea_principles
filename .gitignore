@@ -59,3 +59,9 @@ env
 
 # prospecting secrets
 prospecting/.env
+
+# Bombora topic taxonomy (licensed data — keep out of git)
+prospecting/Bombora-Topic-Taxonomy-*.xlsx
+
+# Workshop video captures (large media — keep out of git)
+J22-Maven/*.mp4

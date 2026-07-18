@@ -2,6 +2,8 @@
 
 Instructions for an agentic AI running Stage 5. Context: `methodology.md` (Stage 5). This is an **independent, frequent** pipeline (higher cadence than Stage 4). It scores each account in `apollo_company_universe` on fast-decaying **behavioural intent** signals and writes an `intent_score`. It is **not** part of Stage 4 (fit/propensity) and must run in its own pipeline.
 
+> **Architecture:** the collect/score split, the source-neutral **adaptor** pattern, the `apollo_intent_signals` ledger, and the composite formula are defined in `adr/2026-07-18-stage5-intent-scoring.md`. The signals catalogued below are the *inputs* each adaptor collects; that ADR governs how they are normalized, stored, weighted, and combined. Note the distinction it draws: only "native buyer intent (Bombora topics)" is Apollo's own intent product — the other signals are behavioural proxies this pipeline treats as intent.
+
 ## Goal
 
 For every account in the base set, gather fast-moving intent signals, evaluate them with a rule engine, and write a single `intent_score` (+ timestamp) back to the table.
@@ -23,9 +25,25 @@ Use the `organizations_job_postings` endpoint (actual postings per org) and/or t
 | Recency | `organization_job_posted_at_range` (`{min,max}` dates) | When roles were posted |
 | Where | `organization_job_locations` | Locations of the roles |
 
-### Plan-dependent — Apollo native buyer intent (Bombora-style topics)
+### Apollo native buyer intent (Bombora topics) — available on all plans
 
-Org fields: `intent_strength`, `show_intent`, `has_intent_signal_account`, `intent_signal_account`. Accounts surging on chosen topics. **Requires the intent feature enabled on the plan** — currently returns null in our data, so confirm it is active before relying on it.
+Org fields: `intent_strength`, `show_intent`, `has_intent_signal_account`, `intent_signal_account` — accounts surging on your configured topics. Buyer Intent is available on **all** Apollo plans; the plan sets only the **number of topics** you can track — Free 1, Basic 6, Professional 8, Organization 12. Activate the ranked topics from *Step 1* up to your plan's cap. **Verified 2026-07-18:** after configuring topics, `show_intent=true` and all four fields are present across sampled accounts (they were null before) — the feature is live. No surge values yet (`intent_strength=null`, `has_intent_signal_account=false`) because Apollo recomputes intent weekly, so surge populates on the next refresh. This is the `bombora_surge` adaptor's input (ADR §8, v1): read `has_intent_signal_account` (surging?), `intent_strength` (level), `intent_signal_account` (which topic); `show_intent` is the enabled gate.
+
+#### Step 1 — Topic selection from `apollo_bombora_topics`
+
+Before any surge lookup, map the product's seed topics to the closest **Bombora** topics that Apollo actually exposes. The full Jul-2026 taxonomy (21,632 topics) is loaded in Supabase project `thnxknvcahqktpbpqvbg`, table `public.apollo_bombora_topics` (`topic_id`, `theme`, `category`, `topic_name`, `description`; trigram index on `topic_name`). Given an input list of seed topics, select the **5** table rows that most closely match, preferring generic category topics over vendor-specific product names.
+
+**Run — 2026-07-18.** Seed input: `Customer Data Platform`, `Marketing Automation`. Selected 5:
+
+| # | topic_id | Theme / Category | Topic Name | Why selected |
+|---|---|---|---|---|
+| 1 | 1505493 | Marketing / CRM | Customer Data Platform | Exact match — seed "Customer Data Platform" |
+| 2 | 1335810 | Marketing / CRM | Marketing Automation | Exact match — seed "Marketing Automation" |
+| 3 | 1501018 | Marketing / Ad Tech | Marketing Automation Tools | Near-synonym of the Marketing Automation seed |
+| 4 | 1342321 | Marketing / CRM | Customer Data Management | CDP-adjacent — managing the unified customer record |
+| 5 | 1342516 | Marketing / CRM | Customer Data Integration | CDP-adjacent — consolidating customer data across sources |
+
+`topic_id`s feed the Apollo surge/topic filter once buyer-intent is enabled on the plan. Vendor-specific CDPs (e.g. `SAP CDP`, `Acquia CDP`) and broader terms (`Customer Data`, `Customer Segmentation`, `Sales and Marketing Automation`) were considered but ranked below the five above for a generic category seed.
 
 ### Your-own-website visitors (needs Apollo tracking script on your site)
 

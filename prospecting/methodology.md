@@ -46,6 +46,17 @@ A durable-signal source has two faces, and they don't carry the same data. The c
 
 **Stage 5 — Intent signals.** Fast-decaying behavioural signals of active, in-market interest: job postings, new hires, social and web activity. Its own pipeline and rule engine at a higher cadence than Stage 4 — **never run inside Stage 4** — producing an `intent_score`.
 
+#### Intent adaptors — one folder, one shape
+
+Stage 5 combines many signals (Apollo intent surge, job postings, event attendance, …). **Each signal is a self-contained adaptor, never inline in the pipeline, and every adaptor has the same shape** so a new signal is a new folder plus a registry line — nothing else. The convention every adaptor follows:
+
+- **Folder:** `intent_adaptors/<adaptor_slug>/` — one per adaptor (e.g. `apollo_bombora`, `apollo_job_postings`, `event_attendance`).
+- **`README.md`:** how it works — source, inputs, fields read, output row, config keys, status. Written to the same section structure as `intent_adaptors/apollo_bombora/README.md`, the reference.
+- **`adaptor.py`:** a class implementing the shared `SignalAdaptor` contract (`collect(accounts, window) -> list[SignalRecord]`), registered in the central adaptor registry. It emits normalized rows into the `apollo_intent_signals` ledger and **never** writes the scores register.
+- **Same contract regardless of source.** Apollo or not, an adaptor emits the identical `SignalRecord` shape (`value_norm` 0–1, `observed_at`, `confidence`, `evidence`). Source-specific work stays inside the adaptor; everything downstream is source-blind.
+
+The shared contract and the composite scorer are specified in `adr/2026-07-18-stage5-intent-scoring.md`; each adaptor's specifics live in its own `README.md`.
+
 ### Where scores live — a separate register, one row per score
 
 Scores do **not** live on the account. They live in their own register, keyed by **account + service + score type**, one row per score. The universe table stays a description of the company; the scores register holds our opinions about it. Three reasons, each a consequence of something above:
@@ -91,6 +102,7 @@ Keep the registers separate — this doc stays free of run values so it survives
 |---|---|---|
 | `methodology.md` (this) | **Concept — timeless** | What the stages do and why. The map. |
 | `stage1_requirements.md` … `stage5_intent.md` | **Implementation — per stage** | How to actually run each stage: filters, SQL, field mapping, gotchas. |
+| `intent_adaptors/<name>/README.md` + `adaptor.py` | **Implementation — per signal** | One Stage-5 intent adaptor: how it collects a single signal, and the code that does it. Same folder shape for every adaptor — `apollo_bombora` is the reference. |
 | `stage1_output.md` | **Inputs — per service** | Stage 1's deliverable: the sectors + firmographics Stage 2 runs. |
 | `adr/<date>-<topic>.md` | **Decisions — dated** | Why a choice was made, on the day it was made: one record per decision, status Proposed/Accepted. Survives the rule change it justified — a stage doc tells you what to type, an ADR tells you why. |
 | `README.md` | **State — now** | What has actually happened: confirmed query, universe size, credits, stage done/next, open items. **The only source of truth for status.** |

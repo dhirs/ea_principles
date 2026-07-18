@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import { ExternalLink, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// One org<->technology row (the apollo_company_technology view); passed in from the page.
+export type TechRow = { apollo_org_id: string; technology_uid: string; technology_name: string };
+
 // The row shape the companies table already holds — the drawer needs no fetch.
 export type CompanyRow = {
   apollo_org_id: string;
@@ -47,7 +50,15 @@ function growthTone(v: number | null) {
   return "text-muted-foreground";
 }
 
-export function CompanyDetail({ company: c, onClose }: { company: CompanyRow; onClose: () => void }) {
+export function CompanyDetail({
+  company: c,
+  technologies = [],
+  onClose,
+}: {
+  company: CompanyRow;
+  technologies?: TechRow[];
+  onClose: () => void;
+}) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -96,6 +107,30 @@ export function CompanyDetail({ company: c, onClose }: { company: CompanyRow; on
               <p className="mt-2 text-xs text-muted-foreground">Parent: {c.parent_company}</p>
             )}
           </div>
+
+          {/* Technologies — only the Stage 4 CDP probe matches exist; Apollo returns
+              no full technographics on this plan, so most companies show none. */}
+          <section className="rounded-xl border bg-muted/30 p-4">
+            <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Technologies {technologies.length > 0 && `(${technologies.length})`}
+            </h4>
+            {technologies.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No technologies detected.</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {[...technologies]
+                  .sort((a, b) => a.technology_name.localeCompare(b.technology_name))
+                  .map((t) => (
+                    <span
+                      key={t.technology_uid}
+                      className="rounded-full border bg-card px-2.5 py-1 text-xs font-medium"
+                    >
+                      {t.technology_name}
+                    </span>
+                  ))}
+              </div>
+            )}
+          </section>
 
           {/* NAICS classification — broadest to narrowest. */}
           <section className="rounded-xl border bg-muted/30 p-4">

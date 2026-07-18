@@ -69,6 +69,7 @@ export default function CompaniesPage() {
   const [revMax, setRevMax] = useState("");
   const [techRows, setTechRows] = useState<TechRow[]>([]);
   const [techFilter, setTechFilter] = useState(""); // selected technology_uid, "" = all
+  const [techOnly, setTechOnly] = useState(true); // only rows with >=1 technology (default on)
   const [selected, setSelected] = useState<CompanyRow | null>(null);
 
   function toggleSort(key: SortKey) {
@@ -124,6 +125,17 @@ export default function CompaniesPage() {
     return m;
   }, [techRows]);
 
+  // org id -> the technologies we have evidence for (feeds the drawer). Only the
+  // Stage 4 CDP probe matches exist, so most orgs map to nothing.
+  const techByOrg = useMemo(() => {
+    const m = new Map<string, TechRow[]>();
+    for (const t of techRows) {
+      if (!m.has(t.apollo_org_id)) m.set(t.apollo_org_id, []);
+      m.get(t.apollo_org_id)!.push(t);
+    }
+    return m;
+  }, [techRows]);
+
   // Text search (name / domain / parent / all NAICS titles).
   const searched = useMemo(() => {
     const term = q.trim().toLowerCase();
@@ -155,9 +167,11 @@ export default function CompaniesPage() {
     const techSet = techFilter ? techOrgSets.get(techFilter) : null;
     return scoped.filter(
       (r) =>
-        matchesFilters(r, naicsFilters) && (!techSet || techSet.has(r.apollo_org_id)),
+        matchesFilters(r, naicsFilters) &&
+        (!techSet || techSet.has(r.apollo_org_id)) &&
+        (!techOnly || techByOrg.has(r.apollo_org_id)),
     );
-  }, [scoped, naicsFilters, techFilter, techOrgSets]);
+  }, [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg]);
 
   // Faceted dropdown options: each level's choices reflect the search + revenue
   // range + the OTHER active level filters, so selections stay consistent (a cascade).
@@ -198,19 +212,20 @@ export default function CompaniesPage() {
     });
   }
   const anyFilter =
-    Object.values(naicsFilters).some(Boolean) || !!revMin || !!revMax || !!techFilter;
+    Object.values(naicsFilters).some(Boolean) || !!revMin || !!revMax || !!techFilter || techOnly;
 
   function clearFilters() {
     setNaicsFilters(EMPTY_FILTERS);
     setRevMin("");
     setRevMax("");
     setTechFilter("");
+    setTechOnly(false);
   }
 
   // Reset to the first page whenever the result set, sort, or page size changes.
   useEffect(() => {
     setPage(1);
-  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax, techFilter]);
+  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax, techFilter, techOnly]);
 
   const pageCount = Math.max(1, Math.ceil(sorted.length / pageSize));
   const clampedPage = Math.min(page, pageCount);
@@ -292,6 +307,15 @@ export default function CompaniesPage() {
                 Apollo Technologies
               </span>
               <TechCombobox options={techOptions} value={techFilter} onChange={setTechFilter} />
+              <label className="mt-2 flex w-fit cursor-pointer items-center gap-2 text-sm text-muted-foreground">
+                <input
+                  type="checkbox"
+                  checked={techOnly}
+                  onChange={(e) => setTechOnly(e.target.checked)}
+                  className="h-4 w-4 rounded border-input"
+                />
+                Only companies with a known technology
+              </label>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
               {NAICS_LEVELS.map(({ key, label }) => (
@@ -337,21 +361,20 @@ export default function CompaniesPage() {
                 <th className="px-4 py-3 font-medium">Company</th>
                 <th className="px-4 py-3 font-medium">Sector</th>
                 <th className="px-4 py-3 font-medium">Subsector</th>
-                <th className="px-4 py-3 font-medium">Employees</th>
-                <SortHeader label="Revenue" col="revenue" active={sortKey} dir={sortDir} onClick={toggleSort} />
+                <th className="px-4 py-3 font-medium">Technologies</th>
                 <SortHeader label="12m" col="growth_12m" active={sortKey} dir={sortDir} onClick={toggleSort} />
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-16 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-4 py-16 text-center text-muted-foreground">
                     <Loader2 className="mx-auto h-6 w-6 animate-spin" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-16 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-4 py-16 text-center text-muted-foreground">
                     {rows.length === 0 ? "No companies in the universe yet." : "No matches."}
                   </td>
                 </tr>
@@ -380,11 +403,12 @@ export default function CompaniesPage() {
                     <td className="px-4 py-3 text-muted-foreground">
                       {c.subsector_title || "—"}
                     </td>
-                    <td className="px-4 py-3 tabular-nums text-muted-foreground">
-                      {c.employee_range || "—"}
-                    </td>
-                    <td className="px-4 py-3 text-right tabular-nums">
-                      {c.revenue_printed || "—"}
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {techByOrg
+                        .get(c.apollo_org_id)
+                        ?.map((t) => t.technology_name)
+                        .sort((a, b) => a.localeCompare(b))
+                        .join(", ") || "—"}
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
                       {growthPct(c.growth_12m) ?? "—"}
@@ -410,7 +434,13 @@ export default function CompaniesPage() {
         )}
       </main>
 
-      {selected && <CompanyDetail company={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <CompanyDetail
+          company={selected}
+          technologies={techByOrg.get(selected.apollo_org_id) ?? []}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </div>
   );
 }
