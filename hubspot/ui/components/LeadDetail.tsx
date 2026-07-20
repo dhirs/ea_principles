@@ -12,6 +12,7 @@ import {
   Users,
   Phone,
   Calendar,
+  Sparkles,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,43 @@ type Detail = {
   seg_override: string | null; // manual override; null = Auto
   data: Record<string, unknown> & { apollo?: ApolloRec | null };
   updated_at: string;
+  provenance?: Provenance[]; // why this person is a lead — may be several reasons
+  company?: UniverseCompany | null; // our internal record of the employer, if qualified
+};
+
+// The apollo_company_universe row for this lead's employer. Null for Maven-sourced
+// leads, whose employers were never qualified into the universe.
+type UniverseCompany = {
+  apollo_org_id: string;
+  company: string;
+  domain: string | null;
+  linkedin_url: string | null;
+  revenue_printed: string | null;
+  parent_company: string | null;
+  sector_title: string | null;
+  subsector_title: string | null;
+  naics_industry_title: string | null;
+  growth_12m: number | null;
+  added_at: string;
+};
+
+// One row per reason a person entered the pipeline (Stage 6 `lead_provenance`).
+type Provenance = {
+  source_type: string; // 'maven_workshop' | 'title_match_universe' | future
+  source: string; // specific origin, e.g. 'workshop_list_join'
+  evidence: Record<string, unknown>;
+  observed_at: string;
+  source_version: string;
+};
+
+// How each reason-type is labelled. Unknown types fall back to the raw key so a new
+// provenance source shows up immediately rather than silently rendering blank.
+const PROVENANCE_LABELS: Record<string, { label: string; hint: string }> = {
+  maven_workshop: { label: "Maven workshop", hint: "Attended a workshop" },
+  title_match_universe: {
+    label: "Apollo prospecting",
+    hint: "Target title at a qualified account",
+  },
 };
 
 const SENIORITY_OPTIONS = ["Senior", "Mid", "Entry", "Unknown"] as const;
@@ -130,6 +168,8 @@ export function LeadDetail({
 
   const apollo = detail?.data?.apollo ?? null;
   const org = apollo?.organization ?? null;
+  const provenance = detail?.provenance ?? [];
+  const universe = detail?.company ?? null;
   // Prefer the Apollo node's values when enriched.
   const fname = apollo?.first_name || detail?.fname;
   const lname = apollo?.last_name || detail?.lname;
@@ -182,6 +222,61 @@ export function LeadDetail({
                 {detail.email}
               </a>
             </div>
+
+            {/* Why this lead — one block per provenance reason. Two reasons means the
+                person both attended a workshop AND holds a target title: the hottest
+                combination, so it is surfaced above everything except identity. */}
+            {provenance.length > 0 && (
+              <div className="rounded-xl border bg-muted/30 p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Why this lead
+                  </span>
+                  {provenance.length > 1 && (
+                    <Badge variant="success">{provenance.length} reasons</Badge>
+                  )}
+                </div>
+                <div className="mt-3 space-y-3">
+                  {provenance.map((p) => {
+                    const meta = PROVENANCE_LABELS[p.source_type];
+                    const ev = p.evidence ?? {};
+                    const title = ev.title as string | undefined;
+                    const company = ev.company as string | undefined;
+                    const events = Array.isArray(ev.events) ? ev.events : null;
+                    const attended = ev.attended as boolean | undefined;
+                    return (
+                      <div key={p.source_type} className="flex gap-3">
+                        <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                        <div className="min-w-0 text-sm">
+                          <div className="font-medium">{meta?.label ?? p.source_type}</div>
+                          <div className="text-muted-foreground">
+                            {/* Apollo: the title + account that matched. */}
+                            {title && company ? (
+                              <>
+                                {title} at {company}
+                              </>
+                            ) : events ? (
+                              <>
+                                {events.length} workshop{events.length === 1 ? "" : "s"}
+                                {attended === true && " · attended"}
+                                {attended === false && " · registered, did not attend"}
+                              </>
+                            ) : (
+                              (meta?.hint ?? p.source)
+                            )}
+                          </div>
+                          <div className="mt-0.5 text-xs text-muted-foreground/70">
+                            {p.source}
+                            {p.observed_at &&
+                              ` · ${new Date(p.observed_at).toLocaleDateString()}`}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Seniority: writes seg_override (Auto = null reverts to seg's auto value) */}
             <div className="rounded-xl border bg-muted/30 p-4">
@@ -264,6 +359,43 @@ export function LeadDetail({
                 </div>
               )}
             </dl>
+
+            {/* OUR record of the employer (apollo_company_universe) — distinct from the
+                Apollo organization block below, which is the vendor's view. Present only
+                for leads whose employer is a qualified account, i.e. Stage 6 contacts.
+                Opens the full company drawer in a NEW TAB so this lead stays put. */}
+            {universe && (
+              <div className="rounded-xl border bg-muted/30 p-4">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <h4 className="flex items-center gap-1.5 text-sm font-semibold">
+                    <Building2 className="h-4 w-4" /> {universe.company}
+                  </h4>
+                  <a
+                    href={`/companies?org=${encodeURIComponent(universe.apollo_org_id)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex shrink-0 items-center gap-1.5 text-xs text-primary hover:underline"
+                  >
+                    Company record <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                </div>
+                <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                  <Field label="Sector" value={universe.sector_title} />
+                  <Field label="Subsector" value={universe.subsector_title} />
+                  <Field label="Industry" value={universe.naics_industry_title} />
+                  <Field label="Revenue" value={universe.revenue_printed} />
+                  {typeof universe.growth_12m === "number" && (
+                    <Field
+                      label="Growth 12m"
+                      value={`${universe.growth_12m > 0 ? "+" : ""}${(universe.growth_12m * 100).toFixed(1)}%`}
+                    />
+                  )}
+                  {universe.parent_company && (
+                    <Field label="Parent" value={universe.parent_company} />
+                  )}
+                </dl>
+              </div>
+            )}
 
             {org && (
               <div className="rounded-xl border bg-muted/30 p-4">

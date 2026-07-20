@@ -5,16 +5,18 @@ import { usePathname } from "next/navigation";
 import { Users, CalendarDays, BarChart3, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Order is deliberate — it follows the pipeline: accounts, then the people at them,
+// then the reporting over both, with Maven events last.
 const LINKS = [
-  { href: "/", label: "Leads", icon: Users },
-  { href: "/events", label: "Events", icon: CalendarDays },
   { href: "/companies", label: "Companies", icon: Building2 },
+  { href: "/", label: "Leads", icon: Users },
   { href: "/reports", label: "Reports", icon: BarChart3 },
+  { href: "/events", label: "Maven Events", icon: CalendarDays },
 ];
 
-// Slim left menu. Only Leads / Events. When the already-active item is clicked,
-// navigation is suppressed and `onActiveClick` fires instead (used on the leads
-// page to toggle the filters panel).
+// Slim left menu. When the already-active item is clicked, navigation is suppressed
+// and `onActiveClick` fires instead (used on the leads page to toggle the filters
+// panel).
 export function NavPanel({ onActiveClick }: { onActiveClick?: (href: string) => void }) {
   const pathname = usePathname();
   return (

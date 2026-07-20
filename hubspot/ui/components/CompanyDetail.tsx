@@ -1,8 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import { ExternalLink, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ExternalLink, Loader2, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+// A Stage-6 contact at this account. Sourced from lead_provenance, so every row is a
+// person we actually hold an email for.
+type Contact = {
+  email: string;
+  name: string;
+  title: string | null;
+  seniority: string | null;
+  seg: string | null;
+};
 
 // One org<->technology row (the apollo_company_technology view); passed in from the page.
 export type TechRow = { apollo_org_id: string; technology_uid: string; technology_name: string };
@@ -59,6 +69,26 @@ export function CompanyDetail({
   technologies?: TechRow[];
   onClose: () => void;
 }) {
+  // Contacts are the one thing the page does not already hold, so this is the drawer's
+  // only fetch. Keyed by apollo_org_id (domain is nullable).
+  const [contacts, setContacts] = useState<Contact[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setContacts(null);
+    fetch(`/api/companies/contacts?apollo_org_id=${encodeURIComponent(c.apollo_org_id)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled) setContacts(d.contacts ?? []);
+      })
+      .catch(() => {
+        if (!cancelled) setContacts([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [c.apollo_org_id]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -107,6 +137,61 @@ export function CompanyDetail({
               <p className="mt-2 text-xs text-muted-foreground">Parent: {c.parent_company}</p>
             )}
           </div>
+
+          {/* Contacts — the Stage 6 people at this account, most senior first. Each
+              opens /?lead=<email> in a NEW TAB: the company list behind this drawer is
+              a filtered, paginated search result, and navigating away would discard it.
+              Only ~818 of 1,425 scored accounts have any, so the empty state is the
+              common case and says why. */}
+          <section className="rounded-xl border bg-muted/30 p-4">
+            <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Contacts {contacts && contacts.length > 0 && `(${contacts.length})`}
+            </h4>
+            {contacts === null ? (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" /> Loading…
+              </div>
+            ) : contacts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No contacts acquired for this account yet.
+              </p>
+            ) : (
+              <ul className="space-y-1">
+                {contacts.map((p) => (
+                  <li key={p.email}>
+                    <a
+                      href={`/?lead=${encodeURIComponent(p.email)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="-mx-2 flex items-start gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-card"
+                    >
+                      <User className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-2">
+                          <span className="truncate text-sm font-medium hover:underline">
+                            {p.name}
+                          </span>
+                          {p.seg && (
+                            <span className="shrink-0 rounded-full border bg-card px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                              {p.seg}
+                            </span>
+                          )}
+                        </span>
+                        {p.title && (
+                          <span className="block truncate text-xs text-muted-foreground">
+                            {p.title}
+                          </span>
+                        )}
+                        <span className="block truncate text-xs text-muted-foreground/70">
+                          {p.email}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
 
           {/* Technologies — only the Stage 4 CDP probe matches exist; Apollo returns
               no full technographics on this plan, so most companies show none. */}

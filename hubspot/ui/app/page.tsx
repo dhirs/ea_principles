@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight, Loader2, SlidersHorizontal } from "lucide-react";
 import { NavPanel } from "@/components/NavPanel";
 import { LeadsFilters, type Filter, type Seniority, type Stats } from "@/components/LeadsFilters";
@@ -21,6 +22,16 @@ type Row = {
 };
 
 export default function Page() {
+  // useSearchParams needs a Suspense boundary in the App Router.
+  return (
+    <Suspense fallback={null}>
+      <LeadsPage />
+    </Suspense>
+  );
+}
+
+function LeadsPage() {
+  const searchParams = useSearchParams();
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
@@ -32,7 +43,15 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stats | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false); // collapsed on load; "Filters" opens it
+
+  // Deep link: /?lead=<email> opens that lead's drawer straight away. This is what
+  // the company drawer's contact links point at — without it there is no addressable
+  // URL for an individual lead, only in-page drawer state.
+  useEffect(() => {
+    const lead = searchParams.get("lead");
+    if (lead) setSelected(lead);
+  }, [searchParams]);
 
   // debounce search
   useEffect(() => {

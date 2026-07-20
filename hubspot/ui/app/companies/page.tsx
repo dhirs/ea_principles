@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   ChevronDown,
   ChevronLeft,
@@ -56,6 +57,16 @@ type TechRow = { apollo_org_id: string; technology_uid: string; technology_name:
 type TechOption = { uid: string; name: string; count: number };
 
 export default function CompaniesPage() {
+  // useSearchParams needs a Suspense boundary in the App Router.
+  return (
+    <Suspense fallback={null}>
+      <Companies />
+    </Suspense>
+  );
+}
+
+function Companies() {
+  const searchParams = useSearchParams();
   const [rows, setRows] = useState<CompanyRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -94,6 +105,17 @@ export default function CompaniesPage() {
       setLoading(false);
     })();
   }, []);
+
+  // Deep link: /companies?org=<apollo_org_id> opens that company's drawer once the
+  // rows are in. This is what the lead drawer's "company record" link points at.
+  // Searches the FULL row set, so it works regardless of the active filters — a
+  // linked company opens even when the current filters would exclude it.
+  useEffect(() => {
+    const org = searchParams.get("org");
+    if (!org || rows.length === 0) return;
+    const match = rows.find((r) => r.apollo_org_id === org);
+    if (match) setSelected(match);
+  }, [searchParams, rows]);
 
   // The org<->technology mapping is small (~200 rows) and non-critical, so it loads
   // independently — a failure here just leaves the Apollo Technologies filter empty.
