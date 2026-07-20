@@ -1,0 +1,37 @@
+{
+  "_comment": "Stage 6 target titles — the CDP-relevant marketing roles to acquire as CONTACTS at every qualified account in apollo_company_universe. Mirror of stage4_target_technologies.json: this is versioned DATA, not code. Regenerate/extend when the ICP's buyer definition changes; bump _version and record it as lead_provenance.source_version at promotion. Product: cdp-selection (owner: Dheeraj).",
+  "_version": "titles-v1",
+  "product": "cdp-selection",
+  "_method": "Apollo People Search (apollo_mixed_people_api_search) scoped to organization_ids = the universe org ids. The ROBUST net is person_seniorities + person_departments (titles are noisy free text); person_titles then refines to the exact buyer. Apollo does fuzzy matching on person_titles, so 'VP Marketing' also catches 'VP, Marketing' / 'Vice President of Marketing'. VERIFY the exact Apollo parameter names against the live MCP/API schema before the run (this is exactly how Stage 4's 'enrichment has no technographics' finding surfaced — never assume a documented field).",
+  "person_seniorities": ["c_suite", "vp", "head", "director"],
+  "person_departments": ["marketing"],
+  "person_titles": [
+    "Chief Marketing Officer",
+    "Head of Marketing",
+    "VP Marketing",
+    "VP of Marketing",
+    "Director of Marketing",
+    "Head of Marketing Technology",
+    "Head of MarTech",
+    "Director of Marketing Technology",
+    "Head of Marketing Operations",
+    "Director of Marketing Operations",
+    "VP Marketing Operations",
+    "Head of Growth",
+    "VP Growth",
+    "Head of CRM",
+    "Director of CRM",
+    "Head of Customer Data",
+    "Head of Digital Marketing",
+    "Director of Digital Marketing",
+    "Head of Demand Generation",
+    "VP Demand Generation",
+    "Head of Lifecycle Marketing",
+    "Head of Data and Analytics"
+  ],
+  "_reveal_policy": {
+    "_comment": "Search ENUMERATES (cheap — 1 credit/page of 100). Reveal (apollo_people_match / bulk_match) UNLOCKS email + phone at ~1 credit per contact — the expensive step. Cap per company and prioritise by seniority so a full universe sweep does not exhaust the ~2,500-credit cycle (2,983 orgs x 3 = ~9k). Confirm total cost before spending.",
+    "max_contacts_per_company": 3,
+    "seniority_priority": ["c_suite", "head", "vp", "director"]
+  }
+}

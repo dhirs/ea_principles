@@ -4,15 +4,16 @@ A generic, service-agnostic method for building and maintaining an outbound targ
 
 **This document is conceptual — what each stage does and why.** No SQL, no field names, no client values. Implementation lives in the per-stage docs; current state lives in `README.md`.
 
-## Three pipelines, three cadences
+## Four pipelines
 
-The work splits into three independent pipelines by how often the underlying data changes:
+The work splits into four independent pipelines. The first three are separated by how often the underlying data changes; the fourth is separated by *subject* — it is about people, not companies.
 
 1. **Build pipeline — one-time, batch (Stages 1–3).** Defines the ICP, pulls the raw universe, and applies any custom filters to produce the *base account set* in the `apollo_company_universe` table.
 2. **Propensity pipeline — weekly (Stage 4).** A rule engine scores each account on slow-moving *fit* signals (technographics, corporate events) and writes a score back to the table.
 3. **Intent pipeline — frequent, separate (Stage 5).** Fast-decaying *behavioural* signals (job postings, hiring, social) in their own higher-cadence pipeline.
+4. **Contact pipeline — on demand (Stage 6).** The first pipeline about *people*: it finds the buyers to talk to at each qualified account, stores them as leads, and records *why* each person is in the pipeline. Everything above scores companies; this one produces the humans and their provenance.
 
-Guiding principle: **separate the stable from the volatile.** Qualification is built once; slow fit signals refresh weekly; fast intent signals run on their own cadence. Never mix cadences in one pipeline.
+Guiding principle: **separate the stable from the volatile** (and companies from people). Qualification is built once; slow fit signals refresh weekly; fast intent signals run on their own cadence; contacts are acquired on demand. Never mix cadences — or companies and people — in one pipeline.
 
 ---
 
@@ -25,6 +26,7 @@ Guiding principle: **separate the stable from the volatile.** Qualification is b
 | **3 — Qualify** | Applies the filters Apollo *cannot* express; produces the base account set. | `apollo_company_raw` → `apollo_company_universe` | one-time | free | `stage3_qualify.md` |
 | **4 — Fit / propensity** | Scores slow, durable signals. | universe → scores register (`fit`) | weekly | credits | `stage4_fit.md` |
 | **5 — Intent** | Scores fast, behavioural signals. | universe → scores register (`intent`) | frequent | credits | `stage5_intent.md` |
+| **6 — People / Contacts** | Finds the ICP's buyers at each qualified account; stores them as leads; records *why* each is a lead. | universe → `apollo_people_raw` → `leads` + provenance register | on demand | credits | `stage6_people.md` |
 
 ### Build pipeline (one-time, batch)
 
@@ -57,6 +59,14 @@ Stage 5 combines many signals (Apollo intent surge, job postings, event attendan
 
 The shared contract and the composite scorer are specified in `adr/2026-07-18-stage5-intent-scoring.md`; each adaptor's specifics live in its own `README.md`.
 
+### Contact pipeline (on demand)
+
+**Stage 6 — People / Contacts.** The build and scoring pipelines answer *which companies* and *how good is each* — but never *who do we talk to*. Stage 6 fills that gap: it queries the source for people at the qualified accounts whose role matches the ICP's buyer, and turns the chosen ones into leads.
+
+It inherits the two-faced-source discipline from Stage 4. The cheap *search* face enumerates people by role at an account but withholds a usable email; the paid *reveal* face unlocks the email and phone one contact at a time. So the shape is always **search to find who (cheap), then reveal only whom you will pursue (capped, prioritised, cost-confirmed)** — never reveal a whole result set. And the raw people sink is a **durable superset** for the same reason the company raw table is: it keeps everyone surfaced, so a promotion decision is replayable without re-spending credits.
+
+The output is people in the lead register — and, inseparably, the *reason* each person is there. That reason is a first-class record, not a side note; see the next section.
+
 ### Where scores live — a separate register, one row per score
 
 Scores do **not** live on the account. They live in their own register, keyed by **account + service + score type**, one row per score. The universe table stays a description of the company; the scores register holds our opinions about it. Three reasons, each a consequence of something above:
@@ -68,6 +78,18 @@ Scores do **not** live on the account. They live in their own register, keyed by
 **A bare number is a decision nobody can review.** Store the signals the rules fired on and the rule-set version beside every score. Without the signals, a score cannot be audited — only trusted. Without the version, a score that moves between runs is ambiguous: the account changed, or we changed. This is *prefer the reversible choice* applied to scoring — a score that can be explained can be argued with; one that can't is just a number.
 
 Scores are **current-state**: each run overwrites its own row. The register answers "what do we think now," not "what did we think in March."
+
+### Where lead provenance lives — a separate register, one row per reason
+
+A lead is worth nothing without its *why*. "Why is this person in our pipeline" is the question that decides how you open the conversation — a workshop attendee, a cold title-match at a target account, and an inbound enquiry are three different first emails. Yet the reason is exactly what a lead table tends to lose: it records the person, not the story of how they got there.
+
+So provenance lives in its **own register, keyed by lead + reason-type**, one row per reason — the same shape as the scores register, for the same reasons.
+
+**A person can be a lead for more than one reason at once, and the combination is the signal.** Someone who attended a workshop *and* holds a target title at a qualified account is a hotter lead than either alone. Give each reason its own row and both survive; fold them into a single field and the second overwrites the first, destroying the very combination you most want to see. A new reason — an intent surge, a referral — is then a new row, not a schema change.
+
+**A reason nobody can inspect is just a flag.** Store the evidence beside each reason — which workshop, which account and title — so a lead that looks promising can be *understood*, not merely trusted. This is *prefer the reversible choice* and *a bare number is a decision nobody can review*, applied to leads instead of scores.
+
+Provenance is **accumulating**, not current-state: a reason that became true stays true (a person did attend that workshop), so reasons are added, not overwritten. This is the one place the "current-state" rule of the scores register is deliberately inverted — history *is* the point. Note the boundary: this register records *why someone entered the pipeline*, not *what sales stage a deal is in* — a formal opportunity/stage model, if wanted, is a separate concern (and often lives in the CRM, not here).
 
 ---
 
@@ -89,8 +111,9 @@ Scores are **current-state**: each run overwrites its own row. The register answ
 
 - **Stage 4 = fit / propensity signals** — slow, durable: technographics + corporate events → a `fit` score.
 - **Stage 5 = intent signals** — fast, behavioural: postings, hiring, social → an `intent` score.
+- **Stage 6 = people / contacts** — the buyers at each account → `leads` + a `provenance` reason per lead.
 
-Convention reserves "intent" for volatile behavioural signals; stable tech/event signals are "fit" or "propensity."
+Convention reserves "intent" for volatile behavioural signals; stable tech/event signals are "fit" or "propensity." Stages 1–5 are about companies; Stage 6 is about people.
 
 ---
 
@@ -101,7 +124,9 @@ Keep the registers separate — this doc stays free of run values so it survives
 | File | Register | Contains |
 |---|---|---|
 | `methodology.md` (this) | **Concept — timeless** | What the stages do and why. The map. |
-| `stage1_requirements.md` … `stage5_intent.md` | **Implementation — per stage** | How to actually run each stage: filters, SQL, field mapping, gotchas. |
+| `stage1_requirements.md` … `stage6_people.md` | **Implementation — per stage** | How to actually run each stage: filters, SQL, field mapping, gotchas. |
+| `stage6_target_titles.json` | **Inputs — per service** | Stage 6's buyer definition: the target titles/seniorities to acquire as contacts. Versioned data, not code. |
+| `stage6_migration.sql` + `stage6_BUILD.md` | **Build — one-time** | The DDL for the people + provenance tables, and the runbook to stand Stage 6 up the first time. |
 | `intent_adaptors/<name>/README.md` + `adaptor.py` | **Implementation — per signal** | One Stage-5 intent adaptor: how it collects a single signal, and the code that does it. Same folder shape for every adaptor — `apollo_bombora` is the reference. |
 | `stage1_output.md` | **Inputs — per service** | Stage 1's deliverable: the sectors + firmographics Stage 2 runs. |
 | `adr/<date>-<topic>.md` | **Decisions — dated** | Why a choice was made, on the day it was made: one record per decision, status Proposed/Accepted. Survives the rule change it justified — a stage doc tells you what to type, an ADR tells you why. |
