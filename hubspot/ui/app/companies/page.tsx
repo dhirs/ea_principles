@@ -56,6 +56,11 @@ function growthPct(v: number | null) {
 type TechRow = { apollo_org_id: string; technology_uid: string; technology_name: string };
 type TechOption = { uid: string; name: string; count: number };
 
+// One org->country row from /api/companies/countries (the company_country view — a
+// company's country derived from its leads, since Apollo has no company location).
+type CountryRow = { apollo_org_id: string; country: string };
+type CountryOption = { country: string; count: number };
+
 export default function CompaniesPage() {
   // useSearchParams needs a Suspense boundary in the App Router.
   return (
@@ -81,6 +86,8 @@ function Companies() {
   const [techRows, setTechRows] = useState<TechRow[]>([]);
   const [techFilter, setTechFilter] = useState(""); // selected technology_uid, "" = all
   const [techOnly, setTechOnly] = useState(true); // only rows with >=1 technology (default on)
+  const [countryRows, setCountryRows] = useState<CountryRow[]>([]);
+  const [countryFilter, setCountryFilter] = useState(""); // selected country, "" = all
   const [selected, setSelected] = useState<CompanyRow | null>(null);
 
   function toggleSort(key: SortKey) {
@@ -125,6 +132,22 @@ function Companies() {
       if (res.ok) setTechRows(((await res.json()).rows ?? []) as TechRow[]);
     })();
   }, []);
+
+  // Company->country map (derived from leads), loaded independently like the tech
+  // mapping. A failure just leaves the Country filter empty.
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/companies/countries");
+      if (res.ok) setCountryRows(((await res.json()).rows ?? []) as CountryRow[]);
+    })();
+  }, []);
+
+  // org id -> country, for O(1) lookup in the filter and dropdown counts.
+  const countryByOrg = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const c of countryRows) m.set(c.apollo_org_id, c.country);
+    return m;
+  }, [countryRows]);
 
   // Distinct technologies for the dropdown, most-populated first.
   const techOptions = useMemo<TechOption[]>(() => {
@@ -191,9 +214,24 @@ function Companies() {
       (r) =>
         matchesFilters(r, naicsFilters) &&
         (!techSet || techSet.has(r.apollo_org_id)) &&
-        (!techOnly || techByOrg.has(r.apollo_org_id)),
+        (!techOnly || techByOrg.has(r.apollo_org_id)) &&
+        (!countryFilter || countryByOrg.get(r.apollo_org_id) === countryFilter),
     );
-  }, [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg]);
+  }, [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg]);
+
+  // Country dropdown options: distinct countries present in the search+revenue-scoped
+  // set, most-common first. Companies with no country-bearing lead simply don't appear
+  // under any country (they're "Unknown" — same behaviour as an unset facet).
+  const countryOptions = useMemo<CountryOption[]>(() => {
+    const counts = new Map<string, number>();
+    for (const r of scoped) {
+      const c = countryByOrg.get(r.apollo_org_id);
+      if (c) counts.set(c, (counts.get(c) ?? 0) + 1);
+    }
+    return [...counts.entries()]
+      .map(([country, count]) => ({ country, count }))
+      .sort((a, b) => b.count - a.count || a.country.localeCompare(b.country));
+  }, [scoped, countryByOrg]);
 
   // Faceted dropdown options: each level's choices reflect the search + revenue
   // range + the OTHER active level filters, so selections stay consistent (a cascade).
@@ -234,7 +272,12 @@ function Companies() {
     });
   }
   const anyFilter =
-    Object.values(naicsFilters).some(Boolean) || !!revMin || !!revMax || !!techFilter || techOnly;
+    Object.values(naicsFilters).some(Boolean) ||
+    !!revMin ||
+    !!revMax ||
+    !!techFilter ||
+    techOnly ||
+    !!countryFilter;
 
   function clearFilters() {
     setNaicsFilters(EMPTY_FILTERS);
@@ -242,12 +285,13 @@ function Companies() {
     setRevMax("");
     setTechFilter("");
     setTechOnly(false);
+    setCountryFilter("");
   }
 
   // Reset to the first page whenever the result set, sort, or page size changes.
   useEffect(() => {
     setPage(1);
-  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax, techFilter, techOnly]);
+  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax, techFilter, techOnly, countryFilter]);
 
   const pageCount = Math.max(1, Math.ceil(sorted.length / pageSize));
   const clampedPage = Math.min(page, pageCount);
@@ -297,30 +341,50 @@ function Companies() {
               )}
             </div>
 
-            <div className="mb-3 border-b pb-3">
-              <span className="mb-1 block text-xs font-medium text-muted-foreground">
-                Revenue ($M)
-              </span>
-              <div className="flex items-center gap-2">
-                <Input
-                  type="number"
-                  inputMode="numeric"
-                  value={revMin}
-                  onChange={(e) => setRevMin(e.target.value)}
-                  placeholder="Min"
-                  className="h-9 w-28"
-                  aria-label="Minimum revenue in millions"
-                />
-                <span className="text-sm text-muted-foreground">to</span>
-                <Input
-                  type="number"
-                  inputMode="numeric"
-                  value={revMax}
-                  onChange={(e) => setRevMax(e.target.value)}
-                  placeholder="Max"
-                  className="h-9 w-28"
-                  aria-label="Maximum revenue in millions"
-                />
+            <div className="mb-3 flex flex-wrap items-end gap-6 border-b pb-3">
+              <div>
+                <span className="mb-1 block text-xs font-medium text-muted-foreground">
+                  Revenue ($M)
+                </span>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    value={revMin}
+                    onChange={(e) => setRevMin(e.target.value)}
+                    placeholder="Min"
+                    className="h-9 w-28"
+                    aria-label="Minimum revenue in millions"
+                  />
+                  <span className="text-sm text-muted-foreground">to</span>
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    value={revMax}
+                    onChange={(e) => setRevMax(e.target.value)}
+                    placeholder="Max"
+                    className="h-9 w-28"
+                    aria-label="Maximum revenue in millions"
+                  />
+                </div>
+              </div>
+              <div>
+                <span className="mb-1 block text-xs font-medium text-muted-foreground">
+                  Country
+                </span>
+                <select
+                  value={countryFilter}
+                  onChange={(e) => setCountryFilter(e.target.value)}
+                  className="h-9 w-56 rounded-lg border bg-card px-2 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label="Filter by country"
+                >
+                  <option value="">All countries</option>
+                  {countryOptions.map((c) => (
+                    <option key={c.country} value={c.country}>
+                      {c.country} ({c.count.toLocaleString()})
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
