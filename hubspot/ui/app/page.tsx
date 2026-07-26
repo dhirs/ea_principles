@@ -4,7 +4,13 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight, Loader2, SlidersHorizontal } from "lucide-react";
 import { NavPanel } from "@/components/NavPanel";
-import { LeadsFilters, type Filter, type Seniority, type Stats } from "@/components/LeadsFilters";
+import {
+  LeadsFilters,
+  type Filter,
+  type Seniority,
+  type Stats,
+  type CountryOption,
+} from "@/components/LeadsFilters";
 import { LeadDetail } from "@/components/LeadDetail";
 import { Button } from "@/components/ui/button";
 
@@ -36,6 +42,8 @@ function LeadsPage() {
   const [debouncedQ, setDebouncedQ] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [seg, setSeg] = useState<Seniority | null>(null);
+  const [country, setCountry] = useState<string | null>(null);
+  const [countries, setCountries] = useState<CountryOption[]>([]);
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState<Row[]>([]);
   const [total, setTotal] = useState(0);
@@ -60,19 +68,20 @@ function LeadsPage() {
   }, [q]);
 
   // reset to first page when query/filter changes
-  useEffect(() => setPage(0), [debouncedQ, filter, seg]);
+  useEffect(() => setPage(0), [debouncedQ, filter, seg, country]);
 
   const load = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams({ q: debouncedQ, filter, page: String(page) });
     if (seg) params.set("seg", seg);
+    if (country) params.set("country", country);
     const res = await fetch(`/api/leads?${params}`);
     const data = await res.json();
     setRows(data.rows ?? []);
     setTotal(data.total ?? 0);
     setPageSize(data.pageSize ?? 50);
     setLoading(false);
-  }, [debouncedQ, filter, seg, page]);
+  }, [debouncedQ, filter, seg, country, page]);
 
   useEffect(() => {
     load();
@@ -82,6 +91,12 @@ function LeadsPage() {
     fetch("/api/stats")
       .then((r) => r.json())
       .then((d) => !d.error && setStats(d));
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/leads/countries")
+      .then((r) => r.json())
+      .then((d) => !d.error && setCountries(d.rows ?? []));
   }, []);
 
   const from = total === 0 ? 0 : page * pageSize + 1;
@@ -100,6 +115,9 @@ function LeadsPage() {
           setFilter={setFilter}
           seg={seg}
           setSeg={setSeg}
+          country={country}
+          setCountry={setCountry}
+          countries={countries}
           stats={stats}
           onClose={() => setShowFilters(false)}
         />

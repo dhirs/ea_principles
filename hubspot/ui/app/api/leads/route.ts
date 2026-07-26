@@ -12,7 +12,7 @@ const ORDER = "order=updated_at.desc&order=email.asc";
 
 const SENIORITY = new Set(["Senior", "Mid", "Entry", "Unknown"]);
 
-async function fetchLeads(q: string, filter: string, seg: string, page: number) {
+async function fetchLeads(q: string, filter: string, seg: string, country: string, page: number) {
   const parts = [`select=${SELECT}`, ORDER];
   if (q) {
     const like = `*${q.replace(/[*,()]/g, "")}*`;
@@ -23,6 +23,9 @@ async function fetchLeads(q: string, filter: string, seg: string, page: number) 
   if (filter === "enriched") parts.push("data->apollo->>id=not.is.null");
   if (filter === "cold") parts.push("data->apollo->>id=is.null");
   if (SENIORITY.has(seg)) parts.push(`seg=eq.${seg}`);
+  // Country comes from the enriched Apollo node. Encode so names with spaces
+  // ("United Kingdom") and commas survive the PostgREST filter.
+  if (country) parts.push(`data->apollo->>country=eq.${encodeURIComponent(country)}`);
 
   const query = `${parts.join("&")}&limit=${PAGE_SIZE}&offset=${page * PAGE_SIZE}`;
   const res = await sb("leads", query, { Prefer: "count=exact" });
@@ -46,10 +49,11 @@ export async function GET(req: NextRequest) {
   const q = (sp.get("q") || "").trim();
   const filter = sp.get("filter") || "all";
   const seg = sp.get("seg") || "";
+  const country = (sp.get("country") || "").trim();
   const page = Math.max(0, parseInt(sp.get("page") || "0", 10) || 0);
 
   try {
-    const data = await cachedFetchLeads(q, filter, seg, page);
+    const data = await cachedFetchLeads(q, filter, seg, country, page);
     return NextResponse.json(data, {
       headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
     });

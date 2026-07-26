@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Users, Sparkles, Snowflake, BarChart3, ChevronDown, X } from "lucide-react";
+import { Search, Users, Sparkles, Snowflake, BarChart3, Globe, ChevronDown, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 export type Filter = "all" | "enriched" | "cold";
 export type Seniority = "Senior" | "Mid" | "Entry";
 export type Stats = { total: number; enriched: number; cold: number };
+export type CountryOption = { country: string; n: number };
 
 const FILTERS: { key: Filter; label: string; icon: React.ReactNode }[] = [
   { key: "all", label: "All leads", icon: <Users className="h-4 w-4" /> },
@@ -24,6 +25,9 @@ export function LeadsFilters({
   setFilter,
   seg,
   setSeg,
+  country,
+  setCountry,
+  countries,
   stats,
   onClose,
 }: {
@@ -33,6 +37,9 @@ export function LeadsFilters({
   setFilter: (f: Filter) => void;
   seg: Seniority | null;
   setSeg: (s: Seniority | null) => void;
+  country: string | null;
+  setCountry: (c: string | null) => void;
+  countries: CountryOption[];
   stats: Stats | null;
   onClose: () => void;
 }) {
@@ -114,6 +121,28 @@ export function LeadsFilters({
             {SENIORITY.map((s) => (
               <option key={s} value={s}>
                 {s}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Country
+        </p>
+        <div className="relative">
+          <Globe className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <select
+            value={country ?? ""}
+            onChange={(e) => setCountry(e.target.value || null)}
+            className="h-10 w-full appearance-none rounded-lg border bg-card px-9 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <option value="">All countries</option>
+            {countries.map((c) => (
+              <option key={c.country} value={c.country}>
+                {c.country} ({c.n.toLocaleString()})
               </option>
             ))}
           </select>
