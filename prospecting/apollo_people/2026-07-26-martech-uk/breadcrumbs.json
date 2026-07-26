@@ -1,0 +1,16 @@
+{
+ "endpoint": "https://api.apollo.io/api/v1/contacts/search",
+ "modality": "contacts",
+ "label_id": "6a630b795233df000c384c95",
+ "label_name": "Martech UK",
+ "filters": {
+  "contact_label_ids": [
+   "6a630b795233df000c384c95"
+  ]
+ },
+ "per_page": 100,
+ "total_entries": 1000,
+ "pages": 10,
+ "run_date": "2026-07-26",
+ "note": "own-contacts read \u2014 0 credits; email verified + organization inline, so payload==revealed_payload and no reveal step is needed."
+}
