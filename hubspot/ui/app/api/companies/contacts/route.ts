@@ -10,14 +10,21 @@ import { sb } from "@/lib/supabase";
 // employer outside the universe (verified 2026-07-20: 1 of 1,202 leads had moved to
 // an unrelated org in the revealed record). Joining on Apollo's field would silently
 // drop that contact from its account.
+//
+// We match ANY provenance whose evidence names this org — currently
+// `title_match_universe` (Stage-6 People-search) and `martech_uk_list` (imported
+// contacts lists), and any future org-scoped reason. We deliberately do NOT filter
+// by source_type: an early version pinned it to `title_match_universe`, which hid
+// every contacts-list lead from its company (a UK list company showed "no contacts"
+// despite having them). `maven_workshop` rows carry no apollo_org_id in evidence, so
+// the org filter already excludes them.
 export async function GET(req: NextRequest) {
   const orgId = (req.nextUrl.searchParams.get("apollo_org_id") || "").trim();
   if (!orgId) return NextResponse.json({ error: "apollo_org_id required" }, { status: 400 });
 
   const res = await sb(
     "lead_provenance",
-    `select=email,evidence,leads(fname,lname,seg,domain)` +
-      `&source_type=eq.title_match_universe` +
+    `select=email,evidence,source_type,leads(fname,lname,seg,domain)` +
       `&evidence->>apollo_org_id=eq.${encodeURIComponent(orgId)}`,
   );
   if (!res.ok) {
@@ -30,13 +37,20 @@ export async function GET(req: NextRequest) {
   type Row = {
     email: string;
     evidence: { title?: string; seniority?: string } | null;
+    source_type: string;
     leads: { fname?: string | null; lname?: string | null; seg?: string | null } | null;
   };
   const rows: Row[] = await res.json();
 
+  // A person can carry more than one org-scoped reason (e.g. title_match_universe AND
+  // martech_uk_list) — collapse to one contact per email so the drawer never lists a
+  // name twice. First row wins; both carry the same title/seniority evidence.
+  const byEmail = new Map<string, Row>();
+  for (const r of rows) if (!byEmail.has(r.email)) byEmail.set(r.email, r);
+
   // Most senior first — the order you would actually work the account in.
   const RANK: Record<string, number> = { c_suite: 0, founder: 0, owner: 0, head: 1, vp: 2, director: 3 };
-  const contacts = rows
+  const contacts = [...byEmail.values()]
     .map((r) => ({
       email: r.email,
       name: [r.leads?.fname, r.leads?.lname].filter(Boolean).join(" ") || r.email,
