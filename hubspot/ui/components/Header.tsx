@@ -22,7 +22,7 @@ export function Header() {
   return (
     <header className="h-16 bg-card flex items-center px-8 sticky top-0 z-30 shadow-md">
       <Link
-        href="/"
+        href="/companies"
         aria-label="Home"
         className="inline-flex items-center rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >

@@ -139,7 +139,7 @@ export function CompanyDetail({
           </div>
 
           {/* Contacts — the Stage 6 people at this account, most senior first. Each
-              opens /?lead=<email> in a NEW TAB: the company list behind this drawer is
+              opens /leads?lead=<email> in a NEW TAB: the company list behind this drawer is
               a filtered, paginated search result, and navigating away would discard it.
               Only ~818 of 1,425 scored accounts have any, so the empty state is the
               common case and says why. */}
@@ -160,7 +160,7 @@ export function CompanyDetail({
                 {contacts.map((p) => (
                   <li key={p.email}>
                     <a
-                      href={`/?lead=${encodeURIComponent(p.email)}`}
+                      href={`/leads?lead=${encodeURIComponent(p.email)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="-mx-2 flex items-start gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-card"

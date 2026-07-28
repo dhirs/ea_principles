@@ -29,7 +29,9 @@ export default function LoginPage() {
       setLoading(false);
       return;
     }
-    const next = new URLSearchParams(window.location.search).get("next") || "/";
+    // Companies is the landing tab. A deep link that bounced through the login gate
+    // still wins via ?next= — this is only the default when there was no destination.
+    const next = new URLSearchParams(window.location.search).get("next") || "/companies";
     router.push(next);
     router.refresh();
   }

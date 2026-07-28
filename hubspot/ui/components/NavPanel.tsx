@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 // then the reporting over both, with Maven events last.
 const LINKS = [
   { href: "/companies", label: "Companies", icon: Building2 },
-  { href: "/", label: "Leads", icon: Users },
+  { href: "/leads", label: "Leads", icon: Users },
   { href: "/reports", label: "Reports", icon: BarChart3 },
   { href: "/events", label: "Maven Events", icon: CalendarDays },
 ];
@@ -23,7 +23,9 @@ export function NavPanel({ onActiveClick }: { onActiveClick?: (href: string) => 
     <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-56 shrink-0 overflow-y-auto border-r bg-card/40 p-4 md:block">
       <nav className="space-y-1">
         {LINKS.map(({ href, label, icon: Icon }) => {
-          const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+          // Every link is a real path now (Leads moved off "/"), so a prefix match
+          // is enough — it also keeps the tab lit on nested routes.
+          const active = pathname.startsWith(href);
           return (
             <Link
               key={href}

@@ -149,15 +149,23 @@ function Companies() {
     return m;
   }, [countryRows]);
 
-  // Distinct technologies for the dropdown, most-populated first.
-  const techOptions = useMemo<TechOption[]>(() => {
-    const byUid = new Map<string, TechOption>();
+  // uid -> display name, so the dropdown can label a technology without re-scanning
+  // techRows (the option counts are built from the company rows, not the pairs).
+  const techNameByUid = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const t of techRows) if (!m.has(t.technology_uid)) m.set(t.technology_uid, t.technology_name);
+    return m;
+  }, [techRows]);
+
+  // org id -> the distinct uids it runs. A Set so an org counts once per technology
+  // even if the underlying signals array repeats one.
+  const techUidsByOrg = useMemo(() => {
+    const m = new Map<string, Set<string>>();
     for (const t of techRows) {
-      const o = byUid.get(t.technology_uid) ?? { uid: t.technology_uid, name: t.technology_name, count: 0 };
-      o.count += 1;
-      byUid.set(t.technology_uid, o);
+      if (!m.has(t.apollo_org_id)) m.set(t.apollo_org_id, new Set());
+      m.get(t.apollo_org_id)!.add(t.technology_uid);
     }
-    return [...byUid.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    return m;
   }, [techRows]);
 
   // uid -> set of org ids running it, for O(1) membership in the filter.
@@ -208,45 +216,96 @@ function Companies() {
   const matchesFilters = (r: CompanyRow, filters: Record<NaicsKey, string>) =>
     NAICS_LEVELS.every((l) => !filters[l.key] || r[l.key] === filters[l.key]);
 
-  const filtered = useMemo(() => {
-    const techSet = techFilter ? techOrgSets.get(techFilter) : null;
-    return scoped.filter(
-      (r) =>
-        matchesFilters(r, naicsFilters) &&
-        (!techSet || techSet.has(r.apollo_org_id)) &&
-        (!techOnly || techByOrg.has(r.apollo_org_id)) &&
-        (!countryFilter || countryByOrg.get(r.apollo_org_id) === countryFilter),
-    );
-  }, [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg]);
+  // The one filter predicate every facet and the table share. `skip` drops a single
+  // dimension so a dropdown can count "what would I get if I picked this, given
+  // everything else that's selected" without its own selection collapsing the list.
+  // Pass `naics` to override the level filters (the NAICS facets clear their own level).
+  //
+  // Facets used to be built from `scoped` (search + revenue only), so their counts
+  // never moved when you picked a sector — Country and Apollo Technologies now honour
+  // the other dimensions like the NAICS levels always have.
+  type Facet = "naics" | "tech" | "country" | null;
+  const passes = (
+    r: CompanyRow,
+    skip: Facet,
+    naics: Record<NaicsKey, string> = naicsFilters,
+  ) => {
+    if (skip !== "naics" && !matchesFilters(r, naics)) return false;
+    if (skip !== "tech") {
+      const techSet = techFilter ? techOrgSets.get(techFilter) : null;
+      if (techSet && !techSet.has(r.apollo_org_id)) return false;
+      if (techOnly && !techByOrg.has(r.apollo_org_id)) return false;
+    }
+    if (skip !== "country" && countryFilter && countryByOrg.get(r.apollo_org_id) !== countryFilter)
+      return false;
+    return true;
+  };
 
-  // Country dropdown options: distinct countries present in the search+revenue-scoped
-  // set, most-common first. Companies with no country-bearing lead simply don't appear
-  // under any country (they're "Unknown" — same behaviour as an unset facet).
+  const filtered = useMemo(
+    () => scoped.filter((r) => passes(r, null)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg],
+  );
+
+  // Country options: every other active filter applied, its own dimension skipped.
+  // Companies with no country-bearing lead have no country and appear under none of
+  // them (they're "Unknown"), so these counts do not sum to the visible row total.
   const countryOptions = useMemo<CountryOption[]>(() => {
     const counts = new Map<string, number>();
     for (const r of scoped) {
+      if (!passes(r, "country")) continue;
       const c = countryByOrg.get(r.apollo_org_id);
       if (c) counts.set(c, (counts.get(c) ?? 0) + 1);
     }
+    // Keep the active selection listed even at zero, or the <select> would render
+    // blank while still filtering.
+    if (countryFilter && !counts.has(countryFilter)) counts.set(countryFilter, 0);
     return [...counts.entries()]
       .map(([country, count]) => ({ country, count }))
       .sort((a, b) => b.count - a.count || a.country.localeCompare(b.country));
-  }, [scoped, countryByOrg]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scoped, countryByOrg, countryFilter, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg]);
 
-  // Faceted dropdown options: each level's choices reflect the search + revenue
-  // range + the OTHER active level filters, so selections stay consistent (a cascade).
+  // Technology options: counts are COMPANIES, not org<->technology pairs. Counting
+  // pairs (the old behaviour) double-counted any company running more than one tool,
+  // so the numbers could never be reconciled against the table.
+  const techOptions = useMemo<TechOption[]>(() => {
+    const counts = new Map<string, number>();
+    for (const r of scoped) {
+      if (!passes(r, "tech")) continue;
+      for (const uid of techUidsByOrg.get(r.apollo_org_id) ?? []) {
+        counts.set(uid, (counts.get(uid) ?? 0) + 1);
+      }
+    }
+    if (techFilter && !counts.has(techFilter)) counts.set(techFilter, 0);
+    return [...counts.entries()]
+      .map(([uid, count]) => ({ uid, name: techNameByUid.get(uid) ?? uid, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scoped, techUidsByOrg, techNameByUid, techFilter, naicsFilters, countryFilter, countryByOrg]);
+
+  // NAICS options: each level's choices reflect the search + revenue range + the OTHER
+  // active level filters (the cascade) + the technology and country filters, and now
+  // carry a company count like the other two facets.
   const naicsOptions = useMemo(() => {
-    const out = {} as Record<NaicsKey, string[]>;
+    const out = {} as Record<NaicsKey, { value: string; count: number }[]>;
     for (const { key } of NAICS_LEVELS) {
       const others = { ...naicsFilters, [key]: "" };
-      const values = new Set<string>();
+      const counts = new Map<string, number>();
       for (const r of scoped) {
-        if (matchesFilters(r, others) && r[key]) values.add(r[key] as string);
+        const v = r[key] as string | null;
+        if (!v || !passes(r, null, others)) continue;
+        counts.set(v, (counts.get(v) ?? 0) + 1);
       }
-      out[key] = [...values].sort((a, b) => a.localeCompare(b));
+      const active = naicsFilters[key];
+      if (active && !counts.has(active)) counts.set(active, 0);
+      out[key] = [...counts.entries()]
+        .map(([value, count]) => ({ value, count }))
+        .sort((a, b) => a.value.localeCompare(b.value));
     }
     return out;
-  }, [scoped, naicsFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg]);
 
   const sorted = useMemo(() => {
     if (!sortKey) return filtered;
@@ -415,9 +474,9 @@ function Companies() {
                     className="w-full rounded-lg border bg-card px-2 py-2 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <option value="">All</option>
-                    {naicsOptions[key].map((v) => (
-                      <option key={v} value={v}>
-                        {v}
+                    {naicsOptions[key].map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.value} ({o.count.toLocaleString()})
                       </option>
                     ))}
                   </select>

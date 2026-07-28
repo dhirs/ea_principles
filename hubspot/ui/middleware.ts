@@ -12,7 +12,8 @@ export async function middleware(req: NextRequest) {
   const session = await verifySessionToken(req.cookies.get(COOKIE_NAME)?.value);
 
   if (pathname === "/login") {
-    if (session) return NextResponse.redirect(new URL("/", req.url));
+    // Already signed in: skip the form and land on Companies (the default tab).
+    if (session) return NextResponse.redirect(new URL("/companies", req.url));
     return NextResponse.next();
   }
 
