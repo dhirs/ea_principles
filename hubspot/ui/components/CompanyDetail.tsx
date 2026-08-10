@@ -32,6 +32,9 @@ export type CompanyRow = {
   growth_24m: number | null;
   added_at: string;
   sector_title: string | null;
+  // The code, not just the title — the custom-taxonomy vocabulary is keyed by
+  // subsector_code, so the page needs it to scope that dropdown's options.
+  subsector_code: string | null;
   subsector_title: string | null;
   industry_group_title: string | null;
   naics_industry_title: string | null;

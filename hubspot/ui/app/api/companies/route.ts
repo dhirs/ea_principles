@@ -4,7 +4,7 @@ import { sb } from "@/lib/supabase";
 // hq_location is deliberately absent: Apollo's company-search returns no location
 // field, so it is null on every row and the UI dropped the column.
 const SELECT =
-  "apollo_org_id,company,domain,linkedin_url,employee_range,revenue,revenue_printed,parent_company,growth_6m,growth_12m,growth_24m,added_at,sector_title,subsector_title,industry_group_title,naics_industry_title,national_industry_title";
+  "apollo_org_id,company,domain,linkedin_url,employee_range,revenue,revenue_printed,parent_company,growth_6m,growth_12m,growth_24m,added_at,sector_title,subsector_code,subsector_title,industry_group_title,naics_industry_title,national_industry_title";
 // Biggest revenue first; unknown revenue falls to the bottom, then A→Z by name.
 const ORDER = "order=revenue.desc.nullslast&order=company.asc";
 const PAGE = 1000;

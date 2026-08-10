@@ -121,7 +121,39 @@ is the source of truth** for how it's built and what's currently in it.
   them, so they read blank. Populating them needs a per-org Apollo enrich (~1 credit
   each). See `prospecting/stage3_qualify.md`.
 
-Current data: **2,983 companies** (2026-07-17).
+Current data: **3,797 companies** (2026-08-10; was 2,983 on 2026-07-17).
+
+### `company_category` / `company_category_assignment` (+ `company_custom_taxonomy` view)
+
+The **custom taxonomy** — a curated business-model label per company, with its vocabulary
+**scoped to a NAICS subsector**. NAICS cannot express what we actually need to filter on:
+there is no private-equity code at any level, and `523940 Portfolio Management and
+Investment Advice` holds a buyout firm and a suburban wealth adviser side by side. Full
+rationale: **`prospecting/adr/2026-08-10-company-custom-taxonomy.md`**.
+
+- `company_category` — the vocabulary: `(id, subsector_code, slug, label, sort_order)`,
+  unique on `(subsector_code, slug)`. **Each subsector owns its own list**, so adding a
+  subsector is an `insert` — no schema change, no code change, the dropdown renders
+  whatever vocabulary exists for the selected subsector.
+- `company_category_assignment` — `(apollo_org_id PK, category_id, source, note,
+  updated_at)`. `apollo_org_id` is the PK, so **one primary label per company**. `source`
+  is `manual | rule | llm`, so curation is always distinguishable from a generated pass.
+- `company_custom_taxonomy` — the view the UI reads: assignment ⋈ category.
+- Nothing here writes to `apollo_company_universe` (the prospecting pipeline rebuilds it
+  and would wipe the labels).
+
+Current coverage: **subsector 523 only** — 9 identifiers, all 84 companies labelled
+(`asset_wealth` 31, `pe` 11, `fintech_trading` 11, `ib_advisory` 8, `funds_infra` 8,
+`vc` 6, `hedge_credit` 3, `market_infra` 3, `other` 3). Every other subsector is
+unlabelled, so the filter offers nothing there yet.
+
+> `pe` and `vc` started as a single `pe_vc` bucket and were split on 2026-08-10. The
+> line is **control/buyout and closed-end private capital** (incl. real assets and
+> infrastructure) vs **minority stakes in young or scaling companies**. Four sit near
+> the line and could defensibly move: **Insight Partners** (venture *and* buyouts →
+> `vc`), **BGF** (minority growth capital → `pe`), **Newable** (SME lending whose
+> Ventures arm does early-stage → `vc`), **Octopus Investments** (a VC arm inside a much
+> broader manager → `vc`).
 
 ### `apollo_company_technology` (view, read-only) — the Apollo Technologies filter
 
@@ -208,6 +240,15 @@ CSV columns → mapping: `Email→lead_email`, `Lesson Title→event_name`,
   - **Revenue ($M)** — min/max inputs; blank is open-ended. Typed in **millions**, matched
     against the dollar-valued `revenue` column (`80` → `80_000_000`). A row with null
     revenue never matches a bound.
+  - **Country** — from the `company_country` view via `/api/companies/countries`. Apollo
+    returns **no company location**, so a company's country is the **modal country of its
+    leads**. It therefore answers "where are our contacts", not "where is the firm" — a
+    US-headquartered company whose only leads are in London reads as United Kingdom.
+    Companies no lead can speak for come back as the literal **`UNK`** ("not known yet",
+    not "no country"): a real, selectable bucket so they can be found and corrected by
+    hand. **2,281 of 3,797 are `UNK`** (2026-08-10). Before this the view simply omitted
+    them, which left them unfilterable and made the dropdown counts fail to sum; they sum
+    now.
   - **Apollo Technologies** — searchable single-select (`TechCombobox`). Loads the
     `apollo_company_technology` view once via `/api/technologies`, builds a
     `uid → Set<org_id>` map client-side, and keeps only rows whose `apollo_org_id` runs the
@@ -216,9 +257,16 @@ CSV columns → mapping: `Email→lead_email`, `Lesson Title→event_name`,
     `/api/companies` — if it fails, the filter is just empty.
   - **Five cascading NAICS dropdowns** (Sector → Subsector → Industry Group → NAICS
     Industry → National Industry) — picking a level clears every level below it.
+  - **Custom Taxonomy** — sits immediately after Subsector, because its vocabulary is
+    **scoped to a subsector**. Disabled until a subsector is picked, then lists that
+    subsector's identifiers with company counts. Changing Sector or Subsector clears it,
+    like a deeper NAICS level. Loads from `/api/companies/categories`, independently of
+    `/api/companies`. See the `company_category` note in the data model above.
   Options are **faceted**: each dropdown's choices reflect the search + the revenue range
   + the *other* active levels, so a selection can never produce an empty list. Any change
   resets to page 1; "Clear all" resets every filter.
+  (Custom Taxonomy is the one exception — it lists a subsector's **whole** vocabulary,
+  including identifiers at count 0, so you can see every bucket that exists.)
 
 > **Gotcha — 32 companies vanish once you filter below Sector.** Their `subsector_title`
 > and `industry_group_title` are null because Apollo returns **retired 2017 NAICS codes**

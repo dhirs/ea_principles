@@ -2,10 +2,14 @@ import { NextResponse } from "next/server";
 import { unstable_cache } from "next/cache";
 import { sb } from "@/lib/supabase";
 
-// One row per company that has a country, derived from its leads via the
+// One row per company in the universe, derived from its leads via the
 // `company_country` view (a company's country = the modal country of its leads,
 // since Apollo puts location on the person, not the company object). The Companies
 // page merges this into its rows client-side, exactly like /api/technologies.
+//
+// Companies no lead can speak for carry the literal country `UNK` — "not known yet",
+// not "no country". They used to be absent from the view entirely, which made them
+// unfilterable; `UNK` is a real bucket you can select and work through by hand.
 const SELECT = "apollo_org_id,country";
 const PAGE = 1000; // PostgREST caps a response at 1000 rows — page past it
 

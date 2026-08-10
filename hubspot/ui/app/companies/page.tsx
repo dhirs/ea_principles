@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ChevronDown,
@@ -61,6 +61,15 @@ type TechOption = { uid: string; name: string; count: number };
 type CountryRow = { apollo_org_id: string; country: string };
 type CountryOption = { country: string; count: number };
 
+// The custom taxonomy (/api/companies/categories). A curated business-model label per
+// company, with its vocabulary scoped to a NAICS subsector — NAICS itself can't tell a
+// buyout firm from a wealth manager (both are 523940). `vocabulary` is every identifier
+// defined for a subsector; `rows` is the org->identifier assignment.
+// See prospecting/adr/2026-08-10-company-custom-taxonomy.md
+type CategoryRow = { apollo_org_id: string; subsector_code: string; slug: string; label: string };
+type VocabRow = { subsector_code: string; slug: string; label: string; sort_order: number };
+type CategoryOption = { slug: string; label: string; count: number };
+
 export default function CompaniesPage() {
   // useSearchParams needs a Suspense boundary in the App Router.
   return (
@@ -88,6 +97,9 @@ function Companies() {
   const [techOnly, setTechOnly] = useState(true); // only rows with >=1 technology (default on)
   const [countryRows, setCountryRows] = useState<CountryRow[]>([]);
   const [countryFilter, setCountryFilter] = useState(""); // selected country, "" = all
+  const [categoryRows, setCategoryRows] = useState<CategoryRow[]>([]);
+  const [categoryVocab, setCategoryVocab] = useState<VocabRow[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState(""); // selected slug, "" = all
   const [selected, setSelected] = useState<CompanyRow | null>(null);
 
   function toggleSort(key: SortKey) {
@@ -141,6 +153,33 @@ function Companies() {
       if (res.ok) setCountryRows(((await res.json()).rows ?? []) as CountryRow[]);
     })();
   }, []);
+
+  // Custom-taxonomy vocabulary + assignments, loaded independently like the tech and
+  // country maps. A failure just leaves the Custom Taxonomy filter empty.
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/companies/categories");
+      if (!res.ok) return;
+      const data = await res.json();
+      setCategoryVocab((data.vocabulary ?? []) as VocabRow[]);
+      setCategoryRows((data.rows ?? []) as CategoryRow[]);
+    })();
+  }, []);
+
+  // org id -> custom-taxonomy slug. One label per company, so a plain Map.
+  const categoryByOrg = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const c of categoryRows) m.set(c.apollo_org_id, c.slug);
+    return m;
+  }, [categoryRows]);
+
+  // The subsector_code behind the selected Subsector title — the vocabulary is keyed
+  // by code, the filter holds the title, so the rows are what bridges them.
+  const activeSubsectorCode = useMemo(() => {
+    const title = naicsFilters.subsector_title;
+    if (!title) return null;
+    return rows.find((r) => r.subsector_title === title)?.subsector_code ?? null;
+  }, [rows, naicsFilters.subsector_title]);
 
   // org id -> country, for O(1) lookup in the filter and dropdown counts.
   const countryByOrg = useMemo(() => {
@@ -224,7 +263,7 @@ function Companies() {
   // Facets used to be built from `scoped` (search + revenue only), so their counts
   // never moved when you picked a sector — Country and Apollo Technologies now honour
   // the other dimensions like the NAICS levels always have.
-  type Facet = "naics" | "tech" | "country" | null;
+  type Facet = "naics" | "tech" | "country" | "category" | null;
   const passes = (
     r: CompanyRow,
     skip: Facet,
@@ -238,18 +277,39 @@ function Companies() {
     }
     if (skip !== "country" && countryFilter && countryByOrg.get(r.apollo_org_id) !== countryFilter)
       return false;
+    if (skip !== "category" && categoryFilter && categoryByOrg.get(r.apollo_org_id) !== categoryFilter)
+      return false;
     return true;
   };
 
   const filtered = useMemo(
     () => scoped.filter((r) => passes(r, null)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg],
+    [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg, categoryFilter, categoryByOrg],
   );
 
+  // Custom-taxonomy options: the FULL vocabulary for the selected subsector — every
+  // possible identifier, not just the ones with matches — each carrying a count of the
+  // companies that would survive the other active filters. Empty until a subsector is
+  // picked, because the vocabulary is subsector-scoped.
+  const categoryOptions = useMemo<CategoryOption[]>(() => {
+    if (!activeSubsectorCode) return [];
+    const counts = new Map<string, number>();
+    for (const r of scoped) {
+      if (!passes(r, "category")) continue;
+      const slug = categoryByOrg.get(r.apollo_org_id);
+      if (slug) counts.set(slug, (counts.get(slug) ?? 0) + 1);
+    }
+    return categoryVocab
+      .filter((v) => v.subsector_code === activeSubsectorCode)
+      .map((v) => ({ slug: v.slug, label: v.label, count: counts.get(v.slug) ?? 0 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scoped, activeSubsectorCode, categoryVocab, categoryByOrg, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg]);
+
   // Country options: every other active filter applied, its own dimension skipped.
-  // Companies with no country-bearing lead have no country and appear under none of
-  // them (they're "Unknown"), so these counts do not sum to the visible row total.
+  // Every company carries a country now — those no lead can speak for come back as
+  // `UNK` from the view rather than being absent — so these counts DO sum to the
+  // visible row total. Pick `UNK` to work through the ones still needing a country.
   const countryOptions = useMemo<CountryOption[]>(() => {
     const counts = new Map<string, number>();
     for (const r of scoped) {
@@ -264,7 +324,7 @@ function Companies() {
       .map(([country, count]) => ({ country, count }))
       .sort((a, b) => b.count - a.count || a.country.localeCompare(b.country));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scoped, countryByOrg, countryFilter, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg]);
+  }, [scoped, countryByOrg, countryFilter, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, categoryFilter, categoryByOrg]);
 
   // Technology options: counts are COMPANIES, not org<->technology pairs. Counting
   // pairs (the old behaviour) double-counted any company running more than one tool,
@@ -282,7 +342,7 @@ function Companies() {
       .map(([uid, count]) => ({ uid, name: techNameByUid.get(uid) ?? uid, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scoped, techUidsByOrg, techNameByUid, techFilter, naicsFilters, countryFilter, countryByOrg]);
+  }, [scoped, techUidsByOrg, techNameByUid, techFilter, naicsFilters, countryFilter, countryByOrg, categoryFilter, categoryByOrg]);
 
   // NAICS options: each level's choices reflect the search + revenue range + the OTHER
   // active level filters (the cascade) + the technology and country filters, and now
@@ -305,7 +365,7 @@ function Companies() {
     }
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg]);
+  }, [scoped, naicsFilters, techFilter, techOnly, techOrgSets, techByOrg, countryFilter, countryByOrg, categoryFilter, categoryByOrg]);
 
   const sorted = useMemo(() => {
     if (!sortKey) return filtered;
@@ -329,6 +389,9 @@ function Companies() {
       for (let i = idx + 1; i < NAICS_LEVELS.length; i++) next[NAICS_LEVELS[i].key] = "";
       return next;
     });
+    // The custom taxonomy hangs off the subsector, so changing Sector or Subsector
+    // invalidates the picked identifier — clear it like a deeper NAICS level.
+    if (idx <= NAICS_LEVELS.findIndex((l) => l.key === "subsector_title")) setCategoryFilter("");
   }
   const anyFilter =
     Object.values(naicsFilters).some(Boolean) ||
@@ -336,7 +399,8 @@ function Companies() {
     !!revMax ||
     !!techFilter ||
     techOnly ||
-    !!countryFilter;
+    !!countryFilter ||
+    !!categoryFilter;
 
   function clearFilters() {
     setNaicsFilters(EMPTY_FILTERS);
@@ -345,12 +409,13 @@ function Companies() {
     setTechFilter("");
     setTechOnly(false);
     setCountryFilter("");
+    setCategoryFilter("");
   }
 
   // Reset to the first page whenever the result set, sort, or page size changes.
   useEffect(() => {
     setPage(1);
-  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax, techFilter, techOnly, countryFilter]);
+  }, [q, pageSize, sortKey, sortDir, naicsFilters, revMin, revMax, techFilter, techOnly, countryFilter, categoryFilter]);
 
   const pageCount = Math.max(1, Math.ceil(sorted.length / pageSize));
   const clampedPage = Math.min(page, pageCount);
@@ -462,25 +527,56 @@ function Companies() {
                 Only companies with a known technology
               </label>
             </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {NAICS_LEVELS.map(({ key, label }) => (
-                <label key={key} className="block">
-                  <span className="mb-1 block text-xs font-medium text-muted-foreground">
-                    {label}
-                  </span>
-                  <select
-                    value={naicsFilters[key]}
-                    onChange={(e) => setNaics(key, e.target.value)}
-                    className="w-full rounded-lg border bg-card px-2 py-2 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <option value="">All</option>
-                    {naicsOptions[key].map((o) => (
-                      <option key={o.value} value={o.value}>
-                        {o.value} ({o.count.toLocaleString()})
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <Fragment key={key}>
+                  <label className="block">
+                    <span className="mb-1 block text-xs font-medium text-muted-foreground">
+                      {label}
+                    </span>
+                    <select
+                      value={naicsFilters[key]}
+                      onChange={(e) => setNaics(key, e.target.value)}
+                      className="w-full rounded-lg border bg-card px-2 py-2 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <option value="">All</option>
+                      {naicsOptions[key].map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.value} ({o.count.toLocaleString()})
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  {/* Sits immediately after Subsector: the vocabulary is subsector-scoped,
+                      so this is the level it hangs off. Disabled until one is picked. */}
+                  {key === "subsector_title" && (
+                    <label className="block">
+                      <span className="mb-1 block text-xs font-medium text-muted-foreground">
+                        Custom Taxonomy
+                      </span>
+                      <select
+                        value={categoryFilter}
+                        onChange={(e) => setCategoryFilter(e.target.value)}
+                        disabled={categoryOptions.length === 0}
+                        className="w-full rounded-lg border bg-card px-2 py-2 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <option value="">
+                          {!naicsFilters.subsector_title
+                            ? "Select a subsector first"
+                            : categoryOptions.length === 0
+                              ? "None defined for this subsector"
+                              : "All"}
+                        </option>
+                        {categoryOptions.map((o) => (
+                          <option key={o.slug} value={o.slug}>
+                            {o.label} ({o.count.toLocaleString()})
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
+                </Fragment>
               ))}
             </div>
           </div>
